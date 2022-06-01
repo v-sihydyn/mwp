@@ -1,29 +1,49 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { WorkoutPlanSelector } from './components/WorkoutPlanSelector/WorkoutPlanSelector';
+import { WorkoutPlanActionsButton } from './components/WorkoutPlanActionsButton/WorkoutPlanActionsButton';
+import { useState } from 'react';
+import { WorkoutPlanModal } from './components/WorkoutPlanModal/WorkoutPlanModal';
+import Portal from '../../components/Portal/Portal';
+import { WorkoutActionsModal } from './components/WorkoutActionsModal/WorkoutActionsModal';
 
-import { Text, View } from '../../components/Themed';
-import { RootTabScreenProps } from '../../../types';
+export const MyWorkoutScreen = () => {
+  const [isWorkoutPlanModalVisible, setWorkoutPlanModalVisible] = useState(false);
+  const [isWorkoutActionsModalVisible, setWorkoutActionsModalVisible] = useState(false);
 
-export const MyWorkoutScreen = ({ navigation }: RootTabScreenProps<'MyWorkoutScreen'>) =>  {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>MyWorkoutScreen</Text>
+      <View style={styles.header}>
+        <WorkoutPlanSelector onPress={() => setWorkoutPlanModalVisible(true)} />
+        <WorkoutPlanActionsButton onPress={() => setWorkoutActionsModalVisible(true)} />
+      </View>
+
+      <Portal>
+        <WorkoutPlanModal isVisible={isWorkoutPlanModalVisible} onClose={() => setWorkoutPlanModalVisible(false)} />
+        <WorkoutActionsModal
+          isVisible={isWorkoutActionsModalVisible}
+          onClose={() => setWorkoutActionsModalVisible(false)}
+        />
+      </Portal>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#2c2c2e',
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 20,
+    paddingTop: 40,
+    flexDirection: 'column',
+  },
+  header: {
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    justifyContent: 'space-between',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+    color: '#fff',
   },
 });

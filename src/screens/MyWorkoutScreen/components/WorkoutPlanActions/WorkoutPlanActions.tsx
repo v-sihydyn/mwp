@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { WorkoutPlanActionItem } from './WorkoutPlanActionItem/WorkoutPlanActionItem';
+import { colors } from '../../../../styles/colors';
 
 interface WorkoutActionsProps {}
 
@@ -19,12 +20,12 @@ export const WorkoutPlanActions: React.FC<WorkoutActionsProps> = () => {
 const styles = StyleSheet.create({
   root: {
     width: '100%',
-    backgroundColor: '#2c2c2e',
+    backgroundColor: colors.page,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },
   title: {
-    color: '#ffffff',
+    color: colors.text,
     padding: 20,
   },
 });

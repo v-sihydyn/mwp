@@ -50,6 +50,7 @@ export const Modal: React.FC<Props> = ({ isVisible, onClose, children }) => {
             useNativeDriver: true,
           }).start(({ finished }) => {
             if (finished) {
+              setRendered(false);
               onClose();
             }
           });
@@ -85,18 +86,20 @@ export const Modal: React.FC<Props> = ({ isVisible, onClose, children }) => {
         restDisplacementThreshold: 20,
       }).start();
     } else {
-      Animated.spring(modalY.current, {
-        toValue: contentHeight!,
-        useNativeDriver: false,
-        bounciness: 0,
-        restSpeedThreshold: 50,
-        restDisplacementThreshold: 20,
-      }).start(({ finished }) => {
-        if (finished) {
-          BackHandler.removeEventListener('hardwareBackPress', backButtonHandler)
-          setRendered(false);
-        }
-      });
+      if (rendered) {
+        Animated.spring(modalY.current, {
+          toValue: contentHeight!,
+          useNativeDriver: false,
+          bounciness: 0,
+          restSpeedThreshold: 50,
+          restDisplacementThreshold: 20,
+        }).start(({ finished }) => {
+          if (finished) {
+            BackHandler.removeEventListener('hardwareBackPress', backButtonHandler)
+            setRendered(false);
+          }
+        });
+      }
     }
   }, [isVisible, contentHeight, modalY.current, contentHeight]);
 
@@ -122,6 +125,9 @@ export const Modal: React.FC<Props> = ({ isVisible, onClose, children }) => {
               position: 'absolute',
               bottom: didCalculateContentHeight ? 0 : -deviceHeight,
               transform: [{ translateY: modalY.current }],
+
+              // borderWidth: 1,
+              // borderColor: '#fff'
             },
           ]}
           onLayout={onWrapperLayout}>

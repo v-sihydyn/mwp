@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Ripple from 'react-native-material-ripple';
+import { colors } from '../../../../styles/colors';
 
 type Props = {
   onPress: () => void;
@@ -23,8 +24,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 40,
     width: 40,
-    // marginLeft: 20,
-    backgroundColor: '#121212',
+    backgroundColor: colors.surface,
     borderRadius: 8,
   },
 });

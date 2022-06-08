@@ -2,6 +2,7 @@ import React from 'react';
 import Ripple from 'react-native-material-ripple';
 import { StyleSheet, Text, View } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { colors } from '../../../../styles/colors';
 
 export const AddWorkoutPlanButton = () => {
   return (
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
   root: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#0ac78e',
+    backgroundColor: colors.green,
     height: 40,
     paddingHorizontal: 20,
     borderTopLeftRadius: 12,
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   label: {
-    color: '#ffffff',
+    color: colors.text,
   },
   suffix: {
     marginLeft: 'auto',

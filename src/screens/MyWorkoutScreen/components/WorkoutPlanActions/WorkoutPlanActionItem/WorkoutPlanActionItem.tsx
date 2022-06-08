@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { colors } from '../../../../../styles/colors';
 
 type Props = {
   name: string;
@@ -32,6 +33,6 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   name: {
-    color: '#ffffff',
+    color: colors.text,
   },
 });

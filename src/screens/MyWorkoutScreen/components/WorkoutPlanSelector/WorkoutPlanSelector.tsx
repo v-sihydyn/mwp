@@ -20,14 +20,14 @@ export const WorkoutPlanSelector = ({ onPress }: Props) => {
   );
 };
 
-const screenWidth = Dimensions.get('window').width;
+const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_PADDING = 20;
 
 const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 12,
     height: 40,
-    width: screenWidth - (SCREEN_PADDING * 2 + 20 + 40),
+    width: SCREEN_WIDTH - (SCREEN_PADDING * 2 + 20 + 40),
     backgroundColor: '#121212',
     borderRadius: 8,
     alignItems: 'center',

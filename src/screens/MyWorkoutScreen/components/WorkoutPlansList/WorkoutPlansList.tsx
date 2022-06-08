@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WorkoutPlanListItem } from './WorkoutPlanListItem/WorkoutPlanListItem';
 import { AddWorkoutPlanButton } from '../AddWorkoutPlanButton/AddWorkoutPlanButton';
+import { colors } from '../../../../styles/colors';
 
 export const WorkoutPlansList = () => {
   return (
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
   root: {
     flexDirection: 'column',
     width: '100%',
-    backgroundColor: '#2c2c2e',
+    backgroundColor: colors.page,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },

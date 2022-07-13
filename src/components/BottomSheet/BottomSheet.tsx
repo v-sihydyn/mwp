@@ -20,7 +20,7 @@ const AnimatedPressable = createAnimatedComponent(Pressable);
 
 const deviceHeight = Dimensions.get('window').height;
 
-export const Modal: React.FC<Props> = ({ isVisible, onClose, children }) => {
+export const BottomSheet: React.FC<Props> = ({ isVisible, onClose, children }) => {
   const [contentHeight, setContentHeight] = useState<number | null>(null); // ref?
   const [rendered, setRendered] = useState(isVisible);
   const [didCalculateContentHeight, setDidCalculateContentHeight] = useState(false);

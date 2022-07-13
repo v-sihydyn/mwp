@@ -1,14 +1,14 @@
 import React from 'react';
 import { WorkoutPlansList } from '../WorkoutPlansList/WorkoutPlansList';
-import { Modal, Props as ModalProps } from '../../../../components/Modal/Modal';
+import { BottomSheet, Props as BottomSheetProps } from '../../../../components/BottomSheet/BottomSheet';
 
-type Props = ModalProps;
+type Props = BottomSheetProps;
 
 export const WorkoutPlanModal = ({ isVisible, onClose }: Props) => {
   return (
-    <Modal isVisible={isVisible} onClose={onClose}>
+    <BottomSheet isVisible={isVisible} onClose={onClose}>
       <WorkoutPlansList />
-    </Modal>
+    </BottomSheet>
   );
 };
 

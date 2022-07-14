@@ -10,6 +10,9 @@ type ActionsContextType = {
 
   onOpenRenameWorkoutPlanModal: () => void;
   onCloseRenameWorkoutPlanModal: () => void;
+
+  onOpenDeleteWorkoutPlanModal: () => void;
+  onCloseDeleteWorkoutPlanModal: () => void;
 }
 
 export const ActionsContext = createContext<ActionsContextType>({
@@ -17,10 +20,11 @@ export const ActionsContext = createContext<ActionsContextType>({
   onCloseWorkoutPlanSheet: () => {},
 
   onOpenWorkoutActionsSheet: () => {},
-  onCloseWorkoutActionsSheet: () => {
-    alert('1')
-  },
+  onCloseWorkoutActionsSheet: () => {},
 
   onOpenRenameWorkoutPlanModal: () => {},
   onCloseRenameWorkoutPlanModal: () => {},
+
+  onOpenDeleteWorkoutPlanModal: () => {},
+  onCloseDeleteWorkoutPlanModal: () => {},
 })

@@ -9,7 +9,7 @@ type WorkoutActionsProps = {
 }
 
 export const WorkoutPlanActions: React.FC<WorkoutActionsProps> = ({ onSheetClose }) => {
-  const { onOpenRenameWorkoutPlanModal } = useContext(ActionsContext);
+  const { onOpenRenameWorkoutPlanModal, onOpenDeleteWorkoutPlanModal } = useContext(ActionsContext);
 
   const handleOpenRenameModal = () => {
     onSheetClose();
@@ -18,12 +18,19 @@ export const WorkoutPlanActions: React.FC<WorkoutActionsProps> = ({ onSheetClose
     })
   }
 
+  const handleOpenDeleteModal = () => {
+    onSheetClose();
+    setTimeout(() => {
+      onOpenDeleteWorkoutPlanModal();
+    })
+  }
+
   return (
     <View style={styles.root}>
       <Text style={styles.title}>My Workout Plan</Text>
       <WorkoutPlanActionItem name="Manage Routines" icon="list" />
       <WorkoutPlanActionItem name="Rename" icon="pencil-alt" onPress={handleOpenRenameModal} />
-      <WorkoutPlanActionItem name="Delete" icon="trash" />
+      <WorkoutPlanActionItem name="Delete" icon="trash" onPress={handleOpenDeleteModal} />
       <WorkoutPlanActionItem name="Reminders" icon="clock" />
     </View>
   );

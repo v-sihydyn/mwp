@@ -125,9 +125,6 @@ export const BottomSheet: React.FC<Props> = ({ isVisible, onClose, children }) =
               position: 'absolute',
               bottom: didCalculateContentHeight ? 0 : -deviceHeight,
               transform: [{ translateY: modalY.current }],
-
-              // borderWidth: 1,
-              // borderColor: '#fff'
             },
           ]}
           onLayout={onWrapperLayout}>

@@ -1,51 +1,74 @@
 import React, { useMemo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import StickyParallaxHeader from 'react-native-sticky-parallax-header';
+import Modal from 'react-native-modal'
 
 import { WorkoutPlanSelector } from './components/WorkoutPlanSelector/WorkoutPlanSelector';
 import { WorkoutPlanActionsButton } from './components/WorkoutPlanActionsButton/WorkoutPlanActionsButton';
-import { WorkoutPlanModal } from './components/WorkoutPlanModal/WorkoutPlanModal';
+import { WorkoutPlanSheet } from './components/WorkoutPlanSheet/WorkoutPlanSheet';
 import Portal from '../../components/Portal/Portal';
-import { WorkoutActionsModal } from './components/WorkoutActionsModal/WorkoutActionsModal';
+import { WorkoutActionsSheet } from './components/WorkoutActionsSheet/WorkoutActionsSheet';
 import { WorkoutRoutinesList } from './components/WorkoutRoutinesList/WorkoutRoutinesList';
 import { RoutineToolbar } from './components/RoutineToolbar/RoutineToolbar';
 import { colors } from '../../styles/colors';
+import { ActionsContext } from './contexts/ActionsContext';
 
 const tabs = [
   {
     title: '1',
-    content: (
-      <WorkoutRoutinesList />
-    ),
+    content: <WorkoutRoutinesList />,
   },
   {
     title: 'Product Design',
-    content: <WorkoutRoutinesList />
+    content: <WorkoutRoutinesList />,
   },
   {
     title: 'Development',
-    content: <WorkoutRoutinesList />
+    content: <WorkoutRoutinesList />,
   },
   {
     title: 'Project Management',
-    content: <WorkoutRoutinesList />
+    content: <WorkoutRoutinesList />,
   },
 ];
 
 export const MyWorkoutScreen = () => {
-  const [isWorkoutPlanModalVisible, setWorkoutPlanModalVisible] = useState(false);
-  const [isWorkoutActionsModalVisible, setWorkoutActionsModalVisible] = useState(false);
+  const [isWorkoutPlanSheetVisible, setWorkoutPlanSheetVisible] = useState(false);
+  const [isWorkoutActionsSheetVisible, setWorkoutActionsSheetVisible] = useState(false);
+  const [isRenameWorkoutPlanModalVisible, setRenameWorkoutPlanModalVisible] = useState(false);
+
+  const onOpenWorkoutPlanSheet = () => {
+    setWorkoutPlanSheetVisible(true);
+  };
+
+  const onCloseWorkoutPlanSheet = () => {
+    setWorkoutPlanSheetVisible(false);
+  };
+
+  const onOpenWorkoutActionsSheet = () => {
+    setWorkoutActionsSheetVisible(true);
+  };
+
+  const onCloseWorkoutActionsSheet = () => {
+    setWorkoutActionsSheetVisible(false);
+  };
+
+  const onOpenRenameWorkoutPlanModal = () => {
+    setRenameWorkoutPlanModalVisible(true);
+  };
+
+  const onCloseRenameWorkoutPlanModal = () => {
+    setRenameWorkoutPlanModalVisible(false);
+  };
 
   const header = useMemo(() => {
     return (
-      <View
-        style={[styles.header]}
-        onLayout={(e) => console.log('header height: ', e.nativeEvent.layout.height)}>
-        <WorkoutPlanSelector onPress={() => setWorkoutPlanModalVisible(true)} />
-        <WorkoutPlanActionsButton onPress={() => setWorkoutActionsModalVisible(true)} />
+      <View style={[styles.header]}>
+        <WorkoutPlanSelector onPress={onOpenWorkoutPlanSheet} />
+        <WorkoutPlanActionsButton onPress={onOpenWorkoutActionsSheet} />
       </View>
-    )
-  }, [])
+    );
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -56,18 +79,45 @@ export const MyWorkoutScreen = () => {
         tabs={tabs}
         tabTextStyle={styles.tabText}
         tabTextContainerStyle={styles.tabTextContainerStyle}
-        tabTextContainerActiveStyle={styles.tabTextContainerActiveStyle}
         tabsContainerBackgroundColor={colors.page}
-      >
-      </StickyParallaxHeader>
+      />
       <RoutineToolbar />
-
       <Portal>
-        <WorkoutPlanModal isVisible={isWorkoutPlanModalVisible} onClose={() => setWorkoutPlanModalVisible(false)} />
-        <WorkoutActionsModal
-          isVisible={isWorkoutActionsModalVisible}
-          onClose={() => setWorkoutActionsModalVisible(false)}
-        />
+        <ActionsContext.Provider
+          value={{
+            onOpenWorkoutPlanSheet,
+            onCloseWorkoutPlanSheet,
+
+            onOpenWorkoutActionsSheet,
+            onCloseWorkoutActionsSheet,
+
+            onOpenRenameWorkoutPlanModal,
+            onCloseRenameWorkoutPlanModal,
+          }}>
+          <WorkoutPlanSheet isVisible={isWorkoutPlanSheetVisible} onClose={onCloseWorkoutPlanSheet} />
+          <WorkoutActionsSheet isVisible={isWorkoutActionsSheetVisible} onClose={onCloseWorkoutActionsSheet} />
+          <Modal
+            isVisible={isRenameWorkoutPlanModalVisible}
+            animationIn="fadeIn"
+            animationOut="fadeOut"
+            backdropTransitionOutTiming={0}
+          >
+            <View style={styles.modal}>
+              <View style={styles.modalTitleWrapper}>
+                <Text style={styles.modalTitle}>Rename Workout Plan</Text>
+              </View>
+              <TextInput value="My Workout Plan" autoFocus={true} selectTextOnFocus={true} style={styles.modalInput} />
+              <View style={styles.modalActions}>
+                <TouchableOpacity style={[styles.modalButton, { marginRight: 40 }]} onPress={onCloseRenameWorkoutPlanModal}>
+                  <Text style={styles.modalButtonText}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.modalButton} onPress={onCloseRenameWorkoutPlanModal}>
+                  <Text style={styles.modalButtonText}>OK</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+        </ActionsContext.Provider>
       </Portal>
     </View>
   );
@@ -87,7 +137,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 12,
     padding: 20,
-
   },
   title: {
     fontSize: 20,
@@ -96,22 +145,15 @@ const styles = StyleSheet.create({
   },
 
   //
-
-
-
-  content: {
-    // height: 1000,
-    // marginTop: 50
-  },
   foreground: {
     flex: 1,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   message: {
     color: 'white',
     fontSize: 40,
     paddingTop: 24,
-    paddingBottom: 7
+    paddingBottom: 7,
   },
   headerWrapper: {
     backgroundColor: 'green',
@@ -119,25 +161,68 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingBottom: 25,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   headerTitle: {
     fontSize: 16,
     color: 'white',
-    margin: 12
+    margin: 12,
   },
   tabTextContainerStyle: {
     backgroundColor: 'transparent',
-    borderRadius: 18
-  },
-  tabTextContainerActiveStyle: {
-    // backgroundColor: 'lightgreen'
+    borderRadius: 18,
   },
   tabText: {
     fontSize: 16,
     lineHeight: 20,
     paddingHorizontal: 12,
     paddingVertical: 8,
-    color: 'white'
+    color: 'white',
+  },
+
+  // modal styles
+  modal: {
+    padding: 20,
+    alignItems: 'center',
+    flexDirection: 'column',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    borderRadius: 8,
+    backgroundColor: colors.surface2,
+  },
+  modalTitleWrapper: {
+    width: '100%',
+    flexGrow: 1,
+    justifyContent: 'flex-start'
+  },
+  modalTitle: {
+    color: colors.text,
+    fontSize: 18,
+    marginBottom: 12,
+    textAlign: 'left'
+  },
+  modalInput: {
+    width: '100%',
+    color: colors.green,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.green,
+    marginBottom: 30,
+    fontSize: 16,
+  },
+  modalActions: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  modalButton: {},
+  modalButtonText: {
+    color: 'green',
+    fontSize: 16,
   },
 });

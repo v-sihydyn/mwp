@@ -1,24 +1,28 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { colors } from '../../../../../styles/colors';
+import Ripple from 'react-native-material-ripple';
 
 type Props = {
   name: string;
   icon: string;
+  onPress?: () => void;
 };
 
-export const WorkoutPlanActionItem = ({ name, icon }: Props) => {
+export const WorkoutPlanActionItem = ({ name, icon, onPress }: Props) => {
   return (
-    <TouchableWithoutFeedback
-      onPress={(e) => {
-        e.stopPropagation();
+    <Ripple rippleColor="#ffffff"
+      onPress={() => {
+        // e.stopPropagation();
+
+        onPress?.();
       }}>
       <View style={styles.root}>
         <FontAwesome5 style={styles.icon} name={icon} color="#ffffff" size={16} />
         <Text style={styles.name}>{name}</Text>
       </View>
-    </TouchableWithoutFeedback>
+    </Ripple>
   );
 };
 

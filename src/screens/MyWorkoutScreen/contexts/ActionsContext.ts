@@ -13,6 +13,12 @@ type ActionsContextType = {
 
   onOpenDeleteWorkoutPlanModal: () => void;
   onCloseDeleteWorkoutPlanModal: () => void;
+
+  onOpenRenamePlanRoutineModal: () => void;
+  onCloseRenamePlanRoutineModal: () => void;
+
+  onOpenDeletePlanRoutineModal: () => void;
+  onCloseDeletePlanRoutineModal: () => void;
 }
 
 export const ActionsContext = createContext<ActionsContextType>({
@@ -27,4 +33,10 @@ export const ActionsContext = createContext<ActionsContextType>({
 
   onOpenDeleteWorkoutPlanModal: () => {},
   onCloseDeleteWorkoutPlanModal: () => {},
+
+  onOpenRenamePlanRoutineModal: () => {},
+  onCloseRenamePlanRoutineModal: () => {},
+
+  onOpenDeletePlanRoutineModal: () => {},
+  onCloseDeletePlanRoutineModal: () => {},
 })

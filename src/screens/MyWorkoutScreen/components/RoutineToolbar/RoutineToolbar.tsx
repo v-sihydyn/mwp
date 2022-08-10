@@ -1,25 +1,21 @@
 import React, { useRef, useState } from 'react';
-import {
-  Dimensions,
-  StyleSheet,
-  Animated,
-  LayoutRectangle,
-  TouchableOpacity,
-  LayoutAnimation,
-} from 'react-native';
+import { Dimensions, StyleSheet, Animated, LayoutRectangle, TouchableOpacity, LayoutAnimation } from 'react-native';
 import { colors } from '../../../../styles/colors';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Portal from '../../../../components/Portal/Portal';
 import { ActionItem } from './ActionItem/ActionItem';
 
-interface RoutineToolbarProps {}
+type RoutineToolbarProps = {
+  onRenameRoutine: () => void;
+  onDeleteRoutine: () => void;
+};
 
 const BUTTON_BORDER_TOP_RADIUS_CLOSED = 18;
 const BUTTON_BORDER_TOP_RADIUS_OPEN = 0;
 const BUTTON_BORDER_BOTTOM_RADIUS_CLOSED = 18;
 const BUTTON_BORDER_BOTTOM_RADIUS_OPEN = 12;
 
-export const RoutineToolbar: React.FC<RoutineToolbarProps> = () => {
+export const RoutineToolbar: React.FC<RoutineToolbarProps> = ({ onRenameRoutine, onDeleteRoutine }) => {
   const [buttonLayout, setButtonLayout] = useState<LayoutRectangle | null>(null);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const buttonBorderTopRadius = useRef(new Animated.Value(BUTTON_BORDER_TOP_RADIUS_CLOSED)).current;
@@ -62,6 +58,22 @@ export const RoutineToolbar: React.FC<RoutineToolbarProps> = () => {
     setDropdownVisible((visible) => !visible);
   };
 
+  const handleRenameRoutine = () => {
+    onRenameRoutine();
+
+    setTimeout(() => {
+      handleToggleDropdown();
+    });
+  };
+
+  const handleDeleteRoutine = () => {
+    onDeleteRoutine();
+
+    setTimeout(() => {
+      handleToggleDropdown();
+    });
+  };
+
   return (
     <>
       <Animated.View
@@ -77,11 +89,11 @@ export const RoutineToolbar: React.FC<RoutineToolbarProps> = () => {
         onLayout={(e) => {
           setButtonLayout(e.nativeEvent.layout);
         }}>
-        <TouchableOpacity  style={{ width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>
+        <TouchableOpacity style={{ width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>
           <FontAwesome5 name="plus-circle" color={colors.text} size={18} />
         </TouchableOpacity>
 
-        <TouchableOpacity  style={{ width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>
+        <TouchableOpacity style={{ width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>
           <FontAwesome5 name="play" color={colors.text} size={18} />
         </TouchableOpacity>
         <TouchableOpacity
@@ -100,8 +112,8 @@ export const RoutineToolbar: React.FC<RoutineToolbarProps> = () => {
             ref={dropdownRef}>
             <ActionItem name="Edit Superset" icon="link" onPress={() => {}} />
             <ActionItem name="Reorder Exercises" icon="list" onPress={() => {}} />
-            <ActionItem name="Rename Routine" icon="pencil-alt" onPress={() => {}} />
-            <ActionItem name="Delete Routine" icon="trash" onPress={() => {}} />
+            <ActionItem name="Rename Routine" icon="pencil-alt" onPress={handleRenameRoutine} />
+            <ActionItem name="Delete Routine" icon="trash" onPress={handleDeleteRoutine} />
           </Animated.View>
         )}
       </Portal>

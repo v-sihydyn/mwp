@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import StickyParallaxHeader from 'react-native-sticky-parallax-header';
-import Modal from 'react-native-modal'
+import Modal from 'react-native-modal';
 
 import { WorkoutPlanSelector } from './components/WorkoutPlanSelector/WorkoutPlanSelector';
 import { WorkoutPlanActionsButton } from './components/WorkoutPlanActionsButton/WorkoutPlanActionsButton';
@@ -37,6 +37,8 @@ export const MyWorkoutScreen = () => {
   const [isWorkoutActionsSheetVisible, setWorkoutActionsSheetVisible] = useState(false);
   const [isRenameWorkoutPlanModalVisible, setRenameWorkoutPlanModalVisible] = useState(false);
   const [isDeleteWorkoutPlanModalVisible, setDeleteWorkoutPlanModalVisible] = useState(false);
+  const [isRenamePlanRoutineModalVisible, setRenamePlanRoutineModalVisible] = useState(false);
+  const [isDeletePlanRoutineModalVisible, setDeletePlanRoutineModalVisible] = useState(false);
 
   const onOpenWorkoutPlanSheet = () => {
     setWorkoutPlanSheetVisible(true);
@@ -70,6 +72,22 @@ export const MyWorkoutScreen = () => {
     setDeleteWorkoutPlanModalVisible(false);
   };
 
+  const onOpenRenamePlanRoutineModal = () => {
+    setRenamePlanRoutineModalVisible(true);
+  };
+
+  const onCloseRenamePlanRoutineModal = () => {
+    setRenamePlanRoutineModalVisible(false);
+  };
+
+  const onOpenDeletePlanRoutineModal = () => {
+    setDeletePlanRoutineModalVisible(true);
+  };
+
+  const onCloseDeletePlanRoutineModal = () => {
+    setDeletePlanRoutineModalVisible(false);
+  };
+
   const header = useMemo(() => {
     return (
       <View style={[styles.header]}>
@@ -90,7 +108,7 @@ export const MyWorkoutScreen = () => {
         tabTextContainerStyle={styles.tabTextContainerStyle}
         tabsContainerBackgroundColor={colors.page}
       />
-      <RoutineToolbar />
+      <RoutineToolbar onRenameRoutine={onOpenRenamePlanRoutineModal} onDeleteRoutine={onOpenDeletePlanRoutineModal} />
       <Portal>
         <ActionsContext.Provider
           value={{
@@ -105,20 +123,28 @@ export const MyWorkoutScreen = () => {
 
             onOpenDeleteWorkoutPlanModal,
             onCloseDeleteWorkoutPlanModal,
+
+            onOpenRenamePlanRoutineModal,
+            onCloseRenamePlanRoutineModal,
+
+            onOpenDeletePlanRoutineModal,
+            onCloseDeletePlanRoutineModal,
           }}>
           <WorkoutPlanSheet isVisible={isWorkoutPlanSheetVisible} onClose={onCloseWorkoutPlanSheet} />
           <WorkoutActionsSheet isVisible={isWorkoutActionsSheetVisible} onClose={onCloseWorkoutActionsSheet} />
+          {/*rename plan*/}
           <Modal
             isVisible={isRenameWorkoutPlanModalVisible}
             animationIn="fadeIn"
             animationOut="fadeOut"
-            backdropTransitionOutTiming={0}
-          >
+            backdropTransitionOutTiming={0}>
             <View style={styles.modal}>
               <Text style={styles.modalTitle}>Rename Workout Plan</Text>
-              <TextInput value="My Workout Plan" autoFocus={true} selectTextOnFocus={true} style={styles.modalInput} />
+              <TextInput value="My Workout Plan"  selectTextOnFocus={true} style={styles.modalInput} />
               <View style={styles.modalActions}>
-                <TouchableOpacity style={[styles.modalButton, { marginRight: 40 }]} onPress={onCloseRenameWorkoutPlanModal}>
+                <TouchableOpacity
+                  style={[styles.modalButton, { marginRight: 40 }]}
+                  onPress={onCloseRenameWorkoutPlanModal}>
                   <Text style={styles.modalButtonText}>Cancel</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.modalButton} onPress={onCloseRenameWorkoutPlanModal}>
@@ -127,20 +153,64 @@ export const MyWorkoutScreen = () => {
               </View>
             </View>
           </Modal>
+          {/*delete plan*/}
           <Modal
             isVisible={isDeleteWorkoutPlanModalVisible}
             animationIn="fadeIn"
             animationOut="fadeOut"
-            backdropTransitionOutTiming={0}
-          >
+            backdropTransitionOutTiming={0}>
             <View style={styles.modal}>
               <Text style={styles.modalTitle}>Delete Workout Plan</Text>
-              <Text style={styles.modalSubtitle}>Are you sure you want to delete plan "My Workout Plan"?</Text>
+              <Text style={styles.modalSubtitle}>Are you sure you want to delete "My Workout Plan"?</Text>
               <View style={styles.modalActions}>
-                <TouchableOpacity style={[styles.modalButton, { marginRight: 40 }]} onPress={onCloseDeleteWorkoutPlanModal}>
+                <TouchableOpacity
+                  style={[styles.modalButton, { marginRight: 40 }]}
+                  onPress={onCloseDeleteWorkoutPlanModal}>
                   <Text style={styles.modalButtonText}>Cancel</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.modalButton} onPress={onCloseDeleteWorkoutPlanModal}>
+                  <Text style={styles.modalButtonText}>OK</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+          {/*rename routine*/}
+          <Modal
+            isVisible={isRenamePlanRoutineModalVisible}
+            animationIn="fadeIn"
+            animationOut="fadeOut"
+            backdropTransitionOutTiming={0}>
+            <View style={styles.modal}>
+              <Text style={styles.modalTitle}>Rename Routine</Text>
+              <TextInput value="Chest routine"  selectTextOnFocus={true} style={styles.modalInput} />
+              <View style={styles.modalActions}>
+                <TouchableOpacity
+                  style={[styles.modalButton, { marginRight: 40 }]}
+                  onPress={onCloseRenamePlanRoutineModal}>
+                  <Text style={styles.modalButtonText}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.modalButton} onPress={onCloseRenamePlanRoutineModal}>
+                  <Text style={styles.modalButtonText}>OK</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+          {/*delete routine*/}
+          <Modal
+            isVisible={isDeletePlanRoutineModalVisible}
+            animationIn="fadeIn"
+            animationOut="fadeOut"
+            backdropTransitionOutTiming={0}>
+            <View style={styles.modal}>
+              <Text style={styles.modalTitle}>Delete Routine</Text>
+              <Text style={styles.modalSubtitle}>Are you sure you want to delete "Chest routine"?</Text>
+              <View style={styles.modalActions}>
+                <TouchableOpacity
+                  style={[styles.modalButton, { marginRight: 40 }]}
+                  onPress={onCloseDeletePlanRoutineModal}>
+                  <Text style={styles.modalButtonText}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.modalButton} onPress={onCloseDeletePlanRoutineModal}>
                   <Text style={styles.modalButtonText}>OK</Text>
                 </TouchableOpacity>
               </View>
@@ -235,7 +305,7 @@ const styles = StyleSheet.create({
   modalSubtitle: {
     color: colors.text,
     fontSize: 16,
-    width:'100%',
+    width: '100%',
   },
   modalInput: {
     width: '100%',

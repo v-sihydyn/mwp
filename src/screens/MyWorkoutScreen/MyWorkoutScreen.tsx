@@ -7,11 +7,13 @@ import { WorkoutPlanSelector } from './components/WorkoutPlanSelector/WorkoutPla
 import { WorkoutPlanActionsButton } from './components/WorkoutPlanActionsButton/WorkoutPlanActionsButton';
 import { WorkoutPlanSheet } from './components/WorkoutPlanSheet/WorkoutPlanSheet';
 import Portal from '../../components/Portal/Portal';
-import { WorkoutActionsSheet } from './components/WorkoutActionsSheet/WorkoutActionsSheet';
 import { WorkoutRoutinesList } from './components/WorkoutRoutinesList/WorkoutRoutinesList';
 import { RoutineToolbar } from './components/RoutineToolbar/RoutineToolbar';
 import { colors } from '../../styles/colors';
 import { ActionsContext } from './contexts/ActionsContext';
+import { WorkoutPlanActions } from './components/WorkoutPlanActions/WorkoutPlanActions';
+import { BottomSheet } from '../../components/BottomSheet/BottomSheet';
+import { RootTabScreenProps } from '../../../types';
 
 const tabs = [
   {
@@ -32,7 +34,9 @@ const tabs = [
   },
 ];
 
-export const MyWorkoutScreen = () => {
+type Props = RootTabScreenProps<'MyWorkoutScreen'>;
+
+export const MyWorkoutScreen = ({ navigation }: Props) => {
   const [isWorkoutPlanSheetVisible, setWorkoutPlanSheetVisible] = useState(false);
   const [isWorkoutActionsSheetVisible, setWorkoutActionsSheetVisible] = useState(false);
   const [isRenameWorkoutPlanModalVisible, setRenameWorkoutPlanModalVisible] = useState(false);
@@ -88,6 +92,10 @@ export const MyWorkoutScreen = () => {
     setDeletePlanRoutineModalVisible(false);
   };
 
+  const handleGoToReminders = () => {
+    navigation.navigate('RoutineRemindersScreen');
+  };
+
   const header = useMemo(() => {
     return (
       <View style={[styles.header]}>
@@ -131,7 +139,11 @@ export const MyWorkoutScreen = () => {
             onCloseDeletePlanRoutineModal,
           }}>
           <WorkoutPlanSheet isVisible={isWorkoutPlanSheetVisible} onClose={onCloseWorkoutPlanSheet} />
-          <WorkoutActionsSheet isVisible={isWorkoutActionsSheetVisible} onClose={onCloseWorkoutActionsSheet} />
+
+          <BottomSheet isVisible={isWorkoutActionsSheetVisible} onClose={onCloseWorkoutActionsSheet}>
+            <WorkoutPlanActions onSheetClose={onCloseWorkoutActionsSheet} onGoToReminders={handleGoToReminders} />
+          </BottomSheet>
+          {/*@TODO: take out each modal to separate components*/}
           {/*rename plan*/}
           <Modal
             isVisible={isRenameWorkoutPlanModalVisible}
@@ -140,7 +152,7 @@ export const MyWorkoutScreen = () => {
             backdropTransitionOutTiming={0}>
             <View style={styles.modal}>
               <Text style={styles.modalTitle}>Rename Workout Plan</Text>
-              <TextInput value="My Workout Plan"  selectTextOnFocus={true} style={styles.modalInput} />
+              <TextInput value="My Workout Plan" selectTextOnFocus={true} style={styles.modalInput} />
               <View style={styles.modalActions}>
                 <TouchableOpacity
                   style={[styles.modalButton, { marginRight: 40 }]}
@@ -182,7 +194,7 @@ export const MyWorkoutScreen = () => {
             backdropTransitionOutTiming={0}>
             <View style={styles.modal}>
               <Text style={styles.modalTitle}>Rename Routine</Text>
-              <TextInput value="Chest routine"  selectTextOnFocus={true} style={styles.modalInput} />
+              <TextInput value="Chest routine" selectTextOnFocus={true} style={styles.modalInput} />
               <View style={styles.modalActions}>
                 <TouchableOpacity
                   style={[styles.modalButton, { marginRight: 40 }]}

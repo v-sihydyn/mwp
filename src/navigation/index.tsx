@@ -14,6 +14,7 @@ import { MyWorkoutScreen } from '../screens/MyWorkoutScreen/MyWorkoutScreen';
 import { StatisticsScreen } from '../screens/StatisticsScreen/StatisticsScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import { RoutineRemindersScreen } from '../screens/RoutineRemindersScreen/RoutineRemindersScreen';
 
 export default function Navigation() {
   return (
@@ -34,6 +35,14 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen
+          name="RoutineRemindersScreen"
+          component={RoutineRemindersScreen}
+          options={{ title: 'Routine Reminders' }}
+        />
+      </Stack.Group>
     </Stack.Navigator>
   );
 }

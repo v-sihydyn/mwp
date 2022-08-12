@@ -4,6 +4,7 @@ import { BottomSheet, Props as BottomSheetProps } from '../../../../components/B
 
 type Props = BottomSheetProps;
 
+// deprecated, need to delete
 export const WorkoutActionsSheet = ({ isVisible, onClose }: Props) => {
   return (
     <BottomSheet isVisible={isVisible} onClose={onClose}>

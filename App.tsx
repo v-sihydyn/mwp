@@ -1,13 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { NativeBaseProvider } from 'native-base'
+import { NativeBaseProvider } from 'native-base';
 
 import useCachedResources from './src/hooks/useCachedResources';
 import Navigation from './src/navigation';
-import PortalHost from './src/components/Portal/PortalHost'
+import PortalHost from './src/components/Portal/PortalHost';
 import { UIManager } from 'react-native';
 
-UIManager.setLayoutAnimationEnabledExperimental &&
-UIManager.setLayoutAnimationEnabledExperimental(true);
+UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -21,7 +20,6 @@ export default function App() {
           <Navigation />
           <StatusBar />
         </NativeBaseProvider>
-
       </PortalHost>
     );
   }

@@ -260,12 +260,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
   },
-  message: {
-    color: 'white',
-    fontSize: 40,
-    paddingTop: 24,
-    paddingBottom: 7,
-  },
   headerWrapper: {
     backgroundColor: 'green',
     width: '100%',

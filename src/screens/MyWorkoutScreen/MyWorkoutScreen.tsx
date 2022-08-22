@@ -17,7 +17,7 @@ import { RootTabScreenProps } from '../../../types';
 
 const tabs = [
   {
-    title: '1',
+    title: '12',
     content: <WorkoutRoutinesList />,
   },
   {

@@ -69,8 +69,8 @@ export const RoutineRemindersScreen: React.FC<RoutineRemindersScreenProps> = () 
     <View style={styles.container}>
       <FlatList
         data={reminders}
-        renderItem={({ item }) => (
-          <ReminderListItem routineName={item.routineName} time={item.time} repeatWeekdays={item.repeatWeekdays} />
+        renderItem={({ item, index }) => (
+          <ReminderListItem key={index} routineName={item.routineName} time={item.time} repeatWeekdays={item.repeatWeekdays} />
         )}
       />
     </View>

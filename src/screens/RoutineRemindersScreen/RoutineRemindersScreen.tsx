@@ -14,7 +14,7 @@ type Reminder = {
 const reminders: Reminder[] = [
   {
     routineName: '1',
-    time: '04:03',
+    time: '16:03',
     repeatWeekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
   },
   {

@@ -107,6 +107,7 @@ export const MyWorkoutScreen = ({ navigation }: Props) => {
 
   return (
     <View style={styles.container}>
+      {/* @ts-ignore */}
       <StickyParallaxHeader
         foreground={header}
         parallaxHeight={80}

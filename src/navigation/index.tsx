@@ -7,6 +7,12 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  createStackNavigator,
+  HeaderStyleInterpolators,
+  TransitionPresets,
+  TransitionSpecs
+} from '@react-navigation/stack';
 import * as React from 'react';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
@@ -15,6 +21,10 @@ import { StatisticsScreen } from '../screens/StatisticsScreen/StatisticsScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import { RoutineRemindersScreen } from '../screens/RoutineRemindersScreen/RoutineRemindersScreen';
+import { View, Text, SafeAreaView, Button } from 'react-native';
+import { ModalSlideFromTopIOS } from './customModalTransition';
+
+
 
 export default function Navigation() {
   return (
@@ -28,19 +38,50 @@ export default function Navigation() {
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
  */
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
+
+const MyTransition = {
+  gestureDirection: 'horizontal',
+  transitionSpec: {
+    open: TransitionSpecs.TransitionIOSSpec,
+    close: TransitionSpecs.TransitionIOSSpec,
+  },
+  headerStyleInterpolator: HeaderStyleInterpolators.forFade,
+}
+
+const Home = ({ navigation }) => (
+  <View style={{ paddingTop: 40, backgroundColor: '#fff', height: '100%' }}>
+    <Text style={{ color: '#fff' }}>Home</Text>
+    <Button title="Go to profile" onPress={() => navigation.navigate('Profile')} />
+  </View>
+);
+
+const Profile = ({ navigation }) => (
+  <View style={{ paddingTop: 40, backgroundColor: '#fff', height: '100%' }}>
+    <Text style={{ color: '#fff' }}>Profile</Text>
+    <Button title="Go to settings" onPress={() => navigation.navigate('Settings')} />
+  </View>
+);
+
+const Settings = ({ navigation }) => (
+  <View style={{ paddingTop: 40, backgroundColor: '#fff', height: '100%' }}>
+    <Text style={{ color: '#fff' }}>Settings</Text>
+    <Button title="Go to home" onPress={() => navigation.navigate('Home')} />
+  </View>
+);
 
 function RootNavigator() {
   return (
-    <Stack.Navigator initialRouteName="RoutineRemindersScreen">
+    // <Stack.Navigator initialRouteName="RoutineRemindersScreen">
+    <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
 
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+      <Stack.Group screenOptions={{ presentation: 'modal', ...ModalSlideFromTopIOS, }}>
         <Stack.Screen
           name="RoutineRemindersScreen"
           component={RoutineRemindersScreen}
-          options={{ title: 'Routine Reminders' }}
+          options={{ title: 'Routine Reminders',  }}
         />
       </Stack.Group>
     </Stack.Navigator>

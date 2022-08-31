@@ -1,17 +1,8 @@
-/**
- * If you are not familiar with React Navigation, refer to the "Fundamentals" guide:
- * https://reactnavigation.org/docs/getting-started
- *
- */
 import { FontAwesome5 } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   createStackNavigator,
-  HeaderStyleInterpolators,
-  TransitionPresets,
-  TransitionSpecs
 } from '@react-navigation/stack';
 import * as React from 'react';
 
@@ -21,8 +12,8 @@ import { StatisticsScreen } from '../screens/StatisticsScreen/StatisticsScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import { RoutineRemindersScreen } from '../screens/RoutineRemindersScreen/RoutineRemindersScreen';
-import { View, Text, SafeAreaView, Button } from 'react-native';
 import { ModalSlideFromTopIOS } from './customModalTransition';
+import { RoutinesManagementScreen } from '../screens/RoutinesManagementScreen/RoutinesManagementScreen';
 
 
 
@@ -40,48 +31,22 @@ export default function Navigation() {
  */
 const Stack = createStackNavigator<RootStackParamList>();
 
-const MyTransition = {
-  gestureDirection: 'horizontal',
-  transitionSpec: {
-    open: TransitionSpecs.TransitionIOSSpec,
-    close: TransitionSpecs.TransitionIOSSpec,
-  },
-  headerStyleInterpolator: HeaderStyleInterpolators.forFade,
-}
-
-const Home = ({ navigation }) => (
-  <View style={{ paddingTop: 40, backgroundColor: '#fff', height: '100%' }}>
-    <Text style={{ color: '#fff' }}>Home</Text>
-    <Button title="Go to profile" onPress={() => navigation.navigate('Profile')} />
-  </View>
-);
-
-const Profile = ({ navigation }) => (
-  <View style={{ paddingTop: 40, backgroundColor: '#fff', height: '100%' }}>
-    <Text style={{ color: '#fff' }}>Profile</Text>
-    <Button title="Go to settings" onPress={() => navigation.navigate('Settings')} />
-  </View>
-);
-
-const Settings = ({ navigation }) => (
-  <View style={{ paddingTop: 40, backgroundColor: '#fff', height: '100%' }}>
-    <Text style={{ color: '#fff' }}>Settings</Text>
-    <Button title="Go to home" onPress={() => navigation.navigate('Home')} />
-  </View>
-);
-
 function RootNavigator() {
   return (
-    // <Stack.Navigator initialRouteName="RoutineRemindersScreen">
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
 
       <Stack.Group screenOptions={{ presentation: 'modal', ...ModalSlideFromTopIOS, }}>
         <Stack.Screen
-          name="RoutineRemindersScreen"
+          name="RoutineReminders"
           component={RoutineRemindersScreen}
           options={{ title: 'Routine Reminders',  }}
+        />
+        <Stack.Screen
+          name="RoutinesManagement"
+          component={RoutinesManagementScreen}
+          options={{ title: 'Routines Management',  }}
         />
       </Stack.Group>
     </Stack.Navigator>
@@ -96,11 +61,11 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   return (
-    <BottomTab.Navigator initialRouteName="MyWorkoutScreen">
+    <BottomTab.Navigator initialRouteName="MyWorkout">
       <BottomTab.Screen
-        name="MyWorkoutScreen"
+        name="MyWorkout"
         component={MyWorkoutScreen}
-        options={({ navigation }: RootTabScreenProps<'MyWorkoutScreen'>) => ({
+        options={({ navigation }: RootTabScreenProps<'MyWorkout'>) => ({
           title: 'My Workout',
           tabBarIcon: ({ focused }) => <TabBarIcon name="dumbbell" color={focused ? '#ffffff' : '#b5b5b5'} />,
           tabBarActiveTintColor: '#ffffff',
@@ -109,7 +74,7 @@ function BottomTabNavigator() {
         })}
       />
       <BottomTab.Screen
-        name="StatisticsScreen"
+        name="Statistics"
         component={StatisticsScreen}
         options={{
           title: 'Statistics',

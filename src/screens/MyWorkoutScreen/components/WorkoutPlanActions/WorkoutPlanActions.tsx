@@ -6,10 +6,15 @@ import { ActionsContext } from '../../contexts/ActionsContext';
 
 type WorkoutActionsProps = {
   onSheetClose: () => void;
+  onGoToRoutinesList: () => void;
   onGoToReminders: () => void;
 };
 
-export const WorkoutPlanActions: React.FC<WorkoutActionsProps> = ({ onSheetClose, onGoToReminders }) => {
+export const WorkoutPlanActions: React.FC<WorkoutActionsProps> = ({
+  onSheetClose,
+  onGoToRoutinesList,
+  onGoToReminders,
+}) => {
   const { onOpenRenameWorkoutPlanModal, onOpenDeleteWorkoutPlanModal } = useContext(ActionsContext);
 
   const handleOpenRenameModal = () => {
@@ -26,6 +31,13 @@ export const WorkoutPlanActions: React.FC<WorkoutActionsProps> = ({ onSheetClose
     });
   };
 
+  const handleGoToRoutinesLst = () => {
+    onSheetClose();
+    setTimeout(() => {
+      onGoToRoutinesList();
+    });
+  };
+
   const handleGoToReminders = () => {
     onSheetClose();
     setTimeout(() => {
@@ -36,7 +48,7 @@ export const WorkoutPlanActions: React.FC<WorkoutActionsProps> = ({ onSheetClose
   return (
     <View style={styles.root}>
       <Text style={styles.title}>My Workout Plan</Text>
-      <WorkoutPlanActionItem name="Manage Routines" icon="list" />
+      <WorkoutPlanActionItem name="Manage Routines" icon="list" onPress={handleGoToRoutinesLst} />
       <WorkoutPlanActionItem name="Rename" icon="pencil-alt" onPress={handleOpenRenameModal} />
       <WorkoutPlanActionItem name="Delete" icon="trash" onPress={handleOpenDeleteModal} />
       <WorkoutPlanActionItem name="Reminders" icon="clock" onPress={handleGoToReminders} />

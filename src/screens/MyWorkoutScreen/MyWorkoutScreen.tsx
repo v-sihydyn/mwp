@@ -34,7 +34,7 @@ const tabs = [
   },
 ];
 
-type Props = RootTabScreenProps<'MyWorkoutScreen'>;
+type Props = RootTabScreenProps<'MyWorkout'>;
 
 export const MyWorkoutScreen = ({ navigation }: Props) => {
   const [isWorkoutPlanSheetVisible, setWorkoutPlanSheetVisible] = useState(false);
@@ -92,8 +92,12 @@ export const MyWorkoutScreen = ({ navigation }: Props) => {
     setDeletePlanRoutineModalVisible(false);
   };
 
+  const handleGoToRoutinesList = () => {
+    navigation.navigate('RoutinesManagement');
+  };
+
   const handleGoToReminders = () => {
-    navigation.navigate('RoutineRemindersScreen');
+    navigation.navigate('RoutineReminders');
   };
 
   const header = useMemo(() => {
@@ -142,7 +146,11 @@ export const MyWorkoutScreen = ({ navigation }: Props) => {
           <WorkoutPlanSheet isVisible={isWorkoutPlanSheetVisible} onClose={onCloseWorkoutPlanSheet} />
 
           <BottomSheet isVisible={isWorkoutActionsSheetVisible} onClose={onCloseWorkoutActionsSheet}>
-            <WorkoutPlanActions onSheetClose={onCloseWorkoutActionsSheet} onGoToReminders={handleGoToReminders} />
+            <WorkoutPlanActions
+              onSheetClose={onCloseWorkoutActionsSheet}
+              onGoToRoutinesList={handleGoToRoutinesList}
+              onGoToReminders={handleGoToReminders}
+            />
           </BottomSheet>
           {/*@TODO: take out each modal to separate components*/}
           {/*rename plan*/}

@@ -15,11 +15,10 @@ const linking: LinkingOptions<RootStackParamList> = {
     screens: {
       Root: {
         screens: {
-          MyWorkoutScreen: 'my-workout',
-          StatisticsScreen: 'statistics',
+          MyWorkout: 'my-workout',
+          Statistics: 'statistics',
         },
       },
-      Modal: 'modal',
       NotFound: '*',
     },
   },

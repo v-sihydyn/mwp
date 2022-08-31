@@ -1,9 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native';
+import BasicExample from '../../components/SortableList/Example';
 
 export const StatisticsScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>StatisticsScreen</Text>
+
+      <BasicExample />
     </View>
   );
 }

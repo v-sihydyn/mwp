@@ -15,7 +15,8 @@ declare global {
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
-  RoutineRemindersScreen: undefined;
+  RoutineReminders: undefined;
+  RoutinesManagement: undefined;
   NotFound: undefined;
 };
 
@@ -25,8 +26,8 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
 >;
 
 export type RootTabParamList = {
-  MyWorkoutScreen: undefined;
-  StatisticsScreen: undefined;
+  MyWorkout: undefined;
+  Statistics: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<

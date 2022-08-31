@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import BasicExample from '../../components/SortableList/Example';
+import DraggableBasicExample from '../../components/Draggable/DraggableBasicExample';
 
 export const StatisticsScreen = () => {
   return (
@@ -7,6 +8,8 @@ export const StatisticsScreen = () => {
       <Text style={styles.title}>StatisticsScreen</Text>
 
       <BasicExample />
+
+      {/*<DraggableBasicExample />*/}
     </View>
   );
 }
@@ -14,8 +17,8 @@ export const StatisticsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
   title: {
     fontSize: 20,

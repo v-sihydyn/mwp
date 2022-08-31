@@ -41,7 +41,7 @@ function RootNavigator() {
         <Stack.Screen
           name="RoutineReminders"
           component={RoutineRemindersScreen}
-          options={{ title: 'Routine Reminders',  }}
+          options={{ title: 'Routine Reminders', }}
         />
         <Stack.Screen
           name="RoutinesManagement"

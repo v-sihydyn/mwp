@@ -229,26 +229,22 @@ export default class Row extends Component {
     const {children, style, horizontal} = this.props;
     const rowStyle = [
       style, styles.container, this._animatedLocation.getLayout(),
-      horizontal ? styles.horizontalContainer : styles.verticalContainer,
-      { borderWidth: 1, borderColor: 'red' }
+      horizontal ? styles.horizontalContainer : styles.verticalContainer
     ];
 
     const _children = this.props.manuallyActivateRows && children
       ? cloneElement(children, {
         toggleRowActive: this._toggleActive,
       })
-      : children
+      : cloneElement(children, {
+        panHandlers: this._panResponder.panHandlers,
+      })
 
     return (
       <Animated.View
         style={rowStyle}
         onLayout={this._onLayout}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          {_children}
-          <View {...this._panResponder.panHandlers} style={{ borderWidth: 1, borderColor: 'green' }}>
-            <Text>handle</Text>
-          </View>
-        </View>
+        {_children}
       </Animated.View>
     );
   }

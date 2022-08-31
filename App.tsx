@@ -5,6 +5,7 @@ import useCachedResources from './src/hooks/useCachedResources';
 import Navigation from './src/navigation';
 import PortalHost from './src/components/Portal/PortalHost';
 import { UIManager } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
@@ -15,12 +16,15 @@ export default function App() {
     return null;
   } else {
     return (
-      <PortalHost>
-        <NativeBaseProvider>
-          <Navigation />
-          <StatusBar />
-        </NativeBaseProvider>
-      </PortalHost>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <PortalHost>
+          <NativeBaseProvider>
+            <Navigation />
+            <StatusBar />
+          </NativeBaseProvider>
+        </PortalHost>
+      </GestureHandlerRootView>
+
     );
   }
 }

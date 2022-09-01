@@ -21,13 +21,15 @@ export const AddRoutineButton: React.FC<AddRoutineButtonProps> = () => {
 const styles = StyleSheet.create({
   root: {
     borderRadius: 16,
-    flex: 1,
+    flexShrink: 0,
+    flexGrow: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#515151',
     height: 40,
+    width: '100%'
   },
   title: {
     color: colors.text,

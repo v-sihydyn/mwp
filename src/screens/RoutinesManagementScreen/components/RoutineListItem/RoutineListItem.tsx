@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Pressable } from 'react-native';
+import { StyleSheet, View, Text, Pressable, TouchableOpacity } from 'react-native';
 import { colors } from '../../../../styles/colors';
 import { FontAwesome5 } from '@expo/vector-icons';
 
@@ -9,20 +9,29 @@ const Icon = (props: { name: React.ComponentProps<typeof FontAwesome5>['name']; 
 
 type RoutineListItemProps = {
   name: string;
+
+  isActive: boolean;
+  onDrag: (...args: any[]) => any;
 };
 
-export const RoutineListItem: React.FC<RoutineListItemProps> = ({ name, panHandlers }) => {
+export const RoutineListItem: React.FC<RoutineListItemProps> = ({ name, onDrag, isActive, panHandlers }) => {
   return (
-    <View style={styles.root}>
+    <View style={[styles.root, { opacity: isActive ? 0.5 : 1 }]}>
       <View style={styles.content}>
         <Text style={styles.title}>{name}</Text>
         <Pressable hitSlop={20} onPress={() => alert(1)}>
           <Icon name="ellipsis-v" color="#ffffff" />
         </Pressable>
       </View>
-      <View {...panHandlers}>
+      <TouchableOpacity
+        {...panHandlers}
+        hitSlop={20}
+        activeOpacity={1}
+        disabled={isActive}
+        onPressIn={onDrag}
+        delayLongPress={0}>
         <Icon name="bars" color="#ffffff" />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

@@ -2,93 +2,80 @@ import React, { useCallback } from 'react';
 import { StyleSheet, View, Platform, Dimensions } from 'react-native';
 import { colors } from '../../styles/colors';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
-import { RoutineListItem } from './components/RoutineListItem/RoutineListItem';
-import SortableList from '../../components/SortableList/SortableList';
+import { SortableExample } from '../../components/SortableList/SortableExample';
+import { DraggableRealExample } from '../../components/Draggable/DraggableRealExample';
 import { AddRoutineButton } from './components/AddRoutineButton/AddRoutineButton';
 
 const ROUTINES = [
   {
+    id: 1,
     name: 'Legs',
   },
   {
+    id: 2,
     name: 'Pull A',
   },
   {
+    id: 3,
     name: 'Push A',
   },
   {
     name: 'Push B',
+    id: 4
   },
   {
     name: 'Pull B',
+    id: 5,
   },
   {
     name: 'Delts',
+    id: 6
   },
   {
     name: 'Arms',
+    id: 7
   },
   {
     name: 'Legs',
+    id: 8
   },
   {
     name: 'Pull A',
+    id: 9
   },
   {
     name: 'Push A',
+    id: 10
   },
   {
     name: 'Push B',
+    id: 11
   },
   {
     name: 'Pull B',
+    id: 12
   },
   {
     name: 'Delts',
+    id: 13
   },
   {
     name: 'Arms',
+    id: 14
   },
 ];
 
-const window = Dimensions.get('window');
 
-const SortableExample = () => {
-  const renderRow = useCallback(({ data }) => {
-    return <RoutineListItem name={data.name} />;
-  }, []);
-
-  return (
-    <SortableList
-      style={{ flex: 1 }}
-      contentContainerStyle={{
-        width: window.width,
-        ...Platform.select({
-          ios: {
-            paddingHorizontal: 30,
-          },
-          android: {
-            paddingHorizontal: 0,
-          },
-        }),
-      }}
-      data={ROUTINES}
-      renderRow={renderRow}
-      renderFooter={() => (
-        <View style={{ padding: 12 }}>
-          <AddRoutineButton />
-        </View>
-      )}
-    />
-  );
-};
 
 interface RoutinesManagementScreenProps {}
 
 export const RoutinesManagementScreen: React.FC<RoutinesManagementScreenProps> = gestureHandlerRootHOC(() => {
   return (
     <View style={styles.container}>
-      <SortableExample />
+      <DraggableRealExample data={ROUTINES} />
+      {/*<SortableExample data={ROUTINES} />*/}
+
+      {/*<AddRoutineButton />*/}
     </View>
   );
 });

@@ -166,47 +166,6 @@ export default class SortableList extends Component {
     this._scroll(animated);
   }
 
-  scrollTo({x = 0, y = 0, animated = false}) {
-    if (this.props.horizontal) {
-      this._contentOffset.x = x;
-    } else {
-      this._contentOffset.y = y;
-    }
-
-    this._scroll(animated);
-  }
-
-  scrollToRowKey({key, animated = false}) {
-    const {order, containerLayout, rowsLayouts} = this.state;
-
-    let keyX = 0;
-    let keyY = 0;
-
-    for (const rowKey of order) {
-      if (rowKey === key) {
-        break;
-      }
-
-      keyX += rowsLayouts[rowKey].width;
-      keyY += rowsLayouts[rowKey].height;
-    }
-
-    // Scroll if the row is not visible.
-    if (
-      this.props.horizontal
-        ? (keyX < this._contentOffset.x || keyX > this._contentOffset.x + containerLayout.width)
-        : (keyY < this._contentOffset.y || keyY > this._contentOffset.y + containerLayout.height)
-    ) {
-      if (this.props.horizontal) {
-        this._contentOffset.x = keyX;
-      } else {
-        this._contentOffset.y = keyY;
-      }
-
-      this._scroll(animated);
-    }
-  }
-
   render() {
     if (this.state.isMounting ) return null;
 

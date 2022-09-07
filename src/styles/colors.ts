@@ -5,4 +5,5 @@ export const colors = {
   green: '#0ac78e',
   surface: '#121212',
   surface2: '#212121',
+  red: '#e11d48'
 }

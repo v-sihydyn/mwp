@@ -65,17 +65,11 @@ const ROUTINES = [
   },
 ];
 
-
-
-interface RoutinesManagementScreenProps {}
-
-export const RoutinesManagementScreen: React.FC<RoutinesManagementScreenProps> = gestureHandlerRootHOC(() => {
+export const RoutinesManagementScreen = gestureHandlerRootHOC(() => {
   return (
     <View style={styles.container}>
       <DraggableRealExample data={ROUTINES} />
       {/*<SortableExample data={ROUTINES} />*/}
-
-      {/*<AddRoutineButton />*/}
     </View>
   );
 });

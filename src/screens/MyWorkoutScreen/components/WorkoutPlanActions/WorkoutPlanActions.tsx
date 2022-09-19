@@ -1,33 +1,34 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { WorkoutPlanActionItem } from './WorkoutPlanActionItem/WorkoutPlanActionItem';
 import { colors } from '../../../../styles/colors';
-import { ActionsContext } from '../../contexts/ActionsContext';
 
 type WorkoutActionsProps = {
   onSheetClose: () => void;
   onGoToRoutinesList: () => void;
   onGoToReminders: () => void;
+  onInitiateRenamePlan: () => Promise<void>;
+  onInitiateDeletePlan: () => Promise<void>;
 };
 
-export const WorkoutPlanActions: React.FC<WorkoutActionsProps> = ({
+export const WorkoutPlanActions = ({
   onSheetClose,
   onGoToRoutinesList,
   onGoToReminders,
-}) => {
-  const { onOpenRenameWorkoutPlanModal, onOpenDeleteWorkoutPlanModal } = useContext(ActionsContext);
-
+  onInitiateRenamePlan,
+  onInitiateDeletePlan,
+}: WorkoutActionsProps) => {
   const handleOpenRenameModal = () => {
     onSheetClose();
     setTimeout(() => {
-      onOpenRenameWorkoutPlanModal();
+      onInitiateRenamePlan();
     });
   };
 
   const handleOpenDeleteModal = () => {
     onSheetClose();
     setTimeout(() => {
-      onOpenDeleteWorkoutPlanModal();
+      onInitiateDeletePlan();
     });
   };
 

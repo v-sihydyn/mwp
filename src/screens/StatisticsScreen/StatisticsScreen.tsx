@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
 import BasicExample from '../../components/SortableList/Example';
-import DraggableBasicExample from '../../components/Draggable/DraggableBasicExample';
 
 export const StatisticsScreen = () => {
   return (

@@ -3,9 +3,9 @@ import { NativeBaseProvider } from 'native-base';
 
 import useCachedResources from './src/hooks/useCachedResources';
 import Navigation from './src/navigation';
-import PortalHost from './src/components/Portal/PortalHost';
 import { UIManager } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Container as ModalContainer } from 'react-modal-promise'
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
@@ -17,14 +17,12 @@ export default function App() {
   } else {
     return (
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <PortalHost>
-          <NativeBaseProvider>
-            <Navigation />
-            <StatusBar />
-          </NativeBaseProvider>
-        </PortalHost>
+        <NativeBaseProvider>
+          <ModalContainer />
+          <Navigation />
+          <StatusBar />
+        </NativeBaseProvider>
       </GestureHandlerRootView>
-
     );
   }
 }

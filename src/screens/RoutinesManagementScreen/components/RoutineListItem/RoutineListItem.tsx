@@ -21,11 +21,21 @@ type RoutineListItemProps = {
 
   isActive: boolean;
   onDrag: (...args: any[]) => any;
+  onInitiateRename: () => Promise<void>;
+  onInitiateDuplicate: () => Promise<void>;
+  onInitiateDelete: () => Promise<void>;
 
-  panHandlers: any; // for sortable list
+  panHandlers?: any; // for sortable list
 };
 
-export const RoutineListItem: React.FC<RoutineListItemProps> = ({ name, onDrag, isActive }) => {
+export const RoutineListItem: React.FC<RoutineListItemProps> = ({
+  name,
+  onDrag,
+  isActive,
+  onInitiateRename,
+  onInitiateDuplicate,
+  onInitiateDelete,
+}) => {
   return (
     <View style={[styles.root, { opacity: isActive ? 0.5 : 1 }]}>
       <View style={styles.content}>
@@ -39,19 +49,19 @@ export const RoutineListItem: React.FC<RoutineListItemProps> = ({ name, onDrag, 
               <Icon name="ellipsis-v" color="#ffffff" />
             </Pressable>
           )}>
-          <Menu.Item _pressed={{ backgroundColor: colors.surface2 }}>
+          <Menu.Item onPress={onInitiateRename} _pressed={{ backgroundColor: colors.surface2 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }}>
               <Icon name="pencil-alt" color={colors.text} size={16} style={{ marginRight: 8 }} />
               <Text style={{ color: colors.text, fontSize: 16 }}>Rename</Text>
             </View>
           </Menu.Item>
-          <Menu.Item _pressed={{ backgroundColor: colors.surface2 }}>
+          <Menu.Item onPress={onInitiateDuplicate} _pressed={{ backgroundColor: colors.surface2 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }}>
               <Icon name="copy" color={colors.text} size={16} style={{ marginRight: 8 }} />
               <Text style={{ color: colors.text, fontSize: 16 }}>Duplicate</Text>
             </View>
           </Menu.Item>
-          <Menu.Item _pressed={{ backgroundColor: colors.surface2 }}>
+          <Menu.Item onPress={onInitiateDelete} _pressed={{ backgroundColor: colors.surface2 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }}>
               <Icon name="trash" color={colors.red} size={16} style={{ marginRight: 8 }} />
               <Text style={{ color: colors.red, fontSize: 16 }}>Delete</Text>
@@ -60,7 +70,7 @@ export const RoutineListItem: React.FC<RoutineListItemProps> = ({ name, onDrag, 
         </Menu>
       </View>
 
-      <TouchableOpacity hitSlop={20} activeOpacity={1} disabled={isActive} onPressIn={onDrag} delayLongPress={0}>
+      <TouchableOpacity hitSlop={{ top: 20, left: 20, bottom: 20, right: 20 }} activeOpacity={1} disabled={isActive} onPressIn={onDrag} delayLongPress={0}>
         <Icon name="bars" color="#ffffff" />
       </TouchableOpacity>
     </View>

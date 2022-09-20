@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import Portal from '../../components/Portal/Portal';
 import color from 'color';
 import Ripple from 'react-native-material-ripple';
+import PortalHost from '../../components/Portal/PortalHost';
 
 interface RoutineRemindersScreenProps {}
 
@@ -152,76 +153,78 @@ export const RoutineRemindersScreen: React.FC<RoutineRemindersScreenProps> = () 
   const weekdayActiveColor = color(colors.surface2).lighten(0.24).hex();
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={reminders}
-        renderItem={({ item, index }) => (
-          <ReminderListItem
-            key={index}
-            item={item}
-            index={index}
-            onPress={handleOpenSheet}
-            onDeleteHandlers={handleDeleteReminders}
-          />
-        )}
-        keyExtractor={(item) => String(item.id)}
-      />
+    <PortalHost>
+      <View style={styles.container}>
+        <FlatList
+          data={reminders}
+          renderItem={({ item, index }) => (
+            <ReminderListItem
+              key={index}
+              item={item}
+              index={index}
+              onPress={handleOpenSheet}
+              onDeleteHandlers={handleDeleteReminders}
+            />
+          )}
+          keyExtractor={(item) => String(item.id)}
+        />
 
-      <Portal>
-        <BottomSheet isVisible={isSheetOpen} onClose={() => setSheetOpen(false)}>
-          <View style={styles.timePickerSheet}>
-            <Text style={styles.timePickerSheetTitle}>Reminder Time</Text>
-            <View style={{ width: '100%' }}>
-              <DatePicker
-                date={draftTime}
-                onDateChange={setDraftTime}
-                androidVariant="iosClone"
-                mode="time"
-                textColor={colors.text}
-                fadeToColor="none"
-                style={{ width: Layout.window.width - 40 }}
-              />
-            </View>
-            <Text style={[styles.timePickerSheetTitle, { marginBottom: 12 }]}>Repeat Weekdays Time</Text>
-            <View style={styles.timePickerSheetWeekdays}>
-              {WEEKDAYS.map((weekday) => {
-                const isWeekdaySelected = draftRepeatWeekdays.includes(weekday);
-
-                return (
-                  <TouchableWithoutFeedback
-                    key={weekday}
-                    onPress={() => {
-                      if (!isWeekdaySelected) {
-                        setDraftRepeatWeekdays((x) => [...x, weekday]);
-                      } else {
-                        setDraftRepeatWeekdays((x) => x.filter((wd) => wd !== weekday));
-                      }
-                    }}>
-                    <View
-                      style={[
-                        styles.timePickerSheetWeekdayWrapper,
-                        isWeekdaySelected && {
-                          borderColor: colors.green,
-                          backgroundColor: weekdayActiveColor,
-                        },
-                      ]}>
-                      <Text style={[styles.timePickerSheetWeekday, isWeekdaySelected && { color: colors.text }]}>
-                        {weekday}
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                );
-              })}
-            </View>
-            <Ripple rippleColor="#ffffff" onPress={handleApplyReminders}>
-              <View style={styles.timePickerSheetBtn}>
-                <Text style={{ color: colors.text, fontWeight: '700', fontSize: 16 }}>Apply Reminders</Text>
+        <Portal>
+          <BottomSheet isVisible={isSheetOpen} onClose={() => setSheetOpen(false)}>
+            <View style={styles.timePickerSheet}>
+              <Text style={styles.timePickerSheetTitle}>Reminder Time</Text>
+              <View style={{ width: '100%' }}>
+                <DatePicker
+                  date={draftTime}
+                  onDateChange={setDraftTime}
+                  androidVariant="iosClone"
+                  mode="time"
+                  textColor={colors.text}
+                  fadeToColor="none"
+                  style={{ width: Layout.window.width - 40 }}
+                />
               </View>
-            </Ripple>
-          </View>
-        </BottomSheet>
-      </Portal>
-    </View>
+              <Text style={[styles.timePickerSheetTitle, { marginBottom: 12 }]}>Repeat Weekdays Time</Text>
+              <View style={styles.timePickerSheetWeekdays}>
+                {WEEKDAYS.map((weekday) => {
+                  const isWeekdaySelected = draftRepeatWeekdays.includes(weekday);
+
+                  return (
+                    <TouchableWithoutFeedback
+                      key={weekday}
+                      onPress={() => {
+                        if (!isWeekdaySelected) {
+                          setDraftRepeatWeekdays((x) => [...x, weekday]);
+                        } else {
+                          setDraftRepeatWeekdays((x) => x.filter((wd) => wd !== weekday));
+                        }
+                      }}>
+                      <View
+                        style={[
+                          styles.timePickerSheetWeekdayWrapper,
+                          isWeekdaySelected && {
+                            borderColor: colors.green,
+                            backgroundColor: weekdayActiveColor,
+                          },
+                        ]}>
+                        <Text style={[styles.timePickerSheetWeekday, isWeekdaySelected && { color: colors.text }]}>
+                          {weekday}
+                        </Text>
+                      </View>
+                    </TouchableWithoutFeedback>
+                  );
+                })}
+              </View>
+              <Ripple rippleColor="#ffffff" onPress={handleApplyReminders}>
+                <View style={styles.timePickerSheetBtn}>
+                  <Text style={{ color: colors.text, fontWeight: '700', fontSize: 16 }}>Apply Reminders</Text>
+                </View>
+              </Ripple>
+            </View>
+          </BottomSheet>
+        </Portal>
+      </View>
+    </PortalHost>
   );
 };
 

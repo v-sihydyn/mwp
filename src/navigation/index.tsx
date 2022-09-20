@@ -1,9 +1,7 @@
 import { FontAwesome5 } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
-import {
-  createStackNavigator,
-} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
@@ -14,8 +12,7 @@ import LinkingConfiguration from './LinkingConfiguration';
 import { RoutineRemindersScreen } from '../screens/RoutineRemindersScreen/RoutineRemindersScreen';
 import { ModalSlideFromTopIOS } from './customModalTransition';
 import { RoutinesManagementScreen } from '../screens/RoutinesManagementScreen/RoutinesManagementScreen';
-
-
+import { colors } from '../styles/colors';
 
 export default function Navigation() {
   return (
@@ -34,20 +31,29 @@ const Stack = createStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-    {/*<Stack.Navigator initialRouteName="RoutinesManagement">*/}
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
 
-      <Stack.Group screenOptions={{ presentation: 'modal', ...ModalSlideFromTopIOS, }}>
+      <Stack.Group
+        screenOptions={{
+          presentation: 'modal',
+          ...ModalSlideFromTopIOS,
+          headerStyle: { backgroundColor: colors.page },
+          headerShadowVisible: false,
+        }}>
         <Stack.Screen
           name="RoutineReminders"
           component={RoutineRemindersScreen}
-          options={{ title: 'Routine Reminders', }}
+          options={{
+            title: 'Routine Reminders',
+          }}
         />
         <Stack.Screen
           name="RoutinesManagement"
           component={RoutinesManagementScreen}
-          options={{ title: 'Routines Management',  }}
+          options={{
+            title: 'Routines Management',
+          }}
         />
       </Stack.Group>
     </Stack.Navigator>

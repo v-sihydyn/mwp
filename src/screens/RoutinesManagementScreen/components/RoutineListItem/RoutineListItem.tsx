@@ -42,7 +42,7 @@ export const RoutineListItem: React.FC<RoutineListItemProps> = ({
         <Text style={styles.title}>{name}</Text>
         <Menu
           padding={3}
-          backgroundColor={colors.surface2}
+          backgroundColor={colors.page}
           placement="bottom right"
           trigger={(triggerProps) => (
             <Pressable {...triggerProps} hitSlop={20}>
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 12,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.surface2,
     borderRadius: 16,
     marginVertical: 8,
     marginHorizontal: 16,

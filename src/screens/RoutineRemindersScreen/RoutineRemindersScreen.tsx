@@ -232,7 +232,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.page,
     flex: 1,
-    paddingTop: 20,
     flexDirection: 'column',
     position: 'relative',
   },
@@ -241,7 +240,7 @@ const styles = StyleSheet.create({
     color: colors.text2,
   },
   timePickerSheet: {
-    backgroundColor: colors.surface2,
+    backgroundColor: colors.page,
     width: '100%',
     padding: 20,
   },
@@ -258,13 +257,13 @@ const styles = StyleSheet.create({
     width: 45,
     height: 45,
     borderWidth: 1,
-    borderColor: '#555',
+    borderColor: '#424242',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 12,
   },
   timePickerSheetWeekday: {
-    color: colors.text2,
+    color: colors.text3,
   },
   timePickerSheetBtn: {
     flexDirection: 'row',

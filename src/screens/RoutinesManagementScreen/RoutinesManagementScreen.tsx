@@ -140,7 +140,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.page,
     flex: 1,
-    paddingTop: 20,
     flexDirection: 'column',
     position: 'relative',
   },

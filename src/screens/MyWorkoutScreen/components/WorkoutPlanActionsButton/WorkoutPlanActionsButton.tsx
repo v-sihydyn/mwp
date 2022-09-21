@@ -22,9 +22,9 @@ const styles = StyleSheet.create({
   wrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 40,
-    width: 40,
+    height: 44,
+    width: 44,
     backgroundColor: colors.surface,
-    borderRadius: 8,
+    borderRadius: 12,
   },
 });

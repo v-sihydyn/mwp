@@ -61,7 +61,7 @@ export const ReminderListItem: React.FC<RemindersListProps> = ({ item, index, on
 
 const styles = StyleSheet.create({
   root: {
-    backgroundColor: colors.surface,
+    backgroundColor: colors.surface2,
     borderRadius: 16,
     padding: 12,
     marginVertical: 8,

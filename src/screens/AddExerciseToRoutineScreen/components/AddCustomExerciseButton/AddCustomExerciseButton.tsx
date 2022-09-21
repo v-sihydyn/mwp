@@ -1,14 +1,16 @@
 import React from 'react';
-import { Pressable, StyleSheet, View, Text } from 'react-native';
+import { Pressable, StyleSheet, View, Text, StyleProp, ViewStyle } from 'react-native';
 import { colors } from '../../../../styles/colors';
 import { FontAwesome5 } from '@expo/vector-icons';
 
-interface AddCustomExerciseButtonProps {}
+type AddCustomExerciseButtonProps = {
+  style?: StyleProp<ViewStyle>;
+}
 
-export const AddCustomExerciseButton: React.FC<AddCustomExerciseButtonProps> = () => {
+export const AddCustomExerciseButton: React.FC<AddCustomExerciseButtonProps> = ({ style }) => {
   return (
     <Pressable onPress={() => alert('add routine')}>
-      <View style={styles.root}>
+      <View style={[styles.root, style]}>
         <View style={styles.iconWrapper}>
           <FontAwesome5 size={10} name="plus" />
         </View>
@@ -20,7 +22,7 @@ export const AddCustomExerciseButton: React.FC<AddCustomExerciseButtonProps> = (
 
 const styles = StyleSheet.create({
   root: {
-    borderRadius: 16,
+    borderRadius: 20,
     flexShrink: 0,
     flexGrow: 1,
     flexDirection: 'row',
@@ -28,7 +30,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#515151',
-    height: 40,
+    height: 56,
     width: '100%'
   },
   title: {

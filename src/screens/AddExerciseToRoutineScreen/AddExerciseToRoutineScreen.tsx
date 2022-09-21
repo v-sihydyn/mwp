@@ -3,6 +3,7 @@ import { colors } from '../../styles/colors';
 import { StyleSheet, View, FlatList } from 'react-native';
 import { ExerciseListItem } from './components/ExerciseListItem/ExerciseListItem';
 import { AddCustomExerciseButton } from './components/AddCustomExerciseButton/AddCustomExerciseButton';
+import { PreviousExerciseSelector } from './components/PrevioutExerciseSelector/PreviousExerciseSelector';
 
 const EXERCISES = [
   {
@@ -52,7 +53,8 @@ const EXERCISES = [
 const Header = () => {
   return (
     <View style={{ paddingVertical: 12 }}>
-      <AddCustomExerciseButton />
+      <AddCustomExerciseButton style={{ marginBottom: 18 }} />
+      <PreviousExerciseSelector />
     </View>
   )
 }
@@ -74,7 +76,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.page,
     flex: 1,
-    paddingTop: 20,
     flexDirection: 'column',
     position: 'relative',
   },

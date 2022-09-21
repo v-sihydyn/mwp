@@ -84,7 +84,9 @@ function BottomTabNavigator() {
           title: 'My Workout',
           tabBarIcon: ({ focused }) => <TabBarIcon name="dumbbell" color={focused ? '#ffffff' : '#b5b5b5'} />,
           tabBarActiveTintColor: '#ffffff',
-          tabBarInactiveTintColor: '#d3d3d3',
+          tabBarInactiveTintColor: '#b3b3b3',
+          tabBarActiveBackgroundColor: '#181a1c',
+          tabBarInactiveBackgroundColor: '#181a1c',
           headerShown: false,
         })}
       />
@@ -95,7 +97,9 @@ function BottomTabNavigator() {
           title: 'Statistics',
           tabBarIcon: ({ focused }) => <TabBarIcon name="chart-bar" color={focused ? '#ffffff' : '#b5b5b5'} />,
           tabBarActiveTintColor: '#ffffff',
-          tabBarInactiveTintColor: '#d3d3d3',
+          tabBarInactiveTintColor: '#b3b3b3',
+          tabBarActiveBackgroundColor: '#181a1c',
+          tabBarInactiveBackgroundColor: '#181a1c',
           headerShown: false,
         }}
       />

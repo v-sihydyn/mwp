@@ -17,6 +17,7 @@ export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   RoutineReminders: undefined;
   RoutinesManagement: undefined;
+  AddExerciseToRoutine: undefined;
   NotFound: undefined;
 };
 

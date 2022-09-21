@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Switch, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet, Switch, Pressable } from 'react-native';
 import { colors } from '../../../../styles/colors';
 
 type OnPressArgs = { time: string | null; repeatWeekdays: string[]; index: number };
@@ -27,7 +27,7 @@ export const ReminderListItem: React.FC<RemindersListProps> = ({ item, index, on
   };
 
   return (
-    <TouchableWithoutFeedback onPress={handleRootPress}>
+    <Pressable onPress={handleRootPress}>
       <View style={styles.root}>
         <View style={{ flexDirection: 'column' }}>
           <Text style={styles.title}>{routineName}</Text>
@@ -55,7 +55,7 @@ export const ReminderListItem: React.FC<RemindersListProps> = ({ item, index, on
           disabled={repeatWeekdays.length === 0}
         />
       </View>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };
 

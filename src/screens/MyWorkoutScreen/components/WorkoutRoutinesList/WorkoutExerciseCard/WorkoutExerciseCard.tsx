@@ -11,7 +11,7 @@ export const WorkoutExerciseCard: React.FC<Props> = ({ name }) => {
     <View style={styles.root}>
       <View  style={styles.content}>
         <Image
-          style={styles.photo}
+          style={styles.image}
           source={{
             uri: 'https://dummyimage.com/60x60/fff/aaa',
           }}
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     marginBottom: 10
   },
-  photo: {
+  image: {
     width: 60,
     height: 60,
     marginRight: 12,

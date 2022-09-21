@@ -13,6 +13,7 @@ import { RoutineRemindersScreen } from '../screens/RoutineRemindersScreen/Routin
 import { ModalSlideFromTopIOS } from './customModalTransition';
 import { RoutinesManagementScreen } from '../screens/RoutinesManagementScreen/RoutinesManagementScreen';
 import { colors } from '../styles/colors';
+import { AddExerciseToRoutineScreen } from '../screens/AddExerciseToRoutineScreen/AddExerciseToRoutineScreen';
 
 export default function Navigation() {
   return (
@@ -31,12 +32,12 @@ const Stack = createStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
+    {/*<Stack.Navigator initialRouteName={'AddExerciseToRoutine'}>*/}
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
 
       <Stack.Group
         screenOptions={{
-          presentation: 'modal',
           ...ModalSlideFromTopIOS,
           headerStyle: { backgroundColor: colors.page },
           headerShadowVisible: false,
@@ -53,6 +54,13 @@ function RootNavigator() {
           component={RoutinesManagementScreen}
           options={{
             title: 'Routines Management',
+          }}
+        />
+        <Stack.Screen
+          name="AddExerciseToRoutine"
+          component={AddExerciseToRoutineScreen}
+          options={{
+            title: '',
           }}
         />
       </Stack.Group>

@@ -1,9 +1,10 @@
 import React from 'react';
 import { colors } from '../../styles/colors';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, Text } from 'react-native';
 import { ExerciseListItem } from './components/ExerciseListItem/ExerciseListItem';
 import { AddCustomExerciseButton } from './components/AddCustomExerciseButton/AddCustomExerciseButton';
 import { PreviousExerciseSelector } from './components/PrevioutExerciseSelector/PreviousExerciseSelector';
+import { Filters } from './components/Filters/Filters';
 
 const EXERCISES = [
   {
@@ -55,6 +56,8 @@ const Header = () => {
     <View style={{ paddingVertical: 12 }}>
       <AddCustomExerciseButton style={{ marginBottom: 18 }} />
       <PreviousExerciseSelector />
+      <Text style={{ color: colors.text2, fontSize: 18, marginVertical: 16 }}>Full exercises catalog</Text>
+      <Filters />
     </View>
   )
 }

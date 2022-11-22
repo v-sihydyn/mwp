@@ -4,12 +4,12 @@ import { colors } from '../../../../../styles/colors';
 
 type Props = {
   name: string;
-}
+};
 
 export const WorkoutExerciseCard: React.FC<Props> = ({ name }) => {
   return (
     <View style={styles.root}>
-      <View  style={styles.content}>
+      <View style={styles.content}>
         <Image
           style={styles.image}
           source={{
@@ -21,7 +21,7 @@ export const WorkoutExerciseCard: React.FC<Props> = ({ name }) => {
           <Text style={styles.subtitle}>Chest</Text>
         </View>
       </View>
-      <View  style={styles.footer}>
+      <View style={styles.footer}>
         <View style={styles.colorIndicator} />
         <Text style={styles.footerItem}>3 sets</Text>
         <Text style={styles.footerItem}>10 reps</Text>
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   root: {
     borderRadius: 12,
     backgroundColor: colors.surface,
-    marginBottom: 10
+    marginBottom: 10,
   },
   image: {
     width: 60,
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.text,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   subtitle: {
     color: '#d3d3d3',
@@ -73,5 +73,5 @@ const styles = StyleSheet.create({
     height: 8,
     backgroundColor: 'darkviolet',
     borderRadius: 4,
-  }
-})
+  },
+});

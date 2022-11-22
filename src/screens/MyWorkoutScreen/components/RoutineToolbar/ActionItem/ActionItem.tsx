@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { colors } from '../../../../../styles/colors';
 
 type ActionItemProps = {
   name: string;
   icon: string;
   onPress: () => void;
-}
+};
 
 export const ActionItem: React.FC<ActionItemProps> = ({ name, icon, onPress }) => {
   return (
@@ -31,6 +31,6 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   name: {
-    color: colors.text
-  }
-})
+    color: colors.text,
+  },
+});

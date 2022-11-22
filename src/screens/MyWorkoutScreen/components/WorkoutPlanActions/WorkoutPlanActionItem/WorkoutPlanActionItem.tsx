@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { colors } from '../../../../../styles/colors';
 import Ripple from 'react-native-material-ripple';
 
@@ -12,7 +12,8 @@ type Props = {
 
 export const WorkoutPlanActionItem = ({ name, icon, onPress }: Props) => {
   return (
-    <Ripple rippleColor="#ffffff"
+    <Ripple
+      rippleColor="#ffffff"
       onPress={() => {
         // e.stopPropagation();
 

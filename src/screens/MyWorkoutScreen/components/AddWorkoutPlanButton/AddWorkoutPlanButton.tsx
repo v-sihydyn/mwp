@@ -1,7 +1,7 @@
 import React from 'react';
 import Ripple from 'react-native-material-ripple';
 import { StyleSheet, Text, View } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { colors } from '../../../../styles/colors';
 
 export const AddWorkoutPlanButton = () => {
@@ -10,7 +10,7 @@ export const AddWorkoutPlanButton = () => {
       <View style={styles.root}>
         <FontAwesome5 style={styles.prefix} name="plus-circle" color="#ffffff" size={18} />
         <Text style={styles.label}>Add Workout Plan</Text>
-        <FontAwesome5  style={styles.suffix} name="dumbbell" color="#f2e70c" size={22} />
+        <FontAwesome5 style={styles.suffix} name="dumbbell" color="#f2e70c" size={22} />
       </View>
     </Ripple>
   );

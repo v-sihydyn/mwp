@@ -11,7 +11,7 @@ export const StatisticsScreen = () => {
       {/*<DraggableBasicExample />*/}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

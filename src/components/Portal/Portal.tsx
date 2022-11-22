@@ -6,7 +6,6 @@ type Props = {
   children: React.ReactNode;
 };
 
-
 class Portal extends React.Component<Props> {
   // @component ./PortalHost.tsx
   static Host = PortalHost;
@@ -16,11 +15,7 @@ class Portal extends React.Component<Props> {
 
     return (
       <PortalContext.Consumer>
-        {manager => (
-          <PortalConsumer manager={manager as PortalMethods}>
-            {children}
-          </PortalConsumer>
-        )}
+        {(manager) => <PortalConsumer manager={manager as PortalMethods}>{children}</PortalConsumer>}
       </PortalContext.Consumer>
     );
   }

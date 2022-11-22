@@ -7,7 +7,8 @@ import {
   LayoutChangeEvent,
   Pressable,
   PanResponder,
-  TouchableWithoutFeedback, BackHandler,
+  TouchableWithoutFeedback,
+  BackHandler,
 } from 'react-native';
 import createAnimatedComponent = Animated.createAnimatedComponent;
 
@@ -69,14 +70,14 @@ export const BottomSheet: React.FC<Props> = ({ isVisible, onClose, children }) =
     onClose();
 
     return true;
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (isVisible) {
       pan.setValue({ x: 0, y: 0 });
       setRendered(true);
 
-      BackHandler.addEventListener('hardwareBackPress', backButtonHandler)
+      BackHandler.addEventListener('hardwareBackPress', backButtonHandler);
 
       Animated.spring(modalY.current, {
         toValue: 0,
@@ -95,7 +96,7 @@ export const BottomSheet: React.FC<Props> = ({ isVisible, onClose, children }) =
           restDisplacementThreshold: 20,
         }).start(({ finished }) => {
           if (finished) {
-            BackHandler.removeEventListener('hardwareBackPress', backButtonHandler)
+            BackHandler.removeEventListener('hardwareBackPress', backButtonHandler);
             setRendered(false);
           }
         });

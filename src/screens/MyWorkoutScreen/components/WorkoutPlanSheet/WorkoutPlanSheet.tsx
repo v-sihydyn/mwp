@@ -11,4 +11,3 @@ export const WorkoutPlanSheet = ({ isVisible, onClose }: Props) => {
     </BottomSheet>
   );
 };
-

@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, View, Text } from 'react-native';
 import { useDisclose } from 'native-base';
 import { colors } from '../../../../styles/colors';
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { ExerciseListItem } from './ExerciseListItem/ExerciseListItem';
 
 type PreviousExerciseSelectorProps = {};
@@ -13,14 +13,14 @@ const EXERCISES = [
     name: 'Warm Up Push 2*10',
     muscleGroup: 'Shoulders',
     image: null,
-    color: 'darkviolet'
+    color: 'darkviolet',
   },
   {
     id: 2,
     name: 'BB Incline Bench Press 4*6-8',
     muscleGroup: 'Shoulders',
     image: null,
-    color: 'darkviolet'
+    color: 'darkviolet',
   },
   {
     id: 3,
@@ -34,7 +34,7 @@ const EXERCISES = [
     muscleGroup: 'Core',
     image: 'https://dummyimage.com/60x60/fff/aaa',
   },
-]
+];
 
 export const PreviousExerciseSelector: React.FC<PreviousExerciseSelectorProps> = () => {
   const { isOpen, onToggle } = useDisclose();
@@ -44,12 +44,14 @@ export const PreviousExerciseSelector: React.FC<PreviousExerciseSelectorProps> =
       <Pressable onPress={onToggle}>
         <View style={styles.root}>
           <Text style={styles.label}>Previous exercises (39)</Text>
-          <FontAwesome5 size={10}  color={colors.text} name={isOpen ? 'chevron-up' : 'chevron-down'} />
+          <FontAwesome5 size={10} color={colors.text} name={isOpen ? 'chevron-up' : 'chevron-down'} />
         </View>
       </Pressable>
       {isOpen && (
         <View style={styles.list}>
-          {EXERCISES.map(e => <ExerciseListItem key={e.id} item={e} onPress={() => {}} />)}
+          {EXERCISES.map((e) => (
+            <ExerciseListItem key={e.id} item={e} onPress={() => {}} />
+          ))}
         </View>
       )}
     </>

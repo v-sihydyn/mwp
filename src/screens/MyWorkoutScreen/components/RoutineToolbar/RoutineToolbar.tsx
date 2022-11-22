@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Dimensions, StyleSheet, Animated, LayoutRectangle, TouchableOpacity, LayoutAnimation } from 'react-native';
 import { colors } from '../../../../styles/colors';
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Portal from '../../../../components/Portal/Portal';
 import { ActionItem } from './ActionItem/ActionItem';
 import { useNavigation } from '@react-navigation/native';

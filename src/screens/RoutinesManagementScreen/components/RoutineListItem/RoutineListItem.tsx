@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Pressable, TouchableOpacity } from 'react-native';
 import { colors } from '../../../../styles/colors';
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Menu } from 'native-base';
 
 type IconProps = React.ComponentProps<typeof FontAwesome5>;
@@ -70,7 +70,12 @@ export const RoutineListItem: React.FC<RoutineListItemProps> = ({
         </Menu>
       </View>
 
-      <TouchableOpacity hitSlop={{ top: 20, left: 20, bottom: 20, right: 20 }} activeOpacity={1} disabled={isActive} onPressIn={onDrag} delayLongPress={0}>
+      <TouchableOpacity
+        hitSlop={{ top: 20, left: 20, bottom: 20, right: 20 }}
+        activeOpacity={1}
+        disabled={isActive}
+        onPressIn={onDrag}
+        delayLongPress={0}>
         <Icon name="bars" color="#ffffff" />
       </TouchableOpacity>
     </View>

@@ -1,41 +1,4 @@
 {
-  "expo": {
-    "name": "mwp",
-    "slug": "mwp",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./src/assets/images/icon.png",
-    "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./src/assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.vitaliisihydyn.mwp"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.vitaliisihydyn.mwp"
-    },
-    "web": {
-      "favicon": "./src/assets/images/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "f5ec5c81-129f-44f7-972d-8afadfd8d58b"
-      }
-    }
-  }
+  "name": "mwp2",
+  "displayName": "mwp2"
 }

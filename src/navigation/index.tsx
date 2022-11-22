@@ -1,4 +1,4 @@
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -8,7 +8,7 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import { MyWorkoutScreen } from '../screens/MyWorkoutScreen/MyWorkoutScreen';
 import { StatisticsScreen } from '../screens/StatisticsScreen/StatisticsScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../../types';
-import LinkingConfiguration from './LinkingConfiguration';
+// import LinkingConfiguration from './LinkingConfiguration';
 import { RoutineRemindersScreen } from '../screens/RoutineRemindersScreen/RoutineRemindersScreen';
 import { ModalSlideFromTopIOS } from './customModalTransition';
 import { RoutinesManagementScreen } from '../screens/RoutinesManagementScreen/RoutinesManagementScreen';
@@ -18,7 +18,7 @@ import { ExerciseFilterInput } from '../screens/AddExerciseToRoutineScreen/compo
 
 export default function Navigation() {
   return (
-    <NavigationContainer linking={LinkingConfiguration} theme={DarkTheme}>
+    <NavigationContainer theme={DarkTheme}>
       <RootNavigator />
     </NavigationContainer>
   );

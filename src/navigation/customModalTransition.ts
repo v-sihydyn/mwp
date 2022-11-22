@@ -18,7 +18,7 @@ function forVerticalIOS({
       outputRange: [-screen.height, 0],
       extrapolate: 'clamp',
     }),
-    inverted
+    inverted,
   );
 
   return {

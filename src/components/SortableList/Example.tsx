@@ -1,14 +1,5 @@
-import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {
-  Animated,
-  Image,
-  StyleSheet,
-  Text,
-  Platform,
-  Easing,
-  View,
-  Dimensions,
-} from 'react-native';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import { Animated, Image, StyleSheet, Text, Platform, Easing, View, Dimensions } from 'react-native';
 import SortableList from './SortableList';
 
 const window = Dimensions.get('window');
@@ -57,7 +48,7 @@ const data = {
 };
 
 function Row(props) {
-  const {active, data} = props;
+  const { active, data } = props;
 
   const activeAnim = useRef(new Animated.Value(0));
   const style = useMemo(
@@ -107,14 +98,14 @@ function Row(props) {
 
   return (
     <Animated.View style={[styles.row, style]}>
-      <Image source={{uri: data.image}} style={[styles.image]} />
+      <Image source={{ uri: data.image }} style={[styles.image]} />
       <Text style={styles.text}>{data.text}</Text>
     </Animated.View>
   );
 }
 
 const BasicExample = () => {
-  const renderRow = useCallback(({data, active}) => {
+  const renderRow = useCallback(({ data, active }) => {
     return <Row data={data} active={active} />;
   }, []);
 
@@ -177,7 +168,7 @@ const styles = StyleSheet.create({
         width: window.width - 30 * 2,
         shadowColor: 'rgba(0,0,0,0.2)',
         shadowOpacity: 1,
-        shadowOffset: {height: 2, width: 2},
+        shadowOffset: { height: 2, width: 2 },
         shadowRadius: 2,
       },
       android: {

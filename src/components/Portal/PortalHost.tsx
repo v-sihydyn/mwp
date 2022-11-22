@@ -66,9 +66,7 @@ export default class PortalHost extends React.Component<Props> {
       this._manager.update(key, children);
     } else {
       const op = { type: 'mount', key, children };
-      const index = this._queue.findIndex(
-        o => o.type === 'mount' || (o.type === 'update' && o.key === key)
-      );
+      const index = this._queue.findIndex((o) => o.type === 'mount' || (o.type === 'update' && o.key === key));
 
       if (index > -1) {
         // @ts-ignore
@@ -98,8 +96,7 @@ export default class PortalHost extends React.Component<Props> {
           mount: this._mount,
           update: this._update,
           unmount: this._unmount,
-        }}
-      >
+        }}>
         {/* Need collapsable=false here to clip the elevations, otherwise they appear above Portal components */}
         <View style={styles.container} collapsable={false}>
           {this.props.children}

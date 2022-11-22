@@ -112,7 +112,7 @@ export const Filters: React.FC<FiltersProps> = () => {
   const [filterCategory, setFilterCategory] = useState<string>('');
 
   return (
-    <View style={{ flexDirection: 'row', width: '100%', flex: 1,}}>
+    <View style={{ flexDirection: 'row', width: '100%', flex: 1 }}>
       <View style={{ flex: 17 }}>
         <Text style={{ color: colors.text2, fontSize: 13 }}>Muscle</Text>
         <Select

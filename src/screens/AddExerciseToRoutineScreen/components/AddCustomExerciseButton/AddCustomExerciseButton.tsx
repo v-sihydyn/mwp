@@ -1,11 +1,11 @@
 import React from 'react';
 import { Pressable, StyleSheet, View, Text, StyleProp, ViewStyle } from 'react-native';
 import { colors } from '../../../../styles/colors';
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 type AddCustomExerciseButtonProps = {
   style?: StyleProp<ViewStyle>;
-}
+};
 
 export const AddCustomExerciseButton: React.FC<AddCustomExerciseButtonProps> = ({ style }) => {
   return (
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#515151',
     height: 56,
-    width: '100%'
+    width: '100%',
   },
   title: {
     color: colors.text,

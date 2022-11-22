@@ -1,12 +1,12 @@
 import React from 'react';
 import { Text, View, StyleSheet, Dimensions } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ripple from 'react-native-material-ripple';
 import { colors } from '../../../../styles/colors';
 
 type Props = {
   onPress: () => void;
-}
+};
 
 export const WorkoutPlanSelector = ({ onPress }: Props) => {
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, View, Text } from 'react-native';
 import { colors } from '../../../../styles/colors';
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 interface AddRoutineButtonProps {}
 
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#515151',
     height: 56,
-    width: '100%'
+    width: '100%',
   },
   title: {
     color: colors.text,

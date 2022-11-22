@@ -8,7 +8,7 @@ type ExerciseListItemProps = {
     name: string;
     muscleGroup: string;
     requiredEquipment: string;
-    image: string | null,
+    image: string | null;
   };
   onPress: () => void;
 };
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   name: {
     color: colors.text,
     fontSize: 16,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   muscleGroup: {
     color: '#d3d3d3',
@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
   equipment: {
     color: '#d3d3d3',
     fontSize: 13,
-    marginTop: 'auto'
+    marginTop: 'auto',
   },
 });

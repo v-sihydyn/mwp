@@ -7,8 +7,8 @@ type ExerciseListItemProps = {
     id: number;
     name: string;
     muscleGroup: string;
-    image: string | null,
-    color?: string | null,
+    image: string | null;
+    color?: string | null;
   };
   onPress: () => void;
 };
@@ -18,7 +18,7 @@ export const ExerciseListItem: React.FC<ExerciseListItemProps> = ({ item, onPres
     <Pressable onPress={onPress}>
       <View style={styles.root}>
         <View style={styles.colorIndicatorWrap}>
-          <View style={[styles.colorIndicator, { backgroundColor: item.color || colors.surface2  }]} />
+          <View style={[styles.colorIndicator, { backgroundColor: item.color || colors.surface2 }]} />
         </View>
 
         <View style={{ flexDirection: 'column', flex: 1 }}>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontSize: 16,
     fontWeight: 'bold',
-    marginRight: 4
+    marginRight: 4,
   },
   muscleGroup: {
     color: '#d3d3d3',
@@ -68,5 +68,5 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-  }
-})
+  },
+});

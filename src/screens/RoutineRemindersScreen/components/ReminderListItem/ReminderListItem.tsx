@@ -16,7 +16,7 @@ type RemindersListProps = {
 };
 
 export const ReminderListItem: React.FC<RemindersListProps> = ({ item, index, onPress, onDeleteHandlers }) => {
-  const { time, repeatWeekdays, routineName } = item
+  const { time, repeatWeekdays, routineName } = item;
 
   const handleRootPress = () => {
     onPress({ time, repeatWeekdays, index });
@@ -35,9 +35,7 @@ export const ReminderListItem: React.FC<RemindersListProps> = ({ item, index, on
           {repeatWeekdays.length > 0 && (
             <View style={{ flexDirection: 'row', marginTop: 6 }}>
               {repeatWeekdays.map((weekday) => (
-                <Text
-                  key={weekday}
-                  style={styles.weekday}>
+                <Text key={weekday} style={styles.weekday}>
                   {weekday}
                 </Text>
               ))}

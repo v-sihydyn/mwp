@@ -1,20 +1,33 @@
 import React from 'react';
-import { Pressable, StyleSheet, View, Text, StyleProp, ViewStyle } from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  View,
+  Text,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 import { colors } from '../../../../styles/colors';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useNavigation } from '@react-navigation/native';
 
 type AddCustomExerciseButtonProps = {
   style?: StyleProp<ViewStyle>;
 };
 
-export const AddCustomExerciseButton: React.FC<AddCustomExerciseButtonProps> = ({ style }) => {
+export const AddCustomExerciseButton: React.FC<
+  AddCustomExerciseButtonProps
+> = ({ style }) => {
+  const navigation = useNavigation();
+
   return (
-    <Pressable onPress={() => alert('add routine')}>
+    <Pressable
+      onPress={() => navigation.navigate('AddCustomExerciseToRoutine')}>
       <View style={[styles.root, style]}>
         <View style={styles.iconWrapper}>
           <FontAwesome5 size={10} name="plus" />
         </View>
-        <Text style={styles.title}>Add Custom</Text>
+        <Text style={styles.text}>Add Custom</Text>
       </View>
     </Pressable>
   );
@@ -33,7 +46,7 @@ const styles = StyleSheet.create({
     height: 56,
     width: '100%',
   },
-  title: {
+  text: {
     color: colors.text,
     fontSize: 16,
     fontWeight: '600',

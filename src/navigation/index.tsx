@@ -7,7 +7,11 @@ import * as React from 'react';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { MyWorkoutScreen } from '../screens/MyWorkoutScreen/MyWorkoutScreen';
 import { StatisticsScreen } from '../screens/StatisticsScreen/StatisticsScreen';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../../types';
+import {
+  RootStackParamList,
+  RootTabParamList,
+  RootTabScreenProps,
+} from '../../types';
 // import LinkingConfiguration from './LinkingConfiguration';
 import { RoutineRemindersScreen } from '../screens/RoutineRemindersScreen/RoutineRemindersScreen';
 import { ModalSlideFromTopIOS } from './customModalTransition';
@@ -15,6 +19,7 @@ import { RoutinesManagementScreen } from '../screens/RoutinesManagementScreen/Ro
 import { colors } from '../styles/colors';
 import { AddExerciseToRoutineScreen } from '../screens/AddExerciseToRoutineScreen/AddExerciseToRoutineScreen';
 import { ExerciseFilterInput } from '../screens/AddExerciseToRoutineScreen/components/ExerciseFilterInput/ExerciseFilterInput';
+import { AddCustomExerciseToRoutineScreen } from '../screens/AddCustomExerciseToRoutineScreen/AddCustomExerciseToRoutineScreen';
 
 export default function Navigation() {
   return (
@@ -33,8 +38,16 @@ const Stack = createStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen
+        name="Root"
+        component={BottomTabNavigator}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="NotFound"
+        component={NotFoundScreen}
+        options={{ title: 'Oops!' }}
+      />
 
       <Stack.Group
         screenOptions={{
@@ -64,6 +77,13 @@ function RootNavigator() {
             headerRight: () => <ExerciseFilterInput />,
           }}
         />
+        <Stack.Screen
+          name="AddCustomExerciseToRoutine"
+          component={AddCustomExerciseToRoutineScreen}
+          options={{
+            title: '',
+          }}
+        />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -83,7 +103,12 @@ function BottomTabNavigator() {
         component={MyWorkoutScreen}
         options={({ navigation }: RootTabScreenProps<'MyWorkout'>) => ({
           title: 'My Workout',
-          tabBarIcon: ({ focused }) => <TabBarIcon name="dumbbell" color={focused ? '#ffffff' : '#b5b5b5'} />,
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon
+              name="dumbbell"
+              color={focused ? '#ffffff' : '#b5b5b5'}
+            />
+          ),
           tabBarActiveTintColor: '#ffffff',
           tabBarInactiveTintColor: '#b3b3b3',
           tabBarActiveBackgroundColor: '#181a1c',
@@ -96,7 +121,12 @@ function BottomTabNavigator() {
         component={StatisticsScreen}
         options={{
           title: 'Statistics',
-          tabBarIcon: ({ focused }) => <TabBarIcon name="chart-bar" color={focused ? '#ffffff' : '#b5b5b5'} />,
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon
+              name="chart-bar"
+              color={focused ? '#ffffff' : '#b5b5b5'}
+            />
+          ),
           tabBarActiveTintColor: '#ffffff',
           tabBarInactiveTintColor: '#b3b3b3',
           tabBarActiveBackgroundColor: '#181a1c',
@@ -111,6 +141,9 @@ function BottomTabNavigator() {
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
-function TabBarIcon(props: { name: React.ComponentProps<typeof FontAwesome5>['name']; color: string }) {
+function TabBarIcon(props: {
+  name: React.ComponentProps<typeof FontAwesome5>['name'];
+  color: string;
+}) {
   return <FontAwesome5 size={18} style={{ marginBottom: -3 }} {...props} />;
 }

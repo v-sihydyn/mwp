@@ -18,6 +18,7 @@ export type RootStackParamList = {
   RoutineReminders: undefined;
   RoutinesManagement: undefined;
   AddExerciseToRoutine: undefined;
+  AddCustomExerciseToRoutine: undefined;
   NotFound: undefined;
 };
 

@@ -20,6 +20,7 @@ import { colors } from '../styles/colors';
 import { AddExerciseToRoutineScreen } from '../screens/AddExerciseToRoutineScreen/AddExerciseToRoutineScreen';
 import { ExerciseFilterInput } from '../screens/AddExerciseToRoutineScreen/components/ExerciseFilterInput/ExerciseFilterInput';
 import { AddCustomExerciseToRoutineScreen } from '../screens/AddCustomExerciseToRoutineScreen/AddCustomExerciseToRoutineScreen';
+import { ConfigureWorkoutScreen } from '../screens/ConfigureWorkoutScreen/ConfigureWorkoutScreen';
 
 export default function Navigation() {
   return (
@@ -80,6 +81,13 @@ function RootNavigator() {
         <Stack.Screen
           name="AddCustomExerciseToRoutine"
           component={AddCustomExerciseToRoutineScreen}
+          options={{
+            title: '',
+          }}
+        />
+        <Stack.Screen
+          name="ConfigureWorkout"
+          component={ConfigureWorkoutScreen}
           options={{
             title: '',
           }}

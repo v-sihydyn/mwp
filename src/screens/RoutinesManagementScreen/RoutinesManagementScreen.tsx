@@ -4,10 +4,13 @@ import { colors } from '../../styles/colors';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import { AddRoutineButton } from './components/AddRoutineButton/AddRoutineButton';
 import { openRenameRoutineModal } from '../../components/modals/RenameRoutineModal/RenameRoutineModal';
-import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
+import DraggableFlatList, {
+  RenderItemParams,
+} from 'react-native-draggable-flatlist';
 import { RoutineListItem } from './components/RoutineListItem/RoutineListItem';
 import { openDuplicateRoutineModal } from '../../components/modals/DuplicateRoutineModal/DuplicateRoutineModal';
 import { openDeleteRoutineModal } from '../../components/modals/DeleteRoutineModal/DeleteRoutineModal';
+import { SortableListItem } from '../../components/SortableList/SortableListItem';
 
 type Routine = {
   id: number;
@@ -107,14 +110,14 @@ export const RoutinesManagementScreen = gestureHandlerRootHOC(() => {
 
   const renderItem = ({ item, drag, isActive }: RenderItemParams<Routine>) => {
     return (
-      <RoutineListItem
-        name={item.name}
-        isActive={isActive}
-        onDrag={drag}
-        onInitiateRename={handleOpenRenameRoutineModal}
-        onInitiateDuplicate={handleOpenDuplicateRoutineModal}
-        onInitiateDelete={handleOpenDeleteRoutineModal}
-      />
+      <SortableListItem isActive={isActive} onDrag={drag}>
+        <RoutineListItem
+          name={item.name}
+          onInitiateRename={handleOpenRenameRoutineModal}
+          onInitiateDuplicate={handleOpenDuplicateRoutineModal}
+          onInitiateDelete={handleOpenDeleteRoutineModal}
+        />
+      </SortableListItem>
     );
   };
 

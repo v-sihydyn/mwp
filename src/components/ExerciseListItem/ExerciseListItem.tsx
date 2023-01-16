@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet, Image } from 'react-native';
-import { colors } from '../../../../styles/colors';
+import { colors } from '../../styles/colors';
 
 type ExerciseListItemProps = {
   item: {
@@ -10,19 +10,26 @@ type ExerciseListItemProps = {
     requiredEquipment: string;
     image: string | null;
   };
-  onPress: () => void;
+  displayImage?: boolean;
+  onPress?: () => void;
 };
 
-export const ExerciseListItem: React.FC<ExerciseListItemProps> = ({ item, onPress }) => {
+export const ExerciseListItem: React.FC<ExerciseListItemProps> = ({
+  item,
+  displayImage = true,
+  onPress = () => {},
+}) => {
   return (
     <Pressable onPress={onPress}>
       <View style={styles.root}>
-        <Image
-          style={styles.image}
-          source={{
-            uri: 'https://dummyimage.com/60x60/fff/aaa',
-          }}
-        />
+        {displayImage && item.image && (
+          <Image
+            style={styles.image}
+            source={{
+              uri: 'https://dummyimage.com/60x60/fff/aaa',
+            }}
+          />
+        )}
         <View style={{ flexDirection: 'column', flex: 1 }}>
           <Text style={styles.name}>{item.name}</Text>
           <Text style={styles.muscleGroup}>{item.muscleGroup}</Text>
@@ -38,7 +45,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface2,
     borderRadius: 16,
     padding: 12,
-    marginVertical: 8,
+    marginVertical: 4,
     flexDirection: 'row',
   },
   image: {

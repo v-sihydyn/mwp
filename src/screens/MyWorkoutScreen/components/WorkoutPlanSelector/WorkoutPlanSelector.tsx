@@ -10,7 +10,10 @@ type Props = {
 
 export const WorkoutPlanSelector = ({ onPress }: Props) => {
   return (
-    <Ripple rippleColor="#ffffff" rippleContainerBorderRadius={8} onPress={onPress}>
+    <Ripple
+      rippleColor="#ffffff"
+      rippleContainerBorderRadius={12}
+      onPress={onPress}>
       <View style={styles.wrapper}>
         <Text style={styles.label}>My Workout Plan</Text>
         <View style={styles.suffix}>

@@ -5,7 +5,8 @@ import { UIManager } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Container as ModalContainer } from 'react-modal-promise';
 
-UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(true);
 
 export default function App() {
   return (

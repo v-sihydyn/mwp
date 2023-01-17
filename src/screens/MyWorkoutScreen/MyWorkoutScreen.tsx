@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import StickyParallaxHeader from 'react-native-sticky-parallax-header';
 
 import { WorkoutPlanSelector } from './components/WorkoutPlanSelector/WorkoutPlanSelector';
@@ -17,31 +17,20 @@ import { openRenameRoutineModal } from '../../components/modals/RenameRoutineMod
 import { openDeleteRoutineModal } from '../../components/modals/DeleteRoutineModal/DeleteRoutineModal';
 import { openRenamePlanModal } from '../../components/modals/RenamePlanModal/RenamePlanModal';
 import { openDeletePlanModal } from '../../components/modals/DeletePlanModal/DeletePlanModal';
+import { MaterialTabBar, Tabs } from 'react-native-collapsible-tab-view';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const tabs = [
-  {
-    title: '12',
-    content: <WorkoutRoutinesList />,
-  },
-  {
-    title: 'Product Design',
-    content: <WorkoutRoutinesList />,
-  },
-  {
-    title: 'Development',
-    content: <WorkoutRoutinesList />,
-  },
-  {
-    title: 'Project Management',
-    content: <WorkoutRoutinesList />,
-  },
-];
+const tabNames = ['12', 'Product Design', 'Development', 'Project Management'];
 
 type Props = RootTabScreenProps<'MyWorkout'>;
 
 export const MyWorkoutScreen = ({ navigation }: Props) => {
-  const [isWorkoutPlanSheetVisible, setWorkoutPlanSheetVisible] = useState(false);
-  const [isWorkoutActionsSheetVisible, setWorkoutActionsSheetVisible] = useState(false);
+  const [isWorkoutPlanSheetVisible, setWorkoutPlanSheetVisible] =
+    useState(false);
+  const [isWorkoutActionsSheetVisible, setWorkoutActionsSheetVisible] =
+    useState(false);
+  const { width: windowWidth } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
 
   const onOpenWorkoutPlanSheet = () => {
     setWorkoutPlanSheetVisible(true);
@@ -118,22 +107,60 @@ export const MyWorkoutScreen = ({ navigation }: Props) => {
 
   return (
     <PortalHost>
-      <View style={styles.container}>
-        {/* @ts-ignore */}
-        <StickyParallaxHeader
-          foreground={header}
-          parallaxHeight={80}
-          headerHeight={0}
-          tabs={tabs}
-          tabTextStyle={styles.tabText}
-          tabTextContainerStyle={styles.tabTextContainerStyle}
-          tabsContainerBackgroundColor={colors.page}
+      <View style={[styles.container]}>
+        <View
+          style={{
+            height: insets.top,
+            zIndex: 1,
+            backgroundColor: colors.page,
+          }}
         />
-        <RoutineToolbar onRenameRoutine={handleOpenRenameRoutineModal} onDeleteRoutine={handleOpenDeleteRoutineModal} />
+        <Tabs.Container
+          renderHeader={() => header}
+          renderTabBar={(props: any) => (
+            <MaterialTabBar
+              {...props}
+              style={{
+                marginTop: 20,
+                width: windowWidth - 40,
+                alignSelf: 'center',
+              }}
+              indicatorStyle={{
+                backgroundColor: colors.text,
+                height: 1,
+              }}
+              labelStyle={{ fontWeight: '700' }}
+              activeColor={colors.text}
+              inactiveColor="#b5b5b5"
+              scrollEnabled
+            />
+          )}
+          headerContainerStyle={{
+            backgroundColor: colors.page,
+          }}>
+          {tabNames.map((name) => {
+            return (
+              <Tabs.Tab name={name} key={name}>
+                <Tabs.ScrollView>
+                  <WorkoutRoutinesList />
+                </Tabs.ScrollView>
+              </Tabs.Tab>
+            );
+          })}
+        </Tabs.Container>
+        <RoutineToolbar
+          onRenameRoutine={handleOpenRenameRoutineModal}
+          onDeleteRoutine={handleOpenDeleteRoutineModal}
+        />
         <Portal>
-          <WorkoutPlanSheet isVisible={isWorkoutPlanSheetVisible} onClose={onCloseWorkoutPlanSheet} />
+          <WorkoutPlanSheet
+            isVisible={isWorkoutPlanSheetVisible}
+            onClose={onCloseWorkoutPlanSheet}
+          />
 
-          <BottomSheet isVisible={isWorkoutActionsSheetVisible} onClose={onCloseWorkoutActionsSheet}>
+          <BottomSheet
+            isVisible={isWorkoutActionsSheetVisible}
+            onClose={onCloseWorkoutActionsSheet}>
             <WorkoutPlanActions
               onInitiateRenamePlan={handleOpenRenamePlanModal}
               onInitiateDeletePlan={handleOpenDeletePlanModal}
@@ -152,7 +179,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.page,
     flex: 1,
-    paddingTop: 40,
+    // paddingTop: 40,
     flexDirection: 'column',
     position: 'relative',
   },
@@ -160,42 +187,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'transparent',
     justifyContent: 'space-between',
-    marginBottom: 12,
     padding: 20,
+    paddingBottom: 0,
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
     color: colors.text,
-  },
-
-  //
-  foreground: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
-  headerWrapper: {
-    backgroundColor: 'green',
-    width: '100%',
-    paddingHorizontal: 24,
-    paddingBottom: 25,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  headerTitle: {
-    fontSize: 16,
-    color: 'white',
-    margin: 12,
-  },
-  tabTextContainerStyle: {
-    backgroundColor: 'transparent',
-    borderRadius: 18,
-  },
-  tabText: {
-    fontSize: 16,
-    lineHeight: 20,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    color: 'white',
   },
 });

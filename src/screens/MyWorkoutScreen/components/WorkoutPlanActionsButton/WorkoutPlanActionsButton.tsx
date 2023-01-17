@@ -10,7 +10,10 @@ type Props = {
 
 export const WorkoutPlanActionsButton = ({ onPress }: Props) => {
   return (
-    <Ripple onPress={onPress} rippleColor="#ffffff" rippleContainerBorderRadius={8}>
+    <Ripple
+      onPress={onPress}
+      rippleColor="#ffffff"
+      rippleContainerBorderRadius={12}>
       <View style={styles.wrapper}>
         <FontAwesome5 name="ellipsis-v" color="#ffffff" />
       </View>

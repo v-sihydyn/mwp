@@ -4,7 +4,11 @@ import { WorkoutExercises } from './WorkoutExercises/WorkoutExercises';
 
 export const WorkoutRoutinesList = () => {
   return (
-    <View style={{ paddingBottom: 50 }}>
+    <View
+      style={{
+        paddingBottom: 50,
+        flex: 1,
+      }}>
       <WorkoutExercises />
     </View>
   );

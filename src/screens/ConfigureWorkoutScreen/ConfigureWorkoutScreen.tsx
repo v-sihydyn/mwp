@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 import { ExerciseListItem } from '../../components/ExerciseListItem/ExerciseListItem';
 import { SortableListItem } from '../../components/SortableList/SortableListItem';
 import { Icon } from '../../components/Icon/Icon';
+import { ListHeader } from './ListHeader/ListHeader';
 
 const EXERCISES = [
   {
@@ -64,10 +65,6 @@ const EXERCISES = [
 type ExtractArrElementType<T extends any[]> = T extends (infer A)[] ? A : never;
 type Exercise = ExtractArrElementType<typeof EXERCISES>;
 
-const ListHeader = () => (
-  <Text style={styles.title}>Reorder & Remove Exercises</Text>
-);
-
 export const ConfigureWorkoutScreen = () => {
   const [exercises, setExercises] = useState<Exercise[]>(EXERCISES);
 
@@ -110,11 +107,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     position: 'relative',
-  },
-  title: {
-    color: colors.text2,
-    fontSize: 18,
-    marginVertical: 16,
   },
   list: {
     paddingHorizontal: 20,

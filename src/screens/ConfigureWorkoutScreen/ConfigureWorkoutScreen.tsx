@@ -4,11 +4,13 @@ import { AddRoutineButton } from '../RoutinesManagementScreen/components/AddRout
 import DraggableFlatList, {
   RenderItemParams,
 } from 'react-native-draggable-flatlist';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ExerciseListItem } from '../../components/ExerciseListItem/ExerciseListItem';
 import { SortableListItem } from '../../components/SortableList/SortableListItem';
 import { Icon } from '../../components/Icon/Icon';
 import { ListHeader } from './ListHeader/ListHeader';
+import { CustomButton } from '../AddCustomExerciseToRoutineScreen/components/CustomButton/CustomButton';
+import { useNavigation } from '@react-navigation/native';
 
 const EXERCISES = [
   {
@@ -67,6 +69,20 @@ type Exercise = ExtractArrElementType<typeof EXERCISES>;
 
 export const ConfigureWorkoutScreen = () => {
   const [exercises, setExercises] = useState<Exercise[]>(EXERCISES);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <CustomButton
+          onPress={() => navigation.navigate('Workout')}
+          style={{ marginRight: 16 }}
+          icon={<Icon name="play-circle" color={colors.text} size={16} />}>
+          Start
+        </CustomButton>
+      ),
+    });
+  }, []);
 
   // @TODO: implement leave animation
   const renderItem = ({ item, drag, isActive }: RenderItemParams<Exercise>) => {

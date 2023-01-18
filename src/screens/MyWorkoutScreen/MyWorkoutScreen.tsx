@@ -107,7 +107,7 @@ export const MyWorkoutScreen = ({ navigation }: Props) => {
 
   return (
     <PortalHost>
-      <View style={[styles.container]}>
+      <View style={styles.container}>
         <View
           style={{
             height: insets.top,

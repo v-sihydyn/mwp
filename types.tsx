@@ -23,6 +23,7 @@ export type RootStackParamList = {
   AddExerciseToRoutine: undefined;
   AddCustomExerciseToRoutine: undefined;
   ConfigureWorkout: undefined;
+  Workout: undefined;
   NotFound: undefined;
 };
 

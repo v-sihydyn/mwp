@@ -11,7 +11,7 @@ import { colors } from '../../../../styles/colors';
 
 type ButtonProps = {
   onPress: () => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   icon?: React.ReactNode;
   style?: StyleProp<ViewStyle>;
 };
@@ -23,13 +23,13 @@ export const CustomButton = ({
   style,
 }: ButtonProps) => {
   return (
-    <Pressable onPress={onPress}>
-      <View style={[styles.root, style]}>
-        {icon}
+    <Pressable onPress={onPress} style={[styles.root, style]}>
+      {icon}
+      {Boolean(children) && (
         <Text style={[styles.text, Boolean(icon) && { marginLeft: 8 }]}>
           {children}
         </Text>
-      </View>
+      )}
     </Pressable>
   );
 };

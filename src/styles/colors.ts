@@ -8,4 +8,6 @@ export const colors = {
   surface: '#000000',
   surface2: '#151617',
   red: '#e11d48',
+  black: '#000000',
+  lime: '#827717',
 };

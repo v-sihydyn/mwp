@@ -21,6 +21,7 @@ import { AddExerciseToRoutineScreen } from '../screens/AddExerciseToRoutineScree
 import { ExerciseFilterInput } from '../screens/AddExerciseToRoutineScreen/components/ExerciseFilterInput/ExerciseFilterInput';
 import { AddCustomExerciseToRoutineScreen } from '../screens/AddCustomExerciseToRoutineScreen/AddCustomExerciseToRoutineScreen';
 import { ConfigureWorkoutScreen } from '../screens/ConfigureWorkoutScreen/ConfigureWorkoutScreen';
+import { WorkoutScreen } from '../screens/WorkoutScreen/WorkoutScreen';
 
 export default function Navigation() {
   return (
@@ -38,7 +39,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Workout">
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}
@@ -88,6 +89,13 @@ function RootNavigator() {
         <Stack.Screen
           name="ConfigureWorkout"
           component={ConfigureWorkoutScreen}
+          options={{
+            title: '',
+          }}
+        />
+        <Stack.Screen
+          name="Workout"
+          component={WorkoutScreen}
           options={{
             title: '',
           }}

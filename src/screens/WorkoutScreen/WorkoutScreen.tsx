@@ -12,6 +12,7 @@ import { WorkoutExerciseSet } from './components/WorkoutExerciseSet/WorkoutExerc
 import { Icon } from '../../components/Icon/Icon';
 import { CustomButton } from '../AddCustomExerciseToRoutineScreen/components/CustomButton/CustomButton';
 import { MaterialTabBar } from '../../components/MaterialTabBar/TabBar';
+import { Timer } from './components/Timer/Timer';
 
 const tabNames = ['1', '2', '3', '4', '5', '6', '7', '8'];
 
@@ -22,6 +23,7 @@ export const WorkoutScreen = (props: WorkoutScreenProps) => {
 
   return (
     <View style={styles.container}>
+      <Timer />
       <Tabs.Container
         renderTabBar={(props: any) => (
           <MaterialTabBar

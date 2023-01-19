@@ -39,14 +39,14 @@ export const WorkoutScreen = (props: WorkoutScreenProps) => {
               alignItems: 'center',
             }}
             tabStyle={{
-              width: 36,
-              height: 36,
-              borderRadius: 36,
+              width: 38,
+              height: 38,
+              borderRadius: 38,
             }}
             indicatorStyle={{
               height: 0,
             }}
-            labelStyle={{ fontWeight: '700', fontSize: 16, color: colors.text }}
+            labelStyle={{ fontWeight: '700', fontSize: 14, color: colors.text }}
             activeColor={colors.text}
             activeBgColor={colors.green}
             inactiveColor={colors.text}

@@ -5,13 +5,13 @@ import {
   useWindowDimensions,
   TextInput,
 } from 'react-native';
-import { MaterialTabBar, Tabs } from 'react-native-collapsible-tab-view';
+import { Tabs } from 'react-native-collapsible-tab-view';
 import { colors } from '../../styles/colors';
-import { WorkoutRoutinesList } from '../MyWorkoutScreen/components/WorkoutRoutinesList/WorkoutRoutinesList';
 import React from 'react';
 import { WorkoutExerciseSet } from './components/WorkoutExerciseSet/WorkoutExerciseSet';
 import { Icon } from '../../components/Icon/Icon';
 import { CustomButton } from '../AddCustomExerciseToRoutineScreen/components/CustomButton/CustomButton';
+import { MaterialTabBar } from '../../components/MaterialTabBar/TabBar';
 
 const tabNames = ['1', '2', '3', '4', '5', '6', '7', '8'];
 
@@ -31,18 +31,32 @@ export const WorkoutScreen = (props: WorkoutScreenProps) => {
               width: windowWidth - 40,
               alignSelf: 'center',
             }}
-            indicatorStyle={{
-              backgroundColor: colors.text,
-              height: 1,
+            contentContainerStyle={{
+              borderWidth: 1,
+              borderColor: 'blue',
+              flexGrow: 1,
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}
-            labelStyle={{ fontWeight: '700' }}
+            tabStyle={{
+              width: 36,
+              height: 36,
+              borderRadius: 36,
+            }}
+            indicatorStyle={{
+              height: 0,
+            }}
+            labelStyle={{ fontWeight: '700', fontSize: 16, color: colors.text }}
             activeColor={colors.text}
-            inactiveColor="#b5b5b5"
+            activeBgColor={colors.green}
+            inactiveColor={colors.text}
+            inactiveBgColor={colors.black}
             scrollEnabled
           />
         )}
         headerContainerStyle={{
           backgroundColor: colors.page,
+          elevation: 0,
         }}>
         {tabNames.map((name) => {
           return (
@@ -67,9 +81,7 @@ export const WorkoutScreen = (props: WorkoutScreenProps) => {
           );
         })}
       </Tabs.Container>
-      <View
-        style={styles.actionBar}
-        onLayout={(e) => console.log(e.nativeEvent.layout.height)}>
+      <View style={styles.actionBar}>
         {/* SET INFO */}
 
         <View style={styles.currentSetWrapper}>

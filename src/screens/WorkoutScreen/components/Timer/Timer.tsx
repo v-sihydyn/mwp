@@ -1,37 +1,44 @@
-import { View, Text, StyleSheet, Animated } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { colors } from '../../../../styles/colors';
-import { useEffect, useRef } from 'react';
+import { MotiView } from 'moti';
+import { Easing } from 'react-native-reanimated';
 
 type TimerProps = {};
 
+const MIN_RADIUS = 56;
+
+//  animate={{ opacity: 0.3, scale: 1.4 }}
+
 export const Timer = (props: TimerProps) => {
-  const sizeValue = useRef(new Animated.Value(56)).current;
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(sizeValue, {
-          toValue: 66,
-          useNativeDriver: false,
-          duration: 1000,
-        }),
-        Animated.timing(sizeValue, {
-          toValue: 56,
-          useNativeDriver: false,
-          duration: 1000,
-        }),
-      ]),
-    ).start();
-  }, []);
-
   return (
     <View style={styles.root}>
-      <Animated.View
-        style={[styles.outer, { width: sizeValue, height: sizeValue }]}>
-        <View style={styles.inner}>
-          <Text style={styles.text}>01:50</Text>
-        </View>
-      </Animated.View>
+      <View style={[styles.dot, styles.center]}>
+        <MotiView
+          from={{ opacity: 0.8, scale: 1.1 }}
+          animate={{ opacity: 0.4, scale: 1.3 }}
+          transition={{
+            type: 'timing',
+            duration: 1000,
+            easing: Easing.out(Easing.ease),
+            loop: true,
+          }}
+          style={[
+            StyleSheet.absoluteFillObject,
+            styles.dot,
+            { backgroundColor: colors.lime },
+            styles.shadow,
+          ]}
+        />
+        <View
+          style={[
+            StyleSheet.absoluteFillObject,
+            styles.dot,
+            styles.shadow,
+            { backgroundColor: colors.black, shadowColor: colors.black },
+          ]}
+        />
+        <Text style={styles.text}>01:50</Text>
+      </View>
     </View>
   );
 };
@@ -41,37 +48,33 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    width: 70,
-    height: 70,
-  },
-  outer: {
-    borderRadius: 70,
-    backgroundColor: colors.surface2,
-    // opacity: 0.4,
-    justifyContent: 'center',
-    alignItems: 'center',
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-
-    elevation: 8,
-  },
-  inner: {
-    width: 46,
-    height: 46,
-    borderRadius: 46,
-    backgroundColor: colors.black,
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: 80,
+    height: 80,
   },
   text: {
     color: colors.text,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
+  },
+  dot: {
+    width: MIN_RADIUS,
+    height: MIN_RADIUS,
+    borderRadius: MIN_RADIUS,
+    backgroundColor: colors.black,
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  shadow: {
+    shadowColor: colors.lime,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
   },
 });

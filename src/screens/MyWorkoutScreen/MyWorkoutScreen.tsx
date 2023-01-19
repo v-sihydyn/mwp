@@ -138,6 +138,7 @@ export const MyWorkoutScreen = ({ navigation }: Props) => {
           headerContainerStyle={{
             backgroundColor: colors.page,
             elevation: 0,
+            shadowOpacity: 0,
           }}>
           {tabNames.map((name) => {
             return (

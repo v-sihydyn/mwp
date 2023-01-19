@@ -34,8 +34,6 @@ export const WorkoutScreen = (props: WorkoutScreenProps) => {
               alignSelf: 'center',
             }}
             contentContainerStyle={{
-              borderWidth: 1,
-              borderColor: 'blue',
               flexGrow: 1,
               justifyContent: 'space-between',
               alignItems: 'center',
@@ -59,6 +57,7 @@ export const WorkoutScreen = (props: WorkoutScreenProps) => {
         headerContainerStyle={{
           backgroundColor: colors.page,
           elevation: 0,
+          shadowOpacity: 0,
         }}>
         {tabNames.map((name) => {
           return (

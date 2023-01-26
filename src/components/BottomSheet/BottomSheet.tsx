@@ -10,15 +10,14 @@ import {
   TouchableWithoutFeedback,
   BackHandler,
 } from 'react-native';
-import createAnimatedComponent = Animated.createAnimatedComponent;
+import { colors } from '../../styles/colors';
 
 export type Props = {
   isVisible: boolean;
   onClose: () => void;
   children: React.ReactNode | ((rendered: boolean) => React.ReactNode);
+  withHandle?: boolean;
 };
-
-const AnimatedPressable = createAnimatedComponent(Pressable);
 
 const deviceHeight = Dimensions.get('window').height;
 
@@ -26,6 +25,7 @@ export const BottomSheet: React.FC<Props> = ({
   isVisible,
   onClose,
   children,
+  withHandle = false,
 }) => {
   const [contentHeight, setContentHeight] = useState<number | null>(null); // ref?
   const [rendered, setRendered] = useState(isVisible);
@@ -127,7 +127,7 @@ export const BottomSheet: React.FC<Props> = ({
 
   return (
     <View style={StyleSheet.absoluteFill}>
-      <AnimatedPressable style={[styles.backdrop]} onPress={onClose}>
+      <Pressable style={[styles.backdrop]} onPress={onClose}>
         <Animated.View
           style={[
             styles.wrapper,
@@ -139,18 +139,39 @@ export const BottomSheet: React.FC<Props> = ({
           ]}
           onLayout={onWrapperLayout}>
           <Animated.View
-            {...panResponder.panHandlers}
+            {...(withHandle ? {} : panResponder.panHandlers)}
             style={{ transform: [{ translateY: pan.y }] }}
             onLayout={(event) => {
               const { height } = event.nativeEvent.layout;
               innerContentHeight.current = height;
             }}>
-            <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
+            {withHandle && (
+              <View
+                {...panResponder.panHandlers}
+                style={{
+                  width: '100%',
+                  height: 40,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: colors.surface2,
+                }}>
+                <View
+                  style={{
+                    height: 5,
+                    width: '10%',
+                    backgroundColor: colors.text3,
+                    borderRadius: 12,
+                  }}
+                />
+              </View>
+            )}
+
+            <TouchableWithoutFeedback>
               {typeof children === 'function' ? children(rendered) : children}
             </TouchableWithoutFeedback>
           </Animated.View>
         </Animated.View>
-      </AnimatedPressable>
+      </Pressable>
     </View>
   );
 };

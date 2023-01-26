@@ -7,7 +7,7 @@ import {
   Pressable,
 } from 'react-native';
 import React from 'react';
-import { colors } from '../../../../styles/colors';
+import { colors } from '../../styles/colors';
 
 type ButtonProps = {
   onPress: () => void;

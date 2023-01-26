@@ -1,7 +1,20 @@
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  TouchableWithoutFeedback,
+  useWindowDimensions,
+  FlatList,
+} from 'react-native';
 import { colors } from '../../../../styles/colors';
 import { PieChart } from '../../../../components/PieChart/PieChart';
 import { Icon } from '../../../../components/Icon/Icon';
+import * as React from 'react';
+import { WorkoutExerciseCard } from '../../../MyWorkoutScreen/components/WorkoutRoutinesList/WorkoutExerciseCard/WorkoutExerciseCard';
+
+import { CustomButton } from '../../../../components/CustomButton/CustomButton';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const chartData = [
   {
@@ -52,67 +65,116 @@ const chartData = [
 ];
 
 export const WorkoutSummary = () => {
+  const insets = useSafeAreaInsets();
+  const { width: windowWidth } = useWindowDimensions();
+
   return (
-    <View style={styles.root}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Nice workout!</Text>
+    <TouchableWithoutFeedback>
+      <View style={[styles.root, { paddingBottom: insets.bottom }]}>
         <View
           style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingHorizontal: 24,
+            flex: 1,
           }}>
-          <View style={{ marginBottom: 20 }}>
-            <PieChart
-              initialValues={chartData}
-              size={300}
-              strokeWidth={90}
-              radius={90}
-              gapColor={colors.surface2}
-              centerLabel={
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flexWrap: 'nowrap',
-                    width: 90,
-                    height: 90,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text
+          <FlatList
+            bounces={false}
+            showsVerticalScrollIndicator={false}
+            ListHeaderComponent={() => (
+              <TouchableWithoutFeedback>
+                <View style={styles.header}>
+                  <Text style={styles.title}>Nice workout!</Text>
+                  <View
                     style={{
-                      color: colors.text,
-                      fontSize: 16,
-                      fontWeight: 'bold',
-                      marginRight: 8,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      paddingHorizontal: 24,
+                      paddingBottom: 8,
                     }}>
-                    3
-                  </Text>
-                  <Icon name="dumbbell" color={colors.text} size={16} />
-                </View>
-              }
-            />
-          </View>
+                    <View style={{ marginBottom: 20 }}>
+                      <PieChart
+                        initialValues={chartData}
+                        size={300}
+                        strokeWidth={90}
+                        radius={90}
+                        gapColor={colors.surface2}
+                        centerLabel={
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              flexWrap: 'nowrap',
+                              width: 89,
+                              height: 89,
+                              justifyContent: 'center',
+                              alignItems: 'center',
 
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: '100%',
-            }}>
-            <View style={styles.workoutDetails}>
-              <Text style={styles.workoutDetailsTitle}>Workout time</Text>
-              <Text style={styles.workoutDetailsText}>00:30</Text>
-            </View>
-            <View style={styles.detailsDivider} />
-            <View style={styles.workoutDetails}>
-              <Text style={styles.workoutDetailsTitle}>Date</Text>
-              <Text style={styles.workoutDetailsText}>26.01.2023 12:00</Text>
-            </View>
-          </View>
+                              borderWidth: 1,
+                              borderColor: 'transparent', // @TODO: investigate this hack for centering on android
+                            }}>
+                            <Text
+                              style={{
+                                color: colors.text,
+                                fontSize: 16,
+                                fontWeight: 'bold',
+                                marginRight: 8,
+                              }}>
+                              3
+                            </Text>
+                            <Icon
+                              name="dumbbell"
+                              color={colors.text}
+                              size={16}
+                            />
+                          </View>
+                        }
+                      />
+                    </View>
+
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                      }}>
+                      <View style={styles.workoutDetails}>
+                        <Text style={styles.workoutDetailsTitle}>
+                          Workout time
+                        </Text>
+                        <Text style={styles.workoutDetailsText}>00:30</Text>
+                      </View>
+                      <View style={styles.detailsDivider} />
+                      <View style={styles.workoutDetails}>
+                        <Text style={styles.workoutDetailsTitle}>Date</Text>
+                        <Text style={styles.workoutDetailsText}>
+                          26.01.2023 12:00
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            )}
+            data={[1, 2, 3, 4, 5, 6, 7, 8]}
+            renderItem={() => (
+              <WorkoutExerciseCard
+                name="Barbell Bench Press"
+                style={{ marginHorizontal: 20 }}
+              />
+            )}
+            contentContainerStyle={{ paddingBottom: 80 }}
+          />
+
+          <CustomButton
+            style={[
+              styles.button,
+              {
+                width: windowWidth - 40,
+              },
+            ]}
+            onPress={() => {}}>
+            Ok
+          </CustomButton>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -123,12 +185,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.page,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
+    flex: 1,
+    position: 'relative',
 
-    height: 500, // @TODO: remove
+    height: Dimensions.get('window').height - 150,
   },
   header: {
     backgroundColor: colors.surface2,
-    padding: 20,
+    padding: 10,
+    marginBottom: 40,
   },
   title: {
     fontSize: 18,
@@ -155,5 +220,11 @@ const styles = StyleSheet.create({
   detailsDivider: {
     width: 2,
     backgroundColor: '#313233',
+  },
+  button: {
+    paddingVertical: 14,
+    position: 'absolute',
+    bottom: 20,
+    alignSelf: 'center',
   },
 });

@@ -3,7 +3,7 @@ import { Tabs } from 'react-native-collapsible-tab-view';
 import { colors } from '../../styles/colors';
 import React, { useState } from 'react';
 import { WorkoutExerciseSet } from './components/WorkoutExerciseSet/WorkoutExerciseSet';
-import { CustomButton } from '../AddCustomExerciseToRoutineScreen/components/CustomButton/CustomButton';
+import { CustomButton } from '../../components/CustomButton/CustomButton';
 import { MaterialTabBar } from '../../components/MaterialTabBar/TabBar';
 import { Timer } from './components/Timer/Timer';
 import PortalHost from '../../components/Portal/PortalHost';
@@ -66,7 +66,9 @@ export const WorkoutScreen = (props: WorkoutScreenProps) => {
           {tabNames.map((name) => {
             return (
               <Tabs.Tab name={name} key={name}>
-                <Tabs.ScrollView>
+                <Tabs.ScrollView
+                  bounces={false}
+                  showsVerticalScrollIndicator={false}>
                   <View style={styles.exerciseWrapper}>
                     <Text style={styles.title}>Exercise Name</Text>
                     {/* @TODO: edit notes */}
@@ -151,7 +153,8 @@ export const WorkoutScreen = (props: WorkoutScreenProps) => {
       <Portal>
         <BottomSheet
           isVisible={isWorkoutSummarySheetOpen}
-          onClose={() => setIsWorkoutSummarySheetOpen(false)}>
+          onClose={() => setIsWorkoutSummarySheetOpen(false)}
+          withHandle={true}>
           <WorkoutSummary />
         </BottomSheet>
       </Portal>

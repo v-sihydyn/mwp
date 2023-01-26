@@ -43,10 +43,9 @@ type ChartDataItem = {
 const COLOR_PALETTE = ['#9013FE', '#D97400', '#2196F3', '#50E3C2', '#D02F43'];
 
 const addColors = (_chartData: ChartDataItem[]) => {
-  const result = [..._chartData];
   let colorCounter: number = 0;
 
-  return result.map((i) => {
+  return _chartData.map((i) => {
     if (colorCounter === COLOR_PALETTE.length) colorCounter = 0;
 
     const color = COLOR_PALETTE[colorCounter];
@@ -136,7 +135,7 @@ export const PieChart = ({
   useEffect(() => {
     calculateChartData();
     animate();
-  }, [initialValues]);
+  }, []);
 
   return (
     <View>

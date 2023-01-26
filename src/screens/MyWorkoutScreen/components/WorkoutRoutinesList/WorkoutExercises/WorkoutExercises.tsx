@@ -13,6 +13,9 @@ export const WorkoutExercises: React.FC<WorkoutExercisesProps> = () => {
       <WorkoutExerciseCard name="Barbell Bench Press 3" />
       <WorkoutExerciseCard name="Barbell Bench Press 4" />
       <WorkoutExerciseCard name="Barbell Bench Press" />
+      <WorkoutExerciseCard name="Barbell Bench Press" />
+      <WorkoutExerciseCard name="Barbell Bench Press" />
+      <WorkoutExerciseCard name="Barbell Bench Press" />
     </View>
   );
 };

@@ -9,7 +9,7 @@ import { ExerciseListItem } from '../../components/ExerciseListItem/ExerciseList
 import { SortableListItem } from '../../components/SortableList/SortableListItem';
 import { Icon } from '../../components/Icon/Icon';
 import { ListHeader } from './ListHeader/ListHeader';
-import { CustomButton } from '../AddCustomExerciseToRoutineScreen/components/CustomButton/CustomButton';
+import { CustomButton } from '../../components/CustomButton/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 
 const EXERCISES = [
@@ -58,6 +58,20 @@ const EXERCISES = [
   {
     id: 7,
     name: 'Assisted Parallel Close Grip Pull-up 2',
+    muscleGroup: 'Back',
+    requiredEquipment: 'Leverage machine',
+    image: 'imageUrl',
+  },
+  {
+    id: 8,
+    name: 'Assisted Parallel Close Grip Pull-up 3',
+    muscleGroup: 'Back',
+    requiredEquipment: 'Leverage machine',
+    image: 'imageUrl',
+  },
+  {
+    id: 9,
+    name: 'Assisted Parallel Close Grip Pull-up 4',
     muscleGroup: 'Back',
     requiredEquipment: 'Leverage machine',
     image: 'imageUrl',
@@ -111,6 +125,7 @@ export const ConfigureWorkoutScreen = () => {
         renderItem={renderItem}
         refreshing={false}
         ListHeaderComponent={ListHeader}
+        showsVerticalScrollIndicator={false}
         style={styles.list}
       />
     </View>

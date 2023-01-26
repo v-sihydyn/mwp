@@ -13,7 +13,7 @@ import { MUSCLE_SELECT_OPTIONS } from '../../constants/muscleSelectOptions';
 import { Icon } from '../../components/Icon/Icon';
 import { ColorPicker } from './components/ColorPicker/ColorPicker';
 import { useNavigation } from '@react-navigation/native';
-import { CustomButton } from './components/CustomButton/CustomButton';
+import { CustomButton } from '../../components/CustomButton/CustomButton';
 
 export const AddCustomExerciseToRoutineScreen = () => {
   const navigation = useNavigation();

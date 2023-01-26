@@ -39,11 +39,11 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
-    <Stack.Navigator initialRouteName={'Workout'}>
+    <Stack.Navigator>
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, title: '' }}
       />
       <Stack.Screen
         name="NotFound"
@@ -98,6 +98,7 @@ function RootNavigator() {
           component={WorkoutScreen}
           options={{
             title: '',
+            gestureEnabled: false,
           }}
         />
       </Stack.Group>

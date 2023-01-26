@@ -1,33 +1,45 @@
 import React from 'react';
-import { StyleSheet, View, Image, Text } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  Pressable,
+  TouchableWithoutFeedback,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 import { colors } from '../../../../../styles/colors';
 
 type Props = {
   name: string;
+  style: StyleProp<ViewStyle>;
 };
 
-export const WorkoutExerciseCard: React.FC<Props> = ({ name }) => {
+export const WorkoutExerciseCard: React.FC<Props> = ({ name, style }) => {
   return (
-    <View style={styles.root}>
-      <View style={styles.content}>
-        <Image
-          style={styles.image}
-          source={{
-            uri: 'https://dummyimage.com/60x60/fff/aaa',
-          }}
-        />
-        <View style={{ flexDirection: 'column' }}>
-          <Text style={styles.title}>{name}</Text>
-          <Text style={styles.subtitle}>Chest</Text>
+    <TouchableWithoutFeedback>
+      <View style={[styles.root, style]}>
+        <View style={styles.content}>
+          <Image
+            style={styles.image}
+            source={{
+              uri: 'https://dummyimage.com/60x60/fff/aaa',
+            }}
+          />
+          <View style={{ flexDirection: 'column' }}>
+            <Text style={styles.title}>{name}</Text>
+            <Text style={styles.subtitle}>Chest</Text>
+          </View>
+        </View>
+        <View style={styles.footer}>
+          <View style={styles.colorIndicator} />
+          <Text style={styles.footerItem}>3 sets</Text>
+          <Text style={styles.footerItem}>10 reps</Text>
+          <Text style={styles.footerItem}>70 kg</Text>
         </View>
       </View>
-      <View style={styles.footer}>
-        <View style={styles.colorIndicator} />
-        <Text style={styles.footerItem}>3 sets</Text>
-        <Text style={styles.footerItem}>10 reps</Text>
-        <Text style={styles.footerItem}>70 kg</Text>
-      </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 

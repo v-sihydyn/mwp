@@ -115,6 +115,7 @@ export const MyWorkoutScreen = ({ navigation }: Props) => {
           }}
         />
         <Tabs.Container
+          revealHeaderOnScroll={true}
           renderHeader={() => header}
           renderTabBar={(props: any) => (
             <MaterialTabBar
@@ -142,7 +143,9 @@ export const MyWorkoutScreen = ({ navigation }: Props) => {
           {tabNames.map((name) => {
             return (
               <Tabs.Tab name={name} key={name}>
-                <Tabs.ScrollView>
+                <Tabs.ScrollView
+                  bounces={false}
+                  showsVerticalScrollIndicator={false}>
                   <WorkoutRoutinesList />
                 </Tabs.ScrollView>
               </Tabs.Tab>

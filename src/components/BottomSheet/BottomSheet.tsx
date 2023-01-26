@@ -15,16 +15,22 @@ import createAnimatedComponent = Animated.createAnimatedComponent;
 export type Props = {
   isVisible: boolean;
   onClose: () => void;
+  children: React.ReactNode | ((rendered: boolean) => React.ReactNode);
 };
 
 const AnimatedPressable = createAnimatedComponent(Pressable);
 
 const deviceHeight = Dimensions.get('window').height;
 
-export const BottomSheet: React.FC<Props> = ({ isVisible, onClose, children }) => {
+export const BottomSheet: React.FC<Props> = ({
+  isVisible,
+  onClose,
+  children,
+}) => {
   const [contentHeight, setContentHeight] = useState<number | null>(null); // ref?
   const [rendered, setRendered] = useState(isVisible);
-  const [didCalculateContentHeight, setDidCalculateContentHeight] = useState(false);
+  const [didCalculateContentHeight, setDidCalculateContentHeight] =
+    useState(false);
   const modalY = useRef(new Animated.Value(deviceHeight));
   const innerContentHeight = useRef(0);
 
@@ -96,7 +102,10 @@ export const BottomSheet: React.FC<Props> = ({ isVisible, onClose, children }) =
           restDisplacementThreshold: 20,
         }).start(({ finished }) => {
           if (finished) {
-            BackHandler.removeEventListener('hardwareBackPress', backButtonHandler);
+            BackHandler.removeEventListener(
+              'hardwareBackPress',
+              backButtonHandler,
+            );
             setRendered(false);
           }
         });
@@ -136,7 +145,9 @@ export const BottomSheet: React.FC<Props> = ({ isVisible, onClose, children }) =
               const { height } = event.nativeEvent.layout;
               innerContentHeight.current = height;
             }}>
-            <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>{children}</TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
+              {typeof children === 'function' ? children(rendered) : children}
+            </TouchableWithoutFeedback>
           </Animated.View>
         </Animated.View>
       </AnimatedPressable>

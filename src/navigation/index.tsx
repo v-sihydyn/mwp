@@ -39,7 +39,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName={'Workout'}>
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}

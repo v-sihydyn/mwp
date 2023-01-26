@@ -30,6 +30,7 @@ type Props = {
   strokeWidth?: number;
   radius?: number;
   centerLabel?: ReactNode;
+  gapColor: string;
 };
 
 type ChartDataItem = {
@@ -67,6 +68,7 @@ export const PieChart = ({
   strokeWidth = 30,
   radius = 60,
   centerLabel,
+  gapColor,
 }: Props) => {
   const [chartData, setChartData] = useState<ChartDataItem[]>([]);
   const [areGapsVisible, setAreGapsVisible] = useState(false);
@@ -195,8 +197,8 @@ export const PieChart = ({
                 y={center + radius / 2}
                 width={2}
                 height={radius}
-                stroke={colors.page}
-                fill={colors.page}
+                stroke={gapColor}
+                fill={gapColor}
                 transform={`rotate(${
                   (chartData?.[index]?.degrees ?? 0) + 180
                 }, ${center}, ${center})`}

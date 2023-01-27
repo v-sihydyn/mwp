@@ -128,7 +128,7 @@ export const RoutinesManagementScreen = gestureHandlerRootHOC(() => {
         onDragEnd={({ data: _data }) => setRoutines(_data)}
         keyExtractor={(item) => String(item.id)}
         renderItem={renderItem}
-        refreshing={false}
+        bounces={false}
         ListFooterComponent={() => (
           <View style={{ padding: 12 }}>
             <AddRoutineButton />

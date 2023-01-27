@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ripple from 'react-native-material-ripple';
 import { colors } from '../../../../styles/colors';
+import { Icon } from '../../../../components/Icon/Icon';
 
 type Props = {
   onPress: () => void;
@@ -15,7 +15,7 @@ export const WorkoutPlanActionsButton = ({ onPress }: Props) => {
       rippleColor="#ffffff"
       rippleContainerBorderRadius={12}>
       <View style={styles.wrapper}>
-        <FontAwesome5 name="ellipsis-v" color="#ffffff" />
+        <Icon name="ellipsis-v" color="#ffffff" />
       </View>
     </Ripple>
   );

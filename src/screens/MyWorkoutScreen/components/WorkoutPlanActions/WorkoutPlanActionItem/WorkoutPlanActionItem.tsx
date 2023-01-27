@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { colors } from '../../../../../styles/colors';
 import Ripple from 'react-native-material-ripple';
+import { Icon } from '../../../../../components/Icon/Icon';
 
 type Props = {
   name: string;
@@ -15,12 +15,10 @@ export const WorkoutPlanActionItem = ({ name, icon, onPress }: Props) => {
     <Ripple
       rippleColor="#ffffff"
       onPress={() => {
-        // e.stopPropagation();
-
         onPress?.();
       }}>
       <View style={styles.root}>
-        <FontAwesome5 style={styles.icon} name={icon} color="#ffffff" size={16} />
+        <Icon style={styles.icon} name={icon} color="#ffffff" size={16} />
         <Text style={styles.name}>{name}</Text>
       </View>
     </Ripple>

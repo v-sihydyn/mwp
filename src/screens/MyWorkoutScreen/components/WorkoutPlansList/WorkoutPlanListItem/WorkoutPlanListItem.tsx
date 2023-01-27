@@ -1,7 +1,14 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableWithoutFeedback, StyleProp, ViewStyle } from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableWithoutFeedback,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 import { colors } from '../../../../../styles/colors';
+import { Icon } from '../../../../../components/Icon/Icon';
 
 type Props = {
   name: string;
@@ -17,7 +24,9 @@ export const WorkoutPlanListItem = ({ name, isSelected, style }: Props) => {
       }}>
       <View style={[styles.root, style]}>
         <Text style={styles.name}>{name}</Text>
-        {isSelected && <FontAwesome5 name="check-circle" color={colors.text} size={16} />}
+        {isSelected && (
+          <Icon name="check-circle" color={colors.text} size={16} />
+        )}
       </View>
     </TouchableWithoutFeedback>
   );

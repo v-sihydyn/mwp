@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, View, StyleSheet, Dimensions } from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ripple from 'react-native-material-ripple';
 import { colors } from '../../../../styles/colors';
+import { Icon } from '../../../../components/Icon/Icon';
 
 type Props = {
   onPress: () => void;
@@ -17,7 +17,7 @@ export const WorkoutPlanSelector = ({ onPress }: Props) => {
       <View style={styles.wrapper}>
         <Text style={styles.label}>My Workout Plan</Text>
         <View style={styles.suffix}>
-          <FontAwesome5 name="chevron-down" color="#ffffff" />
+          <Icon name="chevron-down" color="#ffffff" />
         </View>
       </View>
     </Ripple>

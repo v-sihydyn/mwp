@@ -60,6 +60,7 @@ export const AddExerciseToRoutineScreen = () => {
         )}
         style={styles.list}
         ListHeaderComponent={ListHeader}
+        bounces={false}
       />
     </View>
   );

@@ -20,47 +20,47 @@ const chartData = [
   {
     value: 3,
     textLine1: 'Back',
-    textLine: '1',
+    textLine2: '1',
   },
   {
     value: 3,
     textLine1: 'Back',
-    textLine: '1',
+    textLine2: '1',
   },
   {
     value: 1,
     textLine1: 'Back',
-    textLine: '1',
+    textLine2: '1',
   },
   {
     value: 2,
     textLine1: 'Back',
-    textLine: '1',
+    textLine2: '1',
   },
   {
     value: 1,
     textLine1: 'Back',
-    textLine: '1',
+    textLine2: '1',
   },
   {
     value: 2,
     textLine1: 'Back',
-    textLine: '1',
+    textLine2: '1',
   },
   {
     value: 2,
     textLine1: 'Back',
-    textLine: '1',
+    textLine2: '1',
   },
   {
     value: 2,
     textLine1: 'Back',
-    textLine: '1',
+    textLine2: '1',
   },
   {
     value: 2,
     textLine1: 'Back',
-    textLine: '1',
+    textLine2: '1',
   },
 ];
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { colors } from '../../../../../styles/colors';
+import { Icon } from '../../../../../components/Icon/Icon';
 
 type ActionItemProps = {
   name: string;
@@ -9,11 +9,15 @@ type ActionItemProps = {
   onPress: () => void;
 };
 
-export const ActionItem: React.FC<ActionItemProps> = ({ name, icon, onPress }) => {
+export const ActionItem: React.FC<ActionItemProps> = ({
+  name,
+  icon,
+  onPress,
+}) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.root}>
-        <FontAwesome5 name={icon} color={colors.text} size={14} style={styles.icon} />
+        <Icon name={icon} color={colors.text} size={14} style={styles.icon} />
         <Text style={styles.name}>{name}</Text>
       </View>
     </TouchableOpacity>

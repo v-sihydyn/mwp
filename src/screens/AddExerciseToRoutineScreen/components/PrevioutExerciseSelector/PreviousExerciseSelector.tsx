@@ -2,8 +2,8 @@ import React from 'react';
 import { Pressable, StyleSheet, View, Text } from 'react-native';
 import { useDisclose } from 'native-base';
 import { colors } from '../../../../styles/colors';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { ExerciseListItem } from './ExerciseListItem/ExerciseListItem';
+import { Icon } from '../../../../components/Icon/Icon';
 
 type PreviousExerciseSelectorProps = {};
 
@@ -36,7 +36,9 @@ const EXERCISES = [
   },
 ];
 
-export const PreviousExerciseSelector: React.FC<PreviousExerciseSelectorProps> = () => {
+export const PreviousExerciseSelector: React.FC<
+  PreviousExerciseSelectorProps
+> = () => {
   const { isOpen, onToggle } = useDisclose();
 
   return (
@@ -44,7 +46,11 @@ export const PreviousExerciseSelector: React.FC<PreviousExerciseSelectorProps> =
       <Pressable onPress={onToggle}>
         <View style={styles.root}>
           <Text style={styles.label}>Previous exercises (39)</Text>
-          <FontAwesome5 size={10} color={colors.text} name={isOpen ? 'chevron-up' : 'chevron-down'} />
+          <Icon
+            size={10}
+            color={colors.text}
+            name={isOpen ? 'chevron-up' : 'chevron-down'}
+          />
         </View>
       </Pressable>
       {isOpen && (

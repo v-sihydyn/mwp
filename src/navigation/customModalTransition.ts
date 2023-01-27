@@ -28,6 +28,27 @@ function forVerticalIOS({
   };
 }
 
+function forHorizontalIOS({
+  current,
+  inverted,
+  layouts: { screen },
+}: StackCardInterpolationProps): StackCardInterpolatedStyle {
+  const translateY = Animated.multiply(
+    current.progress.interpolate({
+      inputRange: [0, 1],
+      outputRange: [screen.height, 0],
+      extrapolate: 'clamp',
+    }),
+    inverted,
+  );
+
+  return {
+    cardStyle: {
+      transform: [{ translateY: translateY }],
+    },
+  };
+}
+
 export const ModalSlideFromTopIOS: TransitionPreset = {
   gestureDirection: 'vertical',
   transitionSpec: {
@@ -35,5 +56,15 @@ export const ModalSlideFromTopIOS: TransitionPreset = {
     close: TransitionSpecs.TransitionIOSSpec,
   },
   cardStyleInterpolator: forVerticalIOS,
+  headerStyleInterpolator: HeaderStyleInterpolators.forFade,
+};
+
+export const ModalSlideFromBottomIOS: TransitionPreset = {
+  gestureDirection: 'vertical',
+  transitionSpec: {
+    open: TransitionSpecs.TransitionIOSSpec,
+    close: TransitionSpecs.TransitionIOSSpec,
+  },
+  cardStyleInterpolator: forHorizontalIOS,
   headerStyleInterpolator: HeaderStyleInterpolators.forFade,
 };

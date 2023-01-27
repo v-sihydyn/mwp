@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, View, Text } from 'react-native';
 import { colors } from '../../../../styles/colors';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { Icon } from '../../../../components/Icon/Icon';
 
 interface AddRoutineButtonProps {}
 
@@ -10,7 +10,7 @@ export const AddRoutineButton: React.FC<AddRoutineButtonProps> = () => {
     <Pressable onPress={() => alert('add routine')}>
       <View style={styles.root}>
         <View style={styles.iconWrapper}>
-          <FontAwesome5 size={10} name="plus" />
+          <Icon size={10} name="plus" />
         </View>
         <Text style={styles.title}>Add Routine</Text>
       </View>

@@ -7,14 +7,9 @@ import * as React from 'react';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { MyWorkoutScreen } from '../screens/MyWorkoutScreen/MyWorkoutScreen';
 import { StatisticsScreen } from '../screens/StatisticsScreen/StatisticsScreen';
-import {
-  RootStackParamList,
-  RootTabParamList,
-  RootTabScreenProps,
-} from '../../types';
-// import LinkingConfiguration from './LinkingConfiguration';
+import { RootStackParamList, RootTabParamList } from '../../types';
 import { RoutineRemindersScreen } from '../screens/RoutineRemindersScreen/RoutineRemindersScreen';
-import { ModalSlideFromTopIOS } from './customModalTransition';
+import { ModalSlideFromBottomIOS } from './customModalTransition';
 import { RoutinesManagementScreen } from '../screens/RoutinesManagementScreen/RoutinesManagementScreen';
 import { colors } from '../styles/colors';
 import { AddExerciseToRoutineScreen } from '../screens/AddExerciseToRoutineScreen/AddExerciseToRoutineScreen';
@@ -31,10 +26,6 @@ export default function Navigation() {
   );
 }
 
-/**
- * A root stack navigator is often used for displaying modals on top of all other content.
- * https://reactnavigation.org/docs/modal
- */
 const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
@@ -53,7 +44,7 @@ function RootNavigator() {
 
       <Stack.Group
         screenOptions={{
-          ...ModalSlideFromTopIOS,
+          ...ModalSlideFromBottomIOS,
           headerStyle: { backgroundColor: colors.page },
           headerShadowVisible: false,
         }}>
@@ -106,10 +97,6 @@ function RootNavigator() {
   );
 }
 
-/**
- * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
- * https://reactnavigation.org/docs/bottom-tab-navigator
- */
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
@@ -118,20 +105,25 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="MyWorkout"
         component={MyWorkoutScreen}
-        options={({ navigation }: RootTabScreenProps<'MyWorkout'>) => ({
+        options={{
           title: 'My Workout',
           tabBarIcon: ({ focused }) => (
             <TabBarIcon
               name="dumbbell"
               color={focused ? '#ffffff' : '#b5b5b5'}
+              size={14}
             />
           ),
           tabBarActiveTintColor: '#ffffff',
           tabBarInactiveTintColor: '#b3b3b3',
           tabBarActiveBackgroundColor: '#181a1c',
           tabBarInactiveBackgroundColor: '#181a1c',
+          tabBarItemStyle: {
+            padding: 10,
+            height: 60,
+          },
           headerShown: false,
-        })}
+        }}
       />
       <BottomTab.Screen
         name="Statistics"
@@ -142,12 +134,17 @@ function BottomTabNavigator() {
             <TabBarIcon
               name="chart-bar"
               color={focused ? '#ffffff' : '#b5b5b5'}
+              size={14}
             />
           ),
           tabBarActiveTintColor: '#ffffff',
           tabBarInactiveTintColor: '#b3b3b3',
           tabBarActiveBackgroundColor: '#181a1c',
           tabBarInactiveBackgroundColor: '#181a1c',
+          tabBarItemStyle: {
+            padding: 10,
+            height: 60,
+          },
           headerShown: false,
         }}
       />
@@ -155,12 +152,13 @@ function BottomTabNavigator() {
   );
 }
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-function TabBarIcon(props: {
+const TabBarIcon = ({
+  size = 18,
+  ...props
+}: {
   name: React.ComponentProps<typeof FontAwesome5>['name'];
   color: string;
-}) {
-  return <FontAwesome5 size={18} style={{ marginBottom: -3 }} {...props} />;
-}
+  size?: number;
+}) => {
+  return <FontAwesome5 size={size} style={{ marginBottom: -3 }} {...props} />;
+};

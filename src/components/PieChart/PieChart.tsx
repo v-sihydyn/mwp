@@ -16,7 +16,6 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { View } from 'react-native';
-import { colors } from '../../styles/colors';
 
 type ChartData = {
   value: number;

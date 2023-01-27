@@ -89,7 +89,9 @@ export const ConfigureWorkoutScreen = () => {
     navigation.setOptions({
       headerRight: () => (
         <CustomButton
-          onPress={() => navigation.navigate('Workout')}
+          onPress={() => {
+            navigation.navigate('Workout');
+          }}
           style={{ marginRight: 16 }}
           icon={<Icon name="play-circle" color={colors.text} size={16} />}>
           Start

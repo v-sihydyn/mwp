@@ -8,8 +8,8 @@ import {
   ViewStyle,
 } from 'react-native';
 import { colors } from '../../../../styles/colors';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
+import { Icon } from '../../../../components/Icon/Icon';
 
 type AddCustomExerciseButtonProps = {
   style?: StyleProp<ViewStyle>;
@@ -25,7 +25,7 @@ export const AddCustomExerciseButton: React.FC<
       onPress={() => navigation.navigate('AddCustomExerciseToRoutine')}>
       <View style={[styles.root, style]}>
         <View style={styles.iconWrapper}>
-          <FontAwesome5 size={10} name="plus" />
+          <Icon size={10} name="plus" />
         </View>
         <Text style={styles.text}>Add Custom</Text>
       </View>

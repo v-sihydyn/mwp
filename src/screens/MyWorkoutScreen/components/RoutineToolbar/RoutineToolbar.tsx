@@ -8,11 +8,11 @@ import {
   LayoutAnimation,
 } from 'react-native';
 import { colors } from '../../../../styles/colors';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Portal from '../../../../components/Portal/Portal';
 import { ActionItem } from './ActionItem/ActionItem';
 import { useNavigation } from '@react-navigation/native';
 import { openBeforeWorkoutStartModal } from '../../../../components/modals/BeforeWorkoutStartModal/BeforeWorkoutStartModal';
+import { Icon } from '../../../../components/Icon/Icon';
 
 type RoutineToolbarProps = {
   onRenameRoutine: () => void;
@@ -121,18 +121,18 @@ export const RoutineToolbar: React.FC<RoutineToolbarProps> = ({
         <TouchableOpacity
           style={styles.iconWrapper}
           onPress={handleInitiateAddExercise}>
-          <FontAwesome5 name="plus-circle" color={colors.text} size={18} />
+          <Icon name="plus-circle" color={colors.text} size={18} />
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.iconWrapper}
           onPress={handleStartWorkout}>
-          <FontAwesome5 name="play" color={colors.text} size={18} />
+          <Icon name="play" color={colors.text} size={18} />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.iconWrapper}
           onPress={handleToggleDropdown}>
-          <FontAwesome5 name="ellipsis-h" color={colors.text} size={18} />
+          <Icon name="ellipsis-h" color={colors.text} size={18} />
         </TouchableOpacity>
       </Animated.View>
       <Portal>
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   root: {
     backgroundColor: colors.green,
     width: BUTTON_WIDTH,
-    height: 40,
+    height: 44,
     position: 'absolute',
     bottom: 20,
     left: SCREEN_WIDTH / 2 - BUTTON_WIDTH / 2,

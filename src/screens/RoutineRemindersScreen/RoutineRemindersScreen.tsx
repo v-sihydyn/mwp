@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, FlatList, Text, TouchableWithoutFeedback } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Text,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { colors } from '../../styles/colors';
 import { ReminderListItem } from './components/ReminderListItem/ReminderListItem';
 import { BottomSheet } from '../../components/BottomSheet/BottomSheet';
@@ -85,11 +91,15 @@ const REMINDERS: Reminder[] = [
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-export const RoutineRemindersScreen: React.FC<RoutineRemindersScreenProps> = () => {
+export const RoutineRemindersScreen: React.FC<
+  RoutineRemindersScreenProps
+> = () => {
   const [reminders, setReminders] = useState<Reminder[]>(REMINDERS);
   const [draftTime, setDraftTime] = useState<Date>(new Date());
   const [draftRepeatWeekdays, setDraftRepeatWeekdays] = useState<string[]>([]);
-  const [draftReminderIndex, setDraftReminderIndex] = useState<number | null>(null);
+  const [draftReminderIndex, setDraftReminderIndex] = useState<number | null>(
+    null,
+  );
   const [isSheetOpen, setSheetOpen] = useState(false);
 
   const handleOpenSheet = ({
@@ -116,7 +126,9 @@ export const RoutineRemindersScreen: React.FC<RoutineRemindersScreenProps> = () 
   };
 
   const handleApplyReminders = () => {
-    const _editedReminder = reminders.find((_, idx) => idx === draftReminderIndex);
+    const _editedReminder = reminders.find(
+      (_, idx) => idx === draftReminderIndex,
+    );
     const editedReminder = { ..._editedReminder! };
 
     if (draftRepeatWeekdays.length > 0) {
@@ -167,10 +179,13 @@ export const RoutineRemindersScreen: React.FC<RoutineRemindersScreenProps> = () 
             />
           )}
           keyExtractor={(item) => String(item.id)}
+          bounces={false}
         />
 
         <Portal>
-          <BottomSheet isVisible={isSheetOpen} onClose={() => setSheetOpen(false)}>
+          <BottomSheet
+            isVisible={isSheetOpen}
+            onClose={() => setSheetOpen(false)}>
             <View style={styles.timePickerSheet}>
               <Text style={styles.timePickerSheetTitle}>Reminder Time</Text>
               <View style={{ width: '100%' }}>
@@ -184,10 +199,13 @@ export const RoutineRemindersScreen: React.FC<RoutineRemindersScreenProps> = () 
                   style={{ width: Layout.window.width - 40 }}
                 />
               </View>
-              <Text style={[styles.timePickerSheetTitle, { marginBottom: 12 }]}>Repeat Weekdays Time</Text>
+              <Text style={[styles.timePickerSheetTitle, { marginBottom: 12 }]}>
+                Repeat Weekdays Time
+              </Text>
               <View style={styles.timePickerSheetWeekdays}>
                 {WEEKDAYS.map((weekday) => {
-                  const isWeekdaySelected = draftRepeatWeekdays.includes(weekday);
+                  const isWeekdaySelected =
+                    draftRepeatWeekdays.includes(weekday);
 
                   return (
                     <TouchableWithoutFeedback
@@ -196,7 +214,9 @@ export const RoutineRemindersScreen: React.FC<RoutineRemindersScreenProps> = () 
                         if (!isWeekdaySelected) {
                           setDraftRepeatWeekdays((x) => [...x, weekday]);
                         } else {
-                          setDraftRepeatWeekdays((x) => x.filter((wd) => wd !== weekday));
+                          setDraftRepeatWeekdays((x) =>
+                            x.filter((wd) => wd !== weekday),
+                          );
                         }
                       }}>
                       <View
@@ -207,7 +227,11 @@ export const RoutineRemindersScreen: React.FC<RoutineRemindersScreenProps> = () 
                             backgroundColor: weekdayActiveColor,
                           },
                         ]}>
-                        <Text style={[styles.timePickerSheetWeekday, isWeekdaySelected && { color: colors.text }]}>
+                        <Text
+                          style={[
+                            styles.timePickerSheetWeekday,
+                            isWeekdaySelected && { color: colors.text },
+                          ]}>
                           {weekday}
                         </Text>
                       </View>
@@ -217,7 +241,14 @@ export const RoutineRemindersScreen: React.FC<RoutineRemindersScreenProps> = () 
               </View>
               <Ripple rippleColor="#ffffff" onPress={handleApplyReminders}>
                 <View style={styles.timePickerSheetBtn}>
-                  <Text style={{ color: colors.text, fontWeight: '700', fontSize: 16 }}>Apply Reminders</Text>
+                  <Text
+                    style={{
+                      color: colors.text,
+                      fontWeight: '700',
+                      fontSize: 16,
+                    }}>
+                    Apply Reminders
+                  </Text>
                 </View>
               </Ripple>
             </View>

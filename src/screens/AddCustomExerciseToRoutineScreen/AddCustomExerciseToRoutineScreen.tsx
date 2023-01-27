@@ -34,7 +34,7 @@ export const AddCustomExerciseToRoutineScreen = () => {
   }, []);
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={styles.container} bounces={false}>
       <View style={styles.form}>
         <TextInput
           placeholder="Name"

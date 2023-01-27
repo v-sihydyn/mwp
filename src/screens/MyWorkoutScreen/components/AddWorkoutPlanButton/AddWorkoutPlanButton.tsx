@@ -1,16 +1,21 @@
 import React from 'react';
 import Ripple from 'react-native-material-ripple';
 import { StyleSheet, Text, View } from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { colors } from '../../../../styles/colors';
+import { Icon } from '../../../../components/Icon/Icon';
 
 export const AddWorkoutPlanButton = () => {
   return (
     <Ripple rippleColor="#ffffff">
       <View style={styles.root}>
-        <FontAwesome5 style={styles.prefix} name="plus-circle" color="#ffffff" size={18} />
+        <Icon
+          style={styles.prefix}
+          name="plus-circle"
+          color="#ffffff"
+          size={18}
+        />
         <Text style={styles.label}>Add Workout Plan</Text>
-        <FontAwesome5 style={styles.suffix} name="dumbbell" color="#f2e70c" size={22} />
+        <Icon style={styles.suffix} name="dumbbell" color="#f2e70c" size={22} />
       </View>
     </Ripple>
   );

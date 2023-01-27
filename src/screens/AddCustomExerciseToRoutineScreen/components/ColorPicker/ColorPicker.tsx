@@ -36,7 +36,8 @@ export const ColorPicker = ({ value, onChange }: ColorPickerProps) => {
     <ScrollView
       horizontal={true}
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ alignItems: 'center' }}>
+      contentContainerStyle={{ alignItems: 'center' }}
+      bounces={false}>
       {COLORS.map((color, index) => {
         const isSelected = color === value;
 

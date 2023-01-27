@@ -11,6 +11,7 @@ import Portal from '../../components/Portal/Portal';
 import { BottomSheet } from '../../components/BottomSheet/BottomSheet';
 import { WorkoutSummary } from './components/WorkoutSummary/WorkoutSummary';
 
+// const tabNames = ['1', '2', '3'];
 const tabNames = ['1', '2', '3', '4', '5', '6', '7', '8'];
 
 type WorkoutScreenProps = {};
@@ -20,44 +21,51 @@ export const WorkoutScreen = (props: WorkoutScreenProps) => {
   const [isWorkoutSummarySheetOpen, setIsWorkoutSummarySheetOpen] =
     useState(false);
 
+  const renderHeader = () => null;
+
+  const renderTabBar = (props: any) => (
+    <MaterialTabBar
+      {...props}
+      style={{
+        marginTop: 20,
+        width: windowWidth - 40,
+        alignSelf: 'center',
+      }}
+      contentContainerStyle={{
+        flexGrow: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+      tabStyle={{
+        width: 38,
+        height: 38,
+        borderRadius: 38,
+      }}
+      indicatorStyle={{
+        height: 0,
+      }}
+      labelStyle={{
+        fontWeight: '700',
+        fontSize: 14,
+        color: colors.text,
+      }}
+      activeColor={colors.text}
+      activeBgColor={colors.green}
+      inactiveColor={colors.text}
+      inactiveBgColor={colors.black}
+      scrollEnabled
+    />
+  );
+
   return (
     <PortalHost>
       <View style={styles.container}>
         <Timer />
         <Tabs.Container
-          renderTabBar={(props: any) => (
-            <MaterialTabBar
-              {...props}
-              style={{
-                marginTop: 20,
-                width: windowWidth - 40,
-                alignSelf: 'center',
-              }}
-              contentContainerStyle={{
-                flexGrow: 1,
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-              tabStyle={{
-                width: 38,
-                height: 38,
-                borderRadius: 38,
-              }}
-              indicatorStyle={{
-                height: 0,
-              }}
-              labelStyle={{
-                fontWeight: '700',
-                fontSize: 14,
-                color: colors.text,
-              }}
-              activeColor={colors.text}
-              activeBgColor={colors.green}
-              inactiveColor={colors.text}
-              inactiveBgColor={colors.black}
-              scrollEnabled
-            />
-          )}
+          lazy={true}
+          renderHeader={renderHeader}
+          renderTabBar={renderTabBar}
+          tabBarHeight={58}
           headerContainerStyle={{
             backgroundColor: colors.page,
             elevation: 0,
@@ -66,6 +74,7 @@ export const WorkoutScreen = (props: WorkoutScreenProps) => {
           {tabNames.map((name) => {
             return (
               <Tabs.Tab name={name} key={name}>
+                {/*@TODO: FlatList?*/}
                 <Tabs.ScrollView
                   bounces={false}
                   showsVerticalScrollIndicator={false}>
@@ -76,12 +85,7 @@ export const WorkoutScreen = (props: WorkoutScreenProps) => {
                     <WorkoutExerciseSet index={1} reps={10} weight={20} />
                     <WorkoutExerciseSet index={2} reps={10} weight={20} />
                     <WorkoutExerciseSet index={3} reps={10} weight={20} />
-                    <WorkoutExerciseSet index={3} reps={10} weight={20} />
-                    <WorkoutExerciseSet index={3} reps={10} weight={20} />
-                    <WorkoutExerciseSet index={3} reps={10} weight={20} />
-                    <WorkoutExerciseSet index={3} reps={10} weight={20} />
-                    <WorkoutExerciseSet index={3} reps={10} weight={20} />
-                    <WorkoutExerciseSet index={3} reps={10} weight={20} />
+                    <WorkoutExerciseSet index={4} reps={10} weight={20} />
                   </View>
                 </Tabs.ScrollView>
               </Tabs.Tab>

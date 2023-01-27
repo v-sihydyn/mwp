@@ -7,8 +7,6 @@ type TimerProps = {};
 
 const MIN_RADIUS = 56;
 
-//  animate={{ opacity: 0.3, scale: 1.4 }}
-
 export const Timer = (props: TimerProps) => {
   return (
     <View style={styles.root}>

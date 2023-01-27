@@ -9,55 +9,53 @@ type WorkoutExerciseSetProps = {
   weight: number;
 };
 
-export const WorkoutExerciseSet = ({
-  index,
-  reps,
-  weight,
-}: WorkoutExerciseSetProps) => {
-  const isActive = false;
-  const isFinished = false;
-  const isBeforeRest = false;
-  const isSkipped = false;
+export const WorkoutExerciseSet = React.memo(
+  ({ index, reps, weight }: WorkoutExerciseSetProps) => {
+    const isActive = false;
+    const isFinished = false;
+    const isBeforeRest = false;
+    const isSkipped = false;
 
-  return (
-    <View
-      style={[
-        styles.root,
-        isActive && styles.activeSet,
-        isFinished && styles.finishedSet,
-        isBeforeRest && styles.beforeRestSet,
-        isSkipped && styles.skippedSet,
-      ]}>
-      <View style={styles.counter}>
-        <Text style={styles.counterText}>{index}</Text>
+    return (
+      <View
+        style={[
+          styles.root,
+          isActive && styles.activeSet,
+          isFinished && styles.finishedSet,
+          isBeforeRest && styles.beforeRestSet,
+          isSkipped && styles.skippedSet,
+        ]}>
+        <View style={styles.counter}>
+          <Text style={styles.counterText}>{index}</Text>
+        </View>
+
+        {/* @TODO: edit reps */}
+        <TextInput
+          value={String(reps)}
+          keyboardType="numeric"
+          style={styles.setInput}
+        />
+        <Text style={styles.setLabel}>Reps</Text>
+        {/* @TODO: edit weight */}
+        <TextInput
+          value={String(weight)}
+          keyboardType="numeric"
+          style={styles.setInput}
+        />
+        <Text style={[styles.setLabel, { marginRight: 0 }]}>Kg</Text>
+
+        {/*<Icon name="check" color={colors.green} size={14} style={styles.icon} />*/}
+        {/*<Icon name="times" color={colors.red} size={14} style={styles.icon} />*/}
+        {/*<Icon*/}
+        {/*  name="stopwatch"*/}
+        {/*  color={colors.text}*/}
+        {/*  size={14}*/}
+        {/*  style={styles.icon}*/}
+        {/*/>*/}
       </View>
-
-      {/* @TODO: edit reps */}
-      <TextInput
-        value={String(reps)}
-        keyboardType="numeric"
-        style={styles.setInput}
-      />
-      <Text style={styles.setLabel}>Reps</Text>
-      {/* @TODO: edit weight */}
-      <TextInput
-        value={String(weight)}
-        keyboardType="numeric"
-        style={styles.setInput}
-      />
-      <Text style={[styles.setLabel, { marginRight: 0 }]}>Kg</Text>
-
-      {/*<Icon name="check" color={colors.green} size={14} style={styles.icon} />*/}
-      {/*<Icon name="times" color={colors.red} size={14} style={styles.icon} />*/}
-      {/*<Icon*/}
-      {/*  name="stopwatch"*/}
-      {/*  color={colors.text}*/}
-      {/*  size={14}*/}
-      {/*  style={styles.icon}*/}
-      {/*/>*/}
-    </View>
-  );
-};
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   root: {

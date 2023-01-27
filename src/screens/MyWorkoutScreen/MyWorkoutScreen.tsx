@@ -11,7 +11,6 @@ import { colors } from '../../styles/colors';
 import { WorkoutPlanActions } from './components/WorkoutPlanActions/WorkoutPlanActions';
 import { BottomSheet } from '../../components/BottomSheet/BottomSheet';
 import { RootTabScreenProps } from '../../../types';
-import PortalHost from '../../components/Portal/PortalHost';
 import { openRenameRoutineModal } from '../../components/modals/RenameRoutineModal/RenameRoutineModal';
 import { openDeleteRoutineModal } from '../../components/modals/DeleteRoutineModal/DeleteRoutineModal';
 import { openRenamePlanModal } from '../../components/modals/RenamePlanModal/RenamePlanModal';
@@ -105,77 +104,77 @@ export const MyWorkoutScreen = ({ navigation }: Props) => {
   }, []);
 
   return (
-    <PortalHost>
-      <View style={styles.container}>
-        <View
-          style={{
-            height: insets.top,
-            zIndex: 1,
-            backgroundColor: colors.page,
-          }}
-        />
-        <Tabs.Container
-          revealHeaderOnScroll={true}
-          renderHeader={() => header}
-          renderTabBar={(props: any) => (
-            <MaterialTabBar
-              {...props}
-              style={{
-                marginTop: 20,
-                width: windowWidth - 40,
-                alignSelf: 'center',
-              }}
-              indicatorStyle={{
-                backgroundColor: colors.text,
-                height: 1,
-              }}
-              labelStyle={{ fontWeight: '700' }}
-              activeColor={colors.text}
-              inactiveColor="#b5b5b5"
-              scrollEnabled
-            />
-          )}
-          headerContainerStyle={{
-            backgroundColor: colors.page,
-            elevation: 0,
-            shadowOpacity: 0,
-          }}>
-          {tabNames.map((name) => {
-            return (
-              <Tabs.Tab name={name} key={name}>
-                <Tabs.ScrollView
-                  bounces={false}
-                  showsVerticalScrollIndicator={false}>
-                  <WorkoutRoutinesList />
-                </Tabs.ScrollView>
-              </Tabs.Tab>
-            );
-          })}
-        </Tabs.Container>
-        <RoutineToolbar
-          onRenameRoutine={handleOpenRenameRoutineModal}
-          onDeleteRoutine={handleOpenDeleteRoutineModal}
-        />
-        <Portal>
-          <WorkoutPlanSheet
-            isVisible={isWorkoutPlanSheetVisible}
-            onClose={onCloseWorkoutPlanSheet}
+    <View style={styles.container}>
+      <View
+        style={{
+          height: insets.top,
+          zIndex: 1,
+          backgroundColor: colors.page,
+        }}
+      />
+      <Tabs.Container
+        revealHeaderOnScroll={true}
+        renderHeader={() => header}
+        headerHeight={64}
+        renderTabBar={(props: any) => (
+          <MaterialTabBar
+            {...props}
+            style={{
+              marginTop: 20,
+              width: windowWidth - 40,
+              alignSelf: 'center',
+            }}
+            indicatorStyle={{
+              backgroundColor: colors.text,
+              height: 1,
+            }}
+            labelStyle={{ fontWeight: '700' }}
+            activeColor={colors.text}
+            inactiveColor="#b5b5b5"
+            scrollEnabled
           />
+        )}
+        tabBarHeight={68}
+        headerContainerStyle={{
+          backgroundColor: colors.page,
+          elevation: 0,
+          shadowOpacity: 0,
+        }}>
+        {tabNames.map((name) => {
+          return (
+            <Tabs.Tab name={name} key={name}>
+              <Tabs.ScrollView
+                bounces={false}
+                showsVerticalScrollIndicator={false}>
+                <WorkoutRoutinesList />
+              </Tabs.ScrollView>
+            </Tabs.Tab>
+          );
+        })}
+      </Tabs.Container>
+      <RoutineToolbar
+        onRenameRoutine={handleOpenRenameRoutineModal}
+        onDeleteRoutine={handleOpenDeleteRoutineModal}
+      />
+      <Portal>
+        <WorkoutPlanSheet
+          isVisible={isWorkoutPlanSheetVisible}
+          onClose={onCloseWorkoutPlanSheet}
+        />
 
-          <BottomSheet
-            isVisible={isWorkoutActionsSheetVisible}
-            onClose={onCloseWorkoutActionsSheet}>
-            <WorkoutPlanActions
-              onInitiateRenamePlan={handleOpenRenamePlanModal}
-              onInitiateDeletePlan={handleOpenDeletePlanModal}
-              onSheetClose={onCloseWorkoutActionsSheet}
-              onGoToRoutinesList={handleGoToRoutinesList}
-              onGoToReminders={handleGoToReminders}
-            />
-          </BottomSheet>
-        </Portal>
-      </View>
-    </PortalHost>
+        <BottomSheet
+          isVisible={isWorkoutActionsSheetVisible}
+          onClose={onCloseWorkoutActionsSheet}>
+          <WorkoutPlanActions
+            onInitiateRenamePlan={handleOpenRenamePlanModal}
+            onInitiateDeletePlan={handleOpenDeletePlanModal}
+            onSheetClose={onCloseWorkoutActionsSheet}
+            onGoToRoutinesList={handleGoToRoutinesList}
+            onGoToReminders={handleGoToReminders}
+          />
+        </BottomSheet>
+      </Portal>
+    </View>
   );
 };
 

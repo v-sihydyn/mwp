@@ -13,7 +13,7 @@ import { colors } from '../../../../../styles/colors';
 
 type Props = {
   name: string;
-  style: StyleProp<ViewStyle>;
+  style?: StyleProp<ViewStyle>;
 };
 
 export const WorkoutExerciseCard: React.FC<Props> = ({ name, style }) => {

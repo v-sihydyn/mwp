@@ -1,31 +1,133 @@
-import { StyleSheet, Text, View } from 'react-native';
-import BasicExample from '../../components/SortableList/Example';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { colors } from '../../styles/colors';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { WorkoutHistoryItem } from './components/WorkoutHistoryItem/WorkoutHistoryItem';
+
+const WORKOUTS = [
+  {
+    date: '4d ago',
+    workout: {
+      name: 'Legs',
+      exercisesCount: 4,
+      duration: '48:05',
+    },
+  },
+  {
+    date: '4d ago',
+    workout: {
+      name: 'Legs',
+      exercisesCount: 4,
+      duration: '48:05',
+    },
+  },
+  {
+    date: '4d ago',
+    workout: {
+      name: 'Legs',
+      exercisesCount: 4,
+      duration: '48:05',
+    },
+  },
+  {
+    date: '4d ago',
+    workout: {
+      name: 'Legs',
+      exercisesCount: 4,
+      duration: '48:05',
+    },
+  },
+  {
+    date: '4d ago',
+    workout: {
+      name: 'Legs',
+      exercisesCount: 4,
+      duration: '48:05',
+    },
+  },
+  {
+    date: '4d ago',
+    workout: {
+      name: 'Legs',
+      exercisesCount: 4,
+      duration: '48:05',
+    },
+  },
+  {
+    date: '4d ago',
+    workout: {
+      name: 'Legs',
+      exercisesCount: 4,
+      duration: '48:05',
+    },
+  },
+  {
+    date: '4d ago',
+    workout: {
+      name: 'Legs',
+      exercisesCount: 4,
+      duration: '48:05',
+    },
+  },
+  {
+    date: '4d ago',
+    workout: {
+      name: 'Legs',
+      exercisesCount: 4,
+      duration: '48:05',
+    },
+  },
+  {
+    date: '4d ago',
+    workout: {
+      name: 'Legs',
+      exercisesCount: 4,
+      duration: '48:05',
+    },
+  },
+  {
+    date: '4d ago',
+    workout: {
+      name: 'Legs',
+      exercisesCount: 4,
+      duration: '48:05',
+    },
+  },
+];
 
 export const StatisticsScreen = () => {
+  const insets = useSafeAreaInsets();
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>StatisticsScreen</Text>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
+      <Text style={styles.title}>Workout History</Text>
 
-      <BasicExample />
-
-      {/*<DraggableBasicExample />*/}
+      <FlatList
+        data={WORKOUTS}
+        renderItem={({ item, index }) => (
+          <WorkoutHistoryItem
+            item={item}
+            isFirst={index === 0}
+            isLast={index == WORKOUTS.length - 1}
+          />
+        )}
+        bounces={false}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: colors.page,
     flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'center',
+    flexDirection: 'column',
+    position: 'relative',
   },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+    fontSize: 18,
+    color: colors.text,
+    textAlign: 'center',
+    marginBottom: 40,
   },
 });

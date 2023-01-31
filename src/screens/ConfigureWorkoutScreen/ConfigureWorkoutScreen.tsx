@@ -128,6 +128,7 @@ export const ConfigureWorkoutScreen = () => {
         refreshing={false}
         ListHeaderComponent={ListHeader}
         showsVerticalScrollIndicator={false}
+        bounces={false}
         style={styles.list}
       />
     </View>

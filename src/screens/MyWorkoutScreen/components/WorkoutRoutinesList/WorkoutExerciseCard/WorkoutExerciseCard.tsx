@@ -4,8 +4,6 @@ import {
   View,
   Image,
   Text,
-  Pressable,
-  TouchableWithoutFeedback,
   StyleProp,
   ViewStyle,
 } from 'react-native';
@@ -18,28 +16,26 @@ type Props = {
 
 export const WorkoutExerciseCard: React.FC<Props> = ({ name, style }) => {
   return (
-    <TouchableWithoutFeedback>
-      <View style={[styles.root, style]}>
-        <View style={styles.content}>
-          <Image
-            style={styles.image}
-            source={{
-              uri: 'https://dummyimage.com/60x60/fff/aaa',
-            }}
-          />
-          <View style={{ flexDirection: 'column' }}>
-            <Text style={styles.title}>{name}</Text>
-            <Text style={styles.subtitle}>Chest</Text>
-          </View>
-        </View>
-        <View style={styles.footer}>
-          <View style={styles.colorIndicator} />
-          <Text style={styles.footerItem}>3 sets</Text>
-          <Text style={styles.footerItem}>10 reps</Text>
-          <Text style={styles.footerItem}>70 kg</Text>
+    <View style={[styles.root, style]}>
+      <View style={styles.content}>
+        <Image
+          style={styles.image}
+          source={{
+            uri: 'https://dummyimage.com/60x60/fff/aaa',
+          }}
+        />
+        <View style={{ flexDirection: 'column' }}>
+          <Text style={styles.title}>{name}</Text>
+          <Text style={styles.subtitle}>Chest</Text>
         </View>
       </View>
-    </TouchableWithoutFeedback>
+      <View style={styles.footer}>
+        <View style={styles.colorIndicator} />
+        <Text style={styles.footerItem}>3 sets</Text>
+        <Text style={styles.footerItem}>10 reps</Text>
+        <Text style={styles.footerItem}>70 kg</Text>
+      </View>
+    </View>
   );
 };
 

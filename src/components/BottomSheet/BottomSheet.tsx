@@ -127,51 +127,51 @@ export const BottomSheet: React.FC<Props> = ({
 
   return (
     <View style={StyleSheet.absoluteFill}>
-      <Pressable style={[styles.backdrop]} onPress={onClose}>
+      <Pressable style={[styles.backdrop]} onPress={onClose}></Pressable>
+      <Animated.View
+        style={[
+          styles.wrapper,
+          {
+            position: 'absolute',
+            bottom: didCalculateContentHeight ? 0 : -deviceHeight,
+            transform: [{ translateY: modalY.current }],
+          },
+        ]}
+        onLayout={onWrapperLayout}
+        pointerEvents="box-none">
         <Animated.View
-          style={[
-            styles.wrapper,
-            {
-              position: 'absolute',
-              bottom: didCalculateContentHeight ? 0 : -deviceHeight,
-              transform: [{ translateY: modalY.current }],
-            },
-          ]}
-          onLayout={onWrapperLayout}>
-          <Animated.View
-            {...(withHandle ? {} : panResponder.panHandlers)}
-            style={{ transform: [{ translateY: pan.y }] }}
-            onLayout={(event) => {
-              const { height } = event.nativeEvent.layout;
-              innerContentHeight.current = height;
-            }}>
-            {withHandle && (
+          {...(withHandle ? {} : panResponder.panHandlers)}
+          style={{ transform: [{ translateY: pan.y }] }}
+          onLayout={(event) => {
+            const { height } = event.nativeEvent.layout;
+            innerContentHeight.current = height;
+          }}>
+          {withHandle && (
+            <View
+              {...panResponder.panHandlers}
+              style={{
+                width: '100%',
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: colors.surface2,
+              }}>
               <View
-                {...panResponder.panHandlers}
                 style={{
-                  width: '100%',
-                  height: 40,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: colors.surface2,
-                }}>
-                <View
-                  style={{
-                    height: 5,
-                    width: '10%',
-                    backgroundColor: colors.text3,
-                    borderRadius: 12,
-                  }}
-                />
-              </View>
-            )}
+                  height: 5,
+                  width: '10%',
+                  backgroundColor: colors.text3,
+                  borderRadius: 12,
+                }}
+              />
+            </View>
+          )}
 
-            <TouchableWithoutFeedback>
-              {typeof children === 'function' ? children(rendered) : children}
-            </TouchableWithoutFeedback>
-          </Animated.View>
+          <View>
+            {typeof children === 'function' ? children(rendered) : children}
+          </View>
         </Animated.View>
-      </Pressable>
+      </Animated.View>
     </View>
   );
 };

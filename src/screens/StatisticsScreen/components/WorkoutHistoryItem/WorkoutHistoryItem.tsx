@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { colors } from '../../../../styles/colors';
 import { Icon } from '../../../../components/Icon/Icon';
 
@@ -13,66 +13,72 @@ type WorkoutHistoryItemProps = {
   };
   isFirst: boolean;
   isLast: boolean;
+  onPress: () => void;
 };
 
 export const WorkoutHistoryItem = ({
   item,
   isFirst,
   isLast,
+  onPress,
 }: WorkoutHistoryItemProps) => {
   return (
-    <View style={styles.root}>
-      <Text style={styles.date}>{item.date}</Text>
+    <Pressable onPress={onPress}>
+      <View style={styles.root}>
+        <Text style={styles.date}>{item.date}</Text>
 
-      <View
-        style={{
-          flexDirection: 'column',
-          alignItems: 'center',
-          height: '100%',
-        }}>
         <View
           style={{
-            backgroundColor: isFirst ? 'transparent' : colors.surface2,
-            flex: 1,
-            width: 2,
-          }}
-        />
-        <View
-          style={{
-            height: 8,
-            width: 8,
-            backgroundColor: colors.green,
-            borderRadius: 8,
-          }}
-        />
-        <View
-          style={{
-            backgroundColor: isLast ? 'transparent' : colors.surface2,
-            flex: 1,
-            width: 2,
-          }}
-        />
-      </View>
+            flexDirection: 'column',
+            alignItems: 'center',
+            height: '100%',
+          }}>
+          <View
+            style={{
+              backgroundColor: isFirst ? 'transparent' : colors.surface2,
+              flex: 1,
+              width: 2,
+            }}
+          />
+          <View
+            style={{
+              height: 8,
+              width: 8,
+              backgroundColor: colors.green,
+              borderRadius: 8,
+            }}
+          />
+          <View
+            style={{
+              backgroundColor: isLast ? 'transparent' : colors.surface2,
+              flex: 1,
+              width: 2,
+            }}
+          />
+        </View>
 
-      <View style={styles.workoutOverview}>
-        <View style={styles.workoutOverviewContent}>
-          <Text style={styles.workoutName}>{item.workout.name}</Text>
-        </View>
-        <View style={styles.workoutOverviewFooter}>
-          <View style={styles.workoutOverviewFooterSection}>
-            <Text style={styles.exerciseCount}>
-              {item.workout.exercisesCount}
-            </Text>
-            <Icon name="dumbbell" color={colors.text} size={14} />
+        <View style={styles.workoutOverview}>
+          <View style={styles.workoutOverviewContent}>
+            <Text style={styles.workoutName}>{item.workout.name}</Text>
           </View>
-          <View style={styles.divider} />
-          <View style={styles.workoutOverviewFooterSection}>
-            <Text style={styles.workoutDuration}>{item.workout.duration}</Text>
-            <Icon name="clock" color={colors.text} size={14} />
+          <View style={styles.workoutOverviewFooter}>
+            <View style={styles.workoutOverviewFooterSection}>
+              <Text style={styles.exerciseCount}>
+                {item.workout.exercisesCount}
+              </Text>
+              <Icon name="dumbbell" color={colors.text} size={14} />
+            </View>
+            <View style={styles.divider} />
+            <View style={styles.workoutOverviewFooterSection}>
+              <Text style={styles.workoutDuration}>
+                {item.workout.duration}
+              </Text>
+              <Icon name="clock" color={colors.text} size={14} />
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

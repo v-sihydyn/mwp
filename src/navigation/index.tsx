@@ -17,6 +17,7 @@ import { ExerciseFilterInput } from '../screens/AddExerciseToRoutineScreen/compo
 import { AddCustomExerciseToRoutineScreen } from '../screens/AddCustomExerciseToRoutineScreen/AddCustomExerciseToRoutineScreen';
 import { ConfigureWorkoutScreen } from '../screens/ConfigureWorkoutScreen/ConfigureWorkoutScreen';
 import { WorkoutScreen } from '../screens/WorkoutScreen/WorkoutScreen';
+import { WorkoutDetailsScreen } from '../screens/WorkoutDetailsScreen/WorkoutDetailsScreen';
 
 export default function Navigation() {
   return (
@@ -90,6 +91,13 @@ function RootNavigator() {
           options={{
             title: '',
             gestureEnabled: false,
+          }}
+        />
+        <Stack.Screen
+          name="WorkoutDetails"
+          component={WorkoutDetailsScreen}
+          options={{
+            title: '',
           }}
         />
       </Stack.Group>

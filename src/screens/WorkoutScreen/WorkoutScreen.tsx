@@ -14,10 +14,8 @@ import { WorkoutSummary } from './components/WorkoutSummary/WorkoutSummary';
 // const tabNames = ['1', '2', '3'];
 const tabNames = ['1', '2', '3', '4', '5', '6', '7', '8'];
 
-type WorkoutScreenProps = {};
-
-export const WorkoutScreen = (props: WorkoutScreenProps) => {
-  const { width: windowWidth } = useWindowDimensions();
+export const WorkoutScreen = () => {
+  const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   const [isWorkoutSummarySheetOpen, setIsWorkoutSummarySheetOpen] =
     useState(false);
 
@@ -159,7 +157,38 @@ export const WorkoutScreen = (props: WorkoutScreenProps) => {
           isVisible={isWorkoutSummarySheetOpen}
           onClose={() => setIsWorkoutSummarySheetOpen(false)}
           withHandle={true}>
-          <WorkoutSummary />
+          <View
+            style={{
+              position: 'relative',
+              height: windowHeight - 150,
+            }}>
+            <WorkoutSummary
+              title="Nice workout!"
+              listStyle={{ paddingBottom: 80 }}
+            />
+
+            <CustomButton
+              style={[
+                styles.button,
+                {
+                  width: windowWidth - 40,
+                },
+              ]}
+              onPress={() => {}}>
+              Ok
+            </CustomButton>
+            <View
+              style={{
+                position: 'absolute',
+                bottom: 20,
+                width: windowWidth,
+                backgroundColor: colors.page,
+                height: 20,
+                alignSelf: 'center',
+                opacity: 0.9,
+              }}
+            />
+          </View>
         </BottomSheet>
       </Portal>
     </PortalHost>
@@ -219,5 +248,11 @@ const styles = StyleSheet.create({
     color: '#707172',
     fontSize: 16,
     marginRight: 40,
+  },
+  button: {
+    paddingVertical: 14,
+    position: 'absolute',
+    bottom: 40,
+    alignSelf: 'center',
   },
 });

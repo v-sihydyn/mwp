@@ -6,15 +6,11 @@ import { modalStyles } from '../modalStyles';
 import { colors } from '../../../styles/colors';
 
 type Props = INBModalProps & {
-  onResolve: (value?: any) => void;
-  onReject: (reason?: any) => void;
+  onResolve: (value: any) => void;
+  onReject: (reason: any) => void;
 };
 
-export const BeforeWorkoutStartModal = ({
-  isOpen,
-  onResolve,
-  onReject,
-}: Props) => {
+export const DeleteWorkoutModal = ({ isOpen, onResolve, onReject }: Props) => {
   return (
     <NBModal isOpen={isOpen} onClose={() => onReject('close reject')}>
       <NBModal.Content backgroundColor={colors.surface2}>
@@ -22,11 +18,11 @@ export const BeforeWorkoutStartModal = ({
           backgroundColor={colors.surface2}
           padding={4}
           borderBottomWidth={0}>
-          <Text style={modalStyles.modalTitle}>Play Routine</Text>
+          <Text style={modalStyles.modalTitle}>Delete workout</Text>
         </NBModal.Header>
         <NBModal.Body padding={4} paddingTop={2}>
           <Text style={modalStyles.modalSubtitle}>
-            You haven't finished your previous workout
+            Are you sure you want to delete the workout?
           </Text>
         </NBModal.Body>
         <NBModal.Footer
@@ -35,13 +31,13 @@ export const BeforeWorkoutStartModal = ({
           borderTopWidth={0}>
           <TouchableOpacity
             style={[modalStyles.modalButton, { marginRight: 40 }]}
-            onPress={() => onResolve()}>
-            <Text style={modalStyles.modalButtonText}>Start new</Text>
+            onPress={() => onReject('close reject')}>
+            <Text style={modalStyles.modalButtonText}>Cancel</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={modalStyles.modalButton}
-            onPress={() => onResolve()}>
-            <Text style={modalStyles.modalButtonText}>Resume previous</Text>
+            onPress={() => onResolve('close resolve')}>
+            <Text style={modalStyles.modalButtonText}>OK</Text>
           </TouchableOpacity>
         </NBModal.Footer>
       </NBModal.Content>
@@ -49,4 +45,4 @@ export const BeforeWorkoutStartModal = ({
   );
 };
 
-export const openBeforeWorkoutStartModal = create(BeforeWorkoutStartModal);
+export const openDeleteWorkoutModal = create(DeleteWorkoutModal);

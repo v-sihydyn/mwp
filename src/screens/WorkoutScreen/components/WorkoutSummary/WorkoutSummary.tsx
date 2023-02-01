@@ -5,6 +5,8 @@ import {
   Dimensions,
   useWindowDimensions,
   FlatList,
+  StyleProp,
+  ViewStyle,
 } from 'react-native';
 import { colors } from '../../../../styles/colors';
 import { PieChart } from '../../../../components/PieChart/PieChart';
@@ -63,9 +65,13 @@ const chartData = [
   },
 ];
 
-export const WorkoutSummary = () => {
+type WorkoutSummaryProps = {
+  title: string;
+  listStyle?: StyleProp<ViewStyle>;
+};
+
+export const WorkoutSummary = ({ title, listStyle }: WorkoutSummaryProps) => {
   const insets = useSafeAreaInsets();
-  const { width: windowWidth } = useWindowDimensions();
 
   return (
     <View style={[styles.root, { paddingBottom: insets.bottom }]}>
@@ -78,7 +84,7 @@ export const WorkoutSummary = () => {
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={() => (
             <View style={styles.header}>
-              <Text style={styles.title}>Nice workout!</Text>
+              <Text style={styles.title}>{title}</Text>
               <View
                 style={{
                   justifyContent: 'center',
@@ -150,29 +156,7 @@ export const WorkoutSummary = () => {
               style={{ marginHorizontal: 20 }}
             />
           )}
-          contentContainerStyle={{ paddingBottom: 80 }}
-        />
-
-        <CustomButton
-          style={[
-            styles.button,
-            {
-              width: windowWidth - 40,
-            },
-          ]}
-          onPress={() => {}}>
-          Ok
-        </CustomButton>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            width: windowWidth,
-            backgroundColor: colors.page,
-            height: 20,
-            alignSelf: 'center',
-            opacity: 0.9,
-          }}
+          contentContainerStyle={listStyle}
         />
       </View>
     </View>
@@ -188,8 +172,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 12,
     flex: 1,
     position: 'relative',
-
-    height: Dimensions.get('window').height - 150,
   },
   header: {
     backgroundColor: colors.surface2,
@@ -198,7 +180,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    color: colors.text,
+    color: colors.text3,
     textAlign: 'center',
     marginBottom: 30,
   },
@@ -220,11 +202,5 @@ const styles = StyleSheet.create({
   detailsDivider: {
     width: 2,
     backgroundColor: '#313233',
-  },
-  button: {
-    paddingVertical: 14,
-    position: 'absolute',
-    bottom: 20,
-    alignSelf: 'center',
   },
 });

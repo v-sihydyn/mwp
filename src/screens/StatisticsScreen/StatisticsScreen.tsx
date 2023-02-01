@@ -14,6 +14,7 @@ import React, { useMemo, useState } from 'react';
 import { BottomSheet } from '../../components/BottomSheet/BottomSheet';
 import { CalendarList } from 'react-native-calendars';
 import dayjs from 'dayjs';
+import { useNavigation } from '@react-navigation/native';
 
 const WORKOUTS = [
   {
@@ -115,6 +116,7 @@ const DATES_WITH_WORKOUT_RECORDS = [
 ];
 
 export const StatisticsScreen = () => {
+  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const { width: windowWidth } = useWindowDimensions();
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
@@ -159,6 +161,10 @@ export const StatisticsScreen = () => {
     setFilterDate(null);
   };
 
+  const handleGoToDetails = () => {
+    navigation.navigate('WorkoutDetails');
+  };
+
   const leftIcon = filterDate ? (
     <Pressable onPress={handleClearFilterDate}>
       <Icon name={'times-circle'} color={colors.red} size={18} />
@@ -181,6 +187,7 @@ export const StatisticsScreen = () => {
             item={item}
             isFirst={index === 0}
             isLast={index == WORKOUTS.length - 1}
+            onPress={handleGoToDetails}
           />
         )}
         bounces={false}

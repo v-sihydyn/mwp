@@ -14,6 +14,7 @@ import { Icon } from '../../components/Icon/Icon';
 import { ColorPicker } from './components/ColorPicker/ColorPicker';
 import { useNavigation } from '@react-navigation/native';
 import { CustomButton } from '../../components/CustomButton/CustomButton';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export const AddCustomExerciseToRoutineScreen = () => {
   const navigation = useNavigation();
@@ -34,7 +35,10 @@ export const AddCustomExerciseToRoutineScreen = () => {
   }, []);
 
   return (
-    <ScrollView contentContainerStyle={styles.container} bounces={false}>
+    <KeyboardAwareScrollView
+      contentContainerStyle={styles.container}
+      extraScrollHeight={20}
+      bounces={false}>
       <View style={styles.form}>
         <TextInput
           placeholder="Name"
@@ -255,7 +259,7 @@ export const AddCustomExerciseToRoutineScreen = () => {
           multiline={true}
         />
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 

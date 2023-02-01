@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { View, Text, StyleSheet, Alert, Pressable } from 'react-native';
 import React from 'react';
 import { colors } from '../../../../styles/colors';
-import { Icon } from '../../../../components/Icon/Icon';
+import { openEditRepsModal } from '../../../../components/modals/EditSetRepsModal/EditSetRepsModal';
 
 type WorkoutExerciseSetProps = {
   index: number;
@@ -16,6 +16,20 @@ export const WorkoutExerciseSet = React.memo(
     const isBeforeRest = false;
     const isSkipped = false;
 
+    const handleEditReps = async (currentReps: number) => {
+      const newValue = await openEditRepsModal({
+        initialValue: String(currentReps),
+      });
+      Alert.alert('new value: ' + newValue);
+    };
+
+    const handleEditWeight = async (currentWeight: number) => {
+      const newValue = await openEditRepsModal({
+        initialValue: String(currentWeight),
+      });
+      Alert.alert('new value: ' + newValue);
+    };
+
     return (
       <View
         style={[
@@ -29,19 +43,17 @@ export const WorkoutExerciseSet = React.memo(
           <Text style={styles.counterText}>{index}</Text>
         </View>
 
-        {/* @TODO: edit reps */}
-        <TextInput
-          value={String(reps)}
-          keyboardType="numeric"
-          style={styles.setInput}
-        />
+        <Pressable onPress={() => handleEditReps(reps)}>
+          <View style={styles.set}>
+            <Text style={styles.setText}>{reps}</Text>
+          </View>
+        </Pressable>
         <Text style={styles.setLabel}>Reps</Text>
-        {/* @TODO: edit weight */}
-        <TextInput
-          value={String(weight)}
-          keyboardType="numeric"
-          style={styles.setInput}
-        />
+        <Pressable onPress={() => handleEditWeight(weight)}>
+          <View style={styles.set}>
+            <Text style={styles.setText}>{weight}</Text>
+          </View>
+        </Pressable>
         <Text style={[styles.setLabel, { marginRight: 0 }]}>Kg</Text>
 
         {/*<Icon name="check" color={colors.green} size={14} style={styles.icon} />*/}
@@ -91,15 +103,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.surface,
   },
-  setInput: {
+  set: {
     backgroundColor: colors.black,
     width: 50,
     height: 40,
     borderRadius: 8,
+    marginRight: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  setText: {
     color: colors.text,
     fontSize: 16,
-    textAlign: 'center',
-    marginRight: 8,
   },
   setLabel: {
     color: colors.text,

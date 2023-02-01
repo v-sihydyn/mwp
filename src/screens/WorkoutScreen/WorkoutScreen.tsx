@@ -72,20 +72,22 @@ export const WorkoutScreen = () => {
           {tabNames.map((name) => {
             return (
               <Tabs.Tab name={name} key={name}>
-                {/*@TODO: FlatList?*/}
-                <Tabs.ScrollView
+                <Tabs.FlatList
+                  data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
+                  renderItem={({ item }) => (
+                    <WorkoutExerciseSet index={item} reps={10} weight={20} />
+                  )}
+                  contentContainerStyle={styles.exerciseWrapper}
                   bounces={false}
-                  showsVerticalScrollIndicator={false}>
-                  <View style={styles.exerciseWrapper}>
-                    <Text style={styles.title}>Exercise Name</Text>
-                    {/* @TODO: edit notes */}
-                    <Text style={styles.note}>Exercise note</Text>
-                    <WorkoutExerciseSet index={1} reps={10} weight={20} />
-                    <WorkoutExerciseSet index={2} reps={10} weight={20} />
-                    <WorkoutExerciseSet index={3} reps={10} weight={20} />
-                    <WorkoutExerciseSet index={4} reps={10} weight={20} />
-                  </View>
-                </Tabs.ScrollView>
+                  showsVerticalScrollIndicator={false}
+                  ListHeaderComponent={() => (
+                    <>
+                      <Text style={styles.title}>Exercise Name</Text>
+                      {/* @TODO: edit notes */}
+                      <Text style={styles.note}>Exercise note</Text>
+                    </>
+                  )}
+                />
               </Tabs.Tab>
             );
           })}
@@ -216,7 +218,6 @@ const styles = StyleSheet.create({
   },
   exerciseWrapper: {
     padding: 20,
-    flex: 1,
   },
 
   //

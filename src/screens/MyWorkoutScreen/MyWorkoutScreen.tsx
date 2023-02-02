@@ -18,7 +18,7 @@ import { openDeletePlanModal } from '../../components/modals/DeletePlanModal/Del
 import { MaterialTabBar, Tabs } from 'react-native-collapsible-tab-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const tabNames = ['12', 'Product Design', 'Development', 'Project Management'];
+const tabNames = ['Push A', 'Legs', 'Push B', 'Pull A', 'Pull B', 'Hands'];
 
 type Props = RootTabScreenProps<'MyWorkout'>;
 
@@ -128,7 +128,17 @@ export const MyWorkoutScreen = ({ navigation }: Props) => {
               backgroundColor: colors.text,
               height: 1,
             }}
-            labelStyle={{ fontWeight: '700' }}
+            labelStyle={{
+              fontWeight: '700',
+              margin: 0,
+              textTransform: 'capitalize',
+              fontSize: 15,
+            }}
+            tabStyle={{
+              marginRight: 20,
+              paddingHorizontal: 0,
+              height: 40,
+            }}
             activeColor={colors.text}
             inactiveColor="#b5b5b5"
             scrollEnabled

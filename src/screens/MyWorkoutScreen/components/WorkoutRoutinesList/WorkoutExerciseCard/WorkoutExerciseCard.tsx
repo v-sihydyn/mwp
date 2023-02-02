@@ -46,12 +46,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   image: {
-    width: 60,
-    height: 60,
-    marginRight: 12,
+    width: 56,
+    height: 56,
+    borderRadius: 8,
+    marginRight: 14,
   },
   content: {
-    padding: 12,
+    padding: 16,
     flexDirection: 'row',
     backgroundColor: colors.surface2,
     borderRadius: 12,
@@ -65,7 +66,8 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   footer: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
     paddingRight: 60,
     flexDirection: 'row',
     alignItems: 'center',

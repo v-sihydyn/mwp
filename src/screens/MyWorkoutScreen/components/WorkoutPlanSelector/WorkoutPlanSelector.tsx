@@ -29,7 +29,7 @@ const SCREEN_PADDING = 20;
 
 const styles = StyleSheet.create({
   wrapper: {
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
     height: 44,
     width: SCREEN_WIDTH - (SCREEN_PADDING * 2 + 20 + 40),
     backgroundColor: colors.surface,

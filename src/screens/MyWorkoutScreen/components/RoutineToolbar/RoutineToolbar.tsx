@@ -41,8 +41,6 @@ export const RoutineToolbar: React.FC<RoutineToolbarProps> = ({
 
   const navigation = useNavigation();
 
-  // const dropdownRef = useRef();
-
   const handleToggleDropdown = () => {
     const nextIsVisible = !isDropdownVisible;
 

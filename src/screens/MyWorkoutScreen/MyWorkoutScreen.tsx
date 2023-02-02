@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
 import { WorkoutPlanSelector } from './components/WorkoutPlanSelector/WorkoutPlanSelector';
 import { WorkoutPlanActionsButton } from './components/WorkoutPlanActionsButton/WorkoutPlanActionsButton';
@@ -17,8 +17,18 @@ import { openRenamePlanModal } from '../../components/modals/RenamePlanModal/Ren
 import { openDeletePlanModal } from '../../components/modals/DeletePlanModal/DeletePlanModal';
 import { MaterialTabBar, Tabs } from 'react-native-collapsible-tab-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { CustomButton } from '../../components/CustomButton/CustomButton';
+import { openCreateRoutineModal } from '../../components/modals/CreateRoutineModal/CreateRoutineModal';
 
-const tabNames = ['Push A', 'Legs', 'Push B', 'Pull A', 'Pull B', 'Hands'];
+const tabNames = [
+  'Push A',
+  'Legs',
+  'Push B',
+  'Pull A',
+  'Pull B',
+  'Hands',
+  'Abs',
+];
 
 type Props = RootTabScreenProps<'MyWorkout'>;
 
@@ -86,6 +96,16 @@ export const MyWorkoutScreen = ({ navigation }: Props) => {
     }
   };
 
+  const handleOpenCreateRoutineModal = async () => {
+    try {
+      const resp = await openCreateRoutineModal();
+
+      console.log('promise modal resolve: ', resp);
+    } catch (e) {
+      console.log('promise modal reject: ', e);
+    }
+  };
+
   const handleGoToRoutinesList = () => {
     navigation.navigate('RoutinesManagement');
   };
@@ -117,32 +137,54 @@ export const MyWorkoutScreen = ({ navigation }: Props) => {
         renderHeader={() => header}
         headerHeight={64}
         renderTabBar={(props: any) => (
-          <MaterialTabBar
-            {...props}
+          <View
             style={{
               marginTop: 20,
-              width: windowWidth - 40,
-              alignSelf: 'center',
-            }}
-            indicatorStyle={{
-              backgroundColor: colors.text,
-              height: 1,
-            }}
-            labelStyle={{
-              fontWeight: '700',
-              margin: 0,
-              textTransform: 'capitalize',
-              fontSize: 15,
-            }}
-            tabStyle={{
-              marginRight: 20,
-              paddingHorizontal: 0,
-              height: 40,
-            }}
-            activeColor={colors.text}
-            inactiveColor="#b5b5b5"
-            scrollEnabled
-          />
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '100%',
+              flex: 1,
+            }}>
+            <MaterialTabBar
+              {...props}
+              width={windowWidth - 105 - 20}
+              style={{
+                marginLeft: 20,
+                flex: 1,
+              }}
+              indicatorStyle={{
+                backgroundColor: colors.text,
+                height: 1,
+              }}
+              labelStyle={{
+                fontWeight: '700',
+                textTransform: 'capitalize',
+                fontSize: 15,
+                margin: 0,
+              }}
+              tabStyle={{
+                marginRight: 20,
+                paddingHorizontal: 0,
+                height: 30,
+              }}
+              activeColor={colors.text}
+              inactiveColor="#b5b5b5"
+              scrollEnabled
+            />
+            <CustomButton
+              style={{
+                height: 32,
+                borderTopLeftRadius: 12,
+                borderBottomLeftRadius: 12,
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
+              }}
+              onPress={handleOpenCreateRoutineModal}>
+              <Text style={{ fontSize: 13, fontWeight: 'bold' }}>
+                New Routine
+              </Text>
+            </CustomButton>
+          </View>
         )}
         tabBarHeight={68}
         headerContainerStyle={{

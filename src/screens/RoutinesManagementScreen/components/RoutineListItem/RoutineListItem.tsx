@@ -17,12 +17,20 @@ export const RoutineListItem: React.FC<RoutineListItemProps> = ({
   onInitiateDuplicate,
   onInitiateDelete,
 }) => {
+  const commonItemProps = {
+    paddingTop: 3,
+    paddingBottom: 3,
+    paddingLeft: 1,
+    paddingRight: 1,
+  };
+
   return (
     <View style={styles.content}>
       <Text style={styles.title}>{name}</Text>
       <Menu
-        padding={3}
+        padding={0}
         backgroundColor={colors.page}
+        borderRadius={12}
         placement="bottom right"
         trigger={(triggerProps) => (
           <Pressable {...triggerProps} hitSlop={20}>
@@ -30,6 +38,7 @@ export const RoutineListItem: React.FC<RoutineListItemProps> = ({
           </Pressable>
         )}>
         <Menu.Item
+          {...commonItemProps}
           onPress={onInitiateRename}
           _pressed={{ backgroundColor: colors.surface2 }}>
           <View
@@ -42,12 +51,13 @@ export const RoutineListItem: React.FC<RoutineListItemProps> = ({
               name="pencil-alt"
               color={colors.text}
               size={16}
-              style={{ marginRight: 8 }}
+              style={{ marginRight: 12 }}
             />
-            <Text style={{ color: colors.text, fontSize: 16 }}>Rename</Text>
+            <Text style={{ color: colors.text, fontSize: 15 }}>Rename</Text>
           </View>
         </Menu.Item>
         <Menu.Item
+          {...commonItemProps}
           onPress={onInitiateDuplicate}
           _pressed={{ backgroundColor: colors.surface2 }}>
           <View
@@ -60,12 +70,13 @@ export const RoutineListItem: React.FC<RoutineListItemProps> = ({
               name="copy"
               color={colors.text}
               size={16}
-              style={{ marginRight: 8 }}
+              style={{ marginRight: 12 }}
             />
-            <Text style={{ color: colors.text, fontSize: 16 }}>Duplicate</Text>
+            <Text style={{ color: colors.text, fontSize: 15 }}>Duplicate</Text>
           </View>
         </Menu.Item>
         <Menu.Item
+          {...commonItemProps}
           onPress={onInitiateDelete}
           _pressed={{ backgroundColor: colors.surface2 }}>
           <View
@@ -78,9 +89,9 @@ export const RoutineListItem: React.FC<RoutineListItemProps> = ({
               name="trash"
               color={colors.red}
               size={16}
-              style={{ marginRight: 8 }}
+              style={{ marginRight: 12 }}
             />
-            <Text style={{ color: colors.red, fontSize: 16 }}>Delete</Text>
+            <Text style={{ color: colors.red, fontSize: 15 }}>Delete</Text>
           </View>
         </Menu.Item>
       </Menu>

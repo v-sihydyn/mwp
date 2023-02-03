@@ -18,6 +18,8 @@ import { AddCustomExerciseToRoutineScreen } from '../screens/AddCustomExerciseTo
 import { ConfigureWorkoutScreen } from '../screens/ConfigureWorkoutScreen/ConfigureWorkoutScreen';
 import { WorkoutScreen } from '../screens/WorkoutScreen/WorkoutScreen';
 import { WorkoutDetailsScreen } from '../screens/WorkoutDetailsScreen/WorkoutDetailsScreen';
+import { ProfileScreen } from '../screens/ProfileScreen/ProfileScreen';
+import { Icon, IconProps } from '../components/Icon/Icon';
 
 export default function Navigation() {
   return (
@@ -153,20 +155,38 @@ function BottomTabNavigator() {
             padding: 10,
             height: 60,
           },
-          headerShown: false,
+          headerStyle: { backgroundColor: colors.page },
+          headerTitle: 'Workout History',
+        }}
+      />
+      <BottomTab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon
+              name="user-circle"
+              solid
+              color={focused ? '#ffffff' : '#b5b5b5'}
+              size={14}
+            />
+          ),
+          tabBarActiveTintColor: '#ffffff',
+          tabBarInactiveTintColor: '#b3b3b3',
+          tabBarActiveBackgroundColor: '#181a1c',
+          tabBarInactiveBackgroundColor: '#181a1c',
+          tabBarItemStyle: {
+            padding: 10,
+            height: 60,
+          },
+          headerStyle: { backgroundColor: colors.page },
         }}
       />
     </BottomTab.Navigator>
   );
 }
 
-const TabBarIcon = ({
-  size = 18,
-  ...props
-}: {
-  name: React.ComponentProps<typeof FontAwesome5>['name'];
-  color: string;
-  size?: number;
-}) => {
-  return <FontAwesome5 size={size} style={{ marginBottom: -3 }} {...props} />;
+const TabBarIcon = (props: IconProps) => {
+  return <Icon style={{ marginBottom: -3 }} {...props} />;
 };

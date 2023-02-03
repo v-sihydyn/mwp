@@ -125,7 +125,9 @@ export const RoutinesManagementScreen = gestureHandlerRootHOC(() => {
     <View style={styles.container}>
       <DraggableFlatList
         data={routines}
-        onDragEnd={({ data: _data }) => setRoutines(_data)}
+        onDragEnd={(params) => {
+          setRoutines(params.data);
+        }}
         keyExtractor={(item) => String(item.id)}
         renderItem={renderItem}
         bounces={false}

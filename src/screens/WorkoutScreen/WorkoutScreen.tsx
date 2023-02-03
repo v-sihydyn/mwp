@@ -218,6 +218,7 @@ const styles = StyleSheet.create({
   },
   exerciseWrapper: {
     padding: 20,
+    paddingTop: 20,
   },
 
   //

@@ -3,9 +3,7 @@ import FontAwesome5, {
 } from 'react-native-vector-icons/FontAwesome5';
 import React from 'react';
 
-type IconProps = FontAwesome5IconProps & {
-  name: React.ComponentProps<typeof FontAwesome5>['name'];
-};
+export type IconProps = FontAwesome5IconProps;
 
 export const Icon = (props: IconProps) => {
   return <FontAwesome5 {...props} />;

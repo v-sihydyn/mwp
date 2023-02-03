@@ -177,9 +177,7 @@ export const StatisticsScreen = () => {
     : 'All workouts';
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <Text style={styles.title}>Workout History</Text>
-
+    <View style={[styles.container]}>
       <FlatList
         data={WORKOUTS}
         renderItem={({ item, index }) => (
@@ -253,6 +251,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     position: 'relative',
+    paddingTop: 20,
   },
   title: {
     fontSize: 18,

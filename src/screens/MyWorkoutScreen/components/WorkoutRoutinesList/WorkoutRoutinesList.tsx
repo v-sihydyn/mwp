@@ -5,6 +5,7 @@ export const WorkoutRoutinesList = () => {
   return (
     <View
       style={{
+        padding: 20,
         paddingBottom: 54,
         flex: 1,
       }}>

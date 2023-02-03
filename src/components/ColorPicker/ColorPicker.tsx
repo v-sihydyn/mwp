@@ -1,7 +1,7 @@
 import { View, ScrollView, StyleSheet, Pressable } from 'react-native';
 import React from 'react';
-import { colors } from '../../../../styles/colors';
-import { Icon } from '../../../../components/Icon/Icon';
+import { Icon } from '../Icon/Icon';
+import { colors } from '../../styles/colors';
 
 const COLORS = [
   '#000000',

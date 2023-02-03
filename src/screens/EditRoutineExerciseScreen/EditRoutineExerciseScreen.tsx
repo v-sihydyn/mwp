@@ -1,4 +1,4 @@
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '../../styles/colors';
 import React, { useEffect } from 'react';
 import { Icon } from '../../components/Icon/Icon';
@@ -7,18 +7,29 @@ import { CustomButton } from '../../components/CustomButton/CustomButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ExerciseForm } from '../../components/ExerciseForm/ExerciseForm';
 
-export const AddCustomExerciseToRoutineScreen = () => {
+export const EditRoutineExerciseScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <CustomButton
-          onPress={() => console.log('Done')}
-          style={{ marginRight: 16 }}
-          icon={<Icon name="check" color={colors.text} size={16} />}>
-          <Text style={{ fontWeight: 'bold' }}>Done</Text>
-        </CustomButton>
+        <View style={{ marginRight: 16, flexDirection: 'row' }}>
+          <CustomButton
+            onPress={() => console.log('Delete')}
+            icon={<Icon name="trash" color={colors.red} size={16} />}
+            style={{
+              backgroundColor: colors.black,
+              marginRight: 12,
+            }}>
+            <Text style={{ fontWeight: 'bold' }}>Delete</Text>
+          </CustomButton>
+
+          <CustomButton
+            onPress={() => console.log('Done')}
+            icon={<Icon name="check" color={colors.text} size={16} />}>
+            <Text style={{ fontWeight: 'bold' }}>Done</Text>
+          </CustomButton>
+        </View>
       ),
     });
   }, []);

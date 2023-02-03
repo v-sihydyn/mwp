@@ -19,6 +19,7 @@ import { MaterialTabBar, Tabs } from 'react-native-collapsible-tab-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CustomButton } from '../../components/CustomButton/CustomButton';
 import { openCreateRoutineModal } from '../../components/modals/CreateRoutineModal/CreateRoutineModal';
+import { WorkoutExerciseCard } from './components/WorkoutRoutinesList/WorkoutExerciseCard/WorkoutExerciseCard';
 
 const tabNames = [
   'Push A',
@@ -114,6 +115,10 @@ export const MyWorkoutScreen = ({ navigation }: Props) => {
     navigation.navigate('RoutineReminders');
   };
 
+  const handleGoToExerciseScreen = () => {
+    navigation.navigate('EditRoutineExercise');
+  };
+
   const header = useMemo(() => {
     return (
       <View style={[styles.header]}>
@@ -195,11 +200,22 @@ export const MyWorkoutScreen = ({ navigation }: Props) => {
         {tabNames.map((name) => {
           return (
             <Tabs.Tab name={name} key={name}>
-              <Tabs.ScrollView
+              <Tabs.FlatList
+                data={[0, 1, 2, 3, 4, 5]}
+                renderItem={({ item }) => (
+                  <WorkoutExerciseCard
+                    name="Barbell Bench Press"
+                    onPress={handleGoToExerciseScreen}
+                  />
+                )}
                 bounces={false}
-                showsVerticalScrollIndicator={false}>
-                <WorkoutRoutinesList />
-              </Tabs.ScrollView>
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  paddingHorizontal: 20,
+                  paddingTop: 20,
+                  paddingBottom: 74,
+                }}
+              />
             </Tabs.Tab>
           );
         })}

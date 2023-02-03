@@ -6,17 +6,23 @@ import {
   Text,
   StyleProp,
   ViewStyle,
+  Pressable,
 } from 'react-native';
 import { colors } from '../../../../../styles/colors';
 
-type Props = {
+type WorkoutExerciseCardProps = {
   name: string;
   style?: StyleProp<ViewStyle>;
+  onPress?: () => void;
 };
 
-export const WorkoutExerciseCard: React.FC<Props> = ({ name, style }) => {
+export const WorkoutExerciseCard = ({
+  name,
+  style,
+  onPress,
+}: WorkoutExerciseCardProps) => {
   return (
-    <View style={[styles.root, style]}>
+    <Pressable onPress={onPress} style={[styles.root, style]}>
       <View style={styles.content}>
         <Image
           style={styles.image}
@@ -35,7 +41,7 @@ export const WorkoutExerciseCard: React.FC<Props> = ({ name, style }) => {
         <Text style={styles.footerItem}>10 reps</Text>
         <Text style={styles.footerItem}>70 kg</Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

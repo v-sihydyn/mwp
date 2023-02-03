@@ -20,6 +20,7 @@ import { WorkoutScreen } from '../screens/WorkoutScreen/WorkoutScreen';
 import { WorkoutDetailsScreen } from '../screens/WorkoutDetailsScreen/WorkoutDetailsScreen';
 import { ProfileScreen } from '../screens/ProfileScreen/ProfileScreen';
 import { Icon, IconProps } from '../components/Icon/Icon';
+import { EditRoutineExerciseScreen } from '../screens/EditRoutineExerciseScreen/EditRoutineExerciseScreen';
 
 export default function Navigation() {
   return (
@@ -98,6 +99,13 @@ function RootNavigator() {
         <Stack.Screen
           name="WorkoutDetails"
           component={WorkoutDetailsScreen}
+          options={{
+            title: '',
+          }}
+        />
+        <Stack.Screen
+          name="EditRoutineExercise"
+          component={EditRoutineExerciseScreen}
           options={{
             title: '',
           }}

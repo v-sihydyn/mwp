@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
 import { Icon } from '../../components/Icon/Icon';
 import { openConfirmLogoutModal } from '../../components/modals/ConfirmLogoutModal/ConfirmLogoutModal';
+import { Auth } from 'aws-amplify';
 
 export const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -29,7 +30,7 @@ export const ProfileScreen = () => {
   const handleLogout = async () => {
     try {
       await openConfirmLogoutModal();
-      console.log('logged out');
+      await Auth.signOut();
     } catch (e) {}
   };
 

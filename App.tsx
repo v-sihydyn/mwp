@@ -6,6 +6,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Container as ModalContainer } from 'react-modal-promise';
 import PortalHost from './src/components/Portal/PortalHost';
 
+import { AuthContextProvider } from './src/contexts/AuthContext';
+
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
 
@@ -14,8 +16,10 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NativeBaseProvider>
         <PortalHost>
-          <ModalContainer />
-          <Navigation />
+          <AuthContextProvider>
+            <ModalContainer />
+            <Navigation />
+          </AuthContextProvider>
         </PortalHost>
       </NativeBaseProvider>
     </GestureHandlerRootView>

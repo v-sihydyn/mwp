@@ -20,6 +20,9 @@ import { WorkoutDetailsScreen } from '../screens/WorkoutDetailsScreen/WorkoutDet
 import { ProfileScreen } from '../screens/ProfileScreen/ProfileScreen';
 import { Icon, IconProps } from '../components/Icon/Icon';
 import { EditRoutineExerciseScreen } from '../screens/EditRoutineExerciseScreen/EditRoutineExerciseScreen';
+import { useAuthContext } from '../contexts/AuthContext';
+import { ActivityIndicator, View } from 'react-native';
+import AuthStackNavigator from './AuthStackNavigator';
 
 export default function Navigation() {
   return (
@@ -32,86 +35,107 @@ export default function Navigation() {
 const Stack = createStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Root"
-        component={BottomTabNavigator}
-        options={{ headerShown: false, title: '' }}
-      />
-      <Stack.Screen
-        name="NotFound"
-        component={NotFoundScreen}
-        options={{ title: 'Oops!' }}
-      />
+  const { user } = useAuthContext();
 
-      <Stack.Group
-        screenOptions={{
-          ...ModalSlideFromBottomIOS,
-          headerStyle: { backgroundColor: colors.page },
-          headerShadowVisible: false,
-        }}>
+  if (user === undefined) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  let stackScreens = null;
+
+  if (!user) {
+    stackScreens = (
+      <Stack.Screen
+        name="Auth"
+        component={AuthStackNavigator}
+        options={{ headerShown: false }}
+      />
+    );
+  }
+  // edit profile page
+  else {
+    stackScreens = (
+      <>
         <Stack.Screen
-          name="RoutineReminders"
-          component={RoutineRemindersScreen}
-          options={{
-            title: 'Routine Reminders',
-          }}
+          name="Root"
+          component={BottomTabNavigator}
+          options={{ headerShown: false, title: '' }}
         />
-        <Stack.Screen
-          name="RoutinesManagement"
-          component={RoutinesManagementScreen}
-          options={{
-            title: 'Routines Management',
-          }}
-        />
-        <Stack.Screen
-          name="AddExerciseToRoutine"
-          component={AddExerciseToRoutineScreen}
-          options={{
-            title: '',
-            headerRight: () => <ExerciseFilterInput />,
-          }}
-        />
-        <Stack.Screen
-          name="AddCustomExerciseToRoutine"
-          component={AddCustomExerciseToRoutineScreen}
-          options={{
-            title: '',
-          }}
-        />
-        <Stack.Screen
-          name="ConfigureWorkout"
-          component={ConfigureWorkoutScreen}
-          options={{
-            title: '',
-          }}
-        />
-        <Stack.Screen
-          name="Workout"
-          component={WorkoutScreen}
-          options={{
-            title: '',
-            gestureEnabled: false,
-          }}
-        />
-        <Stack.Screen
-          name="WorkoutDetails"
-          component={WorkoutDetailsScreen}
-          options={{
-            title: '',
-          }}
-        />
-        <Stack.Screen
-          name="EditRoutineExercise"
-          component={EditRoutineExerciseScreen}
-          options={{
-            title: '',
-          }}
-        />
-      </Stack.Group>
-    </Stack.Navigator>
-  );
+
+        <Stack.Group
+          screenOptions={{
+            ...ModalSlideFromBottomIOS,
+            headerStyle: { backgroundColor: colors.page },
+            headerShadowVisible: false,
+          }}>
+          <Stack.Screen
+            name="RoutineReminders"
+            component={RoutineRemindersScreen}
+            options={{
+              title: 'Routine Reminders',
+            }}
+          />
+          <Stack.Screen
+            name="RoutinesManagement"
+            component={RoutinesManagementScreen}
+            options={{
+              title: 'Routines Management',
+            }}
+          />
+          <Stack.Screen
+            name="AddExerciseToRoutine"
+            component={AddExerciseToRoutineScreen}
+            options={{
+              title: '',
+              headerRight: () => <ExerciseFilterInput />,
+            }}
+          />
+          <Stack.Screen
+            name="AddCustomExerciseToRoutine"
+            component={AddCustomExerciseToRoutineScreen}
+            options={{
+              title: '',
+            }}
+          />
+          <Stack.Screen
+            name="ConfigureWorkout"
+            component={ConfigureWorkoutScreen}
+            options={{
+              title: '',
+            }}
+          />
+          <Stack.Screen
+            name="Workout"
+            component={WorkoutScreen}
+            options={{
+              title: '',
+              gestureEnabled: false,
+            }}
+          />
+          <Stack.Screen
+            name="WorkoutDetails"
+            component={WorkoutDetailsScreen}
+            options={{
+              title: '',
+            }}
+          />
+          <Stack.Screen
+            name="EditRoutineExercise"
+            component={EditRoutineExerciseScreen}
+            options={{
+              title: '',
+            }}
+          />
+        </Stack.Group>
+      </>
+    );
+  }
+
+  return <Stack.Navigator>{stackScreens}</Stack.Navigator>;
 };
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();

@@ -10,6 +10,11 @@
       "StackName": "amplify-mwp-staging-91319",
       "StackId": "arn:aws:cloudformation:eu-central-1:893455214720:stack/amplify-mwp-staging-91319/fece6bd0-a859-11ed-a014-068953c7569c",
       "AmplifyAppId": "d1v7b8sddpoocf"
+    },
+    "categories": {
+      "auth": {
+        "MWP": {}
+      }
     }
   }
 }

@@ -6,7 +6,6 @@ import { WorkoutExerciseSet } from './components/WorkoutExerciseSet/WorkoutExerc
 import { CustomButton } from '../../components/CustomButton/CustomButton';
 import { MaterialTabBar } from '../../components/MaterialTabBar/TabBar';
 import { Timer } from './components/Timer/Timer';
-import PortalHost from '../../components/Portal/PortalHost';
 import Portal from '../../components/Portal/Portal';
 import { BottomSheet } from '../../components/BottomSheet/BottomSheet';
 import { WorkoutSummary } from './components/WorkoutSummary/WorkoutSummary';
@@ -56,104 +55,103 @@ export const WorkoutScreen = () => {
   );
 
   return (
-    <PortalHost>
-      <View style={styles.container}>
-        <Timer />
-        <Tabs.Container
-          lazy={true}
-          renderHeader={renderHeader}
-          renderTabBar={renderTabBar}
-          tabBarHeight={58}
-          headerContainerStyle={{
-            backgroundColor: colors.page,
-            elevation: 0,
-            shadowOpacity: 0,
-          }}>
-          {tabNames.map((name) => {
-            return (
-              <Tabs.Tab name={name} key={name}>
-                <Tabs.FlatList
-                  data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
-                  renderItem={({ item }) => (
-                    <WorkoutExerciseSet index={item} reps={10} weight={20} />
-                  )}
-                  contentContainerStyle={styles.exerciseWrapper}
-                  bounces={false}
-                  showsVerticalScrollIndicator={false}
-                  ListHeaderComponent={() => (
-                    <>
-                      <Text style={styles.title}>Exercise Name</Text>
-                      {/* @TODO: edit notes */}
-                      <Text style={styles.note}>Exercise note</Text>
-                    </>
-                  )}
-                />
-              </Tabs.Tab>
-            );
-          })}
-        </Tabs.Container>
-        <View style={styles.actionBar}>
-          {/* SET INFO */}
+    <View style={styles.container}>
+      <Timer />
+      <Tabs.Container
+        lazy={true}
+        renderHeader={renderHeader}
+        renderTabBar={renderTabBar}
+        tabBarHeight={58}
+        headerContainerStyle={{
+          backgroundColor: colors.page,
+          elevation: 0,
+          shadowOpacity: 0,
+        }}>
+        {tabNames.map((name) => {
+          return (
+            <Tabs.Tab name={name} key={name}>
+              <Tabs.FlatList
+                data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
+                renderItem={({ item }) => (
+                  <WorkoutExerciseSet index={item} reps={10} weight={20} />
+                )}
+                contentContainerStyle={styles.exerciseWrapper}
+                bounces={false}
+                showsVerticalScrollIndicator={false}
+                ListHeaderComponent={() => (
+                  <>
+                    <Text style={styles.title}>Exercise Name</Text>
+                    {/* @TODO: edit notes */}
+                    <Text style={styles.note}>Exercise note</Text>
+                  </>
+                )}
+              />
+            </Tabs.Tab>
+          );
+        })}
+      </Tabs.Container>
+      <View style={styles.actionBar}>
+        {/* SET INFO */}
 
-          {/*<View style={styles.currentSetWrapper}>*/}
-          {/*  <CustomButton*/}
-          {/*    onPress={() => alert('Done')}*/}
-          {/*    style={{*/}
-          {/*      marginRight: 20,*/}
-          {/*      height: 40,*/}
-          {/*      width: 60,*/}
-          {/*      backgroundColor: colors.black,*/}
-          {/*    }}*/}
-          {/*    icon={<Icon name="times" color={colors.red} size={16} />}*/}
-          {/*  />*/}
-          {/*  /!* @TODO: edit reps *!/*/}
-          {/*  <TextInput*/}
-          {/*    value={'8'}*/}
-          {/*    keyboardType="numeric"*/}
-          {/*    style={styles.setInput}*/}
-          {/*  />*/}
-          {/*  <Text style={styles.setLabel}>Reps</Text>*/}
-          {/*  /!* @TODO: edit weight *!/*/}
-          {/*  <TextInput*/}
-          {/*    value={'54.3'}*/}
-          {/*    keyboardType="numeric"*/}
-          {/*    style={styles.setInput}*/}
-          {/*  />*/}
-          {/*  <Text style={[styles.setLabel, { marginRight: 0 }]}>Kg</Text>*/}
+        {/*<View style={styles.currentSetWrapper}>*/}
+        {/*  <CustomButton*/}
+        {/*    onPress={() => alert('Done')}*/}
+        {/*    style={{*/}
+        {/*      marginRight: 20,*/}
+        {/*      height: 40,*/}
+        {/*      width: 60,*/}
+        {/*      backgroundColor: colors.black,*/}
+        {/*    }}*/}
+        {/*    icon={<Icon name="times" color={colors.red} size={16} />}*/}
+        {/*  />*/}
+        {/*  /!* @TODO: edit reps *!/*/}
+        {/*  <TextInput*/}
+        {/*    value={'8'}*/}
+        {/*    keyboardType="numeric"*/}
+        {/*    style={styles.setInput}*/}
+        {/*  />*/}
+        {/*  <Text style={styles.setLabel}>Reps</Text>*/}
+        {/*  /!* @TODO: edit weight *!/*/}
+        {/*  <TextInput*/}
+        {/*    value={'54.3'}*/}
+        {/*    keyboardType="numeric"*/}
+        {/*    style={styles.setInput}*/}
+        {/*  />*/}
+        {/*  <Text style={[styles.setLabel, { marginRight: 0 }]}>Kg</Text>*/}
 
-          {/*  <CustomButton*/}
-          {/*    onPress={() => alert('Done')}*/}
-          {/*    style={{ marginLeft: 'auto', height: 40, width: 60 }}*/}
-          {/*    icon={<Icon name="check" color={colors.text} size={16} />}*/}
-          {/*  />*/}
-          {/*</View>*/}
+        {/*  <CustomButton*/}
+        {/*    onPress={() => alert('Done')}*/}
+        {/*    style={{ marginLeft: 'auto', height: 40, width: 60 }}*/}
+        {/*    icon={<Icon name="check" color={colors.text} size={16} />}*/}
+        {/*  />*/}
+        {/*</View>*/}
 
-          {/* SKIP REST BUTTON */}
+        {/* SKIP REST BUTTON */}
 
-          {/*<CustomButton*/}
-          {/*  style={{ backgroundColor: colors.black, height: '100%' }}*/}
-          {/*  onPress={() => alert('1')}*/}
-          {/*  icon={<Icon name="forward" color={colors.lime} size={16} />}>*/}
-          {/*  <Text style={{ fontSize: 16 }}>Skip Rest</Text>*/}
-          {/*</CustomButton>*/}
+        {/*<CustomButton*/}
+        {/*  style={{ backgroundColor: colors.black, height: '100%' }}*/}
+        {/*  onPress={() => alert('1')}*/}
+        {/*  icon={<Icon name="forward" color={colors.lime} size={16} />}>*/}
+        {/*  <Text style={{ fontSize: 16 }}>Skip Rest</Text>*/}
+        {/*</CustomButton>*/}
 
-          {/* PLAY EXERCISE BUTTON */}
+        {/* PLAY EXERCISE BUTTON */}
 
-          {/*<CustomButton*/}
-          {/*  style={{ backgroundColor: colors.green, height: '100%' }}*/}
-          {/*  onPress={() => alert('1')}>*/}
-          {/*  <Text style={{ fontSize: 16 }}>Play this exercise</Text>*/}
-          {/*</CustomButton>*/}
+        {/*<CustomButton*/}
+        {/*  style={{ backgroundColor: colors.green, height: '100%' }}*/}
+        {/*  onPress={() => alert('1')}>*/}
+        {/*  <Text style={{ fontSize: 16 }}>Play this exercise</Text>*/}
+        {/*</CustomButton>*/}
 
-          {/* FINISH BUTTON */}
+        {/* FINISH BUTTON */}
 
-          <CustomButton
-            style={{ backgroundColor: colors.green, height: '100%' }}
-            onPress={() => setIsWorkoutSummarySheetOpen(true)}>
-            <Text style={{ fontSize: 16 }}>Finish</Text>
-          </CustomButton>
-        </View>
+        <CustomButton
+          style={{ backgroundColor: colors.green, height: '100%' }}
+          onPress={() => setIsWorkoutSummarySheetOpen(true)}>
+          <Text style={{ fontSize: 16 }}>Finish</Text>
+        </CustomButton>
       </View>
+
       <Portal>
         <BottomSheet
           isVisible={isWorkoutSummarySheetOpen}
@@ -193,7 +191,7 @@ export const WorkoutScreen = () => {
           </View>
         </BottomSheet>
       </Portal>
-    </PortalHost>
+    </View>
   );
 };
 

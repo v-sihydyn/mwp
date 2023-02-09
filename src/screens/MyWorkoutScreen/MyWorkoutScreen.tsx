@@ -212,8 +212,8 @@ export const MyWorkoutScreen = ({ navigation }: Props) => {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
                   paddingHorizontal: 20,
-                  paddingTop: 20,
-                  paddingBottom: 74,
+                  marginTop: 20,
+                  paddingBottom: 94,
                 }}
               />
             </Tabs.Tab>

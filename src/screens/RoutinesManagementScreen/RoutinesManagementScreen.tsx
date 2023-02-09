@@ -11,6 +11,7 @@ import { RoutineListItem } from './components/RoutineListItem/RoutineListItem';
 import { openDuplicateRoutineModal } from '../../components/modals/DuplicateRoutineModal/DuplicateRoutineModal';
 import { openDeleteRoutineModal } from '../../components/modals/DeleteRoutineModal/DeleteRoutineModal';
 import { SortableListItem } from '../../components/SortableList/SortableListItem';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Routine = {
   id: number;
@@ -77,6 +78,7 @@ const ROUTINES: Routine[] = [
 ];
 
 export const RoutinesManagementScreen = gestureHandlerRootHOC(() => {
+  const insets = useSafeAreaInsets();
   const [routines, setRoutines] = useState<Routine[]>(ROUTINES);
 
   const handleOpenRenameRoutineModal = async () => {
@@ -122,7 +124,7 @@ export const RoutinesManagementScreen = gestureHandlerRootHOC(() => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingBottom: insets.bottom }]}>
       <DraggableFlatList
         data={routines}
         onDragEnd={(params) => {

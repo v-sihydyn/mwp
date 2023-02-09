@@ -7,7 +7,6 @@ import {
   View,
 } from 'react-native';
 import { colors } from '../../styles/colors';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WorkoutHistoryItem } from './components/WorkoutHistoryItem/WorkoutHistoryItem';
 import { Icon } from '../../components/Icon/Icon';
 import React, { useMemo, useState } from 'react';
@@ -15,6 +14,9 @@ import { BottomSheet } from '../../components/BottomSheet/BottomSheet';
 import { CalendarList } from 'react-native-calendars';
 import dayjs from 'dayjs';
 import { useNavigation } from '@react-navigation/native';
+import Portal from '../../components/Portal/Portal';
+import { MarkedDates } from 'react-native-calendars/src/types';
+import { MarkingProps } from 'react-native-calendars/src/calendar/day/marking';
 
 const WORKOUTS = [
   {
@@ -117,16 +119,15 @@ const DATES_WITH_WORKOUT_RECORDS = [
 
 export const StatisticsScreen = () => {
   const navigation = useNavigation();
-  const insets = useSafeAreaInsets();
   const { width: windowWidth } = useWindowDimensions();
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const currentDate = dayjs().format('YYYY-MM-DD');
   const [filterDate, setFilterDate] = useState<string | null>(null);
 
-  const markedDates = useMemo(() => {
+  const markedDates = useMemo<MarkedDates>(() => {
     const result = DATES_WITH_WORKOUT_RECORDS.reduce<Record<string, object>>(
       (acc, date) => {
-        const obj = {
+        const obj: MarkingProps = {
           disabled: false,
           customStyles: {
             text: {
@@ -212,35 +213,37 @@ export const StatisticsScreen = () => {
         }}
       />
 
-      <BottomSheet
-        isVisible={isFilterSheetOpen}
-        onClose={() => setIsFilterSheetOpen(false)}
-        withHandle={true}>
-        <CalendarList
-          style={{ height: 320 }}
-          markingType="custom"
-          markedDates={markedDates}
-          onDayPress={({ dateString }) => {
-            if (DATES_WITH_WORKOUT_RECORDS.includes(dateString)) {
-              setFilterDate(dateString);
-              setIsFilterSheetOpen(false);
-            }
-          }}
-          horizontal={true}
-          pagingEnabled={true}
-          disabledByDefault={true}
-          disableAllTouchEventsForDisabledDays={true}
-          theme={{
-            calendarBackground: colors.page,
-            textDisabledColor: '#747678',
-            textMonthFontSize: 14,
-            textDayFontSize: 13,
-            textMonthFontWeight: 'bold',
-            textDayHeaderFontSize: 13,
-            monthTextColor: '#a5a7a8',
-          }}
-        />
-      </BottomSheet>
+      <Portal>
+        <BottomSheet
+          isVisible={isFilterSheetOpen}
+          onClose={() => setIsFilterSheetOpen(false)}
+          withHandle={true}>
+          <CalendarList
+            style={{ height: 320 }}
+            markingType="custom"
+            markedDates={markedDates}
+            onDayPress={({ dateString }) => {
+              if (DATES_WITH_WORKOUT_RECORDS.includes(dateString)) {
+                setFilterDate(dateString);
+                setIsFilterSheetOpen(false);
+              }
+            }}
+            horizontal={true}
+            pagingEnabled={true}
+            disabledByDefault={true}
+            disableAllTouchEventsForDisabledDays={true}
+            theme={{
+              calendarBackground: colors.page,
+              textDisabledColor: '#747678',
+              textMonthFontSize: 14,
+              textDayFontSize: 13,
+              textMonthFontWeight: 'bold',
+              textDayHeaderFontSize: 13,
+              monthTextColor: '#a5a7a8',
+            }}
+          />
+        </BottomSheet>
+      </Portal>
     </View>
   );
 };

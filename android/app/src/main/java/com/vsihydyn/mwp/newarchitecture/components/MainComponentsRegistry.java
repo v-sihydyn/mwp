@@ -1,4 +1,4 @@
-package com.mwp2.newarchitecture.components;
+package com.vsihydyn.mwp.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

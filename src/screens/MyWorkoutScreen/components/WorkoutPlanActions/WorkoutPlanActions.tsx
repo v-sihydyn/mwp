@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { WorkoutPlanActionItem } from './WorkoutPlanActionItem/WorkoutPlanActionItem';
 import { colors } from '../../../../styles/colors';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type WorkoutActionsProps = {
   onSheetClose: () => void;
@@ -18,6 +19,8 @@ export const WorkoutPlanActions = ({
   onInitiateRenamePlan,
   onInitiateDeletePlan,
 }: WorkoutActionsProps) => {
+  const insets = useSafeAreaInsets();
+
   const handleOpenRenameModal = () => {
     onSheetClose();
     setTimeout(() => {
@@ -47,12 +50,28 @@ export const WorkoutPlanActions = ({
   };
 
   return (
-    <View style={styles.root}>
+    <View style={[styles.root, { paddingBottom: insets.bottom }]}>
       <Text style={styles.title}>My Workout Plan</Text>
-      <WorkoutPlanActionItem name="Manage Routines" icon="list" onPress={handleGoToRoutinesLst} />
-      <WorkoutPlanActionItem name="Rename" icon="pencil-alt" onPress={handleOpenRenameModal} />
-      <WorkoutPlanActionItem name="Delete" icon="trash" onPress={handleOpenDeleteModal} />
-      <WorkoutPlanActionItem name="Reminders" icon="clock" onPress={handleGoToReminders} />
+      <WorkoutPlanActionItem
+        name="Manage Routines"
+        icon="list"
+        onPress={handleGoToRoutinesLst}
+      />
+      <WorkoutPlanActionItem
+        name="Rename"
+        icon="pencil-alt"
+        onPress={handleOpenRenameModal}
+      />
+      <WorkoutPlanActionItem
+        name="Delete"
+        icon="trash"
+        onPress={handleOpenDeleteModal}
+      />
+      <WorkoutPlanActionItem
+        name="Reminders"
+        icon="clock"
+        onPress={handleGoToReminders}
+      />
     </View>
   );
 };

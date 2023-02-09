@@ -1,4 +1,3 @@
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -32,7 +31,7 @@ export default function Navigation() {
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-function RootNavigator() {
+const RootNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -113,13 +112,21 @@ function RootNavigator() {
       </Stack.Group>
     </Stack.Navigator>
   );
-}
+};
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
-function BottomTabNavigator() {
+const BottomTabNavigator = () => {
   return (
-    <BottomTab.Navigator initialRouteName="MyWorkout">
+    <BottomTab.Navigator
+      initialRouteName="MyWorkout"
+      screenOptions={{
+        tabBarStyle: { backgroundColor: '#181a1c' },
+        tabBarActiveTintColor: '#ffffff',
+        tabBarInactiveTintColor: '#b3b3b3',
+        tabBarActiveBackgroundColor: '#181a1c',
+        tabBarInactiveBackgroundColor: '#181a1c',
+      }}>
       <BottomTab.Screen
         name="MyWorkout"
         component={MyWorkoutScreen}
@@ -132,14 +139,6 @@ function BottomTabNavigator() {
               size={14}
             />
           ),
-          tabBarActiveTintColor: '#ffffff',
-          tabBarInactiveTintColor: '#b3b3b3',
-          tabBarActiveBackgroundColor: '#181a1c',
-          tabBarInactiveBackgroundColor: '#181a1c',
-          tabBarItemStyle: {
-            padding: 10,
-            height: 60,
-          },
           headerShown: false,
         }}
       />
@@ -155,14 +154,6 @@ function BottomTabNavigator() {
               size={14}
             />
           ),
-          tabBarActiveTintColor: '#ffffff',
-          tabBarInactiveTintColor: '#b3b3b3',
-          tabBarActiveBackgroundColor: '#181a1c',
-          tabBarInactiveBackgroundColor: '#181a1c',
-          tabBarItemStyle: {
-            padding: 10,
-            height: 60,
-          },
           headerStyle: { backgroundColor: colors.page },
           headerTitle: 'Workout History',
         }}
@@ -180,20 +171,12 @@ function BottomTabNavigator() {
               size={14}
             />
           ),
-          tabBarActiveTintColor: '#ffffff',
-          tabBarInactiveTintColor: '#b3b3b3',
-          tabBarActiveBackgroundColor: '#181a1c',
-          tabBarInactiveBackgroundColor: '#181a1c',
-          tabBarItemStyle: {
-            padding: 10,
-            height: 60,
-          },
           headerStyle: { backgroundColor: colors.page },
         }}
       />
     </BottomTab.Navigator>
   );
-}
+};
 
 const TabBarIcon = (props: IconProps) => {
   return <Icon style={{ marginBottom: -3 }} {...props} />;

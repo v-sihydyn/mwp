@@ -3,11 +3,14 @@ import Ripple from 'react-native-material-ripple';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '../../../../styles/colors';
 import { Icon } from '../../../../components/Icon/Icon';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const AddWorkoutPlanButton = () => {
+  const insets = useSafeAreaInsets();
+
   return (
     <Ripple rippleColor="#ffffff">
-      <View style={styles.root}>
+      <View style={[styles.root]}>
         <Icon
           style={styles.prefix}
           name="plus-circle"
@@ -17,6 +20,7 @@ export const AddWorkoutPlanButton = () => {
         <Text style={styles.label}>Add Workout Plan</Text>
         <Icon style={styles.suffix} name="dumbbell" color="#f2e70c" size={22} />
       </View>
+      <View style={{ height: insets.bottom, backgroundColor: colors.green }} />
     </Ripple>
   );
 };

@@ -1,4 +1,4 @@
-package com.mwp2;
+package com.vsihydyn.mwp;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
@@ -12,7 +12,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "mwp2";
+    return "MWP";
   }
 
   /**

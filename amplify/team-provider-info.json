@@ -9,10 +9,20 @@
       "UnauthRoleName": "amplify-mwp-staging-91319-unauthRole",
       "StackName": "amplify-mwp-staging-91319",
       "StackId": "arn:aws:cloudformation:eu-central-1:893455214720:stack/amplify-mwp-staging-91319/fece6bd0-a859-11ed-a014-068953c7569c",
-      "AmplifyAppId": "d1v7b8sddpoocf"
+      "AmplifyAppId": "d1v7b8sddpoocf",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-mwp-staging-91319-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
       "auth": {
+        "MWP": {}
+      },
+      "function": {
+        "MWPPostConfirmation": {
+          "deploymentBucketName": "amplify-mwp-staging-91319-deployment",
+          "s3Key": "amplify-builds/MWPPostConfirmation-564345337a6e76596e69-build.zip"
+        }
+      },
+      "api": {
         "MWP": {}
       }
     }

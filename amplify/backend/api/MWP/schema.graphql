@@ -1,0 +1,93 @@
+type WorkoutExercise @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  setsConfig: AWSJSON!
+  sortOrder: Int
+  workoutID: ID! @index(name: "byWorkout")
+  WorkoutRoutineExercise: WorkoutRoutineExercise @hasOne
+}
+
+enum WorkoutStatus {
+  INPROGRESS
+  FINISHED
+}
+
+type Workout @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  status: WorkoutStatus!
+  dateFinished: AWSDateTime
+  totalTimeInSeconds: Int
+  WorkoutPlanRoutine: WorkoutPlanRoutine @hasOne
+  WorkoutExercises: [WorkoutExercise] @hasMany(indexName: "byWorkout", fields: ["id"])
+}
+
+type Exercise @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  muscleGroup: MuscleGroup
+  equipment: ExerciseEquipment
+}
+
+enum ExerciseEquipment {
+  BARBELL
+  BODYWEIGHT
+  DUMBBELL
+  EZBARBELL
+  KETTLEBELL
+  LEVERAGEMACHINE
+  SLEDMACHINE
+  SMITHMACHINE
+  WEIGHTED
+}
+
+enum MuscleGroup {
+  BACK
+  BICEPS
+  CARDIO
+  CHEST
+  CORE
+  FOREARMS
+  FULLBODY
+  LEGS
+  NECK
+  SHOULDERS
+  TRICEPS
+  WEIGHTLIFTING
+}
+
+type WorkoutRoutineExercise @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  muscleGroup: MuscleGroup
+  equipment: ExerciseEquipment
+  color: String
+  description: String
+  restTimeInSeconds: Int
+  sortOrder: Int
+  workoutPlanRoutineID: ID! @index(name: "byWorkoutPlanRoutine")
+  setsConfig: AWSJSON!
+}
+
+type WorkoutPlanRoutine @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  sortOrder: Int
+  workoutPlanID: ID! @index(name: "byWorkoutPlan")
+  WorkoutRoutineExercises: [WorkoutRoutineExercise] @hasMany(indexName: "byWorkoutPlanRoutine", fields: ["id"])
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  email: AWSEmail
+  image: String
+  WorkoutPlans: [WorkoutPlan] @hasMany(indexName: "byUser", fields: ["id"])
+  username: String!
+}
+
+type WorkoutPlan @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  userID: ID! @index(name: "byUser")
+  WorkoutPlanRoutines: [WorkoutPlanRoutine] @hasMany(indexName: "byWorkoutPlan", fields: ["id"])
+}
+ 

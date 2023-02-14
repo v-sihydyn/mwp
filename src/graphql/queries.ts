@@ -516,11 +516,11 @@ export const getUser = /* GraphQL */ `
       name
       email
       image
+      username
       WorkoutPlans {
         nextToken
         startedAt
       }
-      username
       createdAt
       updatedAt
       _version
@@ -565,6 +565,38 @@ export const syncUsers = /* GraphQL */ `
       limit: $limit
       nextToken: $nextToken
       lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        email
+        image
+        username
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const usersByUsername = /* GraphQL */ `
+  query UsersByUsername(
+    $username: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    usersByUsername(
+      username: $username
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
     ) {
       items {
         id

@@ -16,14 +16,14 @@
       "auth": {
         "MWP": {}
       },
+      "api": {
+        "MWP": {}
+      },
       "function": {
         "MWPPostConfirmation": {
           "deploymentBucketName": "amplify-mwp-staging-91319-deployment",
-          "s3Key": "amplify-builds/MWPPostConfirmation-564345337a6e76596e69-build.zip"
+          "s3Key": "amplify-builds/MWPPostConfirmation-78514c73474b54354e64-build.zip"
         }
-      },
-      "api": {
-        "MWP": {}
       }
     }
   }

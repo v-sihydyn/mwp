@@ -10,4 +10,8 @@ export const colors = {
   red: '#e11d48',
   black: '#000000',
   lime: '#827717',
+
+  //
+
+  border: '#dcdcdc',
 };

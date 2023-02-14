@@ -13,9 +13,9 @@ type Props = INBModalProps & {
 export const ConfirmLogoutModal = ({ isOpen, onResolve, onReject }: Props) => {
   return (
     <NBModal isOpen={isOpen} onClose={() => onReject('close reject')}>
-      <NBModal.Content backgroundColor={colors.surface2}>
+      <NBModal.Content backgroundColor={colors.page}>
         <NBModal.Header
-          backgroundColor={colors.surface2}
+          backgroundColor={colors.page}
           padding={4}
           borderBottomWidth={0}>
           <Text style={modalStyles.modalTitle}>Logout</Text>
@@ -24,7 +24,7 @@ export const ConfirmLogoutModal = ({ isOpen, onResolve, onReject }: Props) => {
           <Text style={modalStyles.modalSubtitle}>Are you sure?</Text>
         </NBModal.Body>
         <NBModal.Footer
-          backgroundColor={colors.surface2}
+          backgroundColor={colors.page}
           padding={4}
           borderTopWidth={0}>
           <TouchableOpacity

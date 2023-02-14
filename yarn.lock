@@ -5191,7 +5191,7 @@ aws-amplify@5.0.13:
     "@aws-amplify/xr" "4.0.13"
     tslib "^2.0.0"
 
-aws-appsync-auth-link@3.0.7:
+aws-appsync-auth-link@3.0.7, aws-appsync-auth-link@^3.0.7:
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/aws-appsync-auth-link/-/aws-appsync-auth-link-3.0.7.tgz#2b676b9198101055b91a15b367f9ef2805f2d766"
   integrity sha512-Jsa53opryGFIOHGok74ICfboxhDN64o11Z+aXoCrAnE0TwzJMMK1F20ha6sYzUuozY9pGYeE+EQ3OVn6waYMog==
@@ -5200,6 +5200,16 @@ aws-appsync-auth-link@3.0.7:
     "@aws-sdk/types" "^3.25.0"
     "@aws-sdk/util-hex-encoding" "^3.29.0"
     debug "2.6.9"
+
+aws-appsync-subscription-link@3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/aws-appsync-subscription-link/-/aws-appsync-subscription-link-3.1.2.tgz#0cfe8944ca5d31f2a778d9711df84a821f35dda8"
+  integrity sha512-vV++AtUr+CpuGNcJuCP5EvKZcPaBrxkPBlK1rOF/oI626aD/CzIHj3Es0KlHVnr5he2Ib39XvmVhmy/XbD+BqA==
+  dependencies:
+    aws-appsync-auth-link "^3.0.7"
+    debug "2.6.9"
+    url "^0.11.0"
+    zen-observable-ts "^1.2.5"
 
 axios@0.26.0:
   version "0.26.0"

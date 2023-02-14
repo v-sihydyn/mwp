@@ -2,8 +2,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-
-import NotFoundScreen from '../screens/NotFoundScreen';
 import { MyWorkoutScreen } from '../screens/MyWorkoutScreen/MyWorkoutScreen';
 import { StatisticsScreen } from '../screens/StatisticsScreen/StatisticsScreen';
 import { RootStackParamList, RootTabParamList } from '../../types';
@@ -23,6 +21,10 @@ import { EditRoutineExerciseScreen } from '../screens/EditRoutineExerciseScreen/
 import { useAuthContext } from '../contexts/AuthContext';
 import { ActivityIndicator, View } from 'react-native';
 import AuthStackNavigator from './AuthStackNavigator';
+import { EditProfileScreen } from '../screens/EditProfileScreen/EditProfileScreen';
+import { useQuery } from '@apollo/client';
+import { GetUserQuery, GetUserQueryVariables } from '../API';
+import { getUser } from '../queries/getUser';
 
 export default function Navigation() {
   return (
@@ -35,9 +37,17 @@ export default function Navigation() {
 const Stack = createStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
-  const { user } = useAuthContext();
+  const { user, userId } = useAuthContext();
+  const { data, loading } = useQuery<GetUserQuery, GetUserQueryVariables>(
+    getUser,
+    {
+      variables: { id: userId },
+      skip: !userId,
+    },
+  );
+  const userData = data?.getUser;
 
-  if (user === undefined) {
+  if (user === undefined && loading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" />
@@ -55,9 +65,18 @@ const RootNavigator = () => {
         options={{ headerShown: false }}
       />
     );
-  }
-  // edit profile page
-  else {
+  } else if (!userData?.username) {
+    stackScreens = (
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfileScreen}
+        options={{
+          title: 'Setup Profile',
+          headerStyle: { backgroundColor: colors.page },
+        }}
+      />
+    );
+  } else {
     stackScreens = (
       <>
         <Stack.Screen

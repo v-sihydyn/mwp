@@ -414,11 +414,11 @@ export const createUser = /* GraphQL */ `
       name
       email
       image
+      username
       WorkoutPlans {
         nextToken
         startedAt
       }
-      username
       createdAt
       updatedAt
       _version
@@ -437,11 +437,11 @@ export const updateUser = /* GraphQL */ `
       name
       email
       image
+      username
       WorkoutPlans {
         nextToken
         startedAt
       }
-      username
       createdAt
       updatedAt
       _version
@@ -460,11 +460,11 @@ export const deleteUser = /* GraphQL */ `
       name
       email
       image
+      username
       WorkoutPlans {
         nextToken
         startedAt
       }
-      username
       createdAt
       updatedAt
       _version

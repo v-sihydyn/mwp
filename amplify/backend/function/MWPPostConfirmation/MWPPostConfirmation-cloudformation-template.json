@@ -38,12 +38,6 @@
     "env": {
       "Type": "String"
     },
-    "deploymentBucketName": {
-      "Type": "String"
-    },
-    "s3Key": {
-      "Type": "String"
-    },
     "apiMWPGraphQLAPIIdOutput": {
       "Type": "String",
       "Default": "apiMWPGraphQLAPIIdOutput"
@@ -55,6 +49,12 @@
     "apiMWPGraphQLAPIKeyOutput": {
       "Type": "String",
       "Default": "apiMWPGraphQLAPIKeyOutput"
+    },
+    "deploymentBucketName": {
+      "Type": "String"
+    },
+    "s3Key": {
+      "Type": "String"
     }
   },
   "Conditions": {

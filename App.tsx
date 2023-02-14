@@ -7,6 +7,7 @@ import { Container as ModalContainer } from 'react-modal-promise';
 import PortalHost from './src/components/Portal/PortalHost';
 
 import { AuthContextProvider } from './src/contexts/AuthContext';
+import { ApolloClientProvider } from './src/apollo/ApolloClientProvider';
 
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -17,8 +18,10 @@ export default function App() {
       <NativeBaseProvider>
         <PortalHost>
           <AuthContextProvider>
-            <ModalContainer />
-            <Navigation />
+            <ApolloClientProvider>
+              <ModalContainer />
+              <Navigation />
+            </ApolloClientProvider>
           </AuthContextProvider>
         </PortalHost>
       </NativeBaseProvider>

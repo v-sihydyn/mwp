@@ -12,6 +12,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@apollo/client": "3.7.7",
     "@aws-amplify/ui-react-native": "1.2.7",
     "@react-native-async-storage/async-storage": "1.17.11",
     "@react-native-community/netinfo": "9.3.7",
@@ -21,8 +22,10 @@
     "@react-navigation/stack": "^6.2.3",
     "amazon-cognito-identity-js": "6.1.2",
     "aws-amplify": "5.0.13",
+    "aws-appsync-auth-link": "3.0.7",
     "color": "4.2.3",
     "dayjs": "1.11.5",
+    "graphql": "^14",
     "moti": "0.21.0",
     "native-base": "3.4.16",
     "react": "18.1.0",

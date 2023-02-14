@@ -13,20 +13,30 @@ type Props = INBModalProps & {
 export const DeletePlanModal = ({ isOpen, onResolve, onReject }: Props) => {
   return (
     <NBModal isOpen={isOpen} onClose={() => onReject('close reject')}>
-      <NBModal.Content backgroundColor={colors.surface2}>
-        <NBModal.Header backgroundColor={colors.surface2} padding={4} borderBottomWidth={0}>
+      <NBModal.Content backgroundColor={colors.page}>
+        <NBModal.Header
+          backgroundColor={colors.surface2}
+          padding={4}
+          borderBottomWidth={0}>
           <Text style={modalStyles.modalTitle}>Delete Workout Plan</Text>
         </NBModal.Header>
         <NBModal.Body padding={4} paddingTop={2}>
-          <Text style={modalStyles.modalSubtitle}>Are you sure you want to delete "My Workout Plan"?</Text>
+          <Text style={modalStyles.modalSubtitle}>
+            Are you sure you want to delete "My Workout Plan"?
+          </Text>
         </NBModal.Body>
-        <NBModal.Footer backgroundColor={colors.surface2} padding={4} borderTopWidth={0}>
+        <NBModal.Footer
+          backgroundColor={colors.page}
+          padding={4}
+          borderTopWidth={0}>
           <TouchableOpacity
             style={[modalStyles.modalButton, { marginRight: 40 }]}
             onPress={() => onReject('close reject')}>
             <Text style={modalStyles.modalButtonText}>Cancel</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={modalStyles.modalButton} onPress={() => onResolve('close resolve')}>
+          <TouchableOpacity
+            style={modalStyles.modalButton}
+            onPress={() => onResolve('close resolve')}>
             <Text style={modalStyles.modalButtonText}>OK</Text>
           </TouchableOpacity>
         </NBModal.Footer>

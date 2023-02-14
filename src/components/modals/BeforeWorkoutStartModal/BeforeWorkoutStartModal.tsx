@@ -17,9 +17,9 @@ export const BeforeWorkoutStartModal = ({
 }: Props) => {
   return (
     <NBModal isOpen={isOpen} onClose={() => onReject('close reject')}>
-      <NBModal.Content backgroundColor={colors.surface2}>
+      <NBModal.Content backgroundColor={colors.page}>
         <NBModal.Header
-          backgroundColor={colors.surface2}
+          backgroundColor={colors.page}
           padding={4}
           borderBottomWidth={0}>
           <Text style={modalStyles.modalTitle}>Play Routine</Text>
@@ -30,7 +30,7 @@ export const BeforeWorkoutStartModal = ({
           </Text>
         </NBModal.Body>
         <NBModal.Footer
-          backgroundColor={colors.surface2}
+          backgroundColor={colors.page}
           padding={4}
           borderTopWidth={0}>
           <TouchableOpacity

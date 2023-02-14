@@ -540,7 +540,7 @@ export const schema = {
                     "name": "name",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "email": {
@@ -552,6 +552,13 @@ export const schema = {
                 },
                 "image": {
                     "name": "image",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "username": {
+                    "name": "username",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -572,13 +579,6 @@ export const schema = {
                             "userID"
                         ]
                     }
-                },
-                "username": {
-                    "name": "username",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -603,6 +603,16 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "usersByUsername",
+                        "queryField": "usersByUsername",
+                        "fields": [
+                            "username"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
@@ -756,5 +766,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.3.5",
-    "version": "61a8691a1472853fb9bf29f7c7902256"
+    "version": "bc0e31d4a85c89c4a64ee4d69579baaa"
 };

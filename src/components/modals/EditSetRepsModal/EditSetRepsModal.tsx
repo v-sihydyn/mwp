@@ -19,9 +19,9 @@ export const EditSetRepsModal = ({
 
   return (
     <NBModal isOpen={isOpen} onClose={() => {}}>
-      <NBModal.Content backgroundColor={colors.surface2}>
+      <NBModal.Content backgroundColor={colors.page}>
         <NBModal.Header
-          backgroundColor={colors.surface2}
+          backgroundColor={colors.page}
           padding={4}
           borderBottomWidth={0}>
           <Text style={modalStyles.modalTitle}>Edit reps</Text>
@@ -35,7 +35,7 @@ export const EditSetRepsModal = ({
           />
         </NBModal.Body>
         <NBModal.Footer
-          backgroundColor={colors.surface2}
+          backgroundColor={colors.page}
           padding={4}
           borderTopWidth={0}>
           <TouchableOpacity

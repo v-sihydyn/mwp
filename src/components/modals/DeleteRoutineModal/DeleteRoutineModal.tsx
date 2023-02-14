@@ -13,9 +13,9 @@ type Props = INBModalProps & {
 export const DeleteRoutineModal = ({ isOpen, onResolve, onReject }: Props) => {
   return (
     <NBModal isOpen={isOpen} onClose={() => onReject('close reject')}>
-      <NBModal.Content backgroundColor={colors.surface2}>
+      <NBModal.Content backgroundColor={colors.page}>
         <NBModal.Header
-          backgroundColor={colors.surface2}
+          backgroundColor={colors.page}
           padding={4}
           borderBottomWidth={0}>
           <Text style={modalStyles.modalTitle}>Delete Routine</Text>
@@ -26,7 +26,7 @@ export const DeleteRoutineModal = ({ isOpen, onResolve, onReject }: Props) => {
           </Text>
         </NBModal.Body>
         <NBModal.Footer
-          backgroundColor={colors.surface2}
+          backgroundColor={colors.page}
           padding={4}
           borderTopWidth={0}>
           <TouchableOpacity

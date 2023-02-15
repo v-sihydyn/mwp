@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { MyWorkoutScreen } from '../screens/MyWorkoutScreen/MyWorkoutScreen';
+import { WorkoutPlanScreen } from '../screens/WorkoutPlanScreen/WorkoutPlanScreen';
 import { StatisticsScreen } from '../screens/StatisticsScreen/StatisticsScreen';
 import { RootStackParamList, RootTabParamList } from '../../types';
 import { RoutineRemindersScreen } from '../screens/RoutineRemindersScreen/RoutineRemindersScreen';
@@ -25,6 +25,8 @@ import { EditProfileScreen } from '../screens/EditProfileScreen/EditProfileScree
 import { useQuery } from '@apollo/client';
 import { GetUserQuery, GetUserQueryVariables } from '../API';
 import { getUser } from '../queries/getUser';
+import { Spinner } from 'native-base';
+import { FullscreenLoader } from '../components/FullscreenLoader/FullscreenLoader';
 
 export default function Navigation() {
   return (
@@ -47,12 +49,8 @@ const RootNavigator = () => {
   );
   const userData = data?.getUser;
 
-  if (user === undefined && loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
+  if (user === undefined || loading) {
+    return <FullscreenLoader />;
   }
 
   let stackScreens = null;
@@ -162,7 +160,7 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 const BottomTabNavigator = () => {
   return (
     <BottomTab.Navigator
-      initialRouteName="MyWorkout"
+      initialRouteName="WorkoutPlan"
       screenOptions={{
         tabBarStyle: { backgroundColor: '#181a1c' },
         tabBarActiveTintColor: '#ffffff',
@@ -171,8 +169,8 @@ const BottomTabNavigator = () => {
         tabBarInactiveBackgroundColor: '#181a1c',
       }}>
       <BottomTab.Screen
-        name="MyWorkout"
-        component={MyWorkoutScreen}
+        name="WorkoutPlan"
+        component={WorkoutPlanScreen}
         options={{
           title: 'My Workout',
           tabBarIcon: ({ focused }) => (

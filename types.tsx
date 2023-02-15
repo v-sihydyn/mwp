@@ -35,7 +35,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, Screen>;
 
 export type RootTabParamList = {
-  MyWorkout: undefined;
+  WorkoutPlan: undefined;
   Statistics: undefined;
   Profile: undefined;
 };

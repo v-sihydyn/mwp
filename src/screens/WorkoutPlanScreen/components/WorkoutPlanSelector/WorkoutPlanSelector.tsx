@@ -5,17 +5,18 @@ import { colors } from '../../../../styles/colors';
 import { Icon } from '../../../../components/Icon/Icon';
 
 type Props = {
+  label: string | null;
   onPress: () => void;
 };
 
-export const WorkoutPlanSelector = ({ onPress }: Props) => {
+export const WorkoutPlanSelector = ({ label, onPress }: Props) => {
   return (
     <Ripple
       rippleColor="#ffffff"
       rippleContainerBorderRadius={12}
       onPress={onPress}>
       <View style={styles.wrapper}>
-        <Text style={styles.label}>My Workout Plan</Text>
+        <Text style={styles.label}>{label}</Text>
         <View style={styles.suffix}>
           <Icon name="chevron-down" color="#ffffff" />
         </View>

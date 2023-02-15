@@ -5,11 +5,17 @@ import { colors } from '../../../../styles/colors';
 import { Icon } from '../../../../components/Icon/Icon';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-export const AddWorkoutPlanButton = () => {
+type AddWorkoutPlanButtonProps = {
+  onCreatePlan: () => Promise<void>;
+};
+
+export const AddWorkoutPlanButton = ({
+  onCreatePlan,
+}: AddWorkoutPlanButtonProps) => {
   const insets = useSafeAreaInsets();
 
   return (
-    <Ripple rippleColor="#ffffff">
+    <Ripple onPress={onCreatePlan} rippleColor="#ffffff">
       <View style={[styles.root]}>
         <Icon
           style={styles.prefix}

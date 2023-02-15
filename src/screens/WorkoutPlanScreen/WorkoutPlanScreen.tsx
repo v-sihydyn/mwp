@@ -1,11 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
 import { WorkoutPlanSelector } from './components/WorkoutPlanSelector/WorkoutPlanSelector';
 import { WorkoutPlanActionsButton } from './components/WorkoutPlanActionsButton/WorkoutPlanActionsButton';
 import { WorkoutPlanSheet } from './components/WorkoutPlanSheet/WorkoutPlanSheet';
 import Portal from '../../components/Portal/Portal';
-import { WorkoutRoutinesList } from './components/WorkoutRoutinesList/WorkoutRoutinesList';
 import { RoutineToolbar } from './components/RoutineToolbar/RoutineToolbar';
 import { colors } from '../../styles/colors';
 import { WorkoutPlanActions } from './components/WorkoutPlanActions/WorkoutPlanActions';
@@ -20,6 +19,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CustomButton } from '../../components/CustomButton/CustomButton';
 import { openCreateRoutineModal } from '../../components/modals/CreateRoutineModal/CreateRoutineModal';
 import { WorkoutExerciseCard } from './components/WorkoutRoutinesList/WorkoutExerciseCard/WorkoutExerciseCard';
+import { useWorkoutPlansByUser } from './hooks/useWorkoutPlansByUser';
+import { FullscreenLoader } from '../../components/FullscreenLoader/FullscreenLoader';
+import { useAuthContext } from '../../contexts/AuthContext';
+import { CreateWorkoutPlanSection } from './components/CreateWorkoutPlanSection/CreateWorkoutPlanSection';
+import { WorkoutPlan } from '../../API';
+import { openCreatePlanModal } from '../../components/modals/CreatePlanModal/CreatePlanModal';
 
 const tabNames = [
   'Push A',
@@ -31,15 +36,27 @@ const tabNames = [
   'Abs',
 ];
 
-type Props = RootTabScreenProps<'MyWorkout'>;
+type Props = RootTabScreenProps<'WorkoutPlan'>;
 
-export const MyWorkoutScreen = ({ navigation }: Props) => {
+export const WorkoutPlanScreen = ({ navigation }: Props) => {
+  const { userId } = useAuthContext();
+  const { workoutPlans, areWorkoutPlansLoading } =
+    useWorkoutPlansByUser(userId);
+  const [selectedPlan, setSelectedPlan] = useState<WorkoutPlan | null>(null);
   const [isWorkoutPlanSheetVisible, setWorkoutPlanSheetVisible] =
     useState(false);
   const [isWorkoutActionsSheetVisible, setWorkoutActionsSheetVisible] =
     useState(false);
   const { width: windowWidth } = useWindowDimensions();
   const insets = useSafeAreaInsets();
+
+  useEffect(() => {
+    if (workoutPlans.length > 0) setSelectedPlan(workoutPlans[0]);
+  }, [workoutPlans]);
+
+  const handleCreateWorkoutPlan = async () => {
+    await openCreatePlanModal({ userId }).catch(() => {});
+  };
 
   const onOpenWorkoutPlanSheet = () => {
     setWorkoutPlanSheetVisible(true);
@@ -122,11 +139,24 @@ export const MyWorkoutScreen = ({ navigation }: Props) => {
   const header = useMemo(() => {
     return (
       <View style={[styles.header]}>
-        <WorkoutPlanSelector onPress={onOpenWorkoutPlanSheet} />
+        <WorkoutPlanSelector
+          label={selectedPlan?.name ?? null}
+          onPress={onOpenWorkoutPlanSheet}
+        />
         <WorkoutPlanActionsButton onPress={onOpenWorkoutActionsSheet} />
       </View>
     );
-  }, []);
+  }, [selectedPlan]);
+
+  const handleSelectPlan = (plan: WorkoutPlan) => {
+    setSelectedPlan(plan);
+  };
+
+  if (areWorkoutPlansLoading) return <FullscreenLoader />;
+
+  if (workoutPlans.length === 0) {
+    return <CreateWorkoutPlanSection />;
+  }
 
   return (
     <View style={styles.container}>
@@ -226,6 +256,10 @@ export const MyWorkoutScreen = ({ navigation }: Props) => {
       />
       <Portal>
         <WorkoutPlanSheet
+          selectedPlanId={selectedPlan?.id ?? null}
+          workoutPlans={workoutPlans}
+          onCreatePlan={handleCreateWorkoutPlan}
+          onSelectPlan={handleSelectPlan}
           isVisible={isWorkoutPlanSheetVisible}
           onClose={onCloseWorkoutPlanSheet}
         />
@@ -234,6 +268,7 @@ export const MyWorkoutScreen = ({ navigation }: Props) => {
           isVisible={isWorkoutActionsSheetVisible}
           onClose={onCloseWorkoutActionsSheet}>
           <WorkoutPlanActions
+            label={selectedPlan?.name ?? null}
             onInitiateRenamePlan={handleOpenRenamePlanModal}
             onInitiateDeletePlan={handleOpenDeletePlanModal}
             onSheetClose={onCloseWorkoutActionsSheet}
@@ -250,7 +285,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.page,
     flex: 1,
-    // paddingTop: 40,
     flexDirection: 'column',
     position: 'relative',
   },

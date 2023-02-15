@@ -5,6 +5,8 @@ import { colors } from '../../../../styles/colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type WorkoutActionsProps = {
+  label: string | null;
+
   onSheetClose: () => void;
   onGoToRoutinesList: () => void;
   onGoToReminders: () => void;
@@ -13,6 +15,7 @@ type WorkoutActionsProps = {
 };
 
 export const WorkoutPlanActions = ({
+  label,
   onSheetClose,
   onGoToRoutinesList,
   onGoToReminders,
@@ -51,7 +54,7 @@ export const WorkoutPlanActions = ({
 
   return (
     <View style={[styles.root, { paddingBottom: insets.bottom }]}>
-      <Text style={styles.title}>My Workout Plan</Text>
+      <Text style={styles.title}>{label}</Text>
       <WorkoutPlanActionItem
         name="Manage Routines"
         icon="list"

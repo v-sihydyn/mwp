@@ -15,7 +15,7 @@ const linking: LinkingOptions<RootStackParamList> = {
     screens: {
       Root: {
         screens: {
-          MyWorkout: 'my-workout',
+          WorkoutPlan: 'workout-plan',
           Statistics: 'statistics',
         },
       },

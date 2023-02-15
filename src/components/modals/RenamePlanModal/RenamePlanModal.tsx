@@ -15,7 +15,7 @@ export const RenamePlanModal = ({ isOpen, onResolve, onReject }: Props) => {
     <NBModal isOpen={isOpen} onClose={() => onReject('close reject')}>
       <NBModal.Content backgroundColor={colors.page}>
         <NBModal.Header
-          backgroundColor={colors.surface2}
+          backgroundColor={colors.page}
           padding={4}
           borderBottomWidth={0}>
           <Text style={modalStyles.modalTitle}>Rename Workout Plan</Text>

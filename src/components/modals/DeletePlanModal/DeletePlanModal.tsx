@@ -1,18 +1,22 @@
 import { Text, TouchableOpacity } from 'react-native';
-import { Modal as NBModal, IModalProps as INBModalProps } from 'native-base';
+import { Modal as NBModal } from 'native-base';
 import React from 'react';
-import { create } from 'react-modal-promise';
+import { create, InstanceProps } from 'react-modal-promise';
 import { modalStyles } from '../modalStyles';
 import { colors } from '../../../styles/colors';
 
-type Props = INBModalProps & {
-  onResolve: (value: any) => void;
-  onReject: (reason: any) => void;
+type Props = InstanceProps<boolean> & {
+  name: string;
 };
 
-export const DeletePlanModal = ({ isOpen, onResolve, onReject }: Props) => {
+export const DeletePlanModal = ({
+  name,
+  isOpen,
+  onResolve,
+  onReject,
+}: Props) => {
   return (
-    <NBModal isOpen={isOpen} onClose={() => onReject('close reject')}>
+    <NBModal isOpen={isOpen} onClose={() => onReject()}>
       <NBModal.Content backgroundColor={colors.page}>
         <NBModal.Header
           backgroundColor={colors.page}
@@ -22,7 +26,7 @@ export const DeletePlanModal = ({ isOpen, onResolve, onReject }: Props) => {
         </NBModal.Header>
         <NBModal.Body padding={4} paddingTop={2}>
           <Text style={modalStyles.modalSubtitle}>
-            Are you sure you want to delete "My Workout Plan"?
+            {`Are you sure you want to delete "${name}"?`}
           </Text>
         </NBModal.Body>
         <NBModal.Footer
@@ -31,12 +35,12 @@ export const DeletePlanModal = ({ isOpen, onResolve, onReject }: Props) => {
           borderTopWidth={0}>
           <TouchableOpacity
             style={[modalStyles.modalButton, { marginRight: 40 }]}
-            onPress={() => onReject('close reject')}>
+            onPress={() => onReject()}>
             <Text style={modalStyles.modalButtonText}>Cancel</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={modalStyles.modalButton}
-            onPress={() => onResolve('close resolve')}>
+            onPress={() => onResolve(true)}>
             <Text style={modalStyles.modalButtonText}>OK</Text>
           </TouchableOpacity>
         </NBModal.Footer>
@@ -45,4 +49,4 @@ export const DeletePlanModal = ({ isOpen, onResolve, onReject }: Props) => {
   );
 };
 
-export const openDeletePlanModal = create(DeletePlanModal);
+export const openDeletePlanModal = create<Props, boolean>(DeletePlanModal);

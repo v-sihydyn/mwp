@@ -25,6 +25,8 @@ import { useAuthContext } from '../../contexts/AuthContext';
 import { CreateWorkoutPlanSection } from './components/CreateWorkoutPlanSection/CreateWorkoutPlanSection';
 import { WorkoutPlan } from '../../API';
 import { openCreatePlanModal } from '../../components/modals/CreatePlanModal/CreatePlanModal';
+import { useWorkoutPlanActions } from '../../hooks/useWorkoutPlanActions';
+import { Toast } from 'native-base';
 
 const tabNames = [
   'Push A',
@@ -49,6 +51,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     useState(false);
   const { width: windowWidth } = useWindowDimensions();
   const insets = useSafeAreaInsets();
+  const { deleteWorkoutPlan, deleteLoading } = useWorkoutPlanActions();
   const [didPlansInitLoaded, setDidPlansInitLoaded] = useState(false);
 
   useEffect(() => {
@@ -92,12 +95,46 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   };
 
   const handleOpenDeletePlanModal = async () => {
-    try {
-      const resp = await openDeletePlanModal();
+    if (!selectedPlan) return;
+    if (deleteLoading) return;
 
-      console.log('promise modal resolve: ', resp);
-    } catch (e) {
-      console.log('promise modal reject: ', e);
+    const deleteConfirmed = await openDeletePlanModal({
+      name: selectedPlan.name,
+    });
+
+    if (deleteConfirmed) {
+      try {
+        await deleteWorkoutPlan({
+          variables: {
+            input: {
+              id: selectedPlan.id,
+              _version: selectedPlan._version,
+            },
+          },
+          update(cache, { data }) {
+            if (!data?.deleteWorkoutPlan) return;
+
+            cache.modify({
+              id: cache.identify(data.deleteWorkoutPlan),
+              fields: {
+                workoutPlansByUserID(existingItems = [], { readField }) {
+                  return existingItems.filter(
+                    (plan) => selectedPlan.id !== readField('id', plan),
+                  );
+                },
+              },
+            });
+          },
+        });
+        setDidPlansInitLoaded(false);
+      } catch (e) {
+        Toast.show({
+          title: 'Failed to delete a plan',
+          description: (e as Error).message,
+          duration: 3000,
+          backgroundColor: colors.red,
+        });
+      }
     }
   };
 

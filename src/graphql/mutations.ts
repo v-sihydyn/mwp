@@ -125,6 +125,27 @@ export const createWorkout = /* GraphQL */ `
         name
         sortOrder
         workoutPlanID
+        WorkoutRoutineExercises {
+          items {
+            id
+            name
+            muscleGroup
+            equipment
+            color
+            description
+            restTimeInSeconds
+            sortOrder
+            workoutPlanRoutineID
+            setsConfig
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -132,6 +153,35 @@ export const createWorkout = /* GraphQL */ `
         _lastChangedAt
       }
       WorkoutExercises {
+        items {
+          id
+          setsConfig
+          sortOrder
+          workoutID
+          WorkoutRoutineExercise {
+            id
+            name
+            muscleGroup
+            equipment
+            color
+            description
+            restTimeInSeconds
+            sortOrder
+            workoutPlanRoutineID
+            setsConfig
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          workoutExerciseWorkoutRoutineExerciseId
+        }
         nextToken
         startedAt
       }
@@ -159,6 +209,27 @@ export const updateWorkout = /* GraphQL */ `
         name
         sortOrder
         workoutPlanID
+        WorkoutRoutineExercises {
+          items {
+            id
+            name
+            muscleGroup
+            equipment
+            color
+            description
+            restTimeInSeconds
+            sortOrder
+            workoutPlanRoutineID
+            setsConfig
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -166,6 +237,35 @@ export const updateWorkout = /* GraphQL */ `
         _lastChangedAt
       }
       WorkoutExercises {
+        items {
+          id
+          setsConfig
+          sortOrder
+          workoutID
+          WorkoutRoutineExercise {
+            id
+            name
+            muscleGroup
+            equipment
+            color
+            description
+            restTimeInSeconds
+            sortOrder
+            workoutPlanRoutineID
+            setsConfig
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          workoutExerciseWorkoutRoutineExerciseId
+        }
         nextToken
         startedAt
       }
@@ -193,6 +293,27 @@ export const deleteWorkout = /* GraphQL */ `
         name
         sortOrder
         workoutPlanID
+        WorkoutRoutineExercises {
+          items {
+            id
+            name
+            muscleGroup
+            equipment
+            color
+            description
+            restTimeInSeconds
+            sortOrder
+            workoutPlanRoutineID
+            setsConfig
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -200,6 +321,35 @@ export const deleteWorkout = /* GraphQL */ `
         _lastChangedAt
       }
       WorkoutExercises {
+        items {
+          id
+          setsConfig
+          sortOrder
+          workoutID
+          WorkoutRoutineExercise {
+            id
+            name
+            muscleGroup
+            equipment
+            color
+            description
+            restTimeInSeconds
+            sortOrder
+            workoutPlanRoutineID
+            setsConfig
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          workoutExerciseWorkoutRoutineExerciseId
+        }
         nextToken
         startedAt
       }
@@ -349,6 +499,23 @@ export const createWorkoutPlanRoutine = /* GraphQL */ `
       sortOrder
       workoutPlanID
       WorkoutRoutineExercises {
+        items {
+          id
+          name
+          muscleGroup
+          equipment
+          color
+          description
+          restTimeInSeconds
+          sortOrder
+          workoutPlanRoutineID
+          setsConfig
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
       }
@@ -371,6 +538,23 @@ export const updateWorkoutPlanRoutine = /* GraphQL */ `
       sortOrder
       workoutPlanID
       WorkoutRoutineExercises {
+        items {
+          id
+          name
+          muscleGroup
+          equipment
+          color
+          description
+          restTimeInSeconds
+          sortOrder
+          workoutPlanRoutineID
+          setsConfig
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
       }
@@ -393,6 +577,23 @@ export const deleteWorkoutPlanRoutine = /* GraphQL */ `
       sortOrder
       workoutPlanID
       WorkoutRoutineExercises {
+        items {
+          id
+          name
+          muscleGroup
+          equipment
+          color
+          description
+          restTimeInSeconds
+          sortOrder
+          workoutPlanRoutineID
+          setsConfig
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
       }
@@ -416,6 +617,20 @@ export const createUser = /* GraphQL */ `
       image
       username
       WorkoutPlans {
+        items {
+          id
+          name
+          userID
+          WorkoutPlanRoutines {
+            nextToken
+            startedAt
+          }
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
       }
@@ -439,6 +654,20 @@ export const updateUser = /* GraphQL */ `
       image
       username
       WorkoutPlans {
+        items {
+          id
+          name
+          userID
+          WorkoutPlanRoutines {
+            nextToken
+            startedAt
+          }
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
       }
@@ -462,6 +691,20 @@ export const deleteUser = /* GraphQL */ `
       image
       username
       WorkoutPlans {
+        items {
+          id
+          name
+          userID
+          WorkoutPlanRoutines {
+            nextToken
+            startedAt
+          }
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
       }
@@ -483,6 +726,21 @@ export const createWorkoutPlan = /* GraphQL */ `
       name
       userID
       WorkoutPlanRoutines {
+        items {
+          id
+          name
+          sortOrder
+          workoutPlanID
+          WorkoutRoutineExercises {
+            nextToken
+            startedAt
+          }
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
       }
@@ -504,6 +762,21 @@ export const updateWorkoutPlan = /* GraphQL */ `
       name
       userID
       WorkoutPlanRoutines {
+        items {
+          id
+          name
+          sortOrder
+          workoutPlanID
+          WorkoutRoutineExercises {
+            nextToken
+            startedAt
+          }
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
       }
@@ -525,6 +798,21 @@ export const deleteWorkoutPlan = /* GraphQL */ `
       name
       userID
       WorkoutPlanRoutines {
+        items {
+          id
+          name
+          sortOrder
+          workoutPlanID
+          WorkoutRoutineExercises {
+            nextToken
+            startedAt
+          }
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
       }

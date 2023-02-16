@@ -7,7 +7,7 @@ import { colors } from '../../../styles/colors';
 import { useWorkoutPlanActions } from '../../../hooks/useWorkoutPlanActions';
 import { WorkoutPlan } from '../../../API';
 
-type Props = InstanceProps<WorkoutPlan> & {
+type Props = InstanceProps<{ name: string }> & {
   workoutPlan: Omit<WorkoutPlan, 'WorkoutPlanRoutines'>;
   userId: string;
 };
@@ -50,9 +50,8 @@ export const RenamePlanModal = ({
         },
       });
       if (response?.data?.updateWorkoutPlan) {
-        const { WorkoutPlanRoutines, ...workoutPlan } =
-          response.data.updateWorkoutPlan;
-        onResolve(workoutPlan);
+        const workoutPlan = response.data.updateWorkoutPlan;
+        onResolve({ name: workoutPlan.name });
       }
     } catch (e) {
       Toast.show({
@@ -101,4 +100,6 @@ export const RenamePlanModal = ({
   );
 };
 
-export const openRenamePlanModal = create<Props, WorkoutPlan>(RenamePlanModal);
+export const openRenamePlanModal = create<Props, { name: string }>(
+  RenamePlanModal,
+);

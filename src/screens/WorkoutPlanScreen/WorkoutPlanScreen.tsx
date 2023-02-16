@@ -27,16 +27,7 @@ import { WorkoutPlan } from '../../API';
 import { openCreatePlanModal } from '../../components/modals/CreatePlanModal/CreatePlanModal';
 import { useWorkoutPlanActions } from '../../hooks/useWorkoutPlanActions';
 import { Toast } from 'native-base';
-
-const tabNames = [
-  'Push A',
-  'Legs',
-  'Push B',
-  'Pull A',
-  'Pull B',
-  'Hands',
-  'Abs',
-];
+import { Icon } from '../../components/Icon/Icon';
 
 type Props = RootTabScreenProps<'WorkoutPlan'>;
 
@@ -61,36 +52,24 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     }
   }, [workoutPlans, didPlansInitLoaded]);
 
+  // WORKOUT PLAN ACTIONS
   const handleCreateWorkoutPlan = async () => {
     await openCreatePlanModal({ userId }).catch(() => {});
-  };
-
-  const onOpenWorkoutPlanSheet = () => {
-    setWorkoutPlanSheetVisible(true);
-  };
-
-  const onCloseWorkoutPlanSheet = () => {
-    setWorkoutPlanSheetVisible(false);
-  };
-
-  const onOpenWorkoutActionsSheet = () => {
-    setWorkoutActionsSheetVisible(true);
-  };
-
-  const onCloseWorkoutActionsSheet = () => {
-    setWorkoutActionsSheetVisible(false);
   };
 
   const handleOpenRenamePlanModal = async () => {
     if (!selectedPlan) return;
 
-    const updatedPlan = await openRenamePlanModal({
+    const newFields = await openRenamePlanModal({
       workoutPlan: selectedPlan,
       userId,
     }).catch(() => {});
 
-    if (updatedPlan) {
-      setSelectedPlan(updatedPlan);
+    if (typeof newFields === 'object' && newFields.name) {
+      setSelectedPlan((sp) => ({
+        ...sp!,
+        name: newFields.name,
+      }));
     }
   };
 
@@ -137,6 +116,27 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
       }
     }
   };
+  // WORKOUT PLAN ACTIONS END
+
+  // WORKOUT ROUTINE ACTIONS
+  const handleOpenCreateRoutineModal = async () => {
+    if (!selectedPlan) return;
+
+    const routine = await openCreateRoutineModal({
+      workoutPlanId: selectedPlan.id,
+    }).catch(() => {});
+
+    if (routine) {
+      setSelectedPlan({
+        ...selectedPlan,
+        WorkoutPlanRoutines: {
+          ...selectedPlan.WorkoutPlanRoutines,
+          items: [...(selectedPlan?.WorkoutPlanRoutines?.items ?? []), routine],
+          __typename: 'ModelWorkoutPlanRoutineConnection',
+        },
+      });
+    }
+  };
 
   const handleOpenRenameRoutineModal = async () => {
     try {
@@ -157,15 +157,22 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
       console.log('promise modal reject: ', e);
     }
   };
+  // WORKOUT ROUTINE ACTIONS END
 
-  const handleOpenCreateRoutineModal = async () => {
-    try {
-      const resp = await openCreateRoutineModal();
+  const onOpenWorkoutPlanSheet = () => {
+    setWorkoutPlanSheetVisible(true);
+  };
 
-      console.log('promise modal resolve: ', resp);
-    } catch (e) {
-      console.log('promise modal reject: ', e);
-    }
+  const onCloseWorkoutPlanSheet = () => {
+    setWorkoutPlanSheetVisible(false);
+  };
+
+  const onOpenWorkoutActionsSheet = () => {
+    setWorkoutActionsSheetVisible(true);
+  };
+
+  const onCloseWorkoutActionsSheet = () => {
+    setWorkoutActionsSheetVisible(false);
   };
 
   const handleGoToRoutinesList = () => {
@@ -202,6 +209,55 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     return <CreateWorkoutPlanSection />;
   }
 
+  const routines = selectedPlan?.WorkoutPlanRoutines?.items ?? [];
+
+  const emptyTabElement = (
+    <Tabs.Tab name="__empty__" key="Empty">
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <CustomButton
+          icon={<Icon name="plus-circle" size={14} color={colors.text} />}
+          onPress={handleOpenCreateRoutineModal}
+          style={{
+            paddingVertical: 14,
+            paddingHorizontal: 16,
+            borderRadius: 16,
+          }}>
+          <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+            Add your first routine
+          </Text>
+        </CustomButton>
+      </View>
+    </Tabs.Tab>
+  );
+
+  const _tabs = routines.map((routine) => {
+    return (
+      <Tabs.Tab name={routine!.name} key={routine!.id}>
+        <Tabs.FlatList
+          data={[0, 1, 2, 3, 4, 5]}
+          renderItem={({ item }) => (
+            <WorkoutExerciseCard
+              name="Barbell Bench Press"
+              onPress={handleGoToExerciseScreen}
+            />
+          )}
+          bounces={false}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+            marginTop: 20,
+            paddingBottom: 94,
+          }}
+        />
+      </Tabs.Tab>
+    );
+  });
+
   return (
     <View style={styles.container}>
       <View
@@ -215,84 +271,69 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
         revealHeaderOnScroll={true}
         renderHeader={() => header}
         headerHeight={64}
-        renderTabBar={(props: any) => (
-          <View
-            style={{
-              marginTop: 20,
-              flexDirection: 'row',
-              alignItems: 'center',
-              width: '100%',
-              flex: 1,
-            }}>
-            <MaterialTabBar
-              {...props}
-              width={windowWidth - 105 - 20}
+        renderTabBar={(props: any) =>
+          !areWorkoutPlansLoading && routines.length === 0 ? null : (
+            <View
               style={{
-                marginLeft: 20,
+                marginTop: 20,
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: '100%',
                 flex: 1,
-              }}
-              indicatorStyle={{
-                backgroundColor: colors.text,
-                height: 1,
-              }}
-              labelStyle={{
-                fontWeight: '700',
-                textTransform: 'capitalize',
-                fontSize: 15,
-                margin: 0,
-              }}
-              tabStyle={{
-                marginRight: 20,
-                paddingHorizontal: 0,
-                height: 30,
-              }}
-              activeColor={colors.text}
-              inactiveColor="#b5b5b5"
-              scrollEnabled
-            />
-            <CustomButton
-              style={{
-                height: 32,
-                borderTopLeftRadius: 12,
-                borderBottomLeftRadius: 12,
-                borderTopRightRadius: 0,
-                borderBottomRightRadius: 0,
-              }}
-              onPress={handleOpenCreateRoutineModal}>
-              <Text style={{ fontSize: 13, fontWeight: 'bold' }}>
-                New Routine
-              </Text>
-            </CustomButton>
-          </View>
-        )}
+              }}>
+              <MaterialTabBar
+                {...props}
+                width={windowWidth - 105 - 20}
+                style={{
+                  marginLeft: 20,
+                  flex: 1,
+                }}
+                indicatorStyle={{
+                  backgroundColor: colors.text,
+                  height: 1,
+                }}
+                labelStyle={{
+                  fontWeight: '700',
+                  textTransform: 'capitalize',
+                  fontSize: 15,
+                  margin: 0,
+                }}
+                tabStyle={{
+                  marginRight: 20,
+                  paddingHorizontal: 0,
+                  height: 30,
+                }}
+                activeColor={colors.text}
+                inactiveColor="#b5b5b5"
+                scrollEnabled
+              />
+              {routines.length > 0 && (
+                <CustomButton
+                  style={{
+                    height: 32,
+                    borderTopLeftRadius: 12,
+                    borderBottomLeftRadius: 12,
+                    borderTopRightRadius: 0,
+                    borderBottomRightRadius: 0,
+                  }}
+                  onPress={handleOpenCreateRoutineModal}>
+                  <Text style={{ fontSize: 13, fontWeight: 'bold' }}>
+                    New Routine
+                  </Text>
+                </CustomButton>
+              )}
+            </View>
+          )
+        }
         tabBarHeight={68}
         headerContainerStyle={{
           backgroundColor: colors.page,
           elevation: 0,
           shadowOpacity: 0,
         }}>
-        {tabNames.map((name) => {
-          return (
-            <Tabs.Tab name={name} key={name}>
-              <Tabs.FlatList
-                data={[0, 1, 2, 3, 4, 5]}
-                renderItem={({ item }) => (
-                  <WorkoutExerciseCard
-                    name="Barbell Bench Press"
-                    onPress={handleGoToExerciseScreen}
-                  />
-                )}
-                bounces={false}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                  paddingHorizontal: 20,
-                  marginTop: 20,
-                  paddingBottom: 94,
-                }}
-              />
-            </Tabs.Tab>
-          );
-        })}
+        {!areWorkoutPlansLoading && routines.length === 0
+          ? emptyTabElement
+          : _tabs}
       </Tabs.Container>
       <RoutineToolbar
         onRenameRoutine={handleOpenRenameRoutineModal}
@@ -301,7 +342,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
       <Portal>
         <WorkoutPlanSheet
           selectedPlanId={selectedPlan?.id ?? null}
-          workoutPlans={workoutPlans}
+          workoutPlans={workoutPlans as WorkoutPlan[]}
           onCreatePlan={handleCreateWorkoutPlan}
           onSelectPlan={handleSelectPlan}
           isVisible={isWorkoutPlanSheetVisible}

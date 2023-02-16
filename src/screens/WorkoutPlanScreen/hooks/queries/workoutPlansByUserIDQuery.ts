@@ -19,6 +19,23 @@ export const workoutPlansByUserIDQuery = gql`
         id
         name
         userID
+        WorkoutPlanRoutines {
+          items {
+            id
+            name
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            WorkoutRoutineExercises {
+              items {
+                id
+                name
+              }
+            }
+          }
+        }
         createdAt
         updatedAt
         _version

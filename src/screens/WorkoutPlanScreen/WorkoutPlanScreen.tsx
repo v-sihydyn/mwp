@@ -49,10 +49,14 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     useState(false);
   const { width: windowWidth } = useWindowDimensions();
   const insets = useSafeAreaInsets();
+  const [didPlansInitLoaded, setDidPlansInitLoaded] = useState(false);
 
   useEffect(() => {
-    if (workoutPlans.length > 0) setSelectedPlan(workoutPlans[0]);
-  }, [workoutPlans]);
+    if (workoutPlans.length > 0 && !didPlansInitLoaded) {
+      setSelectedPlan(workoutPlans[0]);
+      setDidPlansInitLoaded(true);
+    }
+  }, [workoutPlans, didPlansInitLoaded]);
 
   const handleCreateWorkoutPlan = async () => {
     await openCreatePlanModal({ userId }).catch(() => {});
@@ -75,12 +79,15 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   };
 
   const handleOpenRenamePlanModal = async () => {
-    try {
-      const resp = await openRenamePlanModal();
+    if (!selectedPlan) return;
 
-      console.log('promise modal resolve: ', resp);
-    } catch (e) {
-      console.log('promise modal reject: ', e);
+    const updatedPlan = await openRenamePlanModal({
+      workoutPlan: selectedPlan,
+      userId,
+    }).catch(() => {});
+
+    if (updatedPlan) {
+      setSelectedPlan(updatedPlan);
     }
   };
 

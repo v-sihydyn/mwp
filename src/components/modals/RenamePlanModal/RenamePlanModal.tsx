@@ -1,18 +1,71 @@
 import { Text, TextInput, TouchableOpacity } from 'react-native';
-import { Modal as NBModal, IModalProps as INBModalProps } from 'native-base';
-import React from 'react';
-import { create } from 'react-modal-promise';
+import { Modal as NBModal, Toast } from 'native-base';
+import React, { useState } from 'react';
+import { create, InstanceProps } from 'react-modal-promise';
 import { modalStyles } from '../modalStyles';
 import { colors } from '../../../styles/colors';
+import { useWorkoutPlanActions } from '../../../hooks/useWorkoutPlanActions';
+import { WorkoutPlan } from '../../../API';
 
-type Props = INBModalProps & {
-  onResolve: (value: any) => void;
-  onReject: (reason: any) => void;
+type Props = InstanceProps<WorkoutPlan> & {
+  workoutPlan: Omit<WorkoutPlan, 'WorkoutPlanRoutines'>;
+  userId: string;
 };
 
-export const RenamePlanModal = ({ isOpen, onResolve, onReject }: Props) => {
+export const RenamePlanModal = ({
+  workoutPlan,
+  userId,
+  isOpen,
+  onResolve,
+  onReject,
+}: Props) => {
+  const { updateWorkoutPlan, updateLoading } = useWorkoutPlanActions();
+  const [name, setName] = useState<string>(workoutPlan.name);
+
+  const handleSubmit = async () => {
+    if (updateLoading) return;
+    if (!name) return onResolve();
+
+    try {
+      const response = await updateWorkoutPlan({
+        variables: {
+          input: {
+            id: workoutPlan.id,
+            name,
+            userID: userId,
+            _version: workoutPlan._version,
+          },
+        },
+        update(cache, { data }) {
+          if (!data?.updateWorkoutPlan) return;
+
+          cache.modify({
+            id: cache.identify(data.updateWorkoutPlan),
+            fields: {
+              workoutPlansByUserID(existingItems = [], { INVALIDATE }) {
+                return INVALIDATE;
+              },
+            },
+          });
+        },
+      });
+      if (response?.data?.updateWorkoutPlan) {
+        const { WorkoutPlanRoutines, ...workoutPlan } =
+          response.data.updateWorkoutPlan;
+        onResolve(workoutPlan);
+      }
+    } catch (e) {
+      Toast.show({
+        title: 'Failed to rename a plan',
+        description: (e as Error).message,
+        duration: 3000,
+        backgroundColor: colors.red,
+      });
+    }
+  };
+
   return (
-    <NBModal isOpen={isOpen} onClose={() => onReject('close reject')}>
+    <NBModal isOpen={isOpen} onClose={() => onReject()}>
       <NBModal.Content backgroundColor={colors.page}>
         <NBModal.Header
           backgroundColor={colors.page}
@@ -22,7 +75,8 @@ export const RenamePlanModal = ({ isOpen, onResolve, onReject }: Props) => {
         </NBModal.Header>
         <NBModal.Body padding={4} paddingTop={2}>
           <TextInput
-            value="My Workout Plan"
+            value={name}
+            onChangeText={setName}
             selectTextOnFocus={true}
             style={modalStyles.modalInput}
           />
@@ -33,12 +87,12 @@ export const RenamePlanModal = ({ isOpen, onResolve, onReject }: Props) => {
           borderTopWidth={0}>
           <TouchableOpacity
             style={[modalStyles.modalButton, { marginRight: 40 }]}
-            onPress={() => onReject('close reject')}>
+            onPress={() => onReject()}>
             <Text style={modalStyles.modalButtonText}>Cancel</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={modalStyles.modalButton}
-            onPress={() => onResolve('close resolve')}>
+            onPress={handleSubmit}>
             <Text style={modalStyles.modalButtonText}>OK</Text>
           </TouchableOpacity>
         </NBModal.Footer>
@@ -47,4 +101,4 @@ export const RenamePlanModal = ({ isOpen, onResolve, onReject }: Props) => {
   );
 };
 
-export const openRenamePlanModal = create(RenamePlanModal);
+export const openRenamePlanModal = create<Props, WorkoutPlan>(RenamePlanModal);

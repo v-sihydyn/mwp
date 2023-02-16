@@ -18,7 +18,7 @@ export const useWorkoutPlansByUser = (userId: string) => {
   const workoutPlans = data?.workoutPlansByUserID?.items! ?? [];
 
   return {
-    workoutPlans,
+    workoutPlans: workoutPlans.filter((plan) => !plan?._deleted),
     areWorkoutPlansLoading: loading,
   };
 };

@@ -1,18 +1,108 @@
 import { Text, TextInput, TouchableOpacity } from 'react-native';
-import { Modal as NBModal, IModalProps as INBModalProps } from 'native-base';
-import React from 'react';
-import { create } from 'react-modal-promise';
+import { Modal as NBModal, Toast } from 'native-base';
+import React, { useState } from 'react';
+import { create, InstanceProps } from 'react-modal-promise';
 import { modalStyles } from '../modalStyles';
 import { colors } from '../../../styles/colors';
+import {
+  WorkoutPlan,
+  WorkoutPlanRoutine,
+  WorkoutPlansByUserIDQuery,
+  WorkoutPlansByUserIDQueryVariables,
+} from '../../../API';
+import { useWorkoutPlanRoutineActions } from '../../../hooks/useWorkoutPlanRoutineActions';
+import { workoutPlansByUserIDQuery } from '../../../screens/WorkoutPlanScreen/hooks/queries/workoutPlansByUserIDQuery';
 
-type Props = INBModalProps & {
-  onResolve: (value: any) => void;
-  onReject: (reason: any) => void;
+type Props = InstanceProps<{ name: string; _version: number }> & {
+  routine: Pick<WorkoutPlanRoutine, 'id' | 'name' | '_version'>;
+  workoutPlanId: string;
+  userId: string;
 };
 
-export const RenameRoutineModal = ({ isOpen, onResolve, onReject }: Props) => {
+export const RenameRoutineModal = ({
+  routine,
+  workoutPlanId,
+  userId,
+  isOpen,
+  onResolve,
+  onReject,
+}: Props) => {
+  const { updateWorkoutPlanRoutine, updateLoading } =
+    useWorkoutPlanRoutineActions();
+  const [name, setName] = useState<string>(routine.name);
+
+  const handleSubmit = async () => {
+    if (updateLoading) return;
+    if (!name) return onResolve();
+
+    try {
+      const response = await updateWorkoutPlanRoutine({
+        variables: {
+          input: {
+            id: routine.id,
+            name,
+            workoutPlanID: workoutPlanId,
+            _version: routine._version,
+          },
+        },
+        update(cache, { data }) {
+          if (!data?.updateWorkoutPlanRoutine) return;
+
+          // @ts-ignore
+          cache.updateQuery<
+            WorkoutPlansByUserIDQuery,
+            WorkoutPlansByUserIDQueryVariables
+          >(
+            {
+              query: workoutPlansByUserIDQuery,
+              variables: {
+                userID: userId,
+              },
+            },
+            (data) => {
+              if (!data?.workoutPlansByUserID?.items) return;
+
+              return {
+                workoutPlansByUserID: {
+                  ...data.workoutPlansByUserID,
+                  items: (data?.workoutPlansByUserID?.items ?? []).map(
+                    (_plan: WorkoutPlan | null) => {
+                      const plan = _plan! || {};
+
+                      return {
+                        ...plan,
+                        WorkoutPlanRoutines: {
+                          ...plan.WorkoutPlanRoutines,
+                          items: plan.WorkoutPlanRoutines?.items.map((r) => ({
+                            ...r,
+                            name: r?.id === routine.id ? name : r?.name,
+                          })),
+                        },
+                      };
+                    },
+                  ),
+                },
+              };
+            },
+          );
+        },
+      });
+      if (response?.data?.updateWorkoutPlanRoutine) {
+        const routine = response.data.updateWorkoutPlanRoutine;
+        onResolve({ name: routine.name, _version: routine._version });
+      }
+    } catch (e) {
+      Toast.show({
+        title: 'Failed to rename a routine',
+        description: (e as Error).message,
+        duration: 3000,
+        backgroundColor: colors.red,
+      });
+    }
+  };
+
   return (
-    <NBModal isOpen={isOpen} onClose={() => onReject('close reject')}>
+    <NBModal isOpen={isOpen} onClose={() => onReject()}>
       <NBModal.Content backgroundColor={colors.page}>
         <NBModal.Header
           backgroundColor={colors.page}
@@ -22,7 +112,8 @@ export const RenameRoutineModal = ({ isOpen, onResolve, onReject }: Props) => {
         </NBModal.Header>
         <NBModal.Body padding={4} paddingTop={2}>
           <TextInput
-            value="My Workout Plan"
+            value={name}
+            onChangeText={setName}
             selectTextOnFocus={true}
             style={modalStyles.modalInput}
           />
@@ -33,12 +124,12 @@ export const RenameRoutineModal = ({ isOpen, onResolve, onReject }: Props) => {
           borderTopWidth={0}>
           <TouchableOpacity
             style={[modalStyles.modalButton, { marginRight: 40 }]}
-            onPress={() => onReject('close reject')}>
+            onPress={() => onReject()}>
             <Text style={modalStyles.modalButtonText}>Cancel</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={modalStyles.modalButton}
-            onPress={() => onResolve('close resolve')}>
+            onPress={handleSubmit}>
             <Text style={modalStyles.modalButtonText}>OK</Text>
           </TouchableOpacity>
         </NBModal.Footer>
@@ -47,4 +138,7 @@ export const RenameRoutineModal = ({ isOpen, onResolve, onReject }: Props) => {
   );
 };
 
-export const openRenameRoutineModal = create(RenameRoutineModal);
+export const openRenameRoutineModal = create<
+  Props,
+  { name: string; _version: number }
+>(RenameRoutineModal);

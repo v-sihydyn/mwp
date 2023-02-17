@@ -23,11 +23,12 @@ import { useWorkoutPlansByUser } from './hooks/useWorkoutPlansByUser';
 import { FullscreenLoader } from '../../components/FullscreenLoader/FullscreenLoader';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { CreateWorkoutPlanSection } from './components/CreateWorkoutPlanSection/CreateWorkoutPlanSection';
-import { WorkoutPlan } from '../../API';
+import { WorkoutPlan, WorkoutPlanRoutine } from '../../API';
 import { openCreatePlanModal } from '../../components/modals/CreatePlanModal/CreatePlanModal';
 import { useWorkoutPlanActions } from '../../hooks/useWorkoutPlanActions';
 import { Toast } from 'native-base';
 import { Icon } from '../../components/Icon/Icon';
+import { StoreObject } from '@apollo/client';
 
 type Props = RootTabScreenProps<'WorkoutPlan'>;
 
@@ -36,6 +37,8 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   const { workoutPlans, areWorkoutPlansLoading } =
     useWorkoutPlansByUser(userId);
   const [selectedPlan, setSelectedPlan] = useState<WorkoutPlan | null>(null);
+  const [selectedRoutine, setSelectedRoutine] =
+    useState<WorkoutPlanRoutine | null>(null);
   const [isWorkoutPlanSheetVisible, setWorkoutPlanSheetVisible] =
     useState(false);
   const [isWorkoutActionsSheetVisible, setWorkoutActionsSheetVisible] =
@@ -44,13 +47,32 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   const insets = useSafeAreaInsets();
   const { deleteWorkoutPlan, deleteLoading } = useWorkoutPlanActions();
   const [didPlansInitLoaded, setDidPlansInitLoaded] = useState(false);
+  const [selectedTab, setSelectedTab] = useState<string | null>(null);
+
+  const routines = useMemo(
+    () =>
+      selectedPlan?.WorkoutPlanRoutines?.items.filter((x) => !x?._deleted) ??
+      [],
+    [selectedPlan?.WorkoutPlanRoutines],
+  );
 
   useEffect(() => {
     if (workoutPlans.length > 0 && !didPlansInitLoaded) {
       setSelectedPlan(workoutPlans[0]);
+      setSelectedRoutine(
+        workoutPlans[0]?.WorkoutPlanRoutines?.items?.[0] ?? null,
+      );
       setDidPlansInitLoaded(true);
     }
   }, [workoutPlans, didPlansInitLoaded]);
+
+  useEffect(() => {
+    const routine = routines.find((r) => r?.name === selectedTab);
+
+    if (routine) {
+      setSelectedRoutine(routine);
+    }
+  }, [selectedTab, routines]);
 
   // WORKOUT PLAN ACTIONS
   const handleCreateWorkoutPlan = async () => {
@@ -65,10 +87,11 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
       userId,
     }).catch(() => {});
 
-    if (typeof newFields === 'object' && newFields.name) {
+    if (typeof newFields === 'object') {
       setSelectedPlan((sp) => ({
         ...sp!,
         name: newFields.name,
+        _version: newFields._version,
       }));
     }
   };
@@ -98,7 +121,8 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
               fields: {
                 workoutPlansByUserID(existingItems = [], { readField }) {
                   return existingItems.filter(
-                    (plan) => selectedPlan.id !== readField('id', plan),
+                    (plan: StoreObject) =>
+                      selectedPlan.id !== readField('id', plan),
                   );
                 },
               },
@@ -135,16 +159,42 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
           __typename: 'ModelWorkoutPlanRoutineConnection',
         },
       });
+      setSelectedRoutine(routine);
     }
   };
 
   const handleOpenRenameRoutineModal = async () => {
-    try {
-      const resp = await openRenameRoutineModal();
+    if (!selectedPlan || !selectedRoutine) return;
 
-      console.log('promise modal resolve: ', resp);
-    } catch (e) {
-      console.log('promise modal reject: ', e);
+    const newFields = await openRenameRoutineModal({
+      workoutPlanId: selectedPlan.id,
+      userId,
+      routine: {
+        id: selectedRoutine.id,
+        name: selectedRoutine.name,
+        _version: selectedRoutine._version,
+      },
+    }).catch();
+
+    if (typeof newFields === 'object') {
+      setSelectedPlan((sp) => ({
+        ...sp!,
+        WorkoutPlanRoutines: {
+          ...sp!.WorkoutPlanRoutines,
+          __typename: 'ModelWorkoutPlanRoutineConnection',
+          items: sp!.WorkoutPlanRoutines!.items.map((wr) =>
+            wr?.id === selectedRoutine.id
+              ? { ...wr, name: newFields.name, _version: newFields._version }
+              : wr,
+          ),
+        },
+      }));
+
+      setSelectedRoutine((sr) => ({
+        ...sr!,
+        name: newFields.name,
+        _version: newFields._version,
+      }));
     }
   };
 
@@ -201,6 +251,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
 
   const handleSelectPlan = (plan: WorkoutPlan) => {
     setSelectedPlan(plan);
+    setSelectedRoutine(plan.WorkoutPlanRoutines?.items?.[0] ?? null);
   };
 
   if (areWorkoutPlansLoading) return <FullscreenLoader />;
@@ -208,8 +259,6 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   if (workoutPlans.length === 0) {
     return <CreateWorkoutPlanSection />;
   }
-
-  const routines = selectedPlan?.WorkoutPlanRoutines?.items ?? [];
 
   const emptyTabElement = (
     <Tabs.Tab name="__empty__" key="Empty">
@@ -268,6 +317,9 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
         }}
       />
       <Tabs.Container
+        onTabChange={({ tabName }) => {
+          setSelectedTab(tabName);
+        }}
         revealHeaderOnScroll={true}
         renderHeader={() => header}
         headerHeight={64}
@@ -335,10 +387,12 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
           ? emptyTabElement
           : _tabs}
       </Tabs.Container>
-      <RoutineToolbar
-        onRenameRoutine={handleOpenRenameRoutineModal}
-        onDeleteRoutine={handleOpenDeleteRoutineModal}
-      />
+      {selectedRoutine && (
+        <RoutineToolbar
+          onRenameRoutine={handleOpenRenameRoutineModal}
+          onDeleteRoutine={handleOpenDeleteRoutineModal}
+        />
+      )}
       <Portal>
         <WorkoutPlanSheet
           selectedPlanId={selectedPlan?.id ?? null}

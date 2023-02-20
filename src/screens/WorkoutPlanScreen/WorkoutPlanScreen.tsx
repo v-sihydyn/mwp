@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
 import { WorkoutPlanSelector } from './components/WorkoutPlanSelector/WorkoutPlanSelector';
@@ -14,7 +14,11 @@ import { openRenameRoutineModal } from '../../components/modals/RenameRoutineMod
 import { openDeleteRoutineModal } from '../../components/modals/DeleteRoutineModal/DeleteRoutineModal';
 import { openRenamePlanModal } from '../../components/modals/RenamePlanModal/RenamePlanModal';
 import { openDeletePlanModal } from '../../components/modals/DeletePlanModal/DeletePlanModal';
-import { MaterialTabBar, Tabs } from 'react-native-collapsible-tab-view';
+import {
+  CollapsibleRef,
+  MaterialTabBar,
+  Tabs,
+} from 'react-native-collapsible-tab-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CustomButton } from '../../components/CustomButton/CustomButton';
 import { openCreateRoutineModal } from '../../components/modals/CreateRoutineModal/CreateRoutineModal';
@@ -23,7 +27,7 @@ import { useWorkoutPlansByUser } from './hooks/useWorkoutPlansByUser';
 import { FullscreenLoader } from '../../components/FullscreenLoader/FullscreenLoader';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { CreateWorkoutPlanSection } from './components/CreateWorkoutPlanSection/CreateWorkoutPlanSection';
-import { WorkoutPlan, WorkoutPlanRoutine } from '../../API';
+import { WorkoutPlan } from '../../API';
 import { openCreatePlanModal } from '../../components/modals/CreatePlanModal/CreatePlanModal';
 import { useWorkoutPlanActions } from '../../hooks/useWorkoutPlanActions';
 import { Toast } from 'native-base';
@@ -36,9 +40,10 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   const { userId } = useAuthContext();
   const { workoutPlans, areWorkoutPlansLoading } =
     useWorkoutPlansByUser(userId);
-  const [selectedPlan, setSelectedPlan] = useState<WorkoutPlan | null>(null);
-  const [selectedRoutine, setSelectedRoutine] =
-    useState<WorkoutPlanRoutine | null>(null);
+  const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
+  const [selectedRoutineId, setSelectedRoutineId] = useState<string | null>(
+    null,
+  );
   const [isWorkoutPlanSheetVisible, setWorkoutPlanSheetVisible] =
     useState(false);
   const [isWorkoutActionsSheetVisible, setWorkoutActionsSheetVisible] =
@@ -47,53 +52,81 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   const insets = useSafeAreaInsets();
   const { deleteWorkoutPlan, deleteLoading } = useWorkoutPlanActions();
   const [didPlansInitLoaded, setDidPlansInitLoaded] = useState(false);
-  const [selectedTab, setSelectedTab] = useState<string | null>(null);
-
-  const routines = useMemo(
-    () =>
-      selectedPlan?.WorkoutPlanRoutines?.items.filter((x) => !x?._deleted) ??
-      [],
-    [selectedPlan?.WorkoutPlanRoutines],
+  const [tabToDelayedFocus, setTabToDelayedFocus] = useState<string | null>(
+    null,
   );
+  const tabContainerRef = useRef<CollapsibleRef>();
+  const focusedTab = tabContainerRef?.current?.getFocusedTab();
+
+  const selectedPlan = useMemo(() => {
+    const plan = workoutPlans.find((x) => x?.id === selectedPlanId);
+
+    return plan ?? null;
+  }, [workoutPlans, selectedPlanId]);
+
+  const routines = useMemo(() => {
+    return (
+      selectedPlan?.WorkoutPlanRoutines?.items
+        .filter((x) => !x?._deleted)
+        .sort((a, b) => {
+          return (
+            new Date(a!.createdAt).getTime() - new Date(b!.createdAt).getTime()
+          );
+        }) ?? []
+    );
+  }, [selectedPlan]);
+
+  const selectedRoutine = useMemo(() => {
+    const routine = routines.find((r) => r?.id === selectedRoutineId);
+
+    return routine ?? null;
+  }, [routines, selectedRoutineId]);
 
   useEffect(() => {
     if (workoutPlans.length > 0 && !didPlansInitLoaded) {
-      setSelectedPlan(workoutPlans[0]);
-      setSelectedRoutine(
-        workoutPlans[0]?.WorkoutPlanRoutines?.items?.[0] ?? null,
+      setSelectedPlanId(workoutPlans[0]?.id ?? null);
+      setSelectedRoutineId(
+        workoutPlans[0]?.WorkoutPlanRoutines?.items?.[0]?.id ?? null,
       );
       setDidPlansInitLoaded(true);
     }
   }, [workoutPlans, didPlansInitLoaded]);
 
   useEffect(() => {
-    const routine = routines.find((r) => r?.name === selectedTab);
+    const routine = routines.find((r) => r?.name === focusedTab);
 
     if (routine) {
-      setSelectedRoutine(routine);
+      setSelectedRoutineId(routine.id);
     }
-  }, [selectedTab, routines]);
+  }, [focusedTab, routines]);
+
+  useEffect(() => {
+    if (routines.length > 0 && tabToDelayedFocus) {
+      const routine = routines.find((r) => r?.name === tabToDelayedFocus);
+
+      if (routine) {
+        setTimeout(() => {
+          tabContainerRef?.current?.jumpToTab(tabToDelayedFocus);
+          setSelectedRoutineId(routine?.id ?? null);
+          setTabToDelayedFocus(null);
+        });
+      }
+    }
+  }, [routines, tabToDelayedFocus, tabContainerRef?.current]);
 
   // WORKOUT PLAN ACTIONS
   const handleCreateWorkoutPlan = async () => {
-    await openCreatePlanModal({ userId }).catch(() => {});
+    const newPlanId = await openCreatePlanModal({ userId }).catch(() => {});
+    setSelectedPlanId(newPlanId as string | null);
   };
 
   const handleOpenRenamePlanModal = async () => {
     if (!selectedPlan) return;
 
-    const newFields = await openRenamePlanModal({
+    await openRenamePlanModal({
       workoutPlan: selectedPlan,
       userId,
     }).catch(() => {});
-
-    if (typeof newFields === 'object') {
-      setSelectedPlan((sp) => ({
-        ...sp!,
-        name: newFields.name,
-        _version: newFields._version,
-      }));
-    }
   };
 
   const handleOpenDeletePlanModal = async () => {
@@ -150,23 +183,13 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
       workoutPlanId: selectedPlan.id,
     }).catch(() => {});
 
-    if (routine) {
-      setSelectedPlan({
-        ...selectedPlan,
-        WorkoutPlanRoutines: {
-          ...selectedPlan.WorkoutPlanRoutines,
-          items: [...(selectedPlan?.WorkoutPlanRoutines?.items ?? []), routine],
-          __typename: 'ModelWorkoutPlanRoutineConnection',
-        },
-      });
-      setSelectedRoutine(routine);
-    }
+    setTabToDelayedFocus(routine?.name ?? null);
   };
 
   const handleOpenRenameRoutineModal = async () => {
     if (!selectedPlan || !selectedRoutine) return;
 
-    const newFields = await openRenameRoutineModal({
+    await openRenameRoutineModal({
       workoutPlanId: selectedPlan.id,
       userId,
       routine: {
@@ -174,28 +197,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
         name: selectedRoutine.name,
         _version: selectedRoutine._version,
       },
-    }).catch();
-
-    if (typeof newFields === 'object') {
-      setSelectedPlan((sp) => ({
-        ...sp!,
-        WorkoutPlanRoutines: {
-          ...sp!.WorkoutPlanRoutines,
-          __typename: 'ModelWorkoutPlanRoutineConnection',
-          items: sp!.WorkoutPlanRoutines!.items.map((wr) =>
-            wr?.id === selectedRoutine.id
-              ? { ...wr, name: newFields.name, _version: newFields._version }
-              : wr,
-          ),
-        },
-      }));
-
-      setSelectedRoutine((sr) => ({
-        ...sr!,
-        name: newFields.name,
-        _version: newFields._version,
-      }));
-    }
+    }).catch(() => {});
   };
 
   const handleOpenDeleteRoutineModal = async () => {
@@ -250,8 +252,8 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   }, [selectedPlan]);
 
   const handleSelectPlan = (plan: WorkoutPlan) => {
-    setSelectedPlan(plan);
-    setSelectedRoutine(plan.WorkoutPlanRoutines?.items?.[0] ?? null);
+    setSelectedPlanId(plan.id);
+    setSelectedRoutineId(plan?.WorkoutPlanRoutines?.items?.[0]?.id ?? null);
   };
 
   if (areWorkoutPlansLoading) return <FullscreenLoader />;
@@ -317,9 +319,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
         }}
       />
       <Tabs.Container
-        onTabChange={({ tabName }) => {
-          setSelectedTab(tabName);
-        }}
+        ref={tabContainerRef}
         revealHeaderOnScroll={true}
         renderHeader={() => header}
         headerHeight={64}

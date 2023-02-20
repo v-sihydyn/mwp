@@ -6,7 +6,7 @@ import { modalStyles } from '../modalStyles';
 import { colors } from '../../../styles/colors';
 import { useWorkoutPlanActions } from '../../../hooks/useWorkoutPlanActions';
 
-type Props = InstanceProps<void> & {
+type Props = InstanceProps<string | null> & {
   userId: string;
 };
 
@@ -24,7 +24,7 @@ export const CreatePlanModal = ({
     if (!name) return onResolve();
 
     try {
-      await createWorkoutPlan({
+      const response = await createWorkoutPlan({
         variables: {
           input: {
             name,
@@ -33,7 +33,7 @@ export const CreatePlanModal = ({
         },
         refetchQueries: ['WorkoutPlansByUserID'],
       });
-      onResolve();
+      onResolve(response?.data?.createWorkoutPlan?.id ?? null);
     } catch (e) {
       Toast.show({
         title: 'Failed to create a plan',
@@ -81,4 +81,6 @@ export const CreatePlanModal = ({
   );
 };
 
-export const openCreatePlanModal = create<Props>(CreatePlanModal);
+export const openCreatePlanModal = create<Props, string | null>(
+  CreatePlanModal,
+);

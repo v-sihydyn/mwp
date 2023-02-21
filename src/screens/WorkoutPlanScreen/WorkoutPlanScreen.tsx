@@ -33,6 +33,8 @@ import { useWorkoutPlanActions } from '../../hooks/useWorkoutPlanActions';
 import { Toast } from 'native-base';
 import { Icon } from '../../components/Icon/Icon';
 import { StoreObject } from '@apollo/client';
+import { useWorkoutPlanRoutineActions } from '../../hooks/useWorkoutPlanRoutineActions';
+import { usePrevious } from '../../hooks/usePrevious';
 
 type Props = RootTabScreenProps<'WorkoutPlan'>;
 
@@ -50,11 +52,18 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     useState(false);
   const { width: windowWidth } = useWindowDimensions();
   const insets = useSafeAreaInsets();
-  const { deleteWorkoutPlan, deleteLoading } = useWorkoutPlanActions();
+  const { deleteWorkoutPlan, deleteLoading: deletePlanLoading } =
+    useWorkoutPlanActions();
+  const { deleteWorkoutPlanRoutine, deleteLoading: deleteRoutineLoading } =
+    useWorkoutPlanRoutineActions();
   const [didPlansInitLoaded, setDidPlansInitLoaded] = useState(false);
   const [tabToDelayedFocus, setTabToDelayedFocus] = useState<string | null>(
     null,
   );
+  const [manuallySelectedTab, setManuallySelectedTab] = useState<string | null>(
+    null,
+  );
+  const prevManuallySelectedTab = usePrevious(manuallySelectedTab);
   const tabContainerRef = useRef<CollapsibleRef>();
   const focusedTab = tabContainerRef?.current?.getFocusedTab();
 
@@ -65,22 +74,14 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   }, [workoutPlans, selectedPlanId]);
 
   const routines = useMemo(() => {
-    return (
-      selectedPlan?.WorkoutPlanRoutines?.items
-        .filter((x) => !x?._deleted)
-        .sort((a, b) => {
-          return (
-            new Date(a!.createdAt).getTime() - new Date(b!.createdAt).getTime()
-          );
-        }) ?? []
-    );
+    return selectedPlan?.WorkoutPlanRoutines?.items ?? [];
   }, [selectedPlan]);
 
   const selectedRoutine = useMemo(() => {
     const routine = routines.find((r) => r?.id === selectedRoutineId);
 
     return routine ?? null;
-  }, [routines, selectedRoutineId]);
+  }, [routines, selectedRoutineId, focusedTab]);
 
   useEffect(() => {
     if (workoutPlans.length > 0 && !didPlansInitLoaded) {
@@ -93,23 +94,34 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   }, [workoutPlans, didPlansInitLoaded]);
 
   useEffect(() => {
-    const routine = routines.find((r) => r?.name === focusedTab);
-
-    if (routine) {
-      setSelectedRoutineId(routine.id);
+    if (
+      prevManuallySelectedTab !== undefined &&
+      manuallySelectedTab !== prevManuallySelectedTab
+    ) {
+      const routine = routines.find((r) => r?.name === manuallySelectedTab);
+      if (routine) {
+        setSelectedRoutineId(routine.id);
+      }
     }
-  }, [focusedTab, routines]);
+  }, [prevManuallySelectedTab, manuallySelectedTab, focusedTab, routines]);
 
   useEffect(() => {
-    if (routines.length > 0 && tabToDelayedFocus) {
+    if (tabToDelayedFocus) {
       const routine = routines.find((r) => r?.name === tabToDelayedFocus);
 
-      if (routine) {
+      if (routine && tabToDelayedFocus) {
         setTimeout(() => {
-          tabContainerRef?.current?.jumpToTab(tabToDelayedFocus);
-          setSelectedRoutineId(routine?.id ?? null);
+          const focusedTab = tabContainerRef?.current?.getFocusedTab();
+
+          if (!focusedTab || focusedTab !== tabToDelayedFocus) {
+            tabContainerRef?.current?.jumpToTab(tabToDelayedFocus);
+          }
+
+          setManuallySelectedTab(tabToDelayedFocus);
           setTabToDelayedFocus(null);
         });
+      } else {
+        setManuallySelectedTab(null);
       }
     }
   }, [routines, tabToDelayedFocus, tabContainerRef?.current]);
@@ -124,18 +136,18 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     if (!selectedPlan) return;
 
     await openRenamePlanModal({
-      workoutPlan: selectedPlan,
+      workoutPlan: selectedPlan!,
       userId,
     }).catch(() => {});
   };
 
   const handleOpenDeletePlanModal = async () => {
     if (!selectedPlan) return;
-    if (deleteLoading) return;
+    if (deletePlanLoading) return;
 
     const deleteConfirmed = await openDeletePlanModal({
-      name: selectedPlan.name,
-    });
+      name: selectedPlan.name!,
+    }).catch(() => {});
 
     if (deleteConfirmed) {
       try {
@@ -180,7 +192,8 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     if (!selectedPlan) return;
 
     const routine = await openCreateRoutineModal({
-      workoutPlanId: selectedPlan.id,
+      workoutPlanId: selectedPlan.id!,
+      userId,
     }).catch(() => {});
 
     setTabToDelayedFocus(routine?.name ?? null);
@@ -190,7 +203,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     if (!selectedPlan || !selectedRoutine) return;
 
     await openRenameRoutineModal({
-      workoutPlanId: selectedPlan.id,
+      workoutPlanId: selectedPlan.id!,
       userId,
       routine: {
         id: selectedRoutine.id,
@@ -201,12 +214,64 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   };
 
   const handleOpenDeleteRoutineModal = async () => {
-    try {
-      const resp = await openDeleteRoutineModal();
+    if (!selectedPlan || !selectedRoutine) return;
+    if (deleteRoutineLoading) return;
 
-      console.log('promise modal resolve: ', resp);
-    } catch (e) {
-      console.log('promise modal reject: ', e);
+    const deleteConfirmed = await openDeleteRoutineModal({
+      name: selectedRoutine.name,
+    }).catch(() => {});
+
+    if (deleteConfirmed) {
+      try {
+        await deleteWorkoutPlanRoutine({
+          variables: {
+            input: {
+              id: selectedRoutine.id,
+              _version: selectedRoutine._version,
+            },
+          },
+          update(cache, { data }) {
+            if (!data?.deleteWorkoutPlanRoutine) return;
+
+            cache.modify({
+              id: cache.identify(data.deleteWorkoutPlanRoutine),
+              fields: {
+                workoutPlansByUserID(existingItems = [], { readField }) {
+                  return existingItems.map((planRef: StoreObject) => {
+                    if (readField('id', planRef) === selectedPlan.id) {
+                      return {
+                        ...planRef,
+                        WorkoutPlanRoutines: planRef.WorkoutPlanRoutines.filter(
+                          (routineRef: StoreObject) =>
+                            readField('id', routineRef) === selectedRoutine.id,
+                        ),
+                      };
+                    }
+
+                    return planRef;
+                  });
+                },
+              },
+            });
+          },
+        });
+
+        const updatedRoutines = routines.filter(
+          (x) => x?.id !== selectedRoutine.id,
+        );
+        const routineIndex = routines.findIndex(
+          (r) => r?.id === selectedRoutine.id,
+        );
+        const nextIndex = Math.max(routineIndex - 1, 0);
+        setTabToDelayedFocus(updatedRoutines[nextIndex]?.name ?? null);
+      } catch (e) {
+        Toast.show({
+          title: 'Failed to delete a routine',
+          description: (e as Error).message,
+          duration: 3000,
+          backgroundColor: colors.red,
+        });
+      }
     }
   };
   // WORKOUT ROUTINE ACTIONS END
@@ -254,6 +319,11 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   const handleSelectPlan = (plan: WorkoutPlan) => {
     setSelectedPlanId(plan.id);
     setSelectedRoutineId(plan?.WorkoutPlanRoutines?.items?.[0]?.id ?? null);
+    setTabToDelayedFocus(plan?.WorkoutPlanRoutines?.items?.[0]?.name ?? null);
+
+    if (tabContainerRef?.current?.getCurrentIndex() !== 0) {
+      tabContainerRef?.current?.setIndex(0);
+    }
   };
 
   if (areWorkoutPlansLoading) return <FullscreenLoader />;
@@ -320,6 +390,9 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
       />
       <Tabs.Container
         ref={tabContainerRef}
+        onTabChange={({ tabName }) => {
+          setManuallySelectedTab(tabName);
+        }}
         revealHeaderOnScroll={true}
         renderHeader={() => header}
         headerHeight={64}

@@ -5,14 +5,22 @@ import { create, InstanceProps } from 'react-modal-promise';
 import { modalStyles } from '../modalStyles';
 import { colors } from '../../../styles/colors';
 import { useWorkoutPlanRoutineActions } from '../../../hooks/useWorkoutPlanRoutineActions';
-import { WorkoutPlanRoutine } from '../../../API';
+import {
+  WorkoutPlan,
+  WorkoutPlanRoutine,
+  WorkoutPlansByUserIDQuery,
+  WorkoutPlansByUserIDQueryVariables,
+} from '../../../API';
+import { workoutPlansByUserIDQuery } from '../../../screens/WorkoutPlanScreen/hooks/queries/workoutPlansByUserIDQuery';
 
 type Props = InstanceProps<WorkoutPlanRoutine | null> & {
   workoutPlanId: string;
+  userId: string;
 };
 
 export const CreateRoutineModal = ({
   workoutPlanId,
+  userId,
   isOpen,
   onResolve,
   onReject,
@@ -33,7 +41,51 @@ export const CreateRoutineModal = ({
             workoutPlanID: workoutPlanId,
           },
         },
-        refetchQueries: ['WorkoutPlansByUserID'],
+        // refetchQueries: ['WorkoutPlansByUserID'],
+        update(cache, { data }) {
+          const newRoutine = data?.createWorkoutPlanRoutine;
+          if (!newRoutine) return;
+
+          cache.updateQuery<
+            WorkoutPlansByUserIDQuery,
+            WorkoutPlansByUserIDQueryVariables
+          >(
+            {
+              query: workoutPlansByUserIDQuery,
+              variables: {
+                userID: userId,
+              },
+            },
+            (data) => {
+              if (!data?.workoutPlansByUserID?.items) return;
+
+              return {
+                workoutPlansByUserID: {
+                  ...data.workoutPlansByUserID,
+                  items: (data?.workoutPlansByUserID?.items ?? []).map(
+                    (_plan: WorkoutPlan | null) => {
+                      const plan = _plan! || {};
+
+                      return {
+                        ...plan,
+                        WorkoutPlanRoutines: {
+                          ...plan.WorkoutPlanRoutines,
+                          items:
+                            plan.id === workoutPlanId
+                              ? [
+                                  ...(plan.WorkoutPlanRoutines?.items ?? []),
+                                  newRoutine,
+                                ]
+                              : plan.WorkoutPlanRoutines?.items,
+                        },
+                      };
+                    },
+                  ),
+                },
+              };
+            },
+          );
+        },
       });
 
       onResolve(response?.data?.createWorkoutPlanRoutine ?? null);

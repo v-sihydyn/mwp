@@ -4,6 +4,7 @@ import {
   WorkoutPlansByUserIDQuery,
   WorkoutPlansByUserIDQueryVariables,
 } from '../../../API';
+import { useMemo } from 'react';
 
 export const useWorkoutPlansByUser = (userId: string) => {
   const { data, loading } = useQuery<
@@ -15,10 +16,29 @@ export const useWorkoutPlansByUser = (userId: string) => {
     },
   });
 
-  const workoutPlans = data?.workoutPlansByUserID?.items! ?? [];
+  const workoutPlans = useMemo(
+    () =>
+      (data?.workoutPlansByUserID?.items! ?? [])
+        .filter((plan) => !plan?._deleted)
+        .map((plan) => ({
+          ...plan,
+          WorkoutPlanRoutines: {
+            ...plan!.WorkoutPlanRoutines,
+            items: plan!
+              .WorkoutPlanRoutines!.items.filter((x) => !x?._deleted)
+              .sort((a, b) => {
+                return (
+                  new Date(a!.createdAt).getTime() -
+                  new Date(b!.createdAt).getTime()
+                );
+              }),
+          },
+        })),
+    [data],
+  );
 
   return {
-    workoutPlans: workoutPlans.filter((plan) => !plan?._deleted),
+    workoutPlans,
     areWorkoutPlansLoading: loading,
   };
 };

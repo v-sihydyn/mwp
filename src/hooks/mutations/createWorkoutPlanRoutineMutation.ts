@@ -8,19 +8,17 @@ export const createWorkoutPlanRoutineMutation = gql`
     createWorkoutPlanRoutine(input: $input, condition: $condition) {
       id
       name
-      sortOrder
-      workoutPlanID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       WorkoutRoutineExercises {
         items {
           id
           name
         }
       }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;

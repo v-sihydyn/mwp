@@ -66,6 +66,9 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   const prevManuallySelectedTab = usePrevious(manuallySelectedTab);
   const tabContainerRef = useRef<CollapsibleRef>();
   const focusedTab = tabContainerRef?.current?.getFocusedTab();
+  const [tabContainerKey, setTabContainerKey] = useState(0);
+
+  const forceUpdateTabContainer = () => setTabContainerKey((x) => x + 1);
 
   const selectedPlan = useMemo(() => {
     const plan = workoutPlans.find((x) => x?.id === selectedPlanId);
@@ -85,13 +88,12 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
 
   useEffect(() => {
     if (workoutPlans.length > 0 && !didPlansInitLoaded) {
-      setSelectedPlanId(workoutPlans[0]?.id ?? null);
-      setSelectedRoutineId(
-        workoutPlans[0]?.WorkoutPlanRoutines?.items?.[0]?.id ?? null,
-      );
+      const plan = workoutPlans[0] as WorkoutPlan;
+      handleSelectPlan(plan);
+
       setDidPlansInitLoaded(true);
     }
-  }, [workoutPlans, didPlansInitLoaded]);
+  }, [workoutPlans, didPlansInitLoaded, tabContainerRef?.current]);
 
   useEffect(() => {
     if (
@@ -118,8 +120,9 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
           }
 
           setManuallySelectedTab(tabToDelayedFocus);
-          setTabToDelayedFocus(null);
         });
+
+        setTabToDelayedFocus(null);
       } else {
         setManuallySelectedTab(null);
       }
@@ -130,6 +133,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   const handleCreateWorkoutPlan = async () => {
     const newPlanId = await openCreatePlanModal({ userId }).catch(() => {});
     setSelectedPlanId(newPlanId as string | null);
+    onCloseWorkoutPlanSheet();
   };
 
   const handleOpenRenamePlanModal = async () => {
@@ -197,6 +201,10 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     }).catch(() => {});
 
     setTabToDelayedFocus(routine?.name ?? null);
+
+    if (routines.length === 0) {
+      forceUpdateTabContainer();
+    }
   };
 
   const handleOpenRenameRoutineModal = async () => {
@@ -318,12 +326,8 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
 
   const handleSelectPlan = (plan: WorkoutPlan) => {
     setSelectedPlanId(plan.id);
-    setSelectedRoutineId(plan?.WorkoutPlanRoutines?.items?.[0]?.id ?? null);
     setTabToDelayedFocus(plan?.WorkoutPlanRoutines?.items?.[0]?.name ?? null);
-
-    if (tabContainerRef?.current?.getCurrentIndex() !== 0) {
-      tabContainerRef?.current?.setIndex(0);
-    }
+    forceUpdateTabContainer();
   };
 
   if (areWorkoutPlansLoading) return <FullscreenLoader />;
@@ -389,6 +393,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
         }}
       />
       <Tabs.Container
+        key={tabContainerKey}
         ref={tabContainerRef}
         onTabChange={({ tabName }) => {
           setManuallySelectedTab(tabName);

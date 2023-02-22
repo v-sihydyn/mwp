@@ -1,4 +1,4 @@
-type WorkoutExercise @model @auth(rules: [{allow: public}]) {
+type WorkoutExercise @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}]) {
   id: ID!
   setsConfig: AWSJSON!
   sortOrder: Int
@@ -11,7 +11,7 @@ enum WorkoutStatus {
   FINISHED
 }
 
-type Workout @model @auth(rules: [{allow: public}]) {
+type Workout @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}]) {
   id: ID!
   status: WorkoutStatus!
   dateFinished: AWSDateTime
@@ -20,7 +20,7 @@ type Workout @model @auth(rules: [{allow: public}]) {
   WorkoutExercises: [WorkoutExercise] @hasMany(indexName: "byWorkout", fields: ["id"])
 }
 
-type Exercise @model @auth(rules: [{allow: public}]) {
+type Exercise @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}]) {
   id: ID!
   name: String!
   muscleGroup: MuscleGroup
@@ -54,7 +54,7 @@ enum MuscleGroup {
   WEIGHTLIFTING
 }
 
-type WorkoutRoutineExercise @model @auth(rules: [{allow: public}]) {
+type WorkoutRoutineExercise @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}]) {
   id: ID!
   name: String!
   muscleGroup: MuscleGroup
@@ -67,7 +67,7 @@ type WorkoutRoutineExercise @model @auth(rules: [{allow: public}]) {
   setsConfig: AWSJSON!
 }
 
-type WorkoutPlanRoutine @model @auth(rules: [{allow: public}]) {
+type WorkoutPlanRoutine @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}]) {
   id: ID!
   name: String!
   sortOrder: Int
@@ -75,7 +75,7 @@ type WorkoutPlanRoutine @model @auth(rules: [{allow: public}]) {
   WorkoutRoutineExercises: [WorkoutRoutineExercise] @hasMany(indexName: "byWorkoutPlanRoutine", fields: ["id"])
 }
 
-type User @model @auth(rules: [{allow: public}]) {
+type User @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}]) {
   id: ID!
   name: String!
   email: AWSEmail
@@ -84,9 +84,18 @@ type User @model @auth(rules: [{allow: public}]) {
   WorkoutPlans: [WorkoutPlan] @hasMany(indexName: "byUser", fields: ["id"])
 }
 
-type WorkoutPlan @model @auth(rules: [{allow: public}]) {
+type WorkoutPlan @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}]) {
   id: ID!
   name: String!
   userID: ID! @index(name: "byUser")
   WorkoutPlanRoutines: [WorkoutPlanRoutine] @hasMany(indexName: "byWorkoutPlan", fields: ["id"])
+}
+
+type Mutation {
+  deletePlanAndRoutines(planId: ID!): DeletePlanAndRoutinesResponse
+  @function(name: "editPlanAndRoutines-${env}")
+}
+
+type DeletePlanAndRoutinesResponse {
+  id: ID!
 }

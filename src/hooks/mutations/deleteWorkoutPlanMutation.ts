@@ -13,3 +13,11 @@ export const deleteWorkoutPlanMutation = gql`
     }
   }
 `;
+
+export const deletePlanAndRoutinesMutation = gql`
+  mutation DeletePlanAndRoutines($planId: ID!) {
+    deletePlanAndRoutines(planId: $planId) {
+      id
+    }
+  }
+`;

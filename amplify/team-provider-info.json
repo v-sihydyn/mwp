@@ -22,7 +22,11 @@
       "function": {
         "MWPPostConfirmation": {
           "deploymentBucketName": "amplify-mwp-staging-91319-deployment",
-          "s3Key": "amplify-builds/MWPPostConfirmation-78514c73474b54354e64-build.zip"
+          "s3Key": "amplify-builds/MWPPostConfirmation-394e3175664249557556-build.zip"
+        },
+        "editPlanAndRoutines": {
+          "deploymentBucketName": "amplify-mwp-staging-91319-deployment",
+          "s3Key": "amplify-builds/editPlanAndRoutines-795562664561756f3645-build.zip"
         }
       }
     }

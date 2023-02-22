@@ -27,13 +27,18 @@ import { useWorkoutPlansByUser } from './hooks/useWorkoutPlansByUser';
 import { FullscreenLoader } from '../../components/FullscreenLoader/FullscreenLoader';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { CreateWorkoutPlanSection } from './components/CreateWorkoutPlanSection/CreateWorkoutPlanSection';
-import { WorkoutPlan } from '../../API';
+import {
+  WorkoutPlan,
+  WorkoutPlansByUserIDQuery,
+  WorkoutPlansByUserIDQueryVariables,
+} from '../../API';
 import { openCreatePlanModal } from '../../components/modals/CreatePlanModal/CreatePlanModal';
 import { useWorkoutPlanActions } from '../../hooks/useWorkoutPlanActions';
 import { Toast } from 'native-base';
 import { Icon } from '../../components/Icon/Icon';
 import { StoreObject } from '@apollo/client';
 import { useWorkoutPlanRoutineActions } from '../../hooks/useWorkoutPlanRoutineActions';
+import { workoutPlansByUserIDQuery } from './hooks/queries/workoutPlansByUserIDQuery';
 
 type Props = RootTabScreenProps<'WorkoutPlan'>;
 
@@ -126,25 +131,40 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
       try {
         await deleteWorkoutPlan({
           variables: {
-            input: {
-              id: selectedPlan.id,
-              _version: selectedPlan._version,
-            },
+            // input: {
+            //   id: selectedPlan.id,
+            // },
+            planId: selectedPlan.id,
           },
           update(cache, { data }) {
-            if (!data?.deleteWorkoutPlan) return;
+            if (!data?.deletePlanAndRoutines) return;
+            const deletedPlanId = data?.deletePlanAndRoutines.id;
 
-            cache.modify({
-              id: cache.identify(data.deleteWorkoutPlan),
-              fields: {
-                workoutPlansByUserID(existingItems = [], { readField }) {
-                  return existingItems.filter(
-                    (plan: StoreObject) =>
-                      selectedPlan.id !== readField('id', plan),
-                  );
+            cache.updateQuery<
+              WorkoutPlansByUserIDQuery,
+              WorkoutPlansByUserIDQueryVariables
+            >(
+              {
+                query: workoutPlansByUserIDQuery,
+                variables: {
+                  userID: userId,
                 },
               },
-            });
+              (data) => {
+                if (!data?.workoutPlansByUserID?.items) return;
+
+                return {
+                  workoutPlansByUserID: {
+                    ...data.workoutPlansByUserID,
+                    items: (data?.workoutPlansByUserID?.items ?? []).filter(
+                      (_plan: WorkoutPlan | null) => {
+                        return _plan?.id !== deletedPlanId;
+                      },
+                    ),
+                  },
+                };
+              },
+            );
           },
         });
         setDidPlansInitLoaded(false);

@@ -34,7 +34,7 @@ const WorkoutStatus = {
   "FINISHED": "FINISHED"
 };
 
-const { WorkoutExercise, WorkoutRoutineExercise, Workout, WorkoutPlanRoutine, Exercise, User, WorkoutPlan } = initSchema(schema);
+const { WorkoutExercise, WorkoutRoutineExercise, Workout, WorkoutPlanRoutine, Exercise, User, WorkoutPlan, DeletePlanAndRoutinesResponse } = initSchema(schema);
 
 export {
   WorkoutExercise,
@@ -46,5 +46,6 @@ export {
   WorkoutPlan,
   MuscleGroup,
   ExerciseEquipment,
-  WorkoutStatus
+  WorkoutStatus,
+  DeletePlanAndRoutinesResponse
 };

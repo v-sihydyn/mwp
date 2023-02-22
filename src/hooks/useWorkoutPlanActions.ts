@@ -2,6 +2,8 @@ import { useMutation } from '@apollo/client';
 import {
   CreateWorkoutPlanMutation,
   CreateWorkoutPlanMutationVariables,
+  DeletePlanAndRoutinesMutation,
+  DeletePlanAndRoutinesMutationVariables,
   DeleteWorkoutPlanMutation,
   DeleteWorkoutPlanMutationVariables,
   UpdateWorkoutPlanMutation,
@@ -9,7 +11,10 @@ import {
 } from '../API';
 import { createWorkoutPlanMutation } from './mutations/createWorkoutPlanMutation';
 import { updateWorkoutPlanMutation } from './mutations/updateWorkoutPlanMutation';
-import { deleteWorkoutPlanMutation } from './mutations/deleteWorkoutPlanMutation';
+import {
+  deletePlanAndRoutinesMutation,
+  deleteWorkoutPlanMutation,
+} from './mutations/deleteWorkoutPlanMutation';
 
 export const useWorkoutPlanActions = () => {
   const [createWorkoutPlan, { loading: createLoading }] = useMutation<
@@ -20,10 +25,15 @@ export const useWorkoutPlanActions = () => {
     UpdateWorkoutPlanMutation,
     UpdateWorkoutPlanMutationVariables
   >(updateWorkoutPlanMutation);
+  // const [deleteWorkoutPlan, { loading: deleteLoading }] = useMutation<
+  //   DeleteWorkoutPlanMutation,
+  //   DeleteWorkoutPlanMutationVariables
+  // >(deleteWorkoutPlanMutation);
+
   const [deleteWorkoutPlan, { loading: deleteLoading }] = useMutation<
-    DeleteWorkoutPlanMutation,
-    DeleteWorkoutPlanMutationVariables
-  >(deleteWorkoutPlanMutation);
+    DeletePlanAndRoutinesMutation,
+    DeletePlanAndRoutinesMutationVariables
+  >(deletePlanAndRoutinesMutation);
 
   // @TODO: mb handle errors here
 

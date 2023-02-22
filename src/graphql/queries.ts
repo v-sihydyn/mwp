@@ -25,6 +25,7 @@ export const getWorkoutExercise = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       createdAt
       updatedAt
@@ -32,6 +33,7 @@ export const getWorkoutExercise = /* GraphQL */ `
       _deleted
       _lastChangedAt
       workoutExerciseWorkoutRoutineExerciseId
+      owner
     }
   }
 `;
@@ -67,6 +69,7 @@ export const listWorkoutExercises = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         createdAt
         updatedAt
@@ -74,6 +77,7 @@ export const listWorkoutExercises = /* GraphQL */ `
         _deleted
         _lastChangedAt
         workoutExerciseWorkoutRoutineExerciseId
+        owner
       }
       nextToken
       startedAt
@@ -114,6 +118,7 @@ export const syncWorkoutExercises = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         createdAt
         updatedAt
@@ -121,6 +126,7 @@ export const syncWorkoutExercises = /* GraphQL */ `
         _deleted
         _lastChangedAt
         workoutExerciseWorkoutRoutineExerciseId
+        owner
       }
       nextToken
       startedAt
@@ -163,6 +169,7 @@ export const workoutExercisesByWorkoutID = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         createdAt
         updatedAt
@@ -170,6 +177,7 @@ export const workoutExercisesByWorkoutID = /* GraphQL */ `
         _deleted
         _lastChangedAt
         workoutExerciseWorkoutRoutineExerciseId
+        owner
       }
       nextToken
       startedAt
@@ -205,6 +213,7 @@ export const getWorkout = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
+            owner
           }
           nextToken
           startedAt
@@ -214,6 +223,7 @@ export const getWorkout = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       WorkoutExercises {
         items {
@@ -237,6 +247,7 @@ export const getWorkout = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
+            owner
           }
           createdAt
           updatedAt
@@ -244,6 +255,7 @@ export const getWorkout = /* GraphQL */ `
           _deleted
           _lastChangedAt
           workoutExerciseWorkoutRoutineExerciseId
+          owner
         }
         nextToken
         startedAt
@@ -254,6 +266,7 @@ export const getWorkout = /* GraphQL */ `
       _deleted
       _lastChangedAt
       workoutWorkoutPlanRoutineId
+      owner
     }
   }
 `;
@@ -283,6 +296,7 @@ export const listWorkouts = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         WorkoutExercises {
           items {
@@ -296,6 +310,7 @@ export const listWorkouts = /* GraphQL */ `
             _deleted
             _lastChangedAt
             workoutExerciseWorkoutRoutineExerciseId
+            owner
           }
           nextToken
           startedAt
@@ -306,6 +321,7 @@ export const listWorkouts = /* GraphQL */ `
         _deleted
         _lastChangedAt
         workoutWorkoutPlanRoutineId
+        owner
       }
       nextToken
       startedAt
@@ -344,6 +360,7 @@ export const syncWorkouts = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         WorkoutExercises {
           items {
@@ -357,6 +374,7 @@ export const syncWorkouts = /* GraphQL */ `
             _deleted
             _lastChangedAt
             workoutExerciseWorkoutRoutineExerciseId
+            owner
           }
           nextToken
           startedAt
@@ -367,6 +385,7 @@ export const syncWorkouts = /* GraphQL */ `
         _deleted
         _lastChangedAt
         workoutWorkoutPlanRoutineId
+        owner
       }
       nextToken
       startedAt
@@ -385,6 +404,7 @@ export const getExercise = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -405,6 +425,7 @@ export const listExercises = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -434,6 +455,7 @@ export const syncExercises = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -458,6 +480,7 @@ export const getWorkoutRoutineExercise = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -488,6 +511,7 @@ export const listWorkoutRoutineExercises = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -523,6 +547,7 @@ export const syncWorkoutRoutineExercises = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -560,6 +585,7 @@ export const workoutRoutineExercisesByWorkoutPlanRoutineID = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -590,6 +616,7 @@ export const getWorkoutPlanRoutine = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -599,6 +626,7 @@ export const getWorkoutPlanRoutine = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -635,6 +663,7 @@ export const listWorkoutPlanRoutines = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
+            owner
           }
           nextToken
           startedAt
@@ -644,6 +673,7 @@ export const listWorkoutPlanRoutines = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -685,6 +715,7 @@ export const syncWorkoutPlanRoutines = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
+            owner
           }
           nextToken
           startedAt
@@ -694,6 +725,7 @@ export const syncWorkoutPlanRoutines = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -737,6 +769,7 @@ export const workoutPlanRoutinesByWorkoutPlanID = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
+            owner
           }
           nextToken
           startedAt
@@ -746,6 +779,7 @@ export const workoutPlanRoutinesByWorkoutPlanID = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -774,6 +808,7 @@ export const getUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -783,6 +818,7 @@ export const getUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -809,6 +845,7 @@ export const listUsers = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
+            owner
           }
           nextToken
           startedAt
@@ -818,6 +855,7 @@ export const listUsers = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -853,6 +891,7 @@ export const syncUsers = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
+            owner
           }
           nextToken
           startedAt
@@ -862,6 +901,7 @@ export const syncUsers = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -899,6 +939,7 @@ export const usersByUsername = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
+            owner
           }
           nextToken
           startedAt
@@ -908,6 +949,7 @@ export const usersByUsername = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -935,6 +977,7 @@ export const getWorkoutPlan = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -944,6 +987,7 @@ export const getWorkoutPlan = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -969,6 +1013,7 @@ export const listWorkoutPlans = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
+            owner
           }
           nextToken
           startedAt
@@ -978,6 +1023,7 @@ export const listWorkoutPlans = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -1012,6 +1058,7 @@ export const syncWorkoutPlans = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
+            owner
           }
           nextToken
           startedAt
@@ -1021,6 +1068,7 @@ export const syncWorkoutPlans = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -1057,6 +1105,7 @@ export const workoutPlansByUserID = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
+            owner
           }
           nextToken
           startedAt
@@ -1066,6 +1115,7 @@ export const workoutPlansByUserID = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt

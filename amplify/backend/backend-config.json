@@ -1,7 +1,15 @@
 {
   "api": {
     "MWP": {
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "MWP"
+        }
+      ],
       "output": {
         "authConfig": {
           "additionalAuthenticationProviders": [
@@ -10,11 +18,10 @@
             }
           ],
           "defaultAuthentication": {
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 30,
-              "description": "api key description"
-            },
-            "authenticationType": "API_KEY"
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authMWP"
+            }
           }
         }
       },
@@ -70,13 +77,17 @@
         {
           "attributes": [
             "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput",
-            "GraphQLAPIKeyOutput"
+            "GraphQLAPIEndpointOutput"
           ],
           "category": "api",
           "resourceName": "MWP"
         }
       ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "editPlanAndRoutines": {
+      "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
@@ -95,6 +106,22 @@
         {
           "category": "function",
           "resourceName": "MWPPostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_editPlanAndRoutines_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "editPlanAndRoutines"
+        }
+      ]
+    },
+    "AMPLIFY_function_editPlanAndRoutines_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "editPlanAndRoutines"
         }
       ]
     }

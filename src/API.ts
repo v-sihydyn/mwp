@@ -2,6 +2,11 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
+export type DeletePlanAndRoutinesResponse = {
+  __typename: "DeletePlanAndRoutinesResponse",
+  id: string,
+};
+
 export type CreateWorkoutExerciseInput = {
   id?: string | null,
   setsConfig: string,
@@ -102,6 +107,7 @@ export type WorkoutExercise = {
   _deleted?: boolean | null,
   _lastChangedAt: number,
   workoutExerciseWorkoutRoutineExerciseId?: string | null,
+  owner?: string | null,
 };
 
 export type WorkoutRoutineExercise = {
@@ -121,6 +127,7 @@ export type WorkoutRoutineExercise = {
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
+  owner?: string | null,
 };
 
 export enum MuscleGroup {
@@ -210,6 +217,7 @@ export type Workout = {
   _deleted?: boolean | null,
   _lastChangedAt: number,
   workoutWorkoutPlanRoutineId?: string | null,
+  owner?: string | null,
 };
 
 export type WorkoutPlanRoutine = {
@@ -224,6 +232,7 @@ export type WorkoutPlanRoutine = {
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
+  owner?: string | null,
 };
 
 export type ModelWorkoutRoutineExerciseConnection = {
@@ -292,6 +301,7 @@ export type Exercise = {
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
+  owner?: string | null,
 };
 
 export type UpdateExerciseInput = {
@@ -417,6 +427,7 @@ export type User = {
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
+  owner?: string | null,
 };
 
 export type ModelWorkoutPlanConnection = {
@@ -437,6 +448,7 @@ export type WorkoutPlan = {
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
+  owner?: string | null,
 };
 
 export type ModelWorkoutPlanRoutineConnection = {
@@ -703,6 +715,17 @@ export type ModelSubscriptionWorkoutPlanFilterInput = {
   or?: Array< ModelSubscriptionWorkoutPlanFilterInput | null > | null,
 };
 
+export type DeletePlanAndRoutinesMutationVariables = {
+  planId: string,
+};
+
+export type DeletePlanAndRoutinesMutation = {
+  deletePlanAndRoutines?:  {
+    __typename: "DeletePlanAndRoutinesResponse",
+    id: string,
+  } | null,
+};
+
 export type CreateWorkoutExerciseMutationVariables = {
   input: CreateWorkoutExerciseInput,
   condition?: ModelWorkoutExerciseConditionInput | null,
@@ -732,6 +755,7 @@ export type CreateWorkoutExerciseMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -739,6 +763,7 @@ export type CreateWorkoutExerciseMutation = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
     workoutExerciseWorkoutRoutineExerciseId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -771,6 +796,7 @@ export type UpdateWorkoutExerciseMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -778,6 +804,7 @@ export type UpdateWorkoutExerciseMutation = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
     workoutExerciseWorkoutRoutineExerciseId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -810,6 +837,7 @@ export type DeleteWorkoutExerciseMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -817,6 +845,7 @@ export type DeleteWorkoutExerciseMutation = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
     workoutExerciseWorkoutRoutineExerciseId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -857,6 +886,7 @@ export type CreateWorkoutMutation = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
         startedAt?: number | null,
@@ -866,6 +896,7 @@ export type CreateWorkoutMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null,
     WorkoutExercises?:  {
       __typename: "ModelWorkoutExerciseConnection",
@@ -892,6 +923,7 @@ export type CreateWorkoutMutation = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null,
         createdAt: string,
         updatedAt: string,
@@ -899,6 +931,7 @@ export type CreateWorkoutMutation = {
         _deleted?: boolean | null,
         _lastChangedAt: number,
         workoutExerciseWorkoutRoutineExerciseId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -909,6 +942,7 @@ export type CreateWorkoutMutation = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
     workoutWorkoutPlanRoutineId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -949,6 +983,7 @@ export type UpdateWorkoutMutation = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
         startedAt?: number | null,
@@ -958,6 +993,7 @@ export type UpdateWorkoutMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null,
     WorkoutExercises?:  {
       __typename: "ModelWorkoutExerciseConnection",
@@ -984,6 +1020,7 @@ export type UpdateWorkoutMutation = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null,
         createdAt: string,
         updatedAt: string,
@@ -991,6 +1028,7 @@ export type UpdateWorkoutMutation = {
         _deleted?: boolean | null,
         _lastChangedAt: number,
         workoutExerciseWorkoutRoutineExerciseId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -1001,6 +1039,7 @@ export type UpdateWorkoutMutation = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
     workoutWorkoutPlanRoutineId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -1041,6 +1080,7 @@ export type DeleteWorkoutMutation = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
         startedAt?: number | null,
@@ -1050,6 +1090,7 @@ export type DeleteWorkoutMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null,
     WorkoutExercises?:  {
       __typename: "ModelWorkoutExerciseConnection",
@@ -1076,6 +1117,7 @@ export type DeleteWorkoutMutation = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null,
         createdAt: string,
         updatedAt: string,
@@ -1083,6 +1125,7 @@ export type DeleteWorkoutMutation = {
         _deleted?: boolean | null,
         _lastChangedAt: number,
         workoutExerciseWorkoutRoutineExerciseId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -1093,6 +1136,7 @@ export type DeleteWorkoutMutation = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
     workoutWorkoutPlanRoutineId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -1113,6 +1157,7 @@ export type CreateExerciseMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -1133,6 +1178,7 @@ export type UpdateExerciseMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -1153,6 +1199,7 @@ export type DeleteExerciseMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -1179,6 +1226,7 @@ export type CreateWorkoutRoutineExerciseMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -1205,6 +1253,7 @@ export type UpdateWorkoutRoutineExerciseMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -1231,6 +1280,7 @@ export type DeleteWorkoutRoutineExerciseMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -1265,6 +1315,7 @@ export type CreateWorkoutPlanRoutineMutation = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -1274,6 +1325,7 @@ export type CreateWorkoutPlanRoutineMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -1308,6 +1360,7 @@ export type UpdateWorkoutPlanRoutineMutation = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -1317,6 +1370,7 @@ export type UpdateWorkoutPlanRoutineMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -1351,6 +1405,7 @@ export type DeleteWorkoutPlanRoutineMutation = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -1360,6 +1415,7 @@ export type DeleteWorkoutPlanRoutineMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -1393,6 +1449,7 @@ export type CreateUserMutation = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -1402,6 +1459,7 @@ export type CreateUserMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -1435,6 +1493,7 @@ export type UpdateUserMutation = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -1444,6 +1503,7 @@ export type UpdateUserMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -1477,6 +1537,7 @@ export type DeleteUserMutation = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -1486,6 +1547,7 @@ export type DeleteUserMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -1518,6 +1580,7 @@ export type CreateWorkoutPlanMutation = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -1527,6 +1590,7 @@ export type CreateWorkoutPlanMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -1559,6 +1623,7 @@ export type UpdateWorkoutPlanMutation = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -1568,6 +1633,7 @@ export type UpdateWorkoutPlanMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -1600,6 +1666,7 @@ export type DeleteWorkoutPlanMutation = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -1609,6 +1676,7 @@ export type DeleteWorkoutPlanMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -1640,6 +1708,7 @@ export type GetWorkoutExerciseQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1647,6 +1716,7 @@ export type GetWorkoutExerciseQuery = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
     workoutExerciseWorkoutRoutineExerciseId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -1682,6 +1752,7 @@ export type ListWorkoutExercisesQuery = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -1689,6 +1760,7 @@ export type ListWorkoutExercisesQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
       workoutExerciseWorkoutRoutineExerciseId?: string | null,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -1728,6 +1800,7 @@ export type SyncWorkoutExercisesQuery = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -1735,6 +1808,7 @@ export type SyncWorkoutExercisesQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
       workoutExerciseWorkoutRoutineExerciseId?: string | null,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -1775,6 +1849,7 @@ export type WorkoutExercisesByWorkoutIDQuery = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -1782,6 +1857,7 @@ export type WorkoutExercisesByWorkoutIDQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
       workoutExerciseWorkoutRoutineExerciseId?: string | null,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -1824,6 +1900,7 @@ export type GetWorkoutQuery = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
         startedAt?: number | null,
@@ -1833,6 +1910,7 @@ export type GetWorkoutQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null,
     WorkoutExercises?:  {
       __typename: "ModelWorkoutExerciseConnection",
@@ -1859,6 +1937,7 @@ export type GetWorkoutQuery = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null,
         createdAt: string,
         updatedAt: string,
@@ -1866,6 +1945,7 @@ export type GetWorkoutQuery = {
         _deleted?: boolean | null,
         _lastChangedAt: number,
         workoutExerciseWorkoutRoutineExerciseId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -1876,6 +1956,7 @@ export type GetWorkoutQuery = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
     workoutWorkoutPlanRoutineId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -1910,6 +1991,7 @@ export type ListWorkoutsQuery = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null,
       WorkoutExercises?:  {
         __typename: "ModelWorkoutExerciseConnection",
@@ -1925,6 +2007,7 @@ export type ListWorkoutsQuery = {
           _deleted?: boolean | null,
           _lastChangedAt: number,
           workoutExerciseWorkoutRoutineExerciseId?: string | null,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
         startedAt?: number | null,
@@ -1935,6 +2018,7 @@ export type ListWorkoutsQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
       workoutWorkoutPlanRoutineId?: string | null,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -1973,6 +2057,7 @@ export type SyncWorkoutsQuery = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null,
       WorkoutExercises?:  {
         __typename: "ModelWorkoutExerciseConnection",
@@ -1988,6 +2073,7 @@ export type SyncWorkoutsQuery = {
           _deleted?: boolean | null,
           _lastChangedAt: number,
           workoutExerciseWorkoutRoutineExerciseId?: string | null,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
         startedAt?: number | null,
@@ -1998,6 +2084,7 @@ export type SyncWorkoutsQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
       workoutWorkoutPlanRoutineId?: string | null,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -2020,6 +2107,7 @@ export type GetExerciseQuery = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -2043,6 +2131,7 @@ export type ListExercisesQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -2070,6 +2159,7 @@ export type SyncExercisesQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -2098,6 +2188,7 @@ export type GetWorkoutRoutineExerciseQuery = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -2127,6 +2218,7 @@ export type ListWorkoutRoutineExercisesQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -2160,6 +2252,7 @@ export type SyncWorkoutRoutineExercisesQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -2194,6 +2287,7 @@ export type WorkoutRoutineExercisesByWorkoutPlanRoutineIDQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -2230,6 +2324,7 @@ export type GetWorkoutPlanRoutineQuery = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -2239,6 +2334,7 @@ export type GetWorkoutPlanRoutineQuery = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -2276,6 +2372,7 @@ export type ListWorkoutPlanRoutinesQuery = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
         startedAt?: number | null,
@@ -2285,6 +2382,7 @@ export type ListWorkoutPlanRoutinesQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -2326,6 +2424,7 @@ export type SyncWorkoutPlanRoutinesQuery = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
         startedAt?: number | null,
@@ -2335,6 +2434,7 @@ export type SyncWorkoutPlanRoutinesQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -2377,6 +2477,7 @@ export type WorkoutPlanRoutinesByWorkoutPlanIDQuery = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
         startedAt?: number | null,
@@ -2386,6 +2487,7 @@ export type WorkoutPlanRoutinesByWorkoutPlanIDQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -2421,6 +2523,7 @@ export type GetUserQuery = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -2430,6 +2533,7 @@ export type GetUserQuery = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -2461,6 +2565,7 @@ export type ListUsersQuery = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
         startedAt?: number | null,
@@ -2470,6 +2575,7 @@ export type ListUsersQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -2505,6 +2611,7 @@ export type SyncUsersQuery = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
         startedAt?: number | null,
@@ -2514,6 +2621,7 @@ export type SyncUsersQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -2550,6 +2658,7 @@ export type UsersByUsernameQuery = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
         startedAt?: number | null,
@@ -2559,6 +2668,7 @@ export type UsersByUsernameQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -2593,6 +2703,7 @@ export type GetWorkoutPlanQuery = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -2602,6 +2713,7 @@ export type GetWorkoutPlanQuery = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -2632,6 +2744,7 @@ export type ListWorkoutPlansQuery = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
         startedAt?: number | null,
@@ -2641,6 +2754,7 @@ export type ListWorkoutPlansQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -2675,6 +2789,7 @@ export type SyncWorkoutPlansQuery = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
         startedAt?: number | null,
@@ -2684,6 +2799,7 @@ export type SyncWorkoutPlansQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -2719,6 +2835,7 @@ export type WorkoutPlansByUserIDQuery = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
         startedAt?: number | null,
@@ -2728,6 +2845,7 @@ export type WorkoutPlansByUserIDQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -2736,6 +2854,7 @@ export type WorkoutPlansByUserIDQuery = {
 
 export type OnCreateWorkoutExerciseSubscriptionVariables = {
   filter?: ModelSubscriptionWorkoutExerciseFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateWorkoutExerciseSubscription = {
@@ -2762,6 +2881,7 @@ export type OnCreateWorkoutExerciseSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -2769,11 +2889,13 @@ export type OnCreateWorkoutExerciseSubscription = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
     workoutExerciseWorkoutRoutineExerciseId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateWorkoutExerciseSubscriptionVariables = {
   filter?: ModelSubscriptionWorkoutExerciseFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateWorkoutExerciseSubscription = {
@@ -2800,6 +2922,7 @@ export type OnUpdateWorkoutExerciseSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -2807,11 +2930,13 @@ export type OnUpdateWorkoutExerciseSubscription = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
     workoutExerciseWorkoutRoutineExerciseId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteWorkoutExerciseSubscriptionVariables = {
   filter?: ModelSubscriptionWorkoutExerciseFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteWorkoutExerciseSubscription = {
@@ -2838,6 +2963,7 @@ export type OnDeleteWorkoutExerciseSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -2845,11 +2971,13 @@ export type OnDeleteWorkoutExerciseSubscription = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
     workoutExerciseWorkoutRoutineExerciseId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnCreateWorkoutSubscriptionVariables = {
   filter?: ModelSubscriptionWorkoutFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateWorkoutSubscription = {
@@ -2884,6 +3012,7 @@ export type OnCreateWorkoutSubscription = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
         startedAt?: number | null,
@@ -2893,6 +3022,7 @@ export type OnCreateWorkoutSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null,
     WorkoutExercises?:  {
       __typename: "ModelWorkoutExerciseConnection",
@@ -2919,6 +3049,7 @@ export type OnCreateWorkoutSubscription = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null,
         createdAt: string,
         updatedAt: string,
@@ -2926,6 +3057,7 @@ export type OnCreateWorkoutSubscription = {
         _deleted?: boolean | null,
         _lastChangedAt: number,
         workoutExerciseWorkoutRoutineExerciseId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -2936,11 +3068,13 @@ export type OnCreateWorkoutSubscription = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
     workoutWorkoutPlanRoutineId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateWorkoutSubscriptionVariables = {
   filter?: ModelSubscriptionWorkoutFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateWorkoutSubscription = {
@@ -2975,6 +3109,7 @@ export type OnUpdateWorkoutSubscription = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
         startedAt?: number | null,
@@ -2984,6 +3119,7 @@ export type OnUpdateWorkoutSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null,
     WorkoutExercises?:  {
       __typename: "ModelWorkoutExerciseConnection",
@@ -3010,6 +3146,7 @@ export type OnUpdateWorkoutSubscription = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null,
         createdAt: string,
         updatedAt: string,
@@ -3017,6 +3154,7 @@ export type OnUpdateWorkoutSubscription = {
         _deleted?: boolean | null,
         _lastChangedAt: number,
         workoutExerciseWorkoutRoutineExerciseId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -3027,11 +3165,13 @@ export type OnUpdateWorkoutSubscription = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
     workoutWorkoutPlanRoutineId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteWorkoutSubscriptionVariables = {
   filter?: ModelSubscriptionWorkoutFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteWorkoutSubscription = {
@@ -3066,6 +3206,7 @@ export type OnDeleteWorkoutSubscription = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
         startedAt?: number | null,
@@ -3075,6 +3216,7 @@ export type OnDeleteWorkoutSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null,
     WorkoutExercises?:  {
       __typename: "ModelWorkoutExerciseConnection",
@@ -3101,6 +3243,7 @@ export type OnDeleteWorkoutSubscription = {
           _version: number,
           _deleted?: boolean | null,
           _lastChangedAt: number,
+          owner?: string | null,
         } | null,
         createdAt: string,
         updatedAt: string,
@@ -3108,6 +3251,7 @@ export type OnDeleteWorkoutSubscription = {
         _deleted?: boolean | null,
         _lastChangedAt: number,
         workoutExerciseWorkoutRoutineExerciseId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -3118,11 +3262,13 @@ export type OnDeleteWorkoutSubscription = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
     workoutWorkoutPlanRoutineId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnCreateExerciseSubscriptionVariables = {
   filter?: ModelSubscriptionExerciseFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateExerciseSubscription = {
@@ -3137,11 +3283,13 @@ export type OnCreateExerciseSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateExerciseSubscriptionVariables = {
   filter?: ModelSubscriptionExerciseFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateExerciseSubscription = {
@@ -3156,11 +3304,13 @@ export type OnUpdateExerciseSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteExerciseSubscriptionVariables = {
   filter?: ModelSubscriptionExerciseFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteExerciseSubscription = {
@@ -3175,11 +3325,13 @@ export type OnDeleteExerciseSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
 export type OnCreateWorkoutRoutineExerciseSubscriptionVariables = {
   filter?: ModelSubscriptionWorkoutRoutineExerciseFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateWorkoutRoutineExerciseSubscription = {
@@ -3200,11 +3352,13 @@ export type OnCreateWorkoutRoutineExerciseSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateWorkoutRoutineExerciseSubscriptionVariables = {
   filter?: ModelSubscriptionWorkoutRoutineExerciseFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateWorkoutRoutineExerciseSubscription = {
@@ -3225,11 +3379,13 @@ export type OnUpdateWorkoutRoutineExerciseSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteWorkoutRoutineExerciseSubscriptionVariables = {
   filter?: ModelSubscriptionWorkoutRoutineExerciseFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteWorkoutRoutineExerciseSubscription = {
@@ -3250,11 +3406,13 @@ export type OnDeleteWorkoutRoutineExerciseSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
 export type OnCreateWorkoutPlanRoutineSubscriptionVariables = {
   filter?: ModelSubscriptionWorkoutPlanRoutineFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateWorkoutPlanRoutineSubscription = {
@@ -3283,6 +3441,7 @@ export type OnCreateWorkoutPlanRoutineSubscription = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -3292,11 +3451,13 @@ export type OnCreateWorkoutPlanRoutineSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateWorkoutPlanRoutineSubscriptionVariables = {
   filter?: ModelSubscriptionWorkoutPlanRoutineFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateWorkoutPlanRoutineSubscription = {
@@ -3325,6 +3486,7 @@ export type OnUpdateWorkoutPlanRoutineSubscription = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -3334,11 +3496,13 @@ export type OnUpdateWorkoutPlanRoutineSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteWorkoutPlanRoutineSubscriptionVariables = {
   filter?: ModelSubscriptionWorkoutPlanRoutineFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteWorkoutPlanRoutineSubscription = {
@@ -3367,6 +3531,7 @@ export type OnDeleteWorkoutPlanRoutineSubscription = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -3376,11 +3541,13 @@ export type OnDeleteWorkoutPlanRoutineSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
 export type OnCreateUserSubscriptionVariables = {
   filter?: ModelSubscriptionUserFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateUserSubscription = {
@@ -3408,6 +3575,7 @@ export type OnCreateUserSubscription = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -3417,11 +3585,13 @@ export type OnCreateUserSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateUserSubscriptionVariables = {
   filter?: ModelSubscriptionUserFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateUserSubscription = {
@@ -3449,6 +3619,7 @@ export type OnUpdateUserSubscription = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -3458,11 +3629,13 @@ export type OnUpdateUserSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteUserSubscriptionVariables = {
   filter?: ModelSubscriptionUserFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteUserSubscription = {
@@ -3490,6 +3663,7 @@ export type OnDeleteUserSubscription = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -3499,11 +3673,13 @@ export type OnDeleteUserSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
 export type OnCreateWorkoutPlanSubscriptionVariables = {
   filter?: ModelSubscriptionWorkoutPlanFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateWorkoutPlanSubscription = {
@@ -3530,6 +3706,7 @@ export type OnCreateWorkoutPlanSubscription = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -3539,11 +3716,13 @@ export type OnCreateWorkoutPlanSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateWorkoutPlanSubscriptionVariables = {
   filter?: ModelSubscriptionWorkoutPlanFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateWorkoutPlanSubscription = {
@@ -3570,6 +3749,7 @@ export type OnUpdateWorkoutPlanSubscription = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -3579,11 +3759,13 @@ export type OnUpdateWorkoutPlanSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteWorkoutPlanSubscriptionVariables = {
   filter?: ModelSubscriptionWorkoutPlanFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteWorkoutPlanSubscription = {
@@ -3610,6 +3792,7 @@ export type OnDeleteWorkoutPlanSubscription = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -3619,5 +3802,6 @@ export type OnDeleteWorkoutPlanSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };

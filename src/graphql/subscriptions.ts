@@ -5,8 +5,9 @@
 export const onCreateWorkoutExercise = /* GraphQL */ `
   subscription OnCreateWorkoutExercise(
     $filter: ModelSubscriptionWorkoutExerciseFilterInput
+    $owner: String
   ) {
-    onCreateWorkoutExercise(filter: $filter) {
+    onCreateWorkoutExercise(filter: $filter, owner: $owner) {
       id
       setsConfig
       sortOrder
@@ -27,6 +28,7 @@ export const onCreateWorkoutExercise = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       createdAt
       updatedAt
@@ -34,14 +36,16 @@ export const onCreateWorkoutExercise = /* GraphQL */ `
       _deleted
       _lastChangedAt
       workoutExerciseWorkoutRoutineExerciseId
+      owner
     }
   }
 `;
 export const onUpdateWorkoutExercise = /* GraphQL */ `
   subscription OnUpdateWorkoutExercise(
     $filter: ModelSubscriptionWorkoutExerciseFilterInput
+    $owner: String
   ) {
-    onUpdateWorkoutExercise(filter: $filter) {
+    onUpdateWorkoutExercise(filter: $filter, owner: $owner) {
       id
       setsConfig
       sortOrder
@@ -62,6 +66,7 @@ export const onUpdateWorkoutExercise = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       createdAt
       updatedAt
@@ -69,14 +74,16 @@ export const onUpdateWorkoutExercise = /* GraphQL */ `
       _deleted
       _lastChangedAt
       workoutExerciseWorkoutRoutineExerciseId
+      owner
     }
   }
 `;
 export const onDeleteWorkoutExercise = /* GraphQL */ `
   subscription OnDeleteWorkoutExercise(
     $filter: ModelSubscriptionWorkoutExerciseFilterInput
+    $owner: String
   ) {
-    onDeleteWorkoutExercise(filter: $filter) {
+    onDeleteWorkoutExercise(filter: $filter, owner: $owner) {
       id
       setsConfig
       sortOrder
@@ -97,6 +104,7 @@ export const onDeleteWorkoutExercise = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       createdAt
       updatedAt
@@ -104,12 +112,16 @@ export const onDeleteWorkoutExercise = /* GraphQL */ `
       _deleted
       _lastChangedAt
       workoutExerciseWorkoutRoutineExerciseId
+      owner
     }
   }
 `;
 export const onCreateWorkout = /* GraphQL */ `
-  subscription OnCreateWorkout($filter: ModelSubscriptionWorkoutFilterInput) {
-    onCreateWorkout(filter: $filter) {
+  subscription OnCreateWorkout(
+    $filter: ModelSubscriptionWorkoutFilterInput
+    $owner: String
+  ) {
+    onCreateWorkout(filter: $filter, owner: $owner) {
       id
       status
       dateFinished
@@ -136,6 +148,7 @@ export const onCreateWorkout = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
+            owner
           }
           nextToken
           startedAt
@@ -145,6 +158,7 @@ export const onCreateWorkout = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       WorkoutExercises {
         items {
@@ -168,6 +182,7 @@ export const onCreateWorkout = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
+            owner
           }
           createdAt
           updatedAt
@@ -175,6 +190,7 @@ export const onCreateWorkout = /* GraphQL */ `
           _deleted
           _lastChangedAt
           workoutExerciseWorkoutRoutineExerciseId
+          owner
         }
         nextToken
         startedAt
@@ -185,12 +201,16 @@ export const onCreateWorkout = /* GraphQL */ `
       _deleted
       _lastChangedAt
       workoutWorkoutPlanRoutineId
+      owner
     }
   }
 `;
 export const onUpdateWorkout = /* GraphQL */ `
-  subscription OnUpdateWorkout($filter: ModelSubscriptionWorkoutFilterInput) {
-    onUpdateWorkout(filter: $filter) {
+  subscription OnUpdateWorkout(
+    $filter: ModelSubscriptionWorkoutFilterInput
+    $owner: String
+  ) {
+    onUpdateWorkout(filter: $filter, owner: $owner) {
       id
       status
       dateFinished
@@ -217,6 +237,7 @@ export const onUpdateWorkout = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
+            owner
           }
           nextToken
           startedAt
@@ -226,6 +247,7 @@ export const onUpdateWorkout = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       WorkoutExercises {
         items {
@@ -249,6 +271,7 @@ export const onUpdateWorkout = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
+            owner
           }
           createdAt
           updatedAt
@@ -256,6 +279,7 @@ export const onUpdateWorkout = /* GraphQL */ `
           _deleted
           _lastChangedAt
           workoutExerciseWorkoutRoutineExerciseId
+          owner
         }
         nextToken
         startedAt
@@ -266,12 +290,16 @@ export const onUpdateWorkout = /* GraphQL */ `
       _deleted
       _lastChangedAt
       workoutWorkoutPlanRoutineId
+      owner
     }
   }
 `;
 export const onDeleteWorkout = /* GraphQL */ `
-  subscription OnDeleteWorkout($filter: ModelSubscriptionWorkoutFilterInput) {
-    onDeleteWorkout(filter: $filter) {
+  subscription OnDeleteWorkout(
+    $filter: ModelSubscriptionWorkoutFilterInput
+    $owner: String
+  ) {
+    onDeleteWorkout(filter: $filter, owner: $owner) {
       id
       status
       dateFinished
@@ -298,6 +326,7 @@ export const onDeleteWorkout = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
+            owner
           }
           nextToken
           startedAt
@@ -307,6 +336,7 @@ export const onDeleteWorkout = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       WorkoutExercises {
         items {
@@ -330,6 +360,7 @@ export const onDeleteWorkout = /* GraphQL */ `
             _version
             _deleted
             _lastChangedAt
+            owner
           }
           createdAt
           updatedAt
@@ -337,6 +368,7 @@ export const onDeleteWorkout = /* GraphQL */ `
           _deleted
           _lastChangedAt
           workoutExerciseWorkoutRoutineExerciseId
+          owner
         }
         nextToken
         startedAt
@@ -347,12 +379,16 @@ export const onDeleteWorkout = /* GraphQL */ `
       _deleted
       _lastChangedAt
       workoutWorkoutPlanRoutineId
+      owner
     }
   }
 `;
 export const onCreateExercise = /* GraphQL */ `
-  subscription OnCreateExercise($filter: ModelSubscriptionExerciseFilterInput) {
-    onCreateExercise(filter: $filter) {
+  subscription OnCreateExercise(
+    $filter: ModelSubscriptionExerciseFilterInput
+    $owner: String
+  ) {
+    onCreateExercise(filter: $filter, owner: $owner) {
       id
       name
       muscleGroup
@@ -362,12 +398,16 @@ export const onCreateExercise = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onUpdateExercise = /* GraphQL */ `
-  subscription OnUpdateExercise($filter: ModelSubscriptionExerciseFilterInput) {
-    onUpdateExercise(filter: $filter) {
+  subscription OnUpdateExercise(
+    $filter: ModelSubscriptionExerciseFilterInput
+    $owner: String
+  ) {
+    onUpdateExercise(filter: $filter, owner: $owner) {
       id
       name
       muscleGroup
@@ -377,12 +417,16 @@ export const onUpdateExercise = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onDeleteExercise = /* GraphQL */ `
-  subscription OnDeleteExercise($filter: ModelSubscriptionExerciseFilterInput) {
-    onDeleteExercise(filter: $filter) {
+  subscription OnDeleteExercise(
+    $filter: ModelSubscriptionExerciseFilterInput
+    $owner: String
+  ) {
+    onDeleteExercise(filter: $filter, owner: $owner) {
       id
       name
       muscleGroup
@@ -392,14 +436,16 @@ export const onDeleteExercise = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onCreateWorkoutRoutineExercise = /* GraphQL */ `
   subscription OnCreateWorkoutRoutineExercise(
     $filter: ModelSubscriptionWorkoutRoutineExerciseFilterInput
+    $owner: String
   ) {
-    onCreateWorkoutRoutineExercise(filter: $filter) {
+    onCreateWorkoutRoutineExercise(filter: $filter, owner: $owner) {
       id
       name
       muscleGroup
@@ -415,14 +461,16 @@ export const onCreateWorkoutRoutineExercise = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onUpdateWorkoutRoutineExercise = /* GraphQL */ `
   subscription OnUpdateWorkoutRoutineExercise(
     $filter: ModelSubscriptionWorkoutRoutineExerciseFilterInput
+    $owner: String
   ) {
-    onUpdateWorkoutRoutineExercise(filter: $filter) {
+    onUpdateWorkoutRoutineExercise(filter: $filter, owner: $owner) {
       id
       name
       muscleGroup
@@ -438,14 +486,16 @@ export const onUpdateWorkoutRoutineExercise = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onDeleteWorkoutRoutineExercise = /* GraphQL */ `
   subscription OnDeleteWorkoutRoutineExercise(
     $filter: ModelSubscriptionWorkoutRoutineExerciseFilterInput
+    $owner: String
   ) {
-    onDeleteWorkoutRoutineExercise(filter: $filter) {
+    onDeleteWorkoutRoutineExercise(filter: $filter, owner: $owner) {
       id
       name
       muscleGroup
@@ -461,14 +511,16 @@ export const onDeleteWorkoutRoutineExercise = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onCreateWorkoutPlanRoutine = /* GraphQL */ `
   subscription OnCreateWorkoutPlanRoutine(
     $filter: ModelSubscriptionWorkoutPlanRoutineFilterInput
+    $owner: String
   ) {
-    onCreateWorkoutPlanRoutine(filter: $filter) {
+    onCreateWorkoutPlanRoutine(filter: $filter, owner: $owner) {
       id
       name
       sortOrder
@@ -490,6 +542,7 @@ export const onCreateWorkoutPlanRoutine = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -499,14 +552,16 @@ export const onCreateWorkoutPlanRoutine = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onUpdateWorkoutPlanRoutine = /* GraphQL */ `
   subscription OnUpdateWorkoutPlanRoutine(
     $filter: ModelSubscriptionWorkoutPlanRoutineFilterInput
+    $owner: String
   ) {
-    onUpdateWorkoutPlanRoutine(filter: $filter) {
+    onUpdateWorkoutPlanRoutine(filter: $filter, owner: $owner) {
       id
       name
       sortOrder
@@ -528,6 +583,7 @@ export const onUpdateWorkoutPlanRoutine = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -537,14 +593,16 @@ export const onUpdateWorkoutPlanRoutine = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onDeleteWorkoutPlanRoutine = /* GraphQL */ `
   subscription OnDeleteWorkoutPlanRoutine(
     $filter: ModelSubscriptionWorkoutPlanRoutineFilterInput
+    $owner: String
   ) {
-    onDeleteWorkoutPlanRoutine(filter: $filter) {
+    onDeleteWorkoutPlanRoutine(filter: $filter, owner: $owner) {
       id
       name
       sortOrder
@@ -566,6 +624,7 @@ export const onDeleteWorkoutPlanRoutine = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -575,12 +634,16 @@ export const onDeleteWorkoutPlanRoutine = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
-    onCreateUser(filter: $filter) {
+  subscription OnCreateUser(
+    $filter: ModelSubscriptionUserFilterInput
+    $owner: String
+  ) {
+    onCreateUser(filter: $filter, owner: $owner) {
       id
       name
       email
@@ -600,6 +663,7 @@ export const onCreateUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -609,12 +673,16 @@ export const onCreateUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
-    onUpdateUser(filter: $filter) {
+  subscription OnUpdateUser(
+    $filter: ModelSubscriptionUserFilterInput
+    $owner: String
+  ) {
+    onUpdateUser(filter: $filter, owner: $owner) {
       id
       name
       email
@@ -634,6 +702,7 @@ export const onUpdateUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -643,12 +712,16 @@ export const onUpdateUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
-    onDeleteUser(filter: $filter) {
+  subscription OnDeleteUser(
+    $filter: ModelSubscriptionUserFilterInput
+    $owner: String
+  ) {
+    onDeleteUser(filter: $filter, owner: $owner) {
       id
       name
       email
@@ -668,6 +741,7 @@ export const onDeleteUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -677,14 +751,16 @@ export const onDeleteUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onCreateWorkoutPlan = /* GraphQL */ `
   subscription OnCreateWorkoutPlan(
     $filter: ModelSubscriptionWorkoutPlanFilterInput
+    $owner: String
   ) {
-    onCreateWorkoutPlan(filter: $filter) {
+    onCreateWorkoutPlan(filter: $filter, owner: $owner) {
       id
       name
       userID
@@ -703,6 +779,7 @@ export const onCreateWorkoutPlan = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -712,14 +789,16 @@ export const onCreateWorkoutPlan = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onUpdateWorkoutPlan = /* GraphQL */ `
   subscription OnUpdateWorkoutPlan(
     $filter: ModelSubscriptionWorkoutPlanFilterInput
+    $owner: String
   ) {
-    onUpdateWorkoutPlan(filter: $filter) {
+    onUpdateWorkoutPlan(filter: $filter, owner: $owner) {
       id
       name
       userID
@@ -738,6 +817,7 @@ export const onUpdateWorkoutPlan = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -747,14 +827,16 @@ export const onUpdateWorkoutPlan = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onDeleteWorkoutPlan = /* GraphQL */ `
   subscription OnDeleteWorkoutPlan(
     $filter: ModelSubscriptionWorkoutPlanFilterInput
+    $owner: String
   ) {
-    onDeleteWorkoutPlan(filter: $filter) {
+    onDeleteWorkoutPlan(filter: $filter, owner: $owner) {
       id
       name
       userID
@@ -773,6 +855,7 @@ export const onDeleteWorkoutPlan = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -782,6 +865,7 @@ export const onDeleteWorkoutPlan = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;

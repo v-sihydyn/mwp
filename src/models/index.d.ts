@@ -34,7 +34,17 @@ export enum WorkoutStatus {
   FINISHED = "FINISHED"
 }
 
+type EagerDeletePlanAndRoutinesResponse = {
+  readonly id: string;
+}
 
+type LazyDeletePlanAndRoutinesResponse = {
+  readonly id: string;
+}
+
+export declare type DeletePlanAndRoutinesResponse = LazyLoading extends LazyLoadingDisabled ? EagerDeletePlanAndRoutinesResponse : LazyDeletePlanAndRoutinesResponse
+
+export declare const DeletePlanAndRoutinesResponse: (new (init: ModelInit<DeletePlanAndRoutinesResponse>) => DeletePlanAndRoutinesResponse)
 
 type EagerWorkoutExercise = {
   readonly [__modelMeta__]: {

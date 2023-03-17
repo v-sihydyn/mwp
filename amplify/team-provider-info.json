@@ -16,9 +16,6 @@
       "auth": {
         "MWP": {}
       },
-      "api": {
-        "MWP": {}
-      },
       "function": {
         "MWPPostConfirmation": {
           "deploymentBucketName": "amplify-mwp-staging-91319-deployment",

@@ -2,6 +2,23 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
+const WorkoutStatus = {
+  "INPROGRESS": "INPROGRESS",
+  "FINISHED": "FINISHED"
+};
+
+const ExerciseEquipment = {
+  "BARBELL": "BARBELL",
+  "BODYWEIGHT": "BODYWEIGHT",
+  "DUMBBELL": "DUMBBELL",
+  "EZBARBELL": "EZBARBELL",
+  "KETTLEBELL": "KETTLEBELL",
+  "LEVERAGEMACHINE": "LEVERAGEMACHINE",
+  "SLEDMACHINE": "SLEDMACHINE",
+  "SMITHMACHINE": "SMITHMACHINE",
+  "WEIGHTED": "WEIGHTED"
+};
+
 const MuscleGroup = {
   "BACK": "BACK",
   "BICEPS": "BICEPS",
@@ -17,35 +34,18 @@ const MuscleGroup = {
   "WEIGHTLIFTING": "WEIGHTLIFTING"
 };
 
-const ExerciseEquipment = {
-  "BARBELL": "BARBELL",
-  "BODYWEIGHT": "BODYWEIGHT",
-  "DUMBBELL": "DUMBBELL",
-  "EZBARBELL": "EZBARBELL",
-  "KETTLEBELL": "KETTLEBELL",
-  "LEVERAGEMACHINE": "LEVERAGEMACHINE",
-  "SLEDMACHINE": "SLEDMACHINE",
-  "SMITHMACHINE": "SMITHMACHINE",
-  "WEIGHTED": "WEIGHTED"
-};
-
-const WorkoutStatus = {
-  "INPROGRESS": "INPROGRESS",
-  "FINISHED": "FINISHED"
-};
-
-const { WorkoutExercise, WorkoutRoutineExercise, Workout, WorkoutPlanRoutine, Exercise, User, WorkoutPlan, DeletePlanAndRoutinesResponse } = initSchema(schema);
+const { WorkoutExercise, Workout, Exercise, WorkoutRoutineExercise, WorkoutPlanRoutine, User, WorkoutPlan, DeletePlanAndRoutinesResponse } = initSchema(schema);
 
 export {
   WorkoutExercise,
-  WorkoutRoutineExercise,
   Workout,
-  WorkoutPlanRoutine,
   Exercise,
+  WorkoutRoutineExercise,
+  WorkoutPlanRoutine,
   User,
   WorkoutPlan,
-  MuscleGroup,
-  ExerciseEquipment,
   WorkoutStatus,
+  ExerciseEquipment,
+  MuscleGroup,
   DeletePlanAndRoutinesResponse
 };

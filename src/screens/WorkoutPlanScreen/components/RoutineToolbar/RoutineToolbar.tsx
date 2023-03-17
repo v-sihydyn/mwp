@@ -15,6 +15,7 @@ import { openBeforeWorkoutStartModal } from '../../../../components/modals/Befor
 import { Icon } from '../../../../components/Icon/Icon';
 
 type RoutineToolbarProps = {
+  onAddExercise: () => void;
   onRenameRoutine: () => void;
   onDeleteRoutine: () => void;
 };
@@ -25,6 +26,7 @@ const BUTTON_BORDER_BOTTOM_RADIUS_CLOSED = 18;
 const BUTTON_BORDER_BOTTOM_RADIUS_OPEN = 12;
 
 export const RoutineToolbar: React.FC<RoutineToolbarProps> = ({
+  onAddExercise,
   onRenameRoutine,
   onDeleteRoutine,
 }) => {
@@ -92,10 +94,6 @@ export const RoutineToolbar: React.FC<RoutineToolbarProps> = ({
     });
   };
 
-  const handleInitiateAddExercise = () => {
-    navigation.navigate('AddExerciseToRoutine');
-  };
-
   const handleStartWorkout = async () => {
     await openBeforeWorkoutStartModal();
     navigation.navigate('ConfigureWorkout');
@@ -116,9 +114,7 @@ export const RoutineToolbar: React.FC<RoutineToolbarProps> = ({
         onLayout={(e) => {
           setButtonLayout(e.nativeEvent.layout);
         }}>
-        <TouchableOpacity
-          style={styles.iconWrapper}
-          onPress={handleInitiateAddExercise}>
+        <TouchableOpacity style={styles.iconWrapper} onPress={onAddExercise}>
           <Icon name="plus-circle" color={colors.text} size={18} />
         </TouchableOpacity>
 

@@ -7,8 +7,12 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import {
   CompositeScreenProps,
   NavigatorScreenParams,
+  RouteProp,
 } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
 
 declare global {
   namespace ReactNavigation {
@@ -22,14 +26,40 @@ export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   RoutineReminders: undefined;
   RoutinesManagement: undefined;
-  AddExerciseToRoutine: undefined;
-  AddCustomExerciseToRoutine: undefined;
+  AddExerciseToRoutine: {
+    workoutPlanId: string;
+    workoutRoutineId: string;
+  };
+  AddCustomExerciseToRoutine: {
+    workoutPlanId: string;
+    workoutRoutineId: string;
+  };
   ConfigureWorkout: undefined;
   Workout: undefined;
   WorkoutDetails: undefined;
   EditRoutineExercise: undefined;
   NotFound: undefined;
 };
+
+// AddExerciseToRoutine
+
+export type AddExerciseToRoutineNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'AddExerciseToRoutine'
+>;
+export type AddExerciseToRoutineRouteProp = RouteProp<
+  RootStackParamList,
+  'AddExerciseToRoutine'
+>;
+
+// AddCustomExerciseToRoutine
+
+export type AddCustomExerciseToRoutineNavigationProp =
+  NativeStackNavigationProp<RootStackParamList, 'AddCustomExerciseToRoutine'>;
+export type AddCustomExerciseToRoutineRouteProp = RouteProp<
+  RootStackParamList,
+  'AddCustomExerciseToRoutine'
+>;
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, Screen>;

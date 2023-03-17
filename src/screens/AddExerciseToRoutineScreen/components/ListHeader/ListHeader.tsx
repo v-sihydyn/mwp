@@ -10,7 +10,9 @@ export const ListHeader = () => {
     <View style={{ paddingVertical: 12 }}>
       <AddCustomExerciseButton style={{ marginBottom: 18 }} />
       <PreviousExerciseSelector />
-      <Text style={{ color: colors.text2, fontSize: 18, marginVertical: 16 }}>Full exercises catalog</Text>
+      <Text style={{ color: colors.text2, fontSize: 18, marginVertical: 16 }}>
+        Full exercises catalog
+      </Text>
       <Filters />
     </View>
   );

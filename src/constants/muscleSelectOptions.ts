@@ -1,7 +1,7 @@
 export const MUSCLE_SELECT_OPTIONS = [
   {
     label: 'Any muscle',
-    value: '',
+    value: 'Any muscle',
   },
   {
     label: 'Back',

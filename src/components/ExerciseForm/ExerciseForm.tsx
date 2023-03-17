@@ -1,170 +1,172 @@
-import { View, StyleSheet, TextInput, Text, Switch } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Switch,
+  Pressable,
+  Platform,
+} from 'react-native';
 import { colors } from '../../styles/colors';
-import { CheckIcon, ChevronDownIcon, Select } from 'native-base';
-import React, { useState } from 'react';
-import { MUSCLE_SELECT_OPTIONS } from '../../constants/muscleSelectOptions';
+import { Select } from 'native-base';
+import React, { useEffect, useState } from 'react';
 import { Icon } from '../Icon/Icon';
 import { ColorPicker } from '../ColorPicker/ColorPicker';
+import { useFieldArray, useFormContext } from 'react-hook-form';
+import { FormInput } from './FormInput/FormInput';
+import { MuscleGroup } from '../../API';
+import { FormSelect } from './FormSelect/FormSelect';
+import { getBlankSetItem } from './helpers';
+import { FormSetControl } from './FormSetControl/FormSetControl';
+
+const MUSCLE_SELECT_OPTIONS = [
+  {
+    label: 'Back',
+    value: MuscleGroup.BACK,
+  },
+  {
+    label: 'Biceps',
+    value: MuscleGroup.BICEPS,
+  },
+  {
+    label: 'Cardio',
+    value: MuscleGroup.CARDIO,
+  },
+  {
+    label: 'Chest',
+    value: MuscleGroup.CHEST,
+  },
+  {
+    label: 'Core',
+    value: MuscleGroup.CORE,
+  },
+  {
+    label: 'Forearms',
+    value: MuscleGroup.FOREARMS,
+  },
+  {
+    label: 'Full Body',
+    value: MuscleGroup.FULLBODY,
+  },
+  {
+    label: 'Legs',
+    value: MuscleGroup.LEGS,
+  },
+  {
+    label: 'Neck',
+    value: MuscleGroup.NECK,
+  },
+  {
+    label: 'Shoulders',
+    value: MuscleGroup.SHOULDERS,
+  },
+  {
+    label: 'Triceps',
+    value: MuscleGroup.TRICEPS,
+  },
+  {
+    label: 'Weightlifting',
+    value: MuscleGroup.WEIGHTLIFTING,
+  },
+];
 
 export const ExerciseForm = () => {
-  const [muscle, setMuscle] = useState('');
-  const [selectedColor, setSelectedColor] = useState<string>('#000000');
+  const { control, watch, setValue } = useFormContext();
+  const {
+    fields: sets,
+    append,
+    remove,
+  } = useFieldArray({
+    control,
+    name: 'sets',
+  });
+  const [canSetRestTime, setCanSetRestTime] = useState(false);
+  const color = watch('color');
+
+  useEffect(() => {
+    if (sets.length < 2 && canSetRestTime) {
+      setCanSetRestTime(false);
+    }
+  }, [sets, canSetRestTime]);
+
+  useEffect(() => {
+    if (!canSetRestTime) {
+      setValue('restTimeMins', null);
+      setValue('restTimeSecs', null);
+      // @TODO edit
+    }
+  }, [canSetRestTime]);
+
+  const addSet = () => {
+    append(getBlankSetItem());
+  };
 
   return (
     <View style={styles.form}>
-      <TextInput
+      <FormInput
+        name="name"
+        control={control}
         placeholder="Name"
         placeholderTextColor={colors.placeholder}
-        style={styles.formInput}
+        variant="underlined"
+        style={styles.inputWrapper}
+        inputStyle={styles.formInput}
       />
-      <View style={{ marginBottom: 20 }}>
-        <Select
-          selectedValue={muscle}
-          style={{ fontSize: 16, paddingLeft: 4 }}
-          color={colors.text}
-          fontSize={13}
-          variant="underlined"
-          _selectedItem={{
-            endIcon: <CheckIcon size="5" />,
-          }}
-          placeholderTextColor={colors.placeholder}
-          dropdownIcon={<ChevronDownIcon size={4} />}
-          onValueChange={setMuscle}>
-          {MUSCLE_SELECT_OPTIONS.map((option) => (
-            <Select.Item
-              key={option.value}
-              label={option.label}
-              value={option.value}
-            />
-          ))}
-        </Select>
-      </View>
+      <FormSelect name="muscleGroup" control={control}>
+        {MUSCLE_SELECT_OPTIONS.map((option) => (
+          <Select.Item
+            key={option.value}
+            label={option.label}
+            value={option.value}
+          />
+        ))}
+      </FormSelect>
       <View>
         <Text style={styles.label}>Sets (weight field is optional):</Text>
         <View style={styles.setsContainer}>
           <View style={{ marginBottom: 12 }}>
-            <View>
-              <View style={styles.set}>
-                <TextInput
-                  value="1"
-                  keyboardType="numeric"
-                  style={styles.setInput}
-                />
-                <Text style={styles.setLabel}>Sets</Text>
-                <View style={styles.setsFieldsDivider}></View>
-                <TextInput
-                  value="1"
-                  keyboardType="numeric"
-                  style={styles.setInput}
-                />
-                <Text style={styles.setLabel}>Reps</Text>
-                <View style={styles.setsFieldsDivider}></View>
-                <TextInput
-                  value="1"
-                  keyboardType="numeric"
-                  style={styles.setInput}
-                />
-                <Text style={styles.setLabel}>Kg</Text>
-              </View>
-              <View
-                style={{
-                  width: '100%',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <View
-                  style={{
-                    height: 1,
-                    flexGrow: 1,
-                    backgroundColor: colors.surface,
-                  }}></View>
-                <View style={styles.deleteSetButton}>
-                  <Icon name="trash" color={colors.red} />
-                </View>
-                <View
-                  style={{
-                    height: 1,
-                    flexGrow: 1,
-                    backgroundColor: colors.surface,
-                  }}></View>
-              </View>
-            </View>
-            <View>
-              <View style={styles.set}>
-                <TextInput value="1" style={styles.setInput} />
-                <Text style={styles.setLabel}>Sets</Text>
-                <View style={styles.setsFieldsDivider}></View>
-                <TextInput value="1" style={styles.setInput} />
-                <Text style={styles.setLabel}>Reps</Text>
-                <View style={styles.setsFieldsDivider}></View>
-                <TextInput value="1" style={styles.setInput} />
-                <Text style={styles.setLabel}>Kg</Text>
-              </View>
-              <View
-                style={{
-                  width: '100%',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <View
-                  style={{
-                    height: 1,
-                    flexGrow: 1,
-                    backgroundColor: colors.surface,
-                  }}></View>
-                <View style={styles.deleteSetButton}>
-                  <Icon name="trash" color={colors.red} />
-                </View>
-                <View
-                  style={{
-                    height: 1,
-                    flexGrow: 1,
-                    backgroundColor: colors.surface,
-                  }}></View>
-              </View>
-            </View>
-            <View>
-              <View style={styles.set}>
-                <TextInput value="1" style={styles.setInput} />
-                <Text style={styles.setLabel}>Sets</Text>
-                <View style={styles.setsFieldsDivider}></View>
-                <TextInput value="1" style={styles.setInput} />
-                <Text style={styles.setLabel}>Reps</Text>
-                <View style={styles.setsFieldsDivider}></View>
-                <TextInput value="1" style={styles.setInput} />
-                <Text style={styles.setLabel}>Kg</Text>
-              </View>
-              <View
-                style={{
-                  width: '100%',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <View
-                  style={{
-                    height: 1,
-                    flexGrow: 1,
-                    backgroundColor: colors.surface,
-                  }}></View>
-                <View style={styles.deleteSetButton}>
-                  <Icon name="trash" color={colors.red} />
-                </View>
-                <View
-                  style={{
-                    height: 1,
-                    flexGrow: 1,
-                    backgroundColor: colors.surface,
-                  }}></View>
-              </View>
-            </View>
-          </View>
+            {sets.map((set, index) => (
+              <View key={index}>
+                <FormSetControl key={index} index={index} control={control} />
 
-          <View style={styles.button}>
-            <View style={styles.buttonIconWrapper}>
-              <Icon size={10} name="plus" />
-            </View>
-            <Text style={styles.buttonText}>Add Different Set</Text>
+                <View
+                  style={{
+                    width: '100%',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}>
+                  <View
+                    style={{
+                      height: 1,
+                      flexGrow: 1,
+                      backgroundColor: colors.surface,
+                    }}
+                  />
+                  {sets.length > 1 && (
+                    <Pressable onPress={() => remove(index)}>
+                      <View style={styles.deleteSetButton}>
+                        <Icon name="trash" color={colors.red} />
+                      </View>
+                    </Pressable>
+                  )}
+                  <View
+                    style={{
+                      height: 1,
+                      flexGrow: 1,
+                      backgroundColor: colors.surface,
+                    }}
+                  />
+                </View>
+              </View>
+            ))}
           </View>
+          <Pressable onPress={addSet}>
+            <View style={styles.button}>
+              <View style={styles.buttonIconWrapper}>
+                <Icon size={10} name="plus" />
+              </View>
+              <Text style={styles.buttonText}>Add Different Set</Text>
+            </View>
+          </Pressable>
 
           <View
             style={{
@@ -180,54 +182,77 @@ export const ExerciseForm = () => {
               trackColor={{ false: '#767577', true: colors.green }}
               thumbColor={'#f4f3f4'}
               ios_backgroundColor="#3e3e3e"
-              value={true}
-              style={{ height: 10 }}
+              value={canSetRestTime}
+              onValueChange={() => {
+                setCanSetRestTime((prevValue) => !prevValue);
+              }}
+              disabled={sets.length < 2}
+              style={[Platform.OS === 'android' && { height: 10 }]}
             />
           </View>
 
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: 16,
-            }}>
-            <Text style={{ fontSize: 16, color: colors.text }}>Time:</Text>
+          {canSetRestTime && (
             <View
               style={{
                 flexDirection: 'row',
-                alignItems: 'center',
                 justifyContent: 'space-between',
-                flexGrow: 1,
-                marginLeft: 10,
+                alignItems: 'center',
+                marginBottom: 16,
               }}>
-              <TextInput
-                value="1"
-                keyboardType="numeric"
-                style={styles.setInput}
-              />
-              <Text style={styles.setLabel}>Minutes</Text>
-              <View style={styles.setsFieldsDivider}></View>
-              <TextInput
-                value="30"
-                keyboardType="numeric"
-                style={styles.setInput}
-              />
-              <Text style={styles.setLabel}>Seconds</Text>
+              <Text style={{ fontSize: 16, color: colors.text }}>Time:</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flexGrow: 1,
+                  marginLeft: 10,
+                }}>
+                <FormInput
+                  name="restTimeMins"
+                  control={control}
+                  inputStyle={styles.setInput}
+                  variant="unstyled"
+                  width={60}
+                  maxLength={2}
+                  keyboardType="numeric"
+                />
+                <Text style={styles.setLabel}>Minutes</Text>
+                <View style={styles.setsFieldsDivider}></View>
+                <FormInput
+                  name="restTimeSecs"
+                  control={control}
+                  inputStyle={styles.setInput}
+                  variant="unstyled"
+                  width={60}
+                  maxLength={2}
+                  keyboardType="numeric"
+                />
+                <Text style={styles.setLabel}>Seconds</Text>
+              </View>
             </View>
-          </View>
+          )}
         </View>
       </View>
 
       <View style={styles.colorPickerContainer}>
         <Text style={[styles.label, { paddingLeft: 4 }]}>Choose color:</Text>
-        <ColorPicker value={selectedColor} onChange={setSelectedColor} />
+        <ColorPicker
+          value={color}
+          onChange={(value) => {
+            setValue('color', value);
+          }}
+        />
       </View>
 
-      <TextInput
+      <FormInput
+        name="description"
+        control={control}
         placeholder="Notes"
         placeholderTextColor={colors.placeholder}
-        style={styles.formInput}
+        variant="underlined"
+        style={styles.inputWrapper}
+        inputStyle={styles.formInput}
         multiline={true}
       />
     </View>
@@ -239,12 +264,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   formInput: {
-    width: '100%',
     color: colors.text,
-    borderBottomWidth: 1,
     borderBottomColor: colors.text,
     fontSize: 16,
-    marginBottom: 20,
   },
   label: {
     color: colors.text3,
@@ -257,20 +279,17 @@ const styles = StyleSheet.create({
     padding: 12,
     marginBottom: 20,
   },
-  set: {
-    paddingVertical: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
   setInput: {
     backgroundColor: colors.page,
-    width: 70,
+    width: 60,
+    alignSelf: 'stretch',
     height: 40,
     borderRadius: 8,
     color: colors.text,
     fontSize: 16,
     textAlign: 'center',
+    borderWidth: 1,
+    borderColor: 'transparent',
   },
   setLabel: {
     color: colors.text,
@@ -326,6 +345,10 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     paddingVertical: 12,
     paddingHorizontal: 8,
+    marginBottom: 20,
+  },
+  inputWrapper: {
+    width: '100%',
     marginBottom: 20,
   },
 });

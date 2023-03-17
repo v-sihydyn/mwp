@@ -1,4 +1,4 @@
-import { NativeBaseProvider } from 'native-base';
+import { extendTheme, NativeBaseProvider } from 'native-base';
 
 import Navigation from './src/navigation';
 import { UIManager } from 'react-native';
@@ -12,10 +12,17 @@ import { ApolloClientProvider } from './src/apollo/ApolloClientProvider';
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
 
+const config = {
+  useSystemColorMode: false,
+  initialColorMode: 'dark',
+};
+
+const customTheme = extendTheme({ config });
+
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <NativeBaseProvider>
+      <NativeBaseProvider theme={customTheme}>
         <PortalHost>
           <AuthContextProvider>
             <ApolloClientProvider>

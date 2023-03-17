@@ -131,10 +131,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
       try {
         await deleteWorkoutPlan({
           variables: {
-            // input: {
-            //   id: selectedPlan.id,
-            // },
-            planId: selectedPlan.id,
+            planId: selectedPlan.id!,
           },
           update(cache, { data }) {
             if (!data?.deletePlanAndRoutines) return;
@@ -325,6 +322,18 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     forceUpdateTabContainer();
   };
 
+  const handleInitiateAddExercise = () => {
+    const focusedTab = tabContainerRef?.current?.getFocusedTab();
+    const selectedRoutine = routines.find((r) => r?.name === focusedTab);
+
+    if (!selectedPlan || !selectedRoutine) return;
+
+    navigation.navigate('AddExerciseToRoutine', {
+      workoutPlanId: selectedPlan.id!,
+      workoutRoutineId: selectedRoutine.id,
+    });
+  };
+
   if (areWorkoutPlansLoading) return <FullscreenLoader />;
 
   if (workoutPlans.length === 0) {
@@ -459,6 +468,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
       </Tabs.Container>
       {!hasNoRoutines && (
         <RoutineToolbar
+          onAddExercise={handleInitiateAddExercise}
           onRenameRoutine={handleOpenRenameRoutineModal}
           onDeleteRoutine={handleOpenDeleteRoutineModal}
         />

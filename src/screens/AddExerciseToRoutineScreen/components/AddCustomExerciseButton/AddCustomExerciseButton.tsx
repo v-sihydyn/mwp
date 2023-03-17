@@ -8,8 +8,9 @@ import {
   ViewStyle,
 } from 'react-native';
 import { colors } from '../../../../styles/colors';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Icon } from '../../../../components/Icon/Icon';
+import { AddExerciseToRoutineRouteProp } from '../../../../../types';
 
 type AddCustomExerciseButtonProps = {
   style?: StyleProp<ViewStyle>;
@@ -20,9 +21,18 @@ export const AddCustomExerciseButton: React.FC<
 > = ({ style }) => {
   const navigation = useNavigation();
 
+  const route = useRoute<AddExerciseToRoutineRouteProp>();
+  const { workoutPlanId, workoutRoutineId } = route.params;
+
+  const handlePress = () => {
+    navigation.navigate('AddCustomExerciseToRoutine', {
+      workoutPlanId,
+      workoutRoutineId,
+    });
+  };
+
   return (
-    <Pressable
-      onPress={() => navigation.navigate('AddCustomExerciseToRoutine')}>
+    <Pressable onPress={handlePress}>
       <View style={[styles.root, style]}>
         <View style={styles.iconWrapper}>
           <Icon size={10} name="plus" />

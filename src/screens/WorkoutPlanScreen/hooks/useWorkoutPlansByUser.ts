@@ -31,7 +31,21 @@ export const useWorkoutPlansByUser = (userId: string) => {
                   new Date(a!.createdAt).getTime() -
                   new Date(b!.createdAt).getTime()
                 );
-              }),
+              })
+              .map((routine) => ({
+                ...routine,
+                WorkoutRoutineExercises: {
+                  ...routine!.WorkoutRoutineExercises,
+                  items: routine!
+                    .WorkoutRoutineExercises!.items.filter((x) => !x?._deleted)
+                    .sort((a, b) => {
+                      return (
+                        new Date(a!.createdAt).getTime() -
+                        new Date(b!.createdAt).getTime()
+                      );
+                    }),
+                },
+              })),
           },
         })),
     [data],

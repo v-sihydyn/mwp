@@ -13,61 +13,10 @@ import { Icon } from '../Icon/Icon';
 import { ColorPicker } from '../ColorPicker/ColorPicker';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormInput } from './FormInput/FormInput';
-import { MuscleGroup } from '../../API';
 import { FormSelect } from './FormSelect/FormSelect';
 import { getBlankSetItem } from './helpers';
 import { FormSetControl } from './FormSetControl/FormSetControl';
-
-const MUSCLE_SELECT_OPTIONS = [
-  {
-    label: 'Back',
-    value: MuscleGroup.BACK,
-  },
-  {
-    label: 'Biceps',
-    value: MuscleGroup.BICEPS,
-  },
-  {
-    label: 'Cardio',
-    value: MuscleGroup.CARDIO,
-  },
-  {
-    label: 'Chest',
-    value: MuscleGroup.CHEST,
-  },
-  {
-    label: 'Core',
-    value: MuscleGroup.CORE,
-  },
-  {
-    label: 'Forearms',
-    value: MuscleGroup.FOREARMS,
-  },
-  {
-    label: 'Full Body',
-    value: MuscleGroup.FULLBODY,
-  },
-  {
-    label: 'Legs',
-    value: MuscleGroup.LEGS,
-  },
-  {
-    label: 'Neck',
-    value: MuscleGroup.NECK,
-  },
-  {
-    label: 'Shoulders',
-    value: MuscleGroup.SHOULDERS,
-  },
-  {
-    label: 'Triceps',
-    value: MuscleGroup.TRICEPS,
-  },
-  {
-    label: 'Weightlifting',
-    value: MuscleGroup.WEIGHTLIFTING,
-  },
-];
+import { MUSCLE_SELECT_OPTIONS } from '../../constants/muscleSelectOptions';
 
 export const ExerciseForm = () => {
   const { control, watch, setValue } = useFormContext();

@@ -116,6 +116,217 @@ export const schema = {
                 }
             ]
         },
+        "Workout": {
+            "name": "Workout",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": {
+                        "enum": "WorkoutStatus"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "dateFinished": {
+                    "name": "dateFinished",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "totalTimeInSeconds": {
+                    "name": "totalTimeInSeconds",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "WorkoutPlanRoutine": {
+                    "name": "WorkoutPlanRoutine",
+                    "isArray": false,
+                    "type": {
+                        "model": "WorkoutPlanRoutine"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "workoutWorkoutPlanRoutineId"
+                        ]
+                    }
+                },
+                "WorkoutExercises": {
+                    "name": "WorkoutExercises",
+                    "isArray": true,
+                    "type": {
+                        "model": "WorkoutExercise"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "workoutID"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "workoutWorkoutPlanRoutineId": {
+                    "name": "workoutWorkoutPlanRoutineId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            },
+            "syncable": true,
+            "pluralName": "Workouts",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "read"
+                                ]
+                            },
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "identityClaim": "cognito:username",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "Exercise": {
+            "name": "Exercise",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "muscleGroup": {
+                    "name": "muscleGroup",
+                    "isArray": false,
+                    "type": {
+                        "enum": "MuscleGroup"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "equipment": {
+                    "name": "equipment",
+                    "isArray": false,
+                    "type": {
+                        "enum": "ExerciseEquipment"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Exercises",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "read"
+                                ]
+                            },
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "identityClaim": "cognito:username",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "WorkoutRoutineExercise": {
             "name": "WorkoutRoutineExercise",
             "fields": {
@@ -253,131 +464,6 @@ export const schema = {
                 }
             ]
         },
-        "Workout": {
-            "name": "Workout",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "status": {
-                    "name": "status",
-                    "isArray": false,
-                    "type": {
-                        "enum": "WorkoutStatus"
-                    },
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "dateFinished": {
-                    "name": "dateFinished",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "totalTimeInSeconds": {
-                    "name": "totalTimeInSeconds",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "WorkoutPlanRoutine": {
-                    "name": "WorkoutPlanRoutine",
-                    "isArray": false,
-                    "type": {
-                        "model": "WorkoutPlanRoutine"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": [
-                            "id"
-                        ],
-                        "targetNames": [
-                            "workoutWorkoutPlanRoutineId"
-                        ]
-                    }
-                },
-                "WorkoutExercises": {
-                    "name": "WorkoutExercises",
-                    "isArray": true,
-                    "type": {
-                        "model": "WorkoutExercise"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "workoutID"
-                        ]
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "workoutWorkoutPlanRoutineId": {
-                    "name": "workoutWorkoutPlanRoutineId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                }
-            },
-            "syncable": true,
-            "pluralName": "Workouts",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "private",
-                                "operations": [
-                                    "read"
-                                ]
-                            },
-                            {
-                                "provider": "userPools",
-                                "ownerField": "owner",
-                                "allow": "owner",
-                                "identityClaim": "cognito:username",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
         "WorkoutPlanRoutine": {
             "name": "WorkoutPlanRoutine",
             "fields": {
@@ -457,92 +543,6 @@ export const schema = {
                             "workoutPlanID"
                         ]
                     }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "private",
-                                "operations": [
-                                    "read"
-                                ]
-                            },
-                            {
-                                "provider": "userPools",
-                                "ownerField": "owner",
-                                "allow": "owner",
-                                "identityClaim": "cognito:username",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "Exercise": {
-            "name": "Exercise",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "name": {
-                    "name": "name",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "muscleGroup": {
-                    "name": "muscleGroup",
-                    "isArray": false,
-                    "type": {
-                        "enum": "MuscleGroup"
-                    },
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "equipment": {
-                    "name": "equipment",
-                    "isArray": false,
-                    "type": {
-                        "enum": "ExerciseEquipment"
-                    },
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "Exercises",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
                 },
                 {
                     "type": "auth",
@@ -788,21 +788,11 @@ export const schema = {
         }
     },
     "enums": {
-        "MuscleGroup": {
-            "name": "MuscleGroup",
+        "WorkoutStatus": {
+            "name": "WorkoutStatus",
             "values": [
-                "BACK",
-                "BICEPS",
-                "CARDIO",
-                "CHEST",
-                "CORE",
-                "FOREARMS",
-                "FULLBODY",
-                "LEGS",
-                "NECK",
-                "SHOULDERS",
-                "TRICEPS",
-                "WEIGHTLIFTING"
+                "INPROGRESS",
+                "FINISHED"
             ]
         },
         "ExerciseEquipment": {
@@ -819,11 +809,21 @@ export const schema = {
                 "WEIGHTED"
             ]
         },
-        "WorkoutStatus": {
-            "name": "WorkoutStatus",
+        "MuscleGroup": {
+            "name": "MuscleGroup",
             "values": [
-                "INPROGRESS",
-                "FINISHED"
+                "BACK",
+                "BICEPS",
+                "CARDIO",
+                "CHEST",
+                "CORE",
+                "FOREARMS",
+                "FULLBODY",
+                "LEGS",
+                "NECK",
+                "SHOULDERS",
+                "TRICEPS",
+                "WEIGHTLIFTING"
             ]
         }
     },
@@ -841,6 +841,6 @@ export const schema = {
             }
         }
     },
-    "codegenVersion": "3.3.5",
+    "codegenVersion": "3.3.6",
     "version": "32ed08df27864b0e917dbd48b91ebe97"
 };

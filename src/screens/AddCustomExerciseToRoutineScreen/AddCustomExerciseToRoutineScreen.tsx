@@ -12,6 +12,9 @@ import {
   CreateWorkoutRoutineExerciseMutation,
   CreateWorkoutRoutineExerciseMutationVariables,
   MuscleGroup,
+  WorkoutPlan,
+  WorkoutPlansByUserIDQuery,
+  WorkoutPlansByUserIDQueryVariables,
 } from '../../API';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { getBlankSetItem } from '../../components/ExerciseForm/helpers';
@@ -19,6 +22,8 @@ import { createWorkoutRoutineExerciseMutation } from './mutations/createWorkoutR
 import { useMutation } from '@apollo/client';
 import { Toast } from 'native-base';
 import { AddCustomExerciseToRoutineRouteProp } from '../../../types';
+import { workoutPlansByUserIDQuery } from '../WorkoutPlanScreen/hooks/queries/workoutPlansByUserIDQuery';
+import { useAuthContext } from '../../contexts/AuthContext';
 
 type SetData = {
   sets: string | null;
@@ -63,7 +68,8 @@ const validationSchema = yup.object().shape({
 export const AddCustomExerciseToRoutineScreen = () => {
   const navigation = useNavigation();
   const route = useRoute<AddCustomExerciseToRoutineRouteProp>();
-  const { workoutPlanId } = route.params;
+  const { workoutPlanId, workoutRoutineId } = route.params;
+  const { userId } = useAuthContext();
 
   const formMethods = useForm<ExerciseFormData>({
     mode: 'onChange',
@@ -97,10 +103,67 @@ export const AddCustomExerciseToRoutineScreen = () => {
             muscleGroup: values.muscleGroup,
             color: values.color,
             description: values.description,
-            workoutPlanRoutineID: workoutPlanId,
+            workoutPlanRoutineID: workoutRoutineId,
             setsConfig: JSON.stringify(values.sets),
             restTimeInSeconds,
           },
+        },
+        update(cache, { data }) {
+          const newExercise = data?.createWorkoutRoutineExercise;
+          if (!newExercise) return;
+
+          cache.updateQuery<
+            WorkoutPlansByUserIDQuery,
+            WorkoutPlansByUserIDQueryVariables
+          >(
+            {
+              query: workoutPlansByUserIDQuery,
+              variables: {
+                userID: userId,
+              },
+            },
+            (data) => {
+              if (!data?.workoutPlansByUserID?.items) return;
+
+              return {
+                workoutPlansByUserID: {
+                  ...data.workoutPlansByUserID,
+                  items: (data?.workoutPlansByUserID?.items ?? []).map(
+                    (_plan: WorkoutPlan | null) => {
+                      const plan = _plan! || {};
+
+                      return {
+                        ...plan,
+                        WorkoutPlanRoutines: {
+                          ...plan.WorkoutPlanRoutines,
+                          items:
+                            plan.id === workoutPlanId
+                              ? (plan.WorkoutPlanRoutines?.items ?? []).map(
+                                  (routine) =>
+                                    routine?.id === workoutRoutineId
+                                      ? {
+                                          ...routine,
+                                          WorkoutRoutineExercises: {
+                                            ...routine.WorkoutRoutineExercises,
+                                            items: [
+                                              ...(routine
+                                                ?.WorkoutRoutineExercises
+                                                ?.items ?? []),
+                                              newExercise,
+                                            ],
+                                          },
+                                        }
+                                      : routine,
+                                )
+                              : plan.WorkoutPlanRoutines?.items,
+                        },
+                      };
+                    },
+                  ),
+                },
+              };
+            },
+          );
         },
       });
 

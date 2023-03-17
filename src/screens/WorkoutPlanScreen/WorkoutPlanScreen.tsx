@@ -368,13 +368,15 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     return (
       <Tabs.Tab name={routine!.name} key={routine!.id}>
         <Tabs.FlatList
-          data={[0, 1, 2, 3, 4, 5]}
-          renderItem={({ item }) => (
-            <WorkoutExerciseCard
-              name="Barbell Bench Press"
-              onPress={handleGoToExerciseScreen}
-            />
-          )}
+          data={routine.WorkoutRoutineExercises.items}
+          renderItem={({ item }) =>
+            item && (
+              <WorkoutExerciseCard
+                item={item}
+                onPress={handleGoToExerciseScreen}
+              />
+            )
+          }
           bounces={false}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{

@@ -32,6 +32,15 @@ export const workoutPlansByUserIDQuery = gql`
               items {
                 id
                 name
+                muscleGroup
+                color
+                setsConfig
+
+                createdAt
+                updatedAt
+                _version
+                _deleted
+                _lastChangedAt
               }
             }
           }

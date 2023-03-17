@@ -41,7 +41,6 @@ export const CreateRoutineModal = ({
             workoutPlanID: workoutPlanId,
           },
         },
-        // refetchQueries: ['WorkoutPlansByUserID'],
         update(cache, { data }) {
           const newRoutine = data?.createWorkoutPlanRoutine;
           if (!newRoutine) return;

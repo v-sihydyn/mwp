@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   StyleSheet,
   View,
@@ -9,18 +9,32 @@ import {
   Pressable,
 } from 'react-native';
 import { colors } from '../../../../../styles/colors';
+import { WorkoutRoutineExercise } from '../../../../../API';
+import { MUSCLE_VALUES_MAP } from '../../../../../constants/muscleSelectOptions';
 
 type WorkoutExerciseCardProps = {
-  name: string;
+  item: WorkoutRoutineExercise;
   style?: StyleProp<ViewStyle>;
   onPress?: () => void;
 };
 
 export const WorkoutExerciseCard = ({
-  name,
+  item,
   style,
   onPress,
 }: WorkoutExerciseCardProps) => {
+  const displayMuscleGroup = item.muscleGroup
+    ? MUSCLE_VALUES_MAP[item.muscleGroup]
+    : null;
+
+  const sets = useMemo<{ sets: string; reps: string; weight: string }[]>(() => {
+    try {
+      return JSON.parse(item.setsConfig);
+    } catch (e) {
+      return [];
+    }
+  }, [item.setsConfig]);
+
   return (
     <Pressable onPress={onPress} style={[styles.root, style]}>
       <View style={styles.content}>
@@ -31,15 +45,29 @@ export const WorkoutExerciseCard = ({
           }}
         />
         <View style={{ flexDirection: 'column' }}>
-          <Text style={styles.title}>{name}</Text>
-          <Text style={styles.subtitle}>Chest</Text>
+          <Text style={styles.title}>{item.name}</Text>
+          <Text style={styles.subtitle}>{displayMuscleGroup}</Text>
         </View>
       </View>
       <View style={styles.footer}>
-        <View style={styles.colorIndicator} />
-        <Text style={styles.footerItem}>3 sets</Text>
-        <Text style={styles.footerItem}>10 reps</Text>
-        <Text style={styles.footerItem}>70 kg</Text>
+        {sets.map((set, index) => (
+          <View
+            key={index}
+            style={[
+              styles.set,
+              index === sets.length - 1 && { marginBottom: 0 },
+            ]}>
+            <View
+              style={[
+                styles.colorIndicator,
+                { backgroundColor: item.color || '#000000' },
+              ]}
+            />
+            <Text style={styles.setItem}>{set.sets} sets</Text>
+            <Text style={styles.setItem}>{set.reps} reps</Text>
+            {set.weight && <Text style={styles.setItem}>{set.weight} kg</Text>}
+          </View>
+        ))}
       </View>
     </Pressable>
   );
@@ -75,19 +103,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 16,
     paddingRight: 60,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
   },
-  footerItem: {
+  set: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  setItem: {
     color: colors.text,
   },
   colorIndicator: {
     width: 8,
     height: 8,
-    backgroundColor: 'darkviolet',
     borderRadius: 4,
   },
 });

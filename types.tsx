@@ -13,6 +13,7 @@ import {
   NativeStackNavigationProp,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
+import { Exercise } from './src/screens/ExerciseCatalogScreen/exercises';
 
 declare global {
   namespace ReactNavigation {
@@ -33,6 +34,7 @@ export type RootStackParamList = {
   AddExerciseToRoutine: {
     workoutPlanId: string;
     workoutRoutineId: string;
+    exercise?: Exercise;
   };
   ConfigureWorkout: undefined;
   Workout: undefined;

@@ -27,14 +27,20 @@ import { routineFragment } from '../../fragments/routineFragment';
 export const AddExerciseToRoutineScreen = () => {
   const navigation = useNavigation();
   const route = useRoute<AddExerciseToRoutineRouteProp>();
-  const { workoutRoutineId } = route.params;
+  const { workoutRoutineId, exercise } = route.params;
   const routineCacheKey = `WorkoutPlanRoutine:${workoutRoutineId}`;
+
+  const initialValues = {
+    ...blankInitialValues,
+    name: exercise?.name ?? blankInitialValues.name,
+    muscleGroup: exercise?.muscleGroup ?? blankInitialValues.muscleGroup,
+  };
 
   const formMethods = useForm<ExerciseFormData>({
     mode: 'onChange',
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      ...blankInitialValues,
+      ...initialValues,
     },
   });
   const { handleSubmit } = formMethods;

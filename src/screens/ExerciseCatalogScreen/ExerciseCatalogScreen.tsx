@@ -1,65 +1,69 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { colors } from '../../styles/colors';
 import { StyleSheet, View, FlatList } from 'react-native';
 import { ExerciseListItem } from '../../components/ExerciseListItem/ExerciseListItem';
 
 import { ListHeader } from './components/ListHeader/ListHeader';
-
-const EXERCISES = [
-  {
-    id: 1,
-    name: 'Air bike',
-    muscleGroup: 'Core',
-    requiredEquipment: 'Body weight',
-    image: 'imageUrl',
-  },
-  {
-    id: 2,
-    name: 'Air Twisting Crunch',
-    muscleGroup: 'Core',
-    requiredEquipment: 'Body weight',
-    image: 'imageUrl',
-  },
-  {
-    id: 3,
-    name: 'Alternate Biceps Curl (with band)',
-    muscleGroup: 'Biceps',
-    requiredEquipment: 'Band',
-    image: 'imageUrl',
-  },
-  {
-    id: 4,
-    name: 'Alternate Lateral Pulldown',
-    muscleGroup: 'Back',
-    requiredEquipment: 'Cable',
-    image: 'imageUrl',
-  },
-  {
-    id: 5,
-    name: 'Assisted Chest Dip (kneeling)',
-    muscleGroup: 'Chest',
-    requiredEquipment: 'Leverage machine',
-    image: 'imageUrl',
-  },
-  {
-    id: 6,
-    name: 'Assisted Parallel Close Grip Pull-up',
-    muscleGroup: 'Back',
-    requiredEquipment: 'Leverage machine',
-    image: 'imageUrl',
-  },
-];
+import { Exercise, EXERCISES } from './exercises';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { ExerciseCatalogRouteProp } from '../../../types';
+import { ExerciseFilterInput } from './components/ExerciseFilterInput/ExerciseFilterInput';
 
 export const ExerciseCatalogScreen = () => {
+  const navigation = useNavigation();
+  const route = useRoute<ExerciseCatalogRouteProp>();
+  const { workoutPlanId, workoutRoutineId } = route.params;
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterMuscle, setFilterMuscle] = useState('');
+  const [filterEquipment, setFilterEquipment] = useState('');
+
+  const sq = searchQuery.trim().toLowerCase();
+  let exercises = EXERCISES.filter((x) => x.name.toLowerCase().includes(sq));
+
+  if (filterMuscle) {
+    exercises = exercises.filter((x) => x.muscleGroup === filterMuscle);
+  }
+
+  if (filterEquipment) {
+    exercises = exercises.filter((x) => x.equipment === filterEquipment);
+  }
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <ExerciseFilterInput onChange={(q) => setSearchQuery(q)} />
+      ),
+    });
+  }, []);
+
+  const handleGoToAddExerciseScreen = (exercise: Exercise) => {
+    navigation.navigate('AddExerciseToRoutine', {
+      workoutPlanId,
+      workoutRoutineId,
+      exercise,
+    });
+  };
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={EXERCISES}
-        renderItem={({ item }) => (
-          <ExerciseListItem key={item.id} item={item} onPress={() => {}} />
+        data={exercises}
+        renderItem={({ item, index }) => (
+          <ExerciseListItem
+            key={index}
+            item={item}
+            onPress={() => handleGoToAddExerciseScreen(item)}
+          />
         )}
         style={styles.list}
-        ListHeaderComponent={ListHeader}
+        ListHeaderComponent={() => (
+          <ListHeader
+            filterMuscle={filterMuscle}
+            onFilterMuscleChange={(value) => setFilterMuscle(value)}
+            filterEquipment={filterEquipment}
+            onFilterEquipmentChange={(value) => setFilterEquipment(value)}
+          />
+        )}
         bounces={false}
       />
     </View>

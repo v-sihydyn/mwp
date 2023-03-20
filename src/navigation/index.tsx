@@ -108,7 +108,6 @@ const RootNavigator = () => {
             component={ExerciseCatalogScreen}
             options={{
               title: '',
-              headerRight: () => <ExerciseFilterInput />,
             }}
           />
           <Stack.Screen

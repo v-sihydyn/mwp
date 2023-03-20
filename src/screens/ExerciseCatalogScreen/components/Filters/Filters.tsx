@@ -1,65 +1,71 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { View, Text } from 'react-native';
 import { CheckIcon, ChevronDownIcon, Select } from 'native-base';
 import { colors } from '../../../../styles/colors';
 import { MUSCLE_SELECT_OPTIONS } from '../../../../constants/muscleSelectOptions';
+import { ExerciseEquipment } from '../../../../API';
 
-type FiltersProps = {};
+type FiltersProps = {
+  filterMuscle: string;
+  onFilterMuscleChange: (value: string) => void;
+  filterEquipment: string;
+  onFilterEquipmentChange: (value: string) => void;
+};
 
 const EQUIPMENT_SELECT_OPTIONS = [
   {
-    label: 'Any equipment',
-    value: '',
-  },
-  {
-    label: 'Assisted',
-    value: 'Assisted',
-  },
-  {
-    label: 'Band',
-    value: 'Band',
-  },
-  {
     label: 'Barbell',
-    value: 'Barbell',
+    value: ExerciseEquipment.BARBELL,
   },
   {
     label: 'Body weight',
-    value: 'Body weight',
+    value: ExerciseEquipment.BODYWEIGHT,
   },
   {
     label: 'Dumbbell',
-    value: 'Dumbbell',
+    value: ExerciseEquipment.DUMBBELL,
+  },
+  {
+    label: 'EZ Barbell',
+    value: ExerciseEquipment.EZBARBELL,
+  },
+  {
+    label: 'Kettlebell',
+    value: ExerciseEquipment.KETTLEBELL,
   },
   {
     label: 'Leverage machine',
-    value: 'Leverage machine',
+    value: ExerciseEquipment.LEVERAGEMACHINE,
+  },
+  {
+    label: 'Sled machine',
+    value: ExerciseEquipment.SLEDMACHINE,
+  },
+  {
+    label: 'Smith machine',
+    value: ExerciseEquipment.SMITHMACHINE,
+  },
+  {
+    label: 'Weighted',
+    value: ExerciseEquipment.WEIGHTED,
   },
 ];
 
-const CATEGORY_SELECT_OPTIONS = [
-  {
-    label: 'Any category',
-    value: '',
-  },
-  {
-    label: 'Regular',
-    value: 'Regular',
-  },
-  {
-    label: 'Stretch',
-    value: 'Stretch',
-  },
-];
-
-export const Filters: React.FC<FiltersProps> = () => {
-  const [filterMuscle, setFilterMuscle] = useState<string>('');
-  const [filterEquipment, setFilterEquipment] = useState<string>('');
-  const [filterCategory, setFilterCategory] = useState<string>('');
-
+export const Filters = ({
+  filterMuscle,
+  onFilterMuscleChange,
+  filterEquipment,
+  onFilterEquipmentChange,
+}: FiltersProps) => {
   return (
-    <View style={{ flexDirection: 'row', width: '100%', flex: 1 }}>
-      <View style={{ flex: 17 }}>
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        flex: 1,
+      }}>
+      <View style={{ width: '47%' }}>
         <Text style={{ color: colors.text2, fontSize: 13 }}>Muscle</Text>
         <Select
           selectedValue={filterMuscle}
@@ -70,13 +76,18 @@ export const Filters: React.FC<FiltersProps> = () => {
             endIcon: <CheckIcon size="5" />,
           }}
           dropdownIcon={<ChevronDownIcon size={4} />}
-          onValueChange={setFilterMuscle}>
+          onValueChange={onFilterMuscleChange}>
+          <Select.Item key={''} label="Any muscle" value={''} />
           {MUSCLE_SELECT_OPTIONS.map((option) => (
-            <Select.Item key={option.value} label={option.label} value={option.value} />
+            <Select.Item
+              key={option.value}
+              label={option.label}
+              value={option.value}
+            />
           ))}
         </Select>
       </View>
-      <View style={{ flex: 22, marginLeft: 12 }}>
+      <View style={{ width: '47%' }}>
         <Text style={{ color: colors.text2, fontSize: 13 }}>Equipment</Text>
         <Select
           selectedValue={filterEquipment}
@@ -87,26 +98,14 @@ export const Filters: React.FC<FiltersProps> = () => {
             endIcon: <CheckIcon size="5" />,
           }}
           dropdownIcon={<ChevronDownIcon size={4} />}
-          onValueChange={setFilterEquipment}>
+          onValueChange={onFilterEquipmentChange}>
+          <Select.Item key={''} label="Any equipment" value={''} />
           {EQUIPMENT_SELECT_OPTIONS.map((option) => (
-            <Select.Item key={option.value} label={option.label} value={option.value} />
-          ))}
-        </Select>
-      </View>
-      <View style={{ flex: 18, marginLeft: 12 }}>
-        <Text style={{ color: colors.text2, fontSize: 13 }}>Category</Text>
-        <Select
-          selectedValue={filterCategory}
-          color={colors.text}
-          fontSize={13}
-          variant="underlined"
-          _selectedItem={{
-            endIcon: <CheckIcon size="5" />,
-          }}
-          dropdownIcon={<ChevronDownIcon size={4} />}
-          onValueChange={setFilterCategory}>
-          {CATEGORY_SELECT_OPTIONS.map((option) => (
-            <Select.Item key={option.value} label={option.label} value={option.value} />
+            <Select.Item
+              key={option.value}
+              label={option.label}
+              value={option.value}
+            />
           ))}
         </Select>
       </View>

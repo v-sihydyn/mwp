@@ -1,15 +1,10 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet, Image } from 'react-native';
 import { colors } from '../../styles/colors';
+import { Exercise } from '../../screens/ExerciseCatalogScreen/exercises';
 
 type ExerciseListItemProps = {
-  item: {
-    id: number;
-    name: string;
-    muscleGroup: string;
-    requiredEquipment: string;
-    image: string | null;
-  };
+  item: Exercise;
   displayImage?: boolean;
   onPress?: () => void;
 };
@@ -22,18 +17,18 @@ export const ExerciseListItem: React.FC<ExerciseListItemProps> = ({
   return (
     <Pressable onPress={onPress}>
       <View style={styles.root}>
-        {displayImage && item.image && (
-          <Image
-            style={styles.image}
-            source={{
-              uri: 'https://dummyimage.com/60x60/fff/aaa',
-            }}
-          />
-        )}
+        {/*{displayImage && item.image && (*/}
+        {/*  <Image*/}
+        {/*    style={styles.image}*/}
+        {/*    source={{*/}
+        {/*      uri: 'https://dummyimage.com/60x60/fff/aaa',*/}
+        {/*    }}*/}
+        {/*  />*/}
+        {/*)}*/}
         <View style={{ flexDirection: 'column', flex: 1 }}>
           <Text style={styles.name}>{item.name}</Text>
           <Text style={styles.muscleGroup}>{item.muscleGroup}</Text>
-          <Text style={styles.equipment}>{item.requiredEquipment}</Text>
+          <Text style={styles.equipment}>{item.equipment}</Text>
         </View>
       </View>
     </Pressable>

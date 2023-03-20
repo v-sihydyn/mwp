@@ -3,16 +3,23 @@ import { Input, SearchIcon, SmallCloseIcon } from 'native-base';
 import { StyleSheet, View } from 'react-native';
 import { colors } from '../../../../styles/colors';
 
-type ExerciseFilterInputProps = {};
+type ExerciseFilterInputProps = {
+  onChange: (value: string) => void;
+};
 
-export const ExerciseFilterInput: React.FC<ExerciseFilterInputProps> = () => {
+export const ExerciseFilterInput = ({ onChange }: ExerciseFilterInputProps) => {
   const [searchQuery, setSearchQuery] = useState('');
+
+  const handleChange = (text: string) => {
+    setSearchQuery(text);
+    onChange(text);
+  };
 
   return (
     <View style={styles.root}>
       <Input
         value={searchQuery}
-        onChangeText={setSearchQuery}
+        onChangeText={handleChange}
         fontSize={16}
         color={colors.text}
         placeholderTextColor={colors.text2}
@@ -26,8 +33,12 @@ export const ExerciseFilterInput: React.FC<ExerciseFilterInputProps> = () => {
             <SmallCloseIcon
               size={5}
               mr="2"
-              style={{ borderRadius: 20, color: colors.surface2, backgroundColor: colors.text2 }}
-              onPress={() => setSearchQuery('')}
+              style={{
+                borderRadius: 20,
+                color: colors.surface2,
+                backgroundColor: colors.text2,
+              }}
+              onPress={() => handleChange('')}
             />
           ) : undefined
         }
@@ -38,7 +49,7 @@ export const ExerciseFilterInput: React.FC<ExerciseFilterInputProps> = () => {
 
 const styles = StyleSheet.create({
   root: {
-    width: '100%',
+    width: 280,
     paddingRight: 20,
   },
 });

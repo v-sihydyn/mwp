@@ -16,22 +16,20 @@ import {
   CreateWorkoutRoutineExerciseMutation,
   CreateWorkoutRoutineExerciseMutationVariables,
   WorkoutPlan,
-  WorkoutPlansByUserIDQuery,
-  WorkoutPlansByUserIDQueryVariables,
+  WorkoutPlanRoutine,
 } from '../../API';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createWorkoutRoutineExerciseMutation } from './mutations/createWorkoutRoutineExerciseMutation';
 import { useMutation } from '@apollo/client';
 import { Toast } from 'native-base';
 import { AddCustomExerciseToRoutineRouteProp } from '../../../types';
-import { workoutPlansByUserIDQuery } from '../WorkoutPlanScreen/hooks/queries/workoutPlansByUserIDQuery';
-import { useAuthContext } from '../../contexts/AuthContext';
+import { routineFragment } from '../../fragments/routineFragment';
 
 export const AddCustomExerciseToRoutineScreen = () => {
   const navigation = useNavigation();
   const route = useRoute<AddCustomExerciseToRoutineRouteProp>();
-  const { workoutPlanId, workoutRoutineId } = route.params;
-  const { userId } = useAuthContext();
+  const { workoutRoutineId } = route.params;
+  const routineCacheKey = `WorkoutPlanRoutine:${workoutRoutineId}`;
 
   const formMethods = useForm<ExerciseFormData>({
     mode: 'onChange',
@@ -74,58 +72,27 @@ export const AddCustomExerciseToRoutineScreen = () => {
           const newExercise = data?.createWorkoutRoutineExercise;
           if (!newExercise) return;
 
-          cache.updateQuery<
-            WorkoutPlansByUserIDQuery,
-            WorkoutPlansByUserIDQueryVariables
-          >(
-            {
-              query: workoutPlansByUserIDQuery,
-              variables: {
-                userID: userId,
+          const routine = cache.readFragment<WorkoutPlanRoutine>({
+            id: routineCacheKey,
+            fragment: routineFragment,
+            fragmentName: 'Routine',
+          });
+
+          cache.writeFragment<WorkoutPlanRoutine>({
+            id: routineCacheKey,
+            fragment: routineFragment,
+            fragmentName: 'Routine',
+            data: {
+              ...routine!,
+              WorkoutRoutineExercises: {
+                ...routine!.WorkoutRoutineExercises,
+                __typename: 'ModelWorkoutRoutineExerciseConnection',
+                items: (routine?.WorkoutRoutineExercises?.items ?? []).concat(
+                  newExercise,
+                ),
               },
             },
-            (data) => {
-              if (!data?.workoutPlansByUserID?.items) return;
-
-              return {
-                workoutPlansByUserID: {
-                  ...data.workoutPlansByUserID,
-                  items: (data?.workoutPlansByUserID?.items ?? []).map(
-                    (_plan: WorkoutPlan | null) => {
-                      const plan = _plan! || {};
-
-                      return {
-                        ...plan,
-                        WorkoutPlanRoutines: {
-                          ...plan.WorkoutPlanRoutines,
-                          items:
-                            plan.id === workoutPlanId
-                              ? (plan.WorkoutPlanRoutines?.items ?? []).map(
-                                  (routine) =>
-                                    routine?.id === workoutRoutineId
-                                      ? {
-                                          ...routine,
-                                          WorkoutRoutineExercises: {
-                                            ...routine.WorkoutRoutineExercises,
-                                            items: [
-                                              ...(routine
-                                                ?.WorkoutRoutineExercises
-                                                ?.items ?? []),
-                                              newExercise,
-                                            ],
-                                          },
-                                        }
-                                      : routine,
-                                )
-                              : plan.WorkoutPlanRoutines?.items,
-                        },
-                      };
-                    },
-                  ),
-                },
-              };
-            },
-          );
+          });
         },
       });
 

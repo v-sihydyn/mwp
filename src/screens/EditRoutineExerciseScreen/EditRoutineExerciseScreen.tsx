@@ -21,11 +21,18 @@ import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useApolloClient, useMutation } from '@apollo/client';
 import { exerciseFragment } from '../../fragments/exerciseFragment';
 import {
+  DeleteWorkoutRoutineExerciseMutation,
+  DeleteWorkoutRoutineExerciseMutationVariables,
   UpdateWorkoutRoutineExerciseMutation,
   UpdateWorkoutRoutineExerciseMutationVariables,
+  WorkoutPlanRoutine,
 } from '../../API';
 import { Toast } from 'native-base';
 import { updateWorkoutRoutineExerciseMutation } from './mutations/updateWorkoutRoutineExerciseMutation';
+import { openDeleteRoutineModal } from '../../components/modals/DeleteRoutineModal/DeleteRoutineModal';
+import { openDeleteExerciseModal } from '../../components/modals/DeleteExerciseModal/DeleteExerciseModal';
+import { deleteWorkoutRoutineExerciseMutation } from './mutations/deleteWorkoutRoutineExerciseMutation';
+import { routineFragment } from '../../fragments/routineFragment';
 
 export const EditRoutineExerciseScreen = () => {
   const navigation = useNavigation();
@@ -33,6 +40,7 @@ export const EditRoutineExerciseScreen = () => {
   const client = useApolloClient();
   const { workoutRoutineId, exerciseId } = route.params;
   const exerciseCacheKey = `WorkoutRoutineExercise:${exerciseId}`;
+  const routineCacheKey = `WorkoutPlanRoutine:${workoutRoutineId}`;
   const exercise = client.readFragment({
     id: exerciseCacheKey,
     fragment: exerciseFragment,
@@ -70,13 +78,19 @@ export const EditRoutineExerciseScreen = () => {
     },
   });
   const { handleSubmit } = formMethods;
-  const [updateWorkoutRoutineExercise, { loading }] = useMutation<
-    UpdateWorkoutRoutineExerciseMutation,
-    UpdateWorkoutRoutineExerciseMutationVariables
-  >(updateWorkoutRoutineExerciseMutation);
+  const [updateWorkoutRoutineExercise, { loading: updateLoading }] =
+    useMutation<
+      UpdateWorkoutRoutineExerciseMutation,
+      UpdateWorkoutRoutineExerciseMutationVariables
+    >(updateWorkoutRoutineExerciseMutation);
+  const [deleteWorkoutRoutineExercise, { loading: deleteLoading }] =
+    useMutation<
+      DeleteWorkoutRoutineExerciseMutation,
+      DeleteWorkoutRoutineExerciseMutationVariables
+    >(deleteWorkoutRoutineExerciseMutation);
 
   const onSubmit = async (values: ExerciseFormData) => {
-    if (loading) return;
+    if (updateLoading) return;
 
     try {
       let restTimeInSeconds = null;
@@ -128,12 +142,68 @@ export const EditRoutineExerciseScreen = () => {
 
   const doSubmit = handleSubmit(onSubmit);
 
+  const handleOpenDeleteExerciseModal = async () => {
+    if (deleteLoading) return;
+
+    try {
+      const deleteConfirmed = await openDeleteExerciseModal().catch(() => {});
+
+      if (deleteConfirmed) {
+        await deleteWorkoutRoutineExercise({
+          variables: {
+            input: {
+              id: exerciseId,
+              _version: exercise._version,
+            },
+          },
+          update(cache, { data }) {
+            if (!data?.deleteWorkoutRoutineExercise?.id) return;
+
+            const routine = cache.readFragment<WorkoutPlanRoutine>({
+              id: routineCacheKey,
+              fragment: routineFragment,
+              fragmentName: 'Routine',
+            });
+
+            cache.writeFragment<WorkoutPlanRoutine>({
+              id: routineCacheKey,
+              fragment: routineFragment,
+              fragmentName: 'Routine',
+              data: {
+                ...routine!,
+                WorkoutRoutineExercises: {
+                  ...routine!.WorkoutRoutineExercises,
+                  __typename: 'ModelWorkoutRoutineExerciseConnection',
+                  items: (routine?.WorkoutRoutineExercises?.items ?? []).filter(
+                    (x) => x?.id !== data?.deleteWorkoutRoutineExercise?.id,
+                  ),
+                },
+              },
+            });
+          },
+        });
+
+        navigation.navigate('Root', {
+          screen: 'WorkoutPlan',
+        });
+      }
+    } catch (e) {
+      console.warn(e);
+      Toast.show({
+        title: 'Failed to delete the exercise',
+        description: (e as Error).message,
+        duration: 3000,
+        backgroundColor: colors.red,
+      });
+    }
+  };
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <View style={{ marginRight: 16, flexDirection: 'row' }}>
           <CustomButton
-            onPress={() => console.log('Delete')}
+            onPress={handleOpenDeleteExerciseModal}
             icon={<Icon name="trash" color={colors.red} size={16} />}
             style={{
               backgroundColor: colors.black,

@@ -17,6 +17,8 @@ import { FormSelect } from './FormSelect/FormSelect';
 import { getBlankSetItem } from './helpers';
 import { FormSetControl } from './FormSetControl/FormSetControl';
 import { MUSCLE_SELECT_OPTIONS } from '../../constants/muscleSelectOptions';
+import { MuscleGroup } from '../../API';
+import * as yup from 'yup';
 
 export const ExerciseForm = () => {
   const { control, watch, setValue } = useFormContext();
@@ -28,14 +30,24 @@ export const ExerciseForm = () => {
     control,
     name: 'sets',
   });
-  const [canSetRestTime, setCanSetRestTime] = useState(false);
+
   const color = watch('color');
+  const setsValue = watch('sets');
+
+  const allSetsCount = (setsValue as ExerciseFormData['sets']).reduce(
+    (acc, cur) => {
+      return acc + Number(cur.sets || 0);
+    },
+    0,
+  );
+
+  const [canSetRestTime, setCanSetRestTime] = useState(allSetsCount > 1);
 
   useEffect(() => {
-    if (sets.length < 2 && canSetRestTime) {
+    if (allSetsCount < 2 && canSetRestTime) {
       setCanSetRestTime(false);
     }
-  }, [sets, canSetRestTime]);
+  }, [allSetsCount, sets, canSetRestTime]);
 
   useEffect(() => {
     if (!canSetRestTime) {
@@ -135,7 +147,7 @@ export const ExerciseForm = () => {
               onValueChange={() => {
                 setCanSetRestTime((prevValue) => !prevValue);
               }}
-              disabled={sets.length < 2}
+              disabled={allSetsCount < 2}
               style={[Platform.OS === 'android' && { height: 10 }]}
             />
           </View>
@@ -207,6 +219,46 @@ export const ExerciseForm = () => {
     </View>
   );
 };
+
+export type SetData = {
+  sets: string | null;
+  reps: string | null;
+  weight: string | null;
+};
+
+export type ExerciseFormData = {
+  name: string;
+  muscleGroup: MuscleGroup | null;
+  sets: SetData[];
+  restTimeMins?: string | null;
+  restTimeSecs?: string | null;
+  color?: string | null;
+  description?: string | null;
+};
+
+export const blankInitialValues: ExerciseFormData = {
+  name: '',
+  muscleGroup: null,
+  sets: [getBlankSetItem()],
+  restTimeMins: null,
+  restTimeSecs: null,
+  color: '#000000',
+  description: '',
+};
+
+export const validationSchema = yup.object().shape({
+  name: yup.string().max(30).required("Name can't be empty"),
+  muscleGroup: yup.string().required("Muscle can't be empty"),
+  sets: yup.array().of(
+    yup.object().shape({
+      sets: yup.string().nullable().required(),
+      reps: yup.string().nullable().required(),
+      weight: yup.string().nullable(),
+    }),
+  ),
+
+  description: yup.string().max(50),
+});
 
 const styles = StyleSheet.create({
   form: {

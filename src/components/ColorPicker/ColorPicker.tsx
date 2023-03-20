@@ -1,5 +1,11 @@
-import { View, ScrollView, StyleSheet, Pressable } from 'react-native';
-import React from 'react';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  Pressable,
+  FlatList,
+} from 'react-native';
+import React, { useEffect, useRef } from 'react';
 import { Icon } from '../Icon/Icon';
 import { colors } from '../../styles/colors';
 
@@ -32,15 +38,16 @@ type ColorPickerProps = {
 };
 
 export const ColorPicker = ({ value, onChange }: ColorPickerProps) => {
-  return (
-    <ScrollView
-      horizontal={true}
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ alignItems: 'center' }}
-      bounces={false}>
-      {COLORS.map((color, index) => {
-        const isSelected = color === value;
+  const listRef = useRef<FlatList | null>(null);
 
+  const initialScrollIndex = COLORS.findIndex((c) => c === value);
+
+  // @TODO: verify initialScrollIndex works on real device
+  return (
+    <FlatList
+      data={COLORS}
+      renderItem={({ item: color, index }) => {
+        const isSelected = color === value;
         return (
           <Pressable key={index} onPress={() => onChange(color)}>
             <View
@@ -62,8 +69,21 @@ export const ColorPicker = ({ value, onChange }: ColorPickerProps) => {
             )}
           </Pressable>
         );
+      }}
+      onScrollToIndexFailed={console.warn}
+      ref={listRef}
+      horizontal={true}
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={{ alignItems: 'center' }}
+      bounces={false}
+      initialNumToRender={COLORS.length}
+      initialScrollIndex={initialScrollIndex}
+      getItemLayout={(data, index) => ({
+        length: 44,
+        offset: 44 * index,
+        index,
       })}
-    </ScrollView>
+    />
   );
 };
 

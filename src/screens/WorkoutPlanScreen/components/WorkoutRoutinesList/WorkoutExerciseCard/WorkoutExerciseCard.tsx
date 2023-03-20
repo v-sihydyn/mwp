@@ -109,15 +109,17 @@ const styles = StyleSheet.create({
   set: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     marginBottom: 8,
   },
   setItem: {
     color: colors.text,
+    marginRight: 40,
   },
   colorIndicator: {
     width: 8,
     height: 8,
     borderRadius: 4,
+    marginRight: 30,
   },
 });

@@ -1,77 +1,145 @@
-import React from 'react';
+import { StyleSheet, Text } from 'react-native';
 import { colors } from '../../styles/colors';
-import { StyleSheet, View, FlatList } from 'react-native';
-import { ExerciseListItem } from '../../components/ExerciseListItem/ExerciseListItem';
-
-import { ListHeader } from './components/ListHeader/ListHeader';
-
-const EXERCISES = [
-  {
-    id: 1,
-    name: 'Air bike',
-    muscleGroup: 'Core',
-    requiredEquipment: 'Body weight',
-    image: 'imageUrl',
-  },
-  {
-    id: 2,
-    name: 'Air Twisting Crunch',
-    muscleGroup: 'Core',
-    requiredEquipment: 'Body weight',
-    image: 'imageUrl',
-  },
-  {
-    id: 3,
-    name: 'Alternate Biceps Curl (with band)',
-    muscleGroup: 'Biceps',
-    requiredEquipment: 'Band',
-    image: 'imageUrl',
-  },
-  {
-    id: 4,
-    name: 'Alternate Lateral Pulldown',
-    muscleGroup: 'Back',
-    requiredEquipment: 'Cable',
-    image: 'imageUrl',
-  },
-  {
-    id: 5,
-    name: 'Assisted Chest Dip (kneeling)',
-    muscleGroup: 'Chest',
-    requiredEquipment: 'Leverage machine',
-    image: 'imageUrl',
-  },
-  {
-    id: 6,
-    name: 'Assisted Parallel Close Grip Pull-up',
-    muscleGroup: 'Back',
-    requiredEquipment: 'Leverage machine',
-    image: 'imageUrl',
-  },
-];
+import React, { useEffect } from 'react';
+import { Icon } from '../../components/Icon/Icon';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { CustomButton } from '../../components/CustomButton/CustomButton';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {
+  blankInitialValues,
+  ExerciseForm,
+  ExerciseFormData,
+  validationSchema,
+} from '../../components/ExerciseForm/ExerciseForm';
+import { FormProvider, useForm } from 'react-hook-form';
+import {
+  CreateWorkoutRoutineExerciseMutation,
+  CreateWorkoutRoutineExerciseMutationVariables,
+  WorkoutPlanRoutine,
+} from '../../API';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { createWorkoutRoutineExerciseMutation } from './mutations/createWorkoutRoutineExerciseMutation';
+import { useMutation } from '@apollo/client';
+import { Toast } from 'native-base';
+import { AddExerciseToRoutineRouteProp } from '../../../types';
+import { routineFragment } from '../../fragments/routineFragment';
 
 export const AddExerciseToRoutineScreen = () => {
+  const navigation = useNavigation();
+  const route = useRoute<AddExerciseToRoutineRouteProp>();
+  const { workoutRoutineId } = route.params;
+  const routineCacheKey = `WorkoutPlanRoutine:${workoutRoutineId}`;
+
+  const formMethods = useForm<ExerciseFormData>({
+    mode: 'onChange',
+    resolver: yupResolver(validationSchema),
+    defaultValues: {
+      ...blankInitialValues,
+    },
+  });
+  const { handleSubmit } = formMethods;
+  const [createWorkoutRoutineExercise, { loading }] = useMutation<
+    CreateWorkoutRoutineExerciseMutation,
+    CreateWorkoutRoutineExerciseMutationVariables
+  >(createWorkoutRoutineExerciseMutation);
+
+  const onSubmit = async (values: ExerciseFormData) => {
+    if (loading) return;
+
+    try {
+      let restTimeInSeconds = null;
+      const restTimeMins = Number(values.restTimeMins);
+      const restTimeSecs = Number(values.restTimeSecs);
+
+      if (!Number.isNaN(restTimeMins) && !Number.isNaN(restTimeSecs)) {
+        restTimeInSeconds = restTimeMins * 60 + restTimeSecs;
+      }
+
+      await createWorkoutRoutineExercise({
+        variables: {
+          input: {
+            name: values.name,
+            muscleGroup: values.muscleGroup,
+            color: values.color,
+            description: values.description,
+            workoutPlanRoutineID: workoutRoutineId,
+            setsConfig: JSON.stringify(values.sets),
+            restTimeInSeconds,
+          },
+        },
+        update(cache, { data }) {
+          const newExercise = data?.createWorkoutRoutineExercise;
+          if (!newExercise) return;
+
+          const routine = cache.readFragment<WorkoutPlanRoutine>({
+            id: routineCacheKey,
+            fragment: routineFragment,
+            fragmentName: 'Routine',
+          });
+
+          cache.writeFragment<WorkoutPlanRoutine>({
+            id: routineCacheKey,
+            fragment: routineFragment,
+            fragmentName: 'Routine',
+            data: {
+              ...routine!,
+              WorkoutRoutineExercises: {
+                ...routine!.WorkoutRoutineExercises,
+                __typename: 'ModelWorkoutRoutineExerciseConnection',
+                items: (routine?.WorkoutRoutineExercises?.items ?? []).concat(
+                  newExercise,
+                ),
+              },
+            },
+          });
+        },
+      });
+
+      navigation.navigate('Root', {
+        screen: 'WorkoutPlan',
+      });
+    } catch (e) {
+      Toast.show({
+        title: 'Failed to create an exercise',
+        description: (e as Error).message,
+        duration: 3000,
+        backgroundColor: colors.red,
+      });
+    }
+  };
+
+  const doSubmit = handleSubmit(onSubmit);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <CustomButton
+          onPress={doSubmit}
+          style={{ marginRight: 16 }}
+          icon={<Icon name="check" color={colors.text} size={16} />}>
+          <Text style={{ fontWeight: 'bold' }}>Done</Text>
+        </CustomButton>
+      ),
+    });
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={EXERCISES}
-        renderItem={({ item }) => (
-          <ExerciseListItem key={item.id} item={item} onPress={() => {}} />
-        )}
-        style={styles.list}
-        ListHeaderComponent={ListHeader}
-        bounces={false}
-      />
-    </View>
+    <KeyboardAwareScrollView
+      contentContainerStyle={styles.container}
+      extraScrollHeight={20}
+      bounces={false}>
+      <FormProvider {...formMethods}>
+        <ExerciseForm />
+      </FormProvider>
+    </KeyboardAwareScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flexGrow: 1,
     backgroundColor: colors.page,
-    flex: 1,
     flexDirection: 'column',
     position: 'relative',
   },
-  list: { paddingHorizontal: 20 },
 });

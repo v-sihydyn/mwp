@@ -9,9 +9,9 @@ import { RoutineRemindersScreen } from '../screens/RoutineRemindersScreen/Routin
 import { ModalSlideFromBottomIOS } from './customModalTransition';
 import { RoutinesManagementScreen } from '../screens/RoutinesManagementScreen/RoutinesManagementScreen';
 import { colors } from '../styles/colors';
+import { ExerciseCatalogScreen } from '../screens/ExerciseCatalogScreen/ExerciseCatalogScreen';
+import { ExerciseFilterInput } from '../screens/ExerciseCatalogScreen/components/ExerciseFilterInput/ExerciseFilterInput';
 import { AddExerciseToRoutineScreen } from '../screens/AddExerciseToRoutineScreen/AddExerciseToRoutineScreen';
-import { ExerciseFilterInput } from '../screens/AddExerciseToRoutineScreen/components/ExerciseFilterInput/ExerciseFilterInput';
-import { AddCustomExerciseToRoutineScreen } from '../screens/AddCustomExerciseToRoutineScreen/AddCustomExerciseToRoutineScreen';
 import { ConfigureWorkoutScreen } from '../screens/ConfigureWorkoutScreen/ConfigureWorkoutScreen';
 import { WorkoutScreen } from '../screens/WorkoutScreen/WorkoutScreen';
 import { WorkoutDetailsScreen } from '../screens/WorkoutDetailsScreen/WorkoutDetailsScreen';
@@ -104,16 +104,16 @@ const RootNavigator = () => {
             }}
           />
           <Stack.Screen
-            name="AddExerciseToRoutine"
-            component={AddExerciseToRoutineScreen}
+            name="ExerciseCatalog"
+            component={ExerciseCatalogScreen}
             options={{
               title: '',
               headerRight: () => <ExerciseFilterInput />,
             }}
           />
           <Stack.Screen
-            name="AddCustomExerciseToRoutine"
-            component={AddCustomExerciseToRoutineScreen}
+            name="AddExerciseToRoutine"
+            component={AddExerciseToRoutineScreen}
             options={{
               title: '',
             }}

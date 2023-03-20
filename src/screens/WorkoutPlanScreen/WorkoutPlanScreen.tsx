@@ -300,10 +300,6 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     navigation.navigate('RoutineReminders');
   };
 
-  const handleGoToExerciseScreen = () => {
-    navigation.navigate('EditRoutineExercise');
-  };
-
   const header = useMemo(() => {
     return (
       <View style={[styles.header]}>
@@ -330,7 +326,20 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
 
     navigation.navigate('AddExerciseToRoutine', {
       workoutPlanId: selectedPlan.id!,
-      workoutRoutineId: selectedRoutine.id,
+      workoutRoutineId: selectedRoutine.id!,
+    });
+  };
+
+  const handleInitiateEditExercise = (exerciseId: string) => {
+    const focusedTab = tabContainerRef?.current?.getFocusedTab();
+    const selectedRoutine = routines.find((r) => r?.name === focusedTab);
+
+    if (!selectedPlan || !selectedRoutine) return;
+
+    navigation.navigate('EditRoutineExercise', {
+      workoutPlanId: selectedPlan.id!,
+      workoutRoutineId: selectedRoutine.id!,
+      exerciseId,
     });
   };
 
@@ -373,7 +382,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
             item && (
               <WorkoutExerciseCard
                 item={item}
-                onPress={handleGoToExerciseScreen}
+                onPress={() => handleInitiateEditExercise(item.id)}
               />
             )
           }

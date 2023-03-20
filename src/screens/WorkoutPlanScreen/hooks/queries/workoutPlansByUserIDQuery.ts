@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import { exerciseFragment } from '../../../../fragments/exerciseFragment';
 
 export const workoutPlansByUserIDQuery = gql`
   query WorkoutPlansByUserID(
@@ -30,17 +31,7 @@ export const workoutPlansByUserIDQuery = gql`
             _lastChangedAt
             WorkoutRoutineExercises {
               items {
-                id
-                name
-                muscleGroup
-                color
-                setsConfig
-
-                createdAt
-                updatedAt
-                _version
-                _deleted
-                _lastChangedAt
+                ...Exercise
               }
             }
           }
@@ -55,4 +46,5 @@ export const workoutPlansByUserIDQuery = gql`
       startedAt
     }
   }
+  ${exerciseFragment}
 `;

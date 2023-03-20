@@ -37,7 +37,11 @@ export type RootStackParamList = {
   ConfigureWorkout: undefined;
   Workout: undefined;
   WorkoutDetails: undefined;
-  EditRoutineExercise: undefined;
+  EditRoutineExercise: {
+    workoutPlanId: string;
+    workoutRoutineId: string;
+    exerciseId: string;
+  };
   NotFound: undefined;
 };
 
@@ -59,6 +63,17 @@ export type AddCustomExerciseToRoutineNavigationProp =
 export type AddCustomExerciseToRoutineRouteProp = RouteProp<
   RootStackParamList,
   'AddCustomExerciseToRoutine'
+>;
+
+// EditRoutineExercise
+
+export type EditRoutineExerciseNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'EditRoutineExercise'
+>;
+export type EditRoutineExerciseRouteProp = RouteProp<
+  RootStackParamList,
+  'EditRoutineExercise'
 >;
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

@@ -10,7 +10,7 @@ import {
 import { colors } from '../../../../styles/colors';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Icon } from '../../../../components/Icon/Icon';
-import { AddExerciseToRoutineRouteProp } from '../../../../../types';
+import { ExerciseCatalogRouteProp } from '../../../../../types';
 
 type AddCustomExerciseButtonProps = {
   style?: StyleProp<ViewStyle>;
@@ -21,11 +21,11 @@ export const AddCustomExerciseButton: React.FC<
 > = ({ style }) => {
   const navigation = useNavigation();
 
-  const route = useRoute<AddExerciseToRoutineRouteProp>();
+  const route = useRoute<ExerciseCatalogRouteProp>();
   const { workoutPlanId, workoutRoutineId } = route.params;
 
   const handlePress = () => {
-    navigation.navigate('AddCustomExerciseToRoutine', {
+    navigation.navigate('AddExerciseToRoutine', {
       workoutPlanId,
       workoutRoutineId,
     });

@@ -12,7 +12,7 @@ import {
   validationSchema,
 } from '../../components/ExerciseForm/ExerciseForm';
 import {
-  AddCustomExerciseToRoutineRouteProp,
+  AddExerciseToRoutineRouteProp,
   EditRoutineExerciseRouteProp,
 } from '../../../types';
 import { useAuthContext } from '../../contexts/AuthContext';

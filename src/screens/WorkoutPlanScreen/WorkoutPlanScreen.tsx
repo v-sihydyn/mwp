@@ -324,7 +324,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
 
     if (!selectedPlan || !selectedRoutine) return;
 
-    navigation.navigate('AddExerciseToRoutine', {
+    navigation.navigate('ExerciseCatalog', {
       workoutPlanId: selectedPlan.id!,
       workoutRoutineId: selectedRoutine.id!,
     });

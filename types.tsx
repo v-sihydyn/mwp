@@ -26,11 +26,11 @@ export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   RoutineReminders: undefined;
   RoutinesManagement: undefined;
-  AddExerciseToRoutine: {
+  ExerciseCatalog: {
     workoutPlanId: string;
     workoutRoutineId: string;
   };
-  AddCustomExerciseToRoutine: {
+  AddExerciseToRoutine: {
     workoutPlanId: string;
     workoutRoutineId: string;
   };
@@ -45,6 +45,17 @@ export type RootStackParamList = {
   NotFound: undefined;
 };
 
+// ExerciseCatalog
+
+export type ExerciseCatalogNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'ExerciseCatalog'
+>;
+export type ExerciseCatalogRouteProp = RouteProp<
+  RootStackParamList,
+  'ExerciseCatalog'
+>;
+
 // AddExerciseToRoutine
 
 export type AddExerciseToRoutineNavigationProp = NativeStackNavigationProp<
@@ -54,15 +65,6 @@ export type AddExerciseToRoutineNavigationProp = NativeStackNavigationProp<
 export type AddExerciseToRoutineRouteProp = RouteProp<
   RootStackParamList,
   'AddExerciseToRoutine'
->;
-
-// AddCustomExerciseToRoutine
-
-export type AddCustomExerciseToRoutineNavigationProp =
-  NativeStackNavigationProp<RootStackParamList, 'AddCustomExerciseToRoutine'>;
-export type AddCustomExerciseToRoutineRouteProp = RouteProp<
-  RootStackParamList,
-  'AddCustomExerciseToRoutine'
 >;
 
 // EditRoutineExercise

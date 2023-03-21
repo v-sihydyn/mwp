@@ -14,6 +14,7 @@ import {
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 import { Exercise } from './src/screens/ExerciseCatalogScreen/exercises';
+import { DraftWorkout, DraftWorkoutExercise } from './src/types/draftWorkout';
 
 declare global {
   namespace ReactNavigation {
@@ -36,8 +37,14 @@ export type RootStackParamList = {
     workoutRoutineId: string;
     exercise?: Exercise;
   };
-  ConfigureWorkout: undefined;
-  Workout: undefined;
+  ConfigureWorkout: {
+    workoutRoutineId: string;
+  };
+  Workout: {
+    restTimeInSeconds: number;
+    draftWorkout: DraftWorkout;
+    draftWorkoutExercises: DraftWorkoutExercise[];
+  };
   WorkoutDetails: undefined;
   EditRoutineExercise: {
     workoutPlanId: string;
@@ -79,6 +86,25 @@ export type EditRoutineExerciseRouteProp = RouteProp<
   RootStackParamList,
   'EditRoutineExercise'
 >;
+
+// EditRoutineExercise
+
+export type ConfigureWorkoutNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'ConfigureWorkout'
+>;
+export type ConfigureWorkoutRouteProp = RouteProp<
+  RootStackParamList,
+  'ConfigureWorkout'
+>;
+
+// Workout
+
+export type WorkoutNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Workout'
+>;
+export type WorkoutRouteProp = RouteProp<RootStackParamList, 'Workout'>;
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, Screen>;

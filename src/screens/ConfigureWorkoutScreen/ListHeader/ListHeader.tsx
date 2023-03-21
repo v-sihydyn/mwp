@@ -1,36 +1,66 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { colors } from '../../../styles/colors';
 
-export const ListHeader = () => (
-  <View>
-    <Text style={styles.title}>Rest Between Exercises</Text>
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 16,
-      }}>
-      <Text style={{ fontSize: 16, color: colors.text }}>Time:</Text>
+type ListHeaderProps = {
+  onRestMinutesChange: (value: string) => void;
+  onRestSecondsChange: (value: string) => void;
+};
+
+// @TODO use numeric inputs; limits seconds to 59
+export const ListHeader = ({
+  onRestSecondsChange,
+  onRestMinutesChange,
+}: ListHeaderProps) => {
+  const [restMinutes, setRestMinutes] = useState('');
+  const [restSeconds, setRestSeconds] = useState('');
+
+  return (
+    <View>
+      <Text style={styles.title}>Rest Between Exercises</Text>
       <View
         style={{
           flexDirection: 'row',
-          alignItems: 'center',
           justifyContent: 'space-between',
-          flexGrow: 1,
-          marginLeft: 10,
+          alignItems: 'center',
+          marginBottom: 16,
         }}>
-        <TextInput value="1" keyboardType="numeric" style={styles.setInput} />
-        <Text style={styles.setLabel}>Minutes</Text>
-        <View style={styles.setsFieldsDivider}></View>
-        <TextInput value="30" keyboardType="numeric" style={styles.setInput} />
-        <Text style={styles.setLabel}>Seconds</Text>
+        <Text style={{ fontSize: 16, color: colors.text }}>Time:</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexGrow: 1,
+            marginLeft: 10,
+          }}>
+          <TextInput
+            value={restMinutes}
+            onChangeText={(value) => {
+              setRestMinutes(value);
+              onRestMinutesChange(value);
+            }}
+            keyboardType="numeric"
+            style={styles.setInput}
+          />
+          <Text style={styles.setLabel}>Minutes</Text>
+          <View style={styles.setsFieldsDivider} />
+          <TextInput
+            value={restSeconds}
+            onChangeText={(value) => {
+              setRestSeconds(value);
+              onRestSecondsChange(value);
+            }}
+            keyboardType="numeric"
+            style={styles.setInput}
+          />
+          <Text style={styles.setLabel}>Seconds</Text>
+        </View>
       </View>
+      <Text style={styles.title}>Reorder & Remove Exercises</Text>
     </View>
-    <Text style={styles.title}>Reorder & Remove Exercises</Text>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   title: {

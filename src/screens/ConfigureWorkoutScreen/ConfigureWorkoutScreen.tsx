@@ -1,97 +1,114 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../styles/colors';
-import { AddRoutineButton } from '../RoutinesManagementScreen/components/AddRoutineButton/AddRoutineButton';
 import DraggableFlatList, {
   RenderItemParams,
 } from 'react-native-draggable-flatlist';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ExerciseListItem } from '../../components/ExerciseListItem/ExerciseListItem';
 import { SortableListItem } from '../../components/SortableList/SortableListItem';
 import { Icon } from '../../components/Icon/Icon';
 import { ListHeader } from './ListHeader/ListHeader';
 import { CustomButton } from '../../components/CustomButton/CustomButton';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { ConfigureWorkoutRouteProp } from '../../../types';
+import { useApolloClient } from '@apollo/client';
+import { routineFragment } from '../../fragments/routineFragment';
+import {
+  Workout,
+  WorkoutPlanRoutine,
+  WorkoutRoutineExercise,
+  WorkoutStatus,
+} from '../../API';
+import {
+  DraftSet,
+  DraftWorkout,
+  DraftWorkoutExercise,
+} from '../../types/draftWorkout';
 
-const EXERCISES = [
-  {
-    id: 1,
-    name: 'Air bike',
-    muscleGroup: 'Core',
-    requiredEquipment: 'Body weight',
-    image: 'imageUrl',
-  },
-  {
-    id: 2,
-    name: 'Air Twisting Crunch',
-    muscleGroup: 'Core',
-    requiredEquipment: 'Body weight',
-    image: 'imageUrl',
-  },
-  {
-    id: 3,
-    name: 'Alternate Biceps Curl (with band)',
-    muscleGroup: 'Biceps',
-    requiredEquipment: 'Band',
-    image: 'imageUrl',
-  },
-  {
-    id: 4,
-    name: 'Alternate Lateral Pulldown',
-    muscleGroup: 'Back',
-    requiredEquipment: 'Cable',
-    image: 'imageUrl',
-  },
-  {
-    id: 5,
-    name: 'Assisted Chest Dip (kneeling)',
-    muscleGroup: 'Chest',
-    requiredEquipment: 'Leverage machine',
-    image: 'imageUrl',
-  },
-  {
-    id: 6,
-    name: 'Assisted Parallel Close Grip Pull-up',
-    muscleGroup: 'Back',
-    requiredEquipment: 'Leverage machine',
-    image: 'imageUrl',
-  },
-  {
-    id: 7,
-    name: 'Assisted Parallel Close Grip Pull-up 2',
-    muscleGroup: 'Back',
-    requiredEquipment: 'Leverage machine',
-    image: 'imageUrl',
-  },
-  {
-    id: 8,
-    name: 'Assisted Parallel Close Grip Pull-up 3',
-    muscleGroup: 'Back',
-    requiredEquipment: 'Leverage machine',
-    image: 'imageUrl',
-  },
-  {
-    id: 9,
-    name: 'Assisted Parallel Close Grip Pull-up 4',
-    muscleGroup: 'Back',
-    requiredEquipment: 'Leverage machine',
-    image: 'imageUrl',
-  },
-];
-
-type ExtractArrElementType<T extends any[]> = T extends (infer A)[] ? A : never;
-type Exercise = ExtractArrElementType<typeof EXERCISES>;
+type Set = {
+  sets: string;
+  reps: string;
+  weight: string | null;
+};
 
 export const ConfigureWorkoutScreen = () => {
-  const [exercises, setExercises] = useState<Exercise[]>(EXERCISES);
   const navigation = useNavigation();
+  const route = useRoute<ConfigureWorkoutRouteProp>();
+  const { workoutRoutineId } = route.params;
+  const client = useApolloClient();
+  const routine = client.readFragment<WorkoutPlanRoutine>({
+    id: `WorkoutPlanRoutine:${workoutRoutineId}`,
+    fragment: routineFragment,
+    fragmentName: 'Routine',
+  });
+
+  const [exercises, setExercises] = useState<WorkoutRoutineExercise[]>(() => {
+    return (
+      (routine?.WorkoutRoutineExercises?.items ??
+        []) as WorkoutRoutineExercise[]
+    ).filter((x) => !x?._deleted);
+  });
+  const [restMinutes, setRestMinutes] = useState('');
+  const [restSeconds, setRestSeconds] = useState('');
+
+  const playWorkout = () => {
+    let restTimeInSeconds = 0;
+    const _restTimeMins = Number(restMinutes);
+    const _restTimeSecs = Number(restSeconds);
+
+    if (!Number.isNaN(_restTimeMins) && !Number.isNaN(_restTimeSecs)) {
+      restTimeInSeconds = _restTimeMins * 60 + _restTimeSecs;
+    }
+
+    const draftWorkout: DraftWorkout = {
+      status: WorkoutStatus.INPROGRESS,
+      dateFinished: null,
+      totalTimeInSeconds: null,
+      workoutWorkoutPlanRoutineId: workoutRoutineId,
+    };
+    const draftWorkoutExercises: DraftWorkoutExercise[] = exercises.map((e) => {
+      const sets: DraftSet[] = [];
+      const setsConfig: Set[] = JSON.parse(e.setsConfig);
+
+      setsConfig.forEach((config) => {
+        const setsCount = Number(config.sets);
+
+        if (setsCount > 1) {
+          Array.from({ length: setsCount }).forEach(() => {
+            sets.push({
+              reps: config.reps,
+              weight: config.weight,
+              status: 'idle',
+            });
+          });
+        } else {
+          sets.push({
+            reps: config.reps,
+            weight: config.weight,
+            status: 'idle',
+          });
+        }
+      });
+
+      return {
+        name: e?.name,
+        description: e?.description,
+        sets,
+      };
+    });
+
+    navigation.navigate('Workout', {
+      restTimeInSeconds,
+      draftWorkout,
+      draftWorkoutExercises,
+    });
+  };
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <CustomButton
-          onPress={() => {
-            navigation.navigate('Workout');
-          }}
+          onPress={playWorkout}
           style={{ marginRight: 16 }}
           icon={
             <Icon
@@ -107,14 +124,26 @@ export const ConfigureWorkoutScreen = () => {
     });
   }, []);
 
+  const handleRemoveExercise = (id: string) => {
+    if (exercises.length < 2) return;
+
+    setExercises((ex) => ex.filter((x) => x.id !== id));
+  };
+
   // @TODO: implement leave animation
-  const renderItem = ({ item, drag, isActive }: RenderItemParams<Exercise>) => {
+  const renderItem = ({
+    item,
+    drag,
+    isActive,
+  }: RenderItemParams<WorkoutRoutineExercise>) => {
     return (
       <SortableListItem
         isActive={isActive}
         onDrag={drag}
         leftSlot={
           <TouchableOpacity
+            onPress={() => handleRemoveExercise(item.id)}
+            disabled={exercises.length < 2}
             hitSlop={{ top: 20, left: 20, bottom: 20, right: 20 }}
             style={{ marginRight: 16 }}>
             <Icon name="trash" size={16} color={colors.red} />
@@ -125,6 +154,16 @@ export const ConfigureWorkoutScreen = () => {
     );
   };
 
+  const renderListHeader = useCallback(
+    () => (
+      <ListHeader
+        onRestMinutesChange={(value: string) => setRestMinutes(value)}
+        onRestSecondsChange={(value: string) => setRestSeconds(value)}
+      />
+    ),
+    [],
+  );
+
   return (
     <View style={styles.container}>
       <DraggableFlatList
@@ -133,7 +172,7 @@ export const ConfigureWorkoutScreen = () => {
         keyExtractor={(item) => String(item.id)}
         renderItem={renderItem}
         refreshing={false}
-        ListHeaderComponent={ListHeader}
+        ListHeaderComponent={renderListHeader}
         showsVerticalScrollIndicator={false}
         bounces={false}
         style={styles.list}

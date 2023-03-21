@@ -13,11 +13,14 @@ import { ActionItem } from './ActionItem/ActionItem';
 import { useNavigation } from '@react-navigation/native';
 import { openBeforeWorkoutStartModal } from '../../../../components/modals/BeforeWorkoutStartModal/BeforeWorkoutStartModal';
 import { Icon } from '../../../../components/Icon/Icon';
+import color from 'color';
 
 type RoutineToolbarProps = {
+  isPlayButtonDisabled: boolean;
   onAddExercise: () => void;
   onRenameRoutine: () => void;
   onDeleteRoutine: () => void;
+  onPlayWorkout: () => void;
 };
 
 const BUTTON_BORDER_TOP_RADIUS_CLOSED = 18;
@@ -26,9 +29,11 @@ const BUTTON_BORDER_BOTTOM_RADIUS_CLOSED = 18;
 const BUTTON_BORDER_BOTTOM_RADIUS_OPEN = 12;
 
 export const RoutineToolbar: React.FC<RoutineToolbarProps> = ({
+  isPlayButtonDisabled,
   onAddExercise,
   onRenameRoutine,
   onDeleteRoutine,
+  onPlayWorkout,
 }) => {
   const [buttonLayout, setButtonLayout] = useState<LayoutRectangle | null>(
     null,
@@ -95,8 +100,9 @@ export const RoutineToolbar: React.FC<RoutineToolbarProps> = ({
   };
 
   const handleStartWorkout = async () => {
-    await openBeforeWorkoutStartModal();
-    navigation.navigate('ConfigureWorkout');
+    onPlayWorkout();
+
+    // await openBeforeWorkoutStartModal(); @TODO return
   };
 
   return (
@@ -120,8 +126,17 @@ export const RoutineToolbar: React.FC<RoutineToolbarProps> = ({
 
         <TouchableOpacity
           style={styles.iconWrapper}
-          onPress={handleStartWorkout}>
-          <Icon name="play" color={colors.text} size={18} />
+          onPress={handleStartWorkout}
+          disabled={isPlayButtonDisabled}>
+          <Icon
+            name="play"
+            color={
+              isPlayButtonDisabled
+                ? color(colors.text).alpha(0.5).string()
+                : colors.text
+            }
+            size={18}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.iconWrapper}

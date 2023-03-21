@@ -63,6 +63,9 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   );
   const tabContainerRef = useRef<CollapsibleRef>();
   const [tabContainerKey, setTabContainerKey] = useState(0);
+  const [activeTabPosition, setActiveTabPosition] = useState<number | null>(
+    null,
+  );
 
   const forceUpdateTabContainer = () => setTabContainerKey((x) => x + 1);
 
@@ -75,6 +78,10 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   const routines = useMemo(() => {
     return selectedPlan?.WorkoutPlanRoutines?.items ?? [];
   }, [selectedPlan]);
+
+  const selectedRoutine = useMemo(() => {
+    return activeTabPosition !== null ? routines[activeTabPosition] : null;
+  }, [routines, activeTabPosition]);
 
   useEffect(() => {
     if (workoutPlans.length > 0 && !didPlansInitLoaded) {
@@ -343,6 +350,14 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     });
   };
 
+  const handlePlayWorkout = () => {
+    if (!selectedRoutine?.id) return;
+
+    navigation.navigate('ConfigureWorkout', {
+      workoutRoutineId: selectedRoutine.id,
+    });
+  };
+
   if (areWorkoutPlansLoading) return <FullscreenLoader />;
 
   if (workoutPlans.length === 0) {
@@ -410,6 +425,9 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
         }}
       />
       <Tabs.Container
+        pagerProps={{
+          onPageSelected: (e) => setActiveTabPosition(e.nativeEvent.position),
+        }}
         key={tabContainerKey}
         ref={tabContainerRef}
         revealHeaderOnScroll={true}
@@ -479,6 +497,10 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
       </Tabs.Container>
       {!hasNoRoutines && (
         <RoutineToolbar
+          isPlayButtonDisabled={
+            selectedRoutine?.WorkoutRoutineExercises?.items?.length === 0
+          }
+          onPlayWorkout={handlePlayWorkout}
           onAddExercise={handleInitiateAddExercise}
           onRenameRoutine={handleOpenRenameRoutineModal}
           onDeleteRoutine={handleOpenDeleteRoutineModal}

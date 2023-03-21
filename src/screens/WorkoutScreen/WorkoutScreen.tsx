@@ -9,14 +9,15 @@ import { Timer } from './components/Timer/Timer';
 import Portal from '../../components/Portal/Portal';
 import { BottomSheet } from '../../components/BottomSheet/BottomSheet';
 import { WorkoutSummary } from './components/WorkoutSummary/WorkoutSummary';
-
-// const tabNames = ['1', '2', '3'];
-const tabNames = ['1', '2', '3', '4', '5', '6', '7', '8'];
+import { useRoute } from '@react-navigation/native';
+import { WorkoutRouteProp } from '../../../types';
 
 export const WorkoutScreen = () => {
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   const [isWorkoutSummarySheetOpen, setIsWorkoutSummarySheetOpen] =
     useState(false);
+  const route = useRoute<WorkoutRouteProp>();
+  const { draftWorkoutExercises } = route.params;
 
   const renderHeader = () => null;
 
@@ -67,9 +68,9 @@ export const WorkoutScreen = () => {
           elevation: 0,
           shadowOpacity: 0,
         }}>
-        {tabNames.map((name) => {
+        {draftWorkoutExercises.map((exercise, index) => {
           return (
-            <Tabs.Tab name={name} key={name}>
+            <Tabs.Tab name={String(index + 1)} key={index + 1}>
               <Tabs.FlatList
                 data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
                 renderItem={({ item }) => (
@@ -80,9 +81,13 @@ export const WorkoutScreen = () => {
                 showsVerticalScrollIndicator={false}
                 ListHeaderComponent={() => (
                   <>
-                    <Text style={styles.title}>Exercise Name</Text>
+                    <Text style={styles.title}>{exercise.name}</Text>
                     {/* @TODO: edit notes */}
-                    <Text style={styles.note}>Exercise note</Text>
+                    {Boolean(exercise.description) && (
+                      <Text style={styles.note} numberOfLines={2}>
+                        {exercise.description}
+                      </Text>
+                    )}
                   </>
                 )}
               />

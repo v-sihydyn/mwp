@@ -8,6 +8,7 @@ export const exerciseFragment = gql`
     color
     setsConfig
     restTimeInSeconds
+    description
 
     createdAt
     updatedAt

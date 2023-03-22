@@ -34,7 +34,7 @@ const MuscleGroup = {
   "WEIGHTLIFTING": "WEIGHTLIFTING"
 };
 
-const { WorkoutExercise, Workout, Exercise, WorkoutRoutineExercise, WorkoutPlanRoutine, User, WorkoutPlan, DeletePlanAndRoutinesResponse } = initSchema(schema);
+const { WorkoutExercise, Workout, Exercise, WorkoutRoutineExercise, WorkoutPlanRoutine, User, WorkoutPlan, DeletePlanAndRoutinesResponse, BulkCreateWorkoutExercisesResponse } = initSchema(schema);
 
 export {
   WorkoutExercise,
@@ -47,5 +47,6 @@ export {
   WorkoutStatus,
   ExerciseEquipment,
   MuscleGroup,
-  DeletePlanAndRoutinesResponse
+  DeletePlanAndRoutinesResponse,
+  BulkCreateWorkoutExercisesResponse
 };

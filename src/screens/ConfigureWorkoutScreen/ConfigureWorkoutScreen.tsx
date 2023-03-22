@@ -14,7 +14,6 @@ import { ConfigureWorkoutRouteProp } from '../../../types';
 import { useApolloClient } from '@apollo/client';
 import { routineFragment } from '../../fragments/routineFragment';
 import {
-  Workout,
   WorkoutPlanRoutine,
   WorkoutRoutineExercise,
   WorkoutStatus,
@@ -51,7 +50,7 @@ export const ConfigureWorkoutScreen = () => {
   const [restMinutes, setRestMinutes] = useState('');
   const [restSeconds, setRestSeconds] = useState('');
 
-  const playWorkout = () => {
+  const playWorkout = async () => {
     let restTimeInSeconds = 0;
     const _restTimeMins = Number(restMinutes);
     const _restTimeSecs = Number(restSeconds);
@@ -66,36 +65,57 @@ export const ConfigureWorkoutScreen = () => {
       totalTimeInSeconds: null,
       workoutWorkoutPlanRoutineId: workoutRoutineId,
     };
-    const draftWorkoutExercises: DraftWorkoutExercise[] = exercises.map((e) => {
-      const sets: DraftSet[] = [];
-      const setsConfig: Set[] = JSON.parse(e.setsConfig);
+    const draftWorkoutExercises: DraftWorkoutExercise[] = exercises.map(
+      (e, index) => {
+        const sets: DraftSet[] = [];
+        const setsConfig: Set[] = JSON.parse(e.setsConfig);
 
-      setsConfig.forEach((config) => {
-        const setsCount = Number(config.sets);
+        setsConfig.forEach((config) => {
+          const setsCount = Number(config.sets);
 
-        if (setsCount > 1) {
-          Array.from({ length: setsCount }).forEach(() => {
+          if (setsCount > 1) {
+            Array.from({ length: setsCount }).forEach(() => {
+              sets.push({
+                reps: config.reps,
+                weight: config.weight,
+                status: 'idle',
+              });
+            });
+          } else {
             sets.push({
               reps: config.reps,
               weight: config.weight,
               status: 'idle',
             });
-          });
-        } else {
-          sets.push({
-            reps: config.reps,
-            weight: config.weight,
-            status: 'idle',
-          });
-        }
-      });
+          }
+        });
 
-      return {
-        name: e?.name,
-        description: e?.description,
-        sets,
-      };
-    });
+        return {
+          name: e?.name,
+          description: e?.description,
+          sets,
+          sortOrder: index,
+        };
+      },
+    );
+
+    // try {
+    //   const res = await bulkCreateWorkoutExercises({
+    //     variables: {
+    //       exercises: draftWorkoutExercises.map((dwe, idx) => ({
+    //         // id: idx, // @TODO remove
+    //         workoutID: '96758bb8-4120-4284-99c6-336dd086bd68',
+    //         setsConfig: JSON.stringify(dwe.sets),
+    //         sortOrder: dwe.sortOrder,
+    //         workoutExerciseWorkoutRoutineExerciseId: exercises[idx].id,
+    //       })),
+    //     },
+    //   });
+    //
+    //   console.log('success', res);
+    // } catch (e) {
+    //   console.log(JSON.stringify(e));
+    // }
 
     navigation.navigate('Workout', {
       restTimeInSeconds,

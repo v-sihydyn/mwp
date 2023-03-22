@@ -1,4 +1,6 @@
-type WorkoutExercise @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}]) {
+type WorkoutExercise
+  @model
+  @auth(rules: [{ allow: private, operations: [read] }, { allow: owner }]) {
   id: ID!
   setsConfig: AWSJSON!
   sortOrder: Int
@@ -11,16 +13,21 @@ enum WorkoutStatus {
   FINISHED
 }
 
-type Workout @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}]) {
+type Workout
+  @model
+  @auth(rules: [{ allow: private, operations: [read] }, { allow: owner }]) {
   id: ID!
   status: WorkoutStatus!
   dateFinished: AWSDateTime
   totalTimeInSeconds: Int
   WorkoutPlanRoutine: WorkoutPlanRoutine @hasOne
-  WorkoutExercises: [WorkoutExercise] @hasMany(indexName: "byWorkout", fields: ["id"])
+  WorkoutExercises: [WorkoutExercise]
+    @hasMany(indexName: "byWorkout", fields: ["id"])
 }
 
-type Exercise @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}]) {
+type Exercise
+  @model
+  @auth(rules: [{ allow: private, operations: [read] }, { allow: owner }]) {
   id: ID!
   name: String!
   muscleGroup: MuscleGroup
@@ -54,7 +61,9 @@ enum MuscleGroup {
   WEIGHTLIFTING
 }
 
-type WorkoutRoutineExercise @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}]) {
+type WorkoutRoutineExercise
+  @model
+  @auth(rules: [{ allow: private, operations: [read] }, { allow: owner }]) {
   id: ID!
   name: String!
   muscleGroup: MuscleGroup
@@ -67,35 +76,61 @@ type WorkoutRoutineExercise @model @auth(rules: [{allow: private, operations: [r
   setsConfig: AWSJSON!
 }
 
-type WorkoutPlanRoutine @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}]) {
+type WorkoutPlanRoutine
+  @model
+  @auth(rules: [{ allow: private, operations: [read] }, { allow: owner }]) {
   id: ID!
   name: String!
   sortOrder: Int
   workoutPlanID: ID! @index(name: "byWorkoutPlan")
-  WorkoutRoutineExercises: [WorkoutRoutineExercise] @hasMany(indexName: "byWorkoutPlanRoutine", fields: ["id"])
+  WorkoutRoutineExercises: [WorkoutRoutineExercise]
+    @hasMany(indexName: "byWorkoutPlanRoutine", fields: ["id"])
 }
 
-type User @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}]) {
+type User
+  @model
+  @auth(rules: [{ allow: private, operations: [read] }, { allow: owner }]) {
   id: ID!
   name: String!
   email: AWSEmail
   image: String
-  username: String @index(name: "usersByUsername", queryField: "usersByUsername")
+  username: String
+    @index(name: "usersByUsername", queryField: "usersByUsername")
   WorkoutPlans: [WorkoutPlan] @hasMany(indexName: "byUser", fields: ["id"])
 }
 
-type WorkoutPlan @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}]) {
+type WorkoutPlan
+  @model
+  @auth(rules: [{ allow: private, operations: [read] }, { allow: owner }]) {
   id: ID!
   name: String!
   userID: ID! @index(name: "byUser")
-  WorkoutPlanRoutines: [WorkoutPlanRoutine] @hasMany(indexName: "byWorkoutPlan", fields: ["id"])
+  WorkoutPlanRoutines: [WorkoutPlanRoutine]
+    @hasMany(indexName: "byWorkoutPlan", fields: ["id"])
 }
 
 type Mutation {
   deletePlanAndRoutines(planId: ID!): DeletePlanAndRoutinesResponse
-  @function(name: "editPlanAndRoutines-${env}")
+    @function(name: "editPlanAndRoutines-${env}")
+  bulkCreateWorkoutExercises(
+    exercises: [CreateWorkoutExerciseInput!]!
+  ): BulkCreateWorkoutExercisesResponse
+    @function(name: "bulkCreateWorkoutExercises-${env}")
 }
 
 type DeletePlanAndRoutinesResponse {
   id: ID!
+}
+
+type BulkCreateWorkoutExercisesResponse {
+  exercises: [WorkoutExercise!]!
+}
+
+input CreateWorkoutExerciseInput {
+  id: ID
+  setsConfig: AWSJSON!
+  sortOrder: Int
+  workoutID: ID!
+  _version: Int
+  workoutExerciseWorkoutRoutineExerciseId: ID
 }

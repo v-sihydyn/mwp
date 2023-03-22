@@ -16,6 +16,76 @@ export type CreateWorkoutExerciseInput = {
   workoutExerciseWorkoutRoutineExerciseId?: string | null,
 };
 
+export type BulkCreateWorkoutExercisesResponse = {
+  __typename: "BulkCreateWorkoutExercisesResponse",
+  exercises:  Array<WorkoutExercise >,
+};
+
+export type WorkoutExercise = {
+  __typename: "WorkoutExercise",
+  id: string,
+  setsConfig: string,
+  sortOrder?: number | null,
+  workoutID: string,
+  WorkoutRoutineExercise?: WorkoutRoutineExercise | null,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+  workoutExerciseWorkoutRoutineExerciseId?: string | null,
+  owner?: string | null,
+};
+
+export type WorkoutRoutineExercise = {
+  __typename: "WorkoutRoutineExercise",
+  id: string,
+  name: string,
+  muscleGroup?: MuscleGroup | null,
+  equipment?: ExerciseEquipment | null,
+  color?: string | null,
+  description?: string | null,
+  restTimeInSeconds?: number | null,
+  sortOrder?: number | null,
+  workoutPlanRoutineID: string,
+  setsConfig: string,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+  owner?: string | null,
+};
+
+export enum MuscleGroup {
+  BACK = "BACK",
+  BICEPS = "BICEPS",
+  CARDIO = "CARDIO",
+  CHEST = "CHEST",
+  CORE = "CORE",
+  FOREARMS = "FOREARMS",
+  FULLBODY = "FULLBODY",
+  LEGS = "LEGS",
+  NECK = "NECK",
+  SHOULDERS = "SHOULDERS",
+  TRICEPS = "TRICEPS",
+  WEIGHTLIFTING = "WEIGHTLIFTING",
+}
+
+
+export enum ExerciseEquipment {
+  BARBELL = "BARBELL",
+  BODYWEIGHT = "BODYWEIGHT",
+  DUMBBELL = "DUMBBELL",
+  EZBARBELL = "EZBARBELL",
+  KETTLEBELL = "KETTLEBELL",
+  LEVERAGEMACHINE = "LEVERAGEMACHINE",
+  SLEDMACHINE = "SLEDMACHINE",
+  SMITHMACHINE = "SMITHMACHINE",
+  WEIGHTED = "WEIGHTED",
+}
+
+
 export type ModelWorkoutExerciseConditionInput = {
   setsConfig?: ModelStringInput | null,
   sortOrder?: ModelIntInput | null,
@@ -93,71 +163,6 @@ export type ModelIDInput = {
   attributeType?: ModelAttributeTypes | null,
   size?: ModelSizeInput | null,
 };
-
-export type WorkoutExercise = {
-  __typename: "WorkoutExercise",
-  id: string,
-  setsConfig: string,
-  sortOrder?: number | null,
-  workoutID: string,
-  WorkoutRoutineExercise?: WorkoutRoutineExercise | null,
-  createdAt: string,
-  updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
-  workoutExerciseWorkoutRoutineExerciseId?: string | null,
-  owner?: string | null,
-};
-
-export type WorkoutRoutineExercise = {
-  __typename: "WorkoutRoutineExercise",
-  id: string,
-  name: string,
-  muscleGroup?: MuscleGroup | null,
-  equipment?: ExerciseEquipment | null,
-  color?: string | null,
-  description?: string | null,
-  restTimeInSeconds?: number | null,
-  sortOrder?: number | null,
-  workoutPlanRoutineID: string,
-  setsConfig: string,
-  createdAt: string,
-  updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
-  owner?: string | null,
-};
-
-export enum MuscleGroup {
-  BACK = "BACK",
-  BICEPS = "BICEPS",
-  CARDIO = "CARDIO",
-  CHEST = "CHEST",
-  CORE = "CORE",
-  FOREARMS = "FOREARMS",
-  FULLBODY = "FULLBODY",
-  LEGS = "LEGS",
-  NECK = "NECK",
-  SHOULDERS = "SHOULDERS",
-  TRICEPS = "TRICEPS",
-  WEIGHTLIFTING = "WEIGHTLIFTING",
-}
-
-
-export enum ExerciseEquipment {
-  BARBELL = "BARBELL",
-  BODYWEIGHT = "BODYWEIGHT",
-  DUMBBELL = "DUMBBELL",
-  EZBARBELL = "EZBARBELL",
-  KETTLEBELL = "KETTLEBELL",
-  LEVERAGEMACHINE = "LEVERAGEMACHINE",
-  SLEDMACHINE = "SLEDMACHINE",
-  SMITHMACHINE = "SMITHMACHINE",
-  WEIGHTED = "WEIGHTED",
-}
-
 
 export type UpdateWorkoutExerciseInput = {
   id: string,
@@ -723,6 +728,49 @@ export type DeletePlanAndRoutinesMutation = {
   deletePlanAndRoutines?:  {
     __typename: "DeletePlanAndRoutinesResponse",
     id: string,
+  } | null,
+};
+
+export type BulkCreateWorkoutExercisesMutationVariables = {
+  exercises: Array< CreateWorkoutExerciseInput >,
+};
+
+export type BulkCreateWorkoutExercisesMutation = {
+  bulkCreateWorkoutExercises?:  {
+    __typename: "BulkCreateWorkoutExercisesResponse",
+    exercises:  Array< {
+      __typename: "WorkoutExercise",
+      id: string,
+      setsConfig: string,
+      sortOrder?: number | null,
+      workoutID: string,
+      WorkoutRoutineExercise?:  {
+        __typename: "WorkoutRoutineExercise",
+        id: string,
+        name: string,
+        muscleGroup?: MuscleGroup | null,
+        equipment?: ExerciseEquipment | null,
+        color?: string | null,
+        description?: string | null,
+        restTimeInSeconds?: number | null,
+        sortOrder?: number | null,
+        workoutPlanRoutineID: string,
+        setsConfig: string,
+        createdAt: string,
+        updatedAt: string,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        owner?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      workoutExerciseWorkoutRoutineExerciseId?: string | null,
+      owner?: string | null,
+    } >,
   } | null,
 };
 

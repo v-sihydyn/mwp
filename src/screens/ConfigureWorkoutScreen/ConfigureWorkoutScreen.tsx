@@ -23,6 +23,7 @@ import {
   DraftWorkout,
   DraftWorkoutExercise,
 } from '../../types/draftWorkout';
+import { nanoid } from 'nanoid';
 
 type Set = {
   sets: string;
@@ -65,39 +66,39 @@ export const ConfigureWorkoutScreen = () => {
       totalTimeInSeconds: null,
       workoutWorkoutPlanRoutineId: workoutRoutineId,
     };
-    const draftWorkoutExercises: DraftWorkoutExercise[] = exercises.map(
-      (e, index) => {
-        const sets: DraftSet[] = [];
-        const setsConfig: Set[] = JSON.parse(e.setsConfig);
+    const draftWorkoutExercises: DraftWorkoutExercise[] = exercises.map((e) => {
+      const sets: DraftSet[] = [];
+      const setsConfig: Set[] = JSON.parse(e.setsConfig);
 
-        setsConfig.forEach((config) => {
-          const setsCount = Number(config.sets);
+      setsConfig.forEach((config) => {
+        const setsCount = Number(config.sets);
 
-          if (setsCount > 1) {
-            Array.from({ length: setsCount }).forEach(() => {
-              sets.push({
-                reps: config.reps,
-                weight: config.weight,
-                status: 'idle',
-              });
-            });
-          } else {
+        if (setsCount > 1) {
+          Array.from({ length: setsCount }).forEach(() => {
             sets.push({
+              id: nanoid(),
               reps: config.reps,
               weight: config.weight,
               status: 'idle',
             });
-          }
-        });
+          });
+        } else {
+          sets.push({
+            id: nanoid(),
+            reps: config.reps,
+            weight: config.weight,
+            status: 'idle',
+          });
+        }
+      });
 
-        return {
-          name: e?.name,
-          description: e?.description,
-          sets,
-          sortOrder: index,
-        };
-      },
-    );
+      return {
+        name: e?.name,
+        description: e?.description,
+        sets,
+        sortOrder: e.sortOrder,
+      };
+    });
 
     // try {
     //   const res = await bulkCreateWorkoutExercises({
@@ -142,7 +143,7 @@ export const ConfigureWorkoutScreen = () => {
         </CustomButton>
       ),
     });
-  }, []);
+  }, [playWorkout]);
 
   const handleRemoveExercise = (id: string) => {
     if (exercises.length < 2) return;
@@ -188,7 +189,14 @@ export const ConfigureWorkoutScreen = () => {
     <View style={styles.container}>
       <DraggableFlatList
         data={exercises}
-        onDragEnd={({ data: _data }) => setExercises(_data)}
+        onDragEnd={({ data: _data }) => {
+          setExercises(
+            _data.map((d, idx) => ({
+              ...d,
+              sortOrder: idx,
+            })),
+          );
+        }}
         keyExtractor={(item) => String(item.id)}
         renderItem={renderItem}
         refreshing={false}

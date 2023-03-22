@@ -9,6 +9,45 @@ export const deletePlanAndRoutines = /* GraphQL */ `
     }
   }
 `;
+export const bulkCreateWorkoutExercises = /* GraphQL */ `
+  mutation BulkCreateWorkoutExercises(
+    $exercises: [CreateWorkoutExerciseInput!]!
+  ) {
+    bulkCreateWorkoutExercises(exercises: $exercises) {
+      exercises {
+        id
+        setsConfig
+        sortOrder
+        workoutID
+        WorkoutRoutineExercise {
+          id
+          name
+          muscleGroup
+          equipment
+          color
+          description
+          restTimeInSeconds
+          sortOrder
+          workoutPlanRoutineID
+          setsConfig
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        workoutExerciseWorkoutRoutineExerciseId
+        owner
+      }
+    }
+  }
+`;
 export const createWorkoutExercise = /* GraphQL */ `
   mutation CreateWorkoutExercise(
     $input: CreateWorkoutExerciseInput!

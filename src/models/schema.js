@@ -839,8 +839,23 @@ export const schema = {
                     "attributes": []
                 }
             }
+        },
+        "BulkCreateWorkoutExercisesResponse": {
+            "name": "BulkCreateWorkoutExercisesResponse",
+            "fields": {
+                "exercises": {
+                    "name": "exercises",
+                    "isArray": true,
+                    "type": {
+                        "model": "WorkoutExercise"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": false
+                }
+            }
         }
     },
     "codegenVersion": "3.3.6",
-    "version": "32ed08df27864b0e917dbd48b91ebe97"
+    "version": "4297c0ca3e50cbadf6de6618f48efc02"
 };

@@ -86,6 +86,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "bulkCreateWorkoutExercises": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "editPlanAndRoutines": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -106,6 +111,22 @@
         {
           "category": "function",
           "resourceName": "MWPPostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_bulkCreateWorkoutExercises_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "bulkCreateWorkoutExercises"
+        }
+      ]
+    },
+    "AMPLIFY_function_bulkCreateWorkoutExercises_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "bulkCreateWorkoutExercises"
         }
       ]
     },

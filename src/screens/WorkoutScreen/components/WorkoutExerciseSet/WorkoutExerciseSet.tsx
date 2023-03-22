@@ -2,30 +2,37 @@ import { View, Text, StyleSheet, Alert, Pressable } from 'react-native';
 import React from 'react';
 import { colors } from '../../../../styles/colors';
 import { openEditRepsModal } from '../../../../components/modals/EditSetRepsModal/EditSetRepsModal';
+import { DraftSetStatus } from '../../../../types/draftWorkout';
+import { Icon } from '../../../../components/Icon/Icon';
 
 type WorkoutExerciseSetProps = {
   index: number;
-  reps: number;
-  weight: number;
+  reps: string;
+  weight: string;
+  status: DraftSetStatus;
+  isActive: boolean;
 };
 
 export const WorkoutExerciseSet = React.memo(
-  ({ index, reps, weight }: WorkoutExerciseSetProps) => {
-    const isActive = false;
-    const isFinished = false;
+  ({ index, reps, weight, isActive, status }: WorkoutExerciseSetProps) => {
+    const isCompleted = status === 'completed';
     const isBeforeRest = false;
-    const isSkipped = false;
+    const isSkipped = status === 'skipped';
 
-    const handleEditReps = async (currentReps: number) => {
+    const handleEditReps = async (currentReps: string) => {
+      if (isCompleted) return;
+
       const newValue = await openEditRepsModal({
-        initialValue: String(currentReps),
+        initialValue: currentReps,
       });
       Alert.alert('new value: ' + newValue);
     };
 
-    const handleEditWeight = async (currentWeight: number) => {
+    const handleEditWeight = async (currentWeight: string) => {
+      if (isCompleted) return;
+
       const newValue = await openEditRepsModal({
-        initialValue: String(currentWeight),
+        initialValue: currentWeight,
       });
       Alert.alert('new value: ' + newValue);
     };
@@ -34,8 +41,8 @@ export const WorkoutExerciseSet = React.memo(
       <View
         style={[
           styles.root,
-          isActive && styles.activeSet,
-          isFinished && styles.finishedSet,
+          isActive && !isCompleted && styles.activeSet,
+          isCompleted && !isActive && styles.finishedSet,
           isBeforeRest && styles.beforeRestSet,
           isSkipped && styles.skippedSet,
         ]}>
@@ -56,8 +63,17 @@ export const WorkoutExerciseSet = React.memo(
         </Pressable>
         <Text style={[styles.setLabel, { marginRight: 0 }]}>Kg</Text>
 
-        {/*<Icon name="check" color={colors.green} size={14} style={styles.icon} />*/}
-        {/*<Icon name="times" color={colors.red} size={14} style={styles.icon} />*/}
+        {isCompleted && !isActive && (
+          <Icon
+            name="check"
+            color={colors.green}
+            size={14}
+            style={styles.icon}
+          />
+        )}
+        {isSkipped && (
+          <Icon name="times" color={colors.red} size={14} style={styles.icon} />
+        )}
         {/*<Icon*/}
         {/*  name="stopwatch"*/}
         {/*  color={colors.text}*/}

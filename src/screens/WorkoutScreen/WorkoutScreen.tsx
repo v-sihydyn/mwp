@@ -1,7 +1,13 @@
-import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
-import { Tabs } from 'react-native-collapsible-tab-view';
+import {
+  View,
+  Text,
+  StyleSheet,
+  useWindowDimensions,
+  TextInput,
+} from 'react-native';
+import { CollapsibleRef, Tabs } from 'react-native-collapsible-tab-view';
 import { colors } from '../../styles/colors';
-import React, { useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { WorkoutExerciseSet } from './components/WorkoutExerciseSet/WorkoutExerciseSet';
 import { CustomButton } from '../../components/CustomButton/CustomButton';
 import { MaterialTabBar } from '../../components/MaterialTabBar/TabBar';
@@ -11,6 +17,9 @@ import { BottomSheet } from '../../components/BottomSheet/BottomSheet';
 import { WorkoutSummary } from './components/WorkoutSummary/WorkoutSummary';
 import { useRoute } from '@react-navigation/native';
 import { WorkoutRouteProp } from '../../../types';
+import { Icon } from '../../components/Icon/Icon';
+import { DraftSetStatus, DraftWorkoutExercise } from '../../types/draftWorkout';
+import { PagerViewProps } from 'react-native-pager-view';
 
 export const WorkoutScreen = () => {
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
@@ -18,6 +27,111 @@ export const WorkoutScreen = () => {
     useState(false);
   const route = useRoute<WorkoutRouteProp>();
   const { draftWorkoutExercises } = route.params;
+  const [exercises, setExercises] = useState(() => {
+    const result = draftWorkoutExercises
+      .slice()
+      .sort((a, b) => Number(a.sortOrder) - Number(b.sortOrder));
+
+    result[0].sets[0].status = 'inprogress';
+
+    return result;
+  });
+
+  const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
+  const [currentSetId, setCurrentSetId] = useState<string | null>(
+    exercises[0].sets[0].id,
+  );
+  const tabContainerRef = useRef<CollapsibleRef>();
+
+  const currentExercise =
+    exercises.find((_, index) => index === currentExerciseIndex) ?? null;
+  const currentSet = currentExercise?.sets?.find(
+    (set) => set.id === currentSetId,
+  );
+
+  const areAllSetsProcessed = useMemo(() => {
+    return exercises.every((e) =>
+      e.sets.every(
+        (set) => set.status === 'completed' || set.status === 'skipped',
+      ),
+    );
+  }, [exercises]);
+
+  const handleProcessSet = ({
+    exerciseIndex,
+    setId,
+    status,
+  }: {
+    exerciseIndex: number;
+    setId: string | null;
+    status: DraftSetStatus;
+  }) => {
+    const _currentExercise = exercises[exerciseIndex];
+    let currentSetIndex;
+
+    _currentExercise.sets.forEach((set, setIdx) => {
+      if (set.id === setId) {
+        set.status = status;
+        currentSetIndex = setIdx;
+      }
+    });
+
+    setExercises((ex) =>
+      ex.map((value, idx) =>
+        idx === exerciseIndex ? _currentExercise : value,
+      ),
+    );
+
+    const nextExerciseIndex = currentExerciseIndex + 1;
+
+    if (
+      currentExerciseIndex === exercises.length - 1 &&
+      currentSetIndex === _currentExercise.sets.length - 1
+    ) {
+      setCurrentSetId(null);
+      return;
+    }
+
+    if (currentSetIndex === _currentExercise.sets.length - 1) {
+      tabContainerRef?.current?.jumpToTab(String(nextExerciseIndex + 1));
+      setCurrentExerciseIndex(nextExerciseIndex);
+      const nextSetId = exercises[nextExerciseIndex].sets[0].id;
+      setCurrentSetId(nextSetId);
+      updateSetStatus(nextExerciseIndex, nextSetId, 'inprogress');
+    } else {
+      if (currentSetIndex !== undefined) {
+        const nextSetId =
+          exercises[currentExerciseIndex].sets[currentSetIndex + 1].id;
+        setCurrentSetId(nextSetId);
+        updateSetStatus(currentExerciseIndex, nextSetId, 'inprogress');
+      }
+    }
+  };
+
+  const updateSetStatus = (
+    exerciseIndex: number,
+    setId: string,
+    status: DraftSetStatus,
+  ) => {
+    const updater = (ex: DraftWorkoutExercise[]) =>
+      ex.map((exercise, exerciseIdx) =>
+        exerciseIdx === exerciseIndex
+          ? {
+              ...exercise,
+              sets: exercise.sets.map((set) =>
+                set.id === setId
+                  ? {
+                      ...set,
+                      status,
+                    }
+                  : set,
+              ),
+            }
+          : exercise,
+      );
+
+    setExercises(updater);
+  };
 
   const renderHeader = () => null;
 
@@ -59,6 +173,13 @@ export const WorkoutScreen = () => {
     <View style={styles.container}>
       <Timer />
       <Tabs.Container
+        pagerProps={
+          {
+            onPageSelected: (e) =>
+              setCurrentExerciseIndex(e.nativeEvent.position),
+          } as Omit<PagerViewProps, 'onPageScroll' | 'initialPage'>
+        }
+        ref={tabContainerRef}
         lazy={true}
         renderHeader={renderHeader}
         renderTabBar={renderTabBar}
@@ -68,13 +189,22 @@ export const WorkoutScreen = () => {
           elevation: 0,
           shadowOpacity: 0,
         }}>
-        {draftWorkoutExercises.map((exercise, index) => {
+        {exercises.map((exercise, exerciseIndex) => {
           return (
-            <Tabs.Tab name={String(index + 1)} key={index + 1}>
+            <Tabs.Tab name={String(exerciseIndex + 1)} key={exerciseIndex + 1}>
               <Tabs.FlatList
-                data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
-                renderItem={({ item }) => (
-                  <WorkoutExerciseSet index={item} reps={10} weight={20} />
+                data={exercise.sets}
+                renderItem={({ item: set, index: setIndex }) => (
+                  <WorkoutExerciseSet
+                    index={setIndex + 1}
+                    isActive={
+                      exerciseIndex === currentExerciseIndex &&
+                      set.id === currentSetId
+                    }
+                    status={set.status}
+                    reps={set.reps}
+                    weight={set.weight || ''}
+                  />
                 )}
                 contentContainerStyle={styles.exerciseWrapper}
                 bounces={false}
@@ -98,38 +228,52 @@ export const WorkoutScreen = () => {
       <View style={styles.actionBar}>
         {/* SET INFO */}
 
-        {/*<View style={styles.currentSetWrapper}>*/}
-        {/*  <CustomButton*/}
-        {/*    onPress={() => alert('Done')}*/}
-        {/*    style={{*/}
-        {/*      marginRight: 20,*/}
-        {/*      height: 40,*/}
-        {/*      width: 60,*/}
-        {/*      backgroundColor: colors.black,*/}
-        {/*    }}*/}
-        {/*    icon={<Icon name="times" color={colors.red} size={16} />}*/}
-        {/*  />*/}
-        {/*  /!* @TODO: edit reps *!/*/}
-        {/*  <TextInput*/}
-        {/*    value={'8'}*/}
-        {/*    keyboardType="numeric"*/}
-        {/*    style={styles.setInput}*/}
-        {/*  />*/}
-        {/*  <Text style={styles.setLabel}>Reps</Text>*/}
-        {/*  /!* @TODO: edit weight *!/*/}
-        {/*  <TextInput*/}
-        {/*    value={'54.3'}*/}
-        {/*    keyboardType="numeric"*/}
-        {/*    style={styles.setInput}*/}
-        {/*  />*/}
-        {/*  <Text style={[styles.setLabel, { marginRight: 0 }]}>Kg</Text>*/}
+        {currentSet?.status === 'inprogress' && (
+          <View style={styles.currentSetWrapper}>
+            <CustomButton
+              onPress={() =>
+                handleProcessSet({
+                  exerciseIndex: currentExerciseIndex,
+                  setId: currentSetId,
+                  status: 'skipped',
+                })
+              }
+              style={{
+                marginRight: 20,
+                height: 40,
+                width: 60,
+                backgroundColor: colors.black,
+              }}
+              icon={<Icon name="times" color={colors.red} size={16} />}
+            />
+            {/* @TODO: edit reps */}
+            <TextInput
+              value={currentSet?.reps ?? ''}
+              keyboardType="numeric"
+              style={styles.setInput}
+            />
+            <Text style={styles.setLabel}>Reps</Text>
+            {/* @TODO: edit weight */}
+            <TextInput
+              value={currentSet?.weight ?? ''}
+              keyboardType="numeric"
+              style={styles.setInput}
+            />
+            <Text style={[styles.setLabel, { marginRight: 0 }]}>Kg</Text>
 
-        {/*  <CustomButton*/}
-        {/*    onPress={() => alert('Done')}*/}
-        {/*    style={{ marginLeft: 'auto', height: 40, width: 60 }}*/}
-        {/*    icon={<Icon name="check" color={colors.text} size={16} />}*/}
-        {/*  />*/}
-        {/*</View>*/}
+            <CustomButton
+              onPress={() =>
+                handleProcessSet({
+                  exerciseIndex: currentExerciseIndex,
+                  setId: currentSetId,
+                  status: 'completed',
+                })
+              }
+              style={{ marginLeft: 'auto', height: 40, width: 60 }}
+              icon={<Icon name="check" color={colors.text} size={16} />}
+            />
+          </View>
+        )}
 
         {/* SKIP REST BUTTON */}
 
@@ -150,11 +294,13 @@ export const WorkoutScreen = () => {
 
         {/* FINISH BUTTON */}
 
-        <CustomButton
-          style={{ backgroundColor: colors.green, height: '100%' }}
-          onPress={() => setIsWorkoutSummarySheetOpen(true)}>
-          <Text style={{ fontSize: 16 }}>Finish</Text>
-        </CustomButton>
+        {areAllSetsProcessed && (
+          <CustomButton
+            style={{ backgroundColor: colors.green, height: '100%' }}
+            onPress={() => setIsWorkoutSummarySheetOpen(true)}>
+            <Text style={{ fontSize: 16 }}>Finish</Text>
+          </CustomButton>
+        )}
       </View>
 
       <Portal>

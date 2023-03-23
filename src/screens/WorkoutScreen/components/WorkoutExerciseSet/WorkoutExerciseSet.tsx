@@ -16,7 +16,7 @@ type WorkoutExerciseSetProps = {
 export const WorkoutExerciseSet = React.memo(
   ({ index, reps, weight, isActive, status }: WorkoutExerciseSetProps) => {
     const isCompleted = status === 'completed';
-    const isBeforeRest = false;
+    const isRest = status === 'rest';
     const isSkipped = status === 'skipped';
 
     const handleEditReps = async (currentReps: string) => {
@@ -43,7 +43,7 @@ export const WorkoutExerciseSet = React.memo(
           styles.root,
           isActive && !isCompleted && styles.activeSet,
           isCompleted && !isActive && styles.finishedSet,
-          isBeforeRest && styles.beforeRestSet,
+          isRest && styles.restSet,
           isSkipped && styles.skippedSet,
         ]}>
         <View style={styles.counter}>
@@ -74,12 +74,14 @@ export const WorkoutExerciseSet = React.memo(
         {isSkipped && (
           <Icon name="times" color={colors.red} size={14} style={styles.icon} />
         )}
-        {/*<Icon*/}
-        {/*  name="stopwatch"*/}
-        {/*  color={colors.text}*/}
-        {/*  size={14}*/}
-        {/*  style={styles.icon}*/}
-        {/*/>*/}
+        {isRest && (
+          <Icon
+            name="stopwatch"
+            color={colors.text}
+            size={14}
+            style={styles.icon}
+          />
+        )}
       </View>
     );
   },
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
   finishedSet: {
     backgroundColor: colors.surface2,
   },
-  beforeRestSet: {
+  restSet: {
     backgroundColor: colors.lime,
   },
   skippedSet: {

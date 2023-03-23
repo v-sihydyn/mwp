@@ -3,11 +3,14 @@ import { colors } from '../../../../styles/colors';
 import { MotiView } from 'moti';
 import { Easing } from 'react-native-reanimated';
 
-type TimerProps = {};
+type TimerProps = {
+  displayTime: string;
+  type: 'exercise' | 'rest';
+};
 
 const MIN_RADIUS = 56;
 
-export const Timer = (props: TimerProps) => {
+export const Timer = ({ displayTime, type }: TimerProps) => {
   return (
     <View style={styles.root}>
       <View style={[styles.dot, styles.center]}>
@@ -23,7 +26,9 @@ export const Timer = (props: TimerProps) => {
           style={[
             StyleSheet.absoluteFillObject,
             styles.dot,
-            { backgroundColor: colors.lime },
+            {
+              backgroundColor: type === 'rest' ? colors.lime : colors.surface2,
+            },
             styles.shadow,
           ]}
         />
@@ -35,7 +40,7 @@ export const Timer = (props: TimerProps) => {
             { backgroundColor: colors.black, shadowColor: colors.black },
           ]}
         />
-        <Text style={styles.text}>01:50</Text>
+        <Text style={styles.text}>{displayTime}</Text>
       </View>
     </View>
   );

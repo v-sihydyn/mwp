@@ -13,6 +13,7 @@ export type DraftWorkoutExercise = {
   description?: string | null;
   sets: DraftSet[];
   sortOrder?: number | null;
+  restTimeInSeconds: number;
 };
 
 export type DraftSetStatus =

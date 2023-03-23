@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { CollapsibleRef, Tabs } from 'react-native-collapsible-tab-view';
 import { colors } from '../../styles/colors';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { WorkoutExerciseSet } from './components/WorkoutExerciseSet/WorkoutExerciseSet';
 import { CustomButton } from '../../components/CustomButton/CustomButton';
 import { MaterialTabBar } from '../../components/MaterialTabBar/TabBar';
@@ -20,13 +20,20 @@ import { WorkoutRouteProp } from '../../../types';
 import { Icon } from '../../components/Icon/Icon';
 import { DraftSetStatus, DraftWorkoutExercise } from '../../types/draftWorkout';
 import { PagerViewProps } from 'react-native-pager-view';
+import { useTimer } from 'use-timer';
+import { formatTime } from '../../utils/formatTime';
+
+const MILISECOND = 1000;
 
 export const WorkoutScreen = () => {
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   const [isWorkoutSummarySheetOpen, setIsWorkoutSummarySheetOpen] =
     useState(false);
   const route = useRoute<WorkoutRouteProp>();
-  const { draftWorkoutExercises } = route.params;
+  const {
+    draftWorkoutExercises,
+    restTimeInSeconds: restTimeBetweenExercisesInSeconds,
+  } = route.params;
   const [exercises, setExercises] = useState(() => {
     const result = draftWorkoutExercises
       .slice()
@@ -36,12 +43,23 @@ export const WorkoutScreen = () => {
 
     return result;
   });
+  const [totalTimeInSeconds, setTotalTimeInSeconds] = useState(0);
+  const exerciseTimer = useTimer();
+  const restTimer = useTimer({
+    timerType: 'DECREMENTAL',
+    endTime: 0,
+  });
+  const restTimeoutId = useRef<NodeJS.Timeout | null>(null);
 
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const [currentSetId, setCurrentSetId] = useState<string | null>(
     exercises[0].sets[0].id,
   );
   const tabContainerRef = useRef<CollapsibleRef>();
+
+  useEffect(() => {
+    exerciseTimer.start();
+  }, []);
 
   const currentExercise =
     exercises.find((_, index) => index === currentExerciseIndex) ?? null;
@@ -82,29 +100,126 @@ export const WorkoutScreen = () => {
       ),
     );
 
+    setTotalTimeInSeconds((time) => time + exerciseTimer.time);
+    exerciseTimer.reset();
+
     const nextExerciseIndex = currentExerciseIndex + 1;
 
-    if (
+    const isLastExerciseAndLastSet =
       currentExerciseIndex === exercises.length - 1 &&
-      currentSetIndex === _currentExercise.sets.length - 1
-    ) {
-      setCurrentSetId(null);
+      currentSetIndex === _currentExercise.sets.length - 1;
+    const isLastSetOfNotLastExercise =
+      currentExerciseIndex < exercises.length - 1 &&
+      currentSetIndex === _currentExercise.sets.length - 1;
+
+    if (isLastExerciseAndLastSet) {
+      processLastSet();
       return;
     }
 
-    if (currentSetIndex === _currentExercise.sets.length - 1) {
-      tabContainerRef?.current?.jumpToTab(String(nextExerciseIndex + 1));
-      setCurrentExerciseIndex(nextExerciseIndex);
-      const nextSetId = exercises[nextExerciseIndex].sets[0].id;
-      setCurrentSetId(nextSetId);
-      updateSetStatus(nextExerciseIndex, nextSetId, 'inprogress');
+    if (isLastSetOfNotLastExercise) {
+      goToNextExercise({ nextExerciseIndex, currentStatus: status });
     } else {
       if (currentSetIndex !== undefined) {
-        const nextSetId =
-          exercises[currentExerciseIndex].sets[currentSetIndex + 1].id;
-        setCurrentSetId(nextSetId);
-        updateSetStatus(currentExerciseIndex, nextSetId, 'inprogress');
+        goToNextSet({ currentSetIndex, currentStatus: status });
       }
+    }
+  };
+
+  const processLastSet = () => {
+    setCurrentSetId(null);
+  };
+
+  const goToNextExercise = ({
+    nextExerciseIndex,
+    currentStatus,
+  }: {
+    nextExerciseIndex: number;
+    currentStatus: DraftSetStatus;
+  }) => {
+    tabContainerRef?.current?.jumpToTab(String(nextExerciseIndex + 1));
+    setCurrentExerciseIndex(nextExerciseIndex);
+    const nextSetId = exercises[nextExerciseIndex].sets[0].id;
+    setCurrentSetId(nextSetId);
+
+    if (restTimeBetweenExercisesInSeconds && currentStatus === 'completed') {
+      updateSetStatus(nextExerciseIndex, nextSetId, 'rest');
+      restTimer.start();
+      restTimer.advanceTime(-restTimeBetweenExercisesInSeconds);
+
+      if (currentExercise) {
+        restTimeoutId.current = setTimeout(() => {
+          updateSetStatus(nextExerciseIndex, nextSetId, 'inprogress');
+          exerciseTimer.start();
+          // if (currentSetId) {
+          //   updateSetStatus(currentExerciseIndex, currentSetId, 'completed');
+          // }
+        }, restTimeBetweenExercisesInSeconds * MILISECOND);
+      }
+    } else {
+      updateSetStatus(nextExerciseIndex, nextSetId, 'inprogress');
+      exerciseTimer.start();
+    }
+  };
+
+  const goToNextSet = ({
+    currentSetIndex,
+    currentStatus,
+  }: {
+    currentSetIndex: number;
+    currentStatus: DraftSetStatus;
+  }) => {
+    const nextSetId =
+      exercises[currentExerciseIndex].sets[currentSetIndex + 1].id;
+    setCurrentSetId(nextSetId);
+
+    if (currentExercise?.restTimeInSeconds && currentStatus === 'completed') {
+      updateSetStatus(currentExerciseIndex, nextSetId, 'rest');
+
+      restTimer.start();
+      restTimer.advanceTime(-currentExercise.restTimeInSeconds);
+
+      restTimeoutId.current = setTimeout(() => {
+        updateSetStatus(currentExerciseIndex, nextSetId, 'inprogress');
+        exerciseTimer.start();
+        // if (currentSetId) {
+        //   updateSetStatus(currentExerciseIndex, currentSetId, 'completed');
+        // }
+      }, currentExercise.restTimeInSeconds * MILISECOND);
+    } else {
+      updateSetStatus(currentExerciseIndex, nextSetId, 'inprogress');
+      exerciseTimer.start();
+    }
+  };
+
+  const skipRest = () => {
+    const _currentExercise = exercises[currentExerciseIndex];
+    const currentSetIndex = _currentExercise.sets.findIndex(
+      (set) => set.id === currentSetId,
+    );
+    const isLastSet = currentSetIndex === _currentExercise.sets.length - 1;
+    const isFirstSet = currentSetIndex === 0;
+
+    if (isLastSet && currentExercise?.restTimeInSeconds) {
+      processSkip(currentExercise.restTimeInSeconds);
+    } else if (isFirstSet && restTimeBetweenExercisesInSeconds) {
+      processSkip(restTimeBetweenExercisesInSeconds);
+    }
+
+    exerciseTimer.start();
+  };
+
+  const processSkip = (restTime: number) => {
+    setTotalTimeInSeconds((time) => time + (restTime - restTimer.time));
+    restTimer.reset();
+
+    if (currentSetId) {
+      updateSetStatus(currentExerciseIndex, currentSetId, 'inprogress');
+    }
+
+    if (restTimeoutId.current) {
+      clearTimeout(restTimeoutId.current);
+      restTimeoutId.current = null;
     }
   };
 
@@ -169,9 +284,22 @@ export const WorkoutScreen = () => {
     />
   );
 
+  const isSetInProgress = currentSet?.status === 'inprogress';
+  const isSetIdle = currentSet?.status === 'idle';
+  const isSetCompleted = currentSet?.status === 'completed';
+
+  const isExercise = isSetInProgress || isSetIdle || isSetCompleted;
+  const isSetRest = currentSet?.status === 'rest';
+
   return (
     <View style={styles.container}>
-      <Timer />
+      {areAllSetsProcessed && <Text style={styles.mainTitle}>Finished</Text>}
+      {isExercise && (
+        <Timer displayTime={formatTime(exerciseTimer.time)} type="exercise" />
+      )}
+      {isSetRest && (
+        <Timer displayTime={formatTime(restTimer.time)} type="rest" />
+      )}
       <Tabs.Container
         pagerProps={
           {
@@ -277,20 +405,34 @@ export const WorkoutScreen = () => {
 
         {/* SKIP REST BUTTON */}
 
-        {/*<CustomButton*/}
-        {/*  style={{ backgroundColor: colors.black, height: '100%' }}*/}
-        {/*  onPress={() => alert('1')}*/}
-        {/*  icon={<Icon name="forward" color={colors.lime} size={16} />}>*/}
-        {/*  <Text style={{ fontSize: 16 }}>Skip Rest</Text>*/}
-        {/*</CustomButton>*/}
+        {isSetRest && (
+          <CustomButton
+            style={{ backgroundColor: colors.black, height: '100%' }}
+            onPress={() => skipRest()}
+            icon={<Icon name="forward" color={colors.lime} size={16} />}>
+            <Text style={{ fontSize: 16 }}>Skip Rest</Text>
+          </CustomButton>
+        )}
 
         {/* PLAY EXERCISE BUTTON */}
 
-        {/*<CustomButton*/}
-        {/*  style={{ backgroundColor: colors.green, height: '100%' }}*/}
-        {/*  onPress={() => alert('1')}>*/}
-        {/*  <Text style={{ fontSize: 16 }}>Play this exercise</Text>*/}
-        {/*</CustomButton>*/}
+        {isSetIdle && (
+          <CustomButton
+            style={{ backgroundColor: colors.green, height: '100%' }}
+            onPress={() => {
+              if (currentSetId) {
+                updateSetStatus(
+                  currentExerciseIndex,
+                  currentSetId,
+                  'inprogress',
+                );
+
+                exerciseTimer.start();
+              }
+            }}>
+            <Text style={{ fontSize: 16 }}>Play this exercise</Text>
+          </CustomButton>
+        )}
 
         {/* FINISH BUTTON */}
 
@@ -354,9 +496,16 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   //
-  title: {
+  mainTitle: {
     color: colors.text,
     fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  title: {
+    color: colors.text,
+    fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 12,
   },

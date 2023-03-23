@@ -93,10 +93,11 @@ export const ConfigureWorkoutScreen = () => {
       });
 
       return {
-        name: e?.name,
-        description: e?.description,
+        name: e.name,
+        description: e.description,
         sets,
         sortOrder: e.sortOrder,
+        restTimeInSeconds: e.restTimeInSeconds ?? 0,
       };
     });
 

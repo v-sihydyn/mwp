@@ -40,6 +40,8 @@ export type MaterialTabItemProps<T extends TabName> = TabItemProps<T> & {
    */
   inactiveColor?: string;
   inactiveBgColor?: string;
+
+  externalIsActive?: boolean;
 } & Omit<PressableProps, 'onPress' | 'children'>;
 
 export type MaterialTabBarProps<N extends TabName> = TabBarProps<N> & {

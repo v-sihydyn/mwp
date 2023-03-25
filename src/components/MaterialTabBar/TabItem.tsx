@@ -37,6 +37,7 @@ export const MaterialTabItem = <T extends TabName = string>(
     inactiveOpacity = 1,
     pressColor = '#DDDDDD',
     pressOpacity = Platform.OS === 'ios' ? 0.2 : 1,
+    externalIsActive,
     ...rest
   } = props;
 
@@ -79,6 +80,13 @@ export const MaterialTabItem = <T extends TabName = string>(
       [inactiveBgColor, activeBgColor],
     ),
   }));
+  const labelBgColorStyle = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(
+      Number(externalIsActive) || isActive.value,
+      [0, 1],
+      [inactiveBgColor, activeBgColor],
+    ),
+  }));
 
   return (
     <>
@@ -105,8 +113,7 @@ export const MaterialTabItem = <T extends TabName = string>(
           color: pressColor,
         }}
         {...rest}>
-        <Animated.View
-          style={[styles.item, tabBgColorStyle, style, tabBgColorStyle]}>
+        <Animated.View style={[styles.item, labelBgColorStyle, style]}>
           {renderedLabel}
         </Animated.View>
       </Pressable>

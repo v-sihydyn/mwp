@@ -132,7 +132,7 @@ export const EditRoutineExerciseScreen = () => {
       });
     } catch (e) {
       Toast.show({
-        title: 'Failed to create an exercise',
+        title: 'Failed to update an exercise',
         description: (e as Error).message,
         duration: 3000,
         backgroundColor: colors.red,

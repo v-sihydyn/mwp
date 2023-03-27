@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet, Alert, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import React from 'react';
 import { colors } from '../../../../styles/colors';
 import { openEditRepsModal } from '../../../../components/modals/EditSetRepsModal/EditSetRepsModal';
 import { DraftSetStatus } from '../../../../types/draftWorkout';
 import { Icon } from '../../../../components/Icon/Icon';
+import { openEditWeightModal } from '../../../../components/modals/EditSetWeightModal/EditSetWeightModal';
 
 type WorkoutExerciseSetProps = {
   index: number;
@@ -11,30 +12,46 @@ type WorkoutExerciseSetProps = {
   weight: string;
   status: DraftSetStatus;
   isActive: boolean;
+  onUpdateReps: (value: string) => void;
+  onUpdateWeight: (value: string) => void;
 };
 
 export const WorkoutExerciseSet = React.memo(
-  ({ index, reps, weight, isActive, status }: WorkoutExerciseSetProps) => {
+  ({
+    index,
+    reps,
+    weight,
+    isActive,
+    status,
+    onUpdateReps,
+    onUpdateWeight,
+  }: WorkoutExerciseSetProps) => {
     const isCompleted = status === 'completed';
     const isRest = status === 'rest';
     const isSkipped = status === 'skipped';
 
     const handleEditReps = async (currentReps: string) => {
-      if (isCompleted) return;
+      if (isSkipped) return;
 
-      const newValue = await openEditRepsModal({
+      const newReps = await openEditRepsModal({
         initialValue: currentReps,
-      });
-      Alert.alert('new value: ' + newValue);
+      }).catch(() => {});
+
+      if (typeof newReps === 'string' && newReps.length > 0) {
+        onUpdateReps(newReps);
+      }
     };
 
     const handleEditWeight = async (currentWeight: string) => {
-      if (isCompleted) return;
+      if (isSkipped) return;
 
-      const newValue = await openEditRepsModal({
+      const newWeight = await openEditWeightModal({
         initialValue: currentWeight,
-      });
-      Alert.alert('new value: ' + newValue);
+      }).catch(() => {});
+
+      if (typeof newWeight === 'string' && newWeight.length > 0) {
+        onUpdateWeight(newWeight);
+      }
     };
 
     return (

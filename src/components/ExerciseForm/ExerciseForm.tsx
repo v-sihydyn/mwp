@@ -53,7 +53,6 @@ export const ExerciseForm = () => {
     if (!canSetRestTime) {
       setValue('restTimeMins', null);
       setValue('restTimeSecs', null);
-      // @TODO edit
     }
   }, [canSetRestTime]);
 

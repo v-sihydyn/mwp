@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  useWindowDimensions,
-  TextInput,
-} from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { CollapsibleRef, Tabs } from 'react-native-collapsible-tab-view';
 import { colors } from '../../styles/colors';
 import React, { useMemo, useRef, useState } from 'react';
@@ -18,20 +12,18 @@ import { WorkoutSummary } from './components/WorkoutSummary/WorkoutSummary';
 import { useRoute } from '@react-navigation/native';
 import { WorkoutRouteProp } from '../../../types';
 import { Icon } from '../../components/Icon/Icon';
-import { DraftSetStatus, DraftWorkoutExercise } from '../../types/draftWorkout';
+import {
+  DraftSet,
+  DraftSetStatus,
+  DraftWorkoutExercise,
+} from '../../types/draftWorkout';
 import { PagerViewProps } from 'react-native-pager-view';
 import { useTimer } from 'use-timer';
 import { formatTime } from '../../utils/formatTime';
 import { MaterialTabItem } from '../../components/MaterialTabBar/TabItem';
+import { CurrentSetToolbar } from './components/CurrentSetToolbar/CurrentSetToolbar';
 
 const MILISECOND = 1000;
-
-const getAreAllSetsProcessed = (exercises: DraftWorkoutExercise[]) =>
-  exercises.every((e) =>
-    e.sets.every(
-      (set) => set.status === 'completed' || set.status === 'skipped',
-    ),
-  );
 
 type PlayerState = 'playing' | 'set-rest' | 'exercise-rest' | 'finished';
 
@@ -300,12 +292,24 @@ export const WorkoutScreen = () => {
     }
   };
 
+  const handlePlayExercise = () => {
+    restTimer.reset();
+    if (restTimeoutId.current) {
+      clearTimeout(restTimeoutId.current);
+      restTimeoutId.current = null;
+    }
+
+    goToSpecificExercise({
+      currentExerciseIndex: displayedExerciseIndex,
+    });
+  };
+
   const updateSetStatus = (
     exerciseIndex: number,
     setId: string,
     status: DraftSetStatus,
   ) => {
-    const updater = (ex: DraftWorkoutExercise[]) =>
+    setExercises((ex: DraftWorkoutExercise[]) =>
       ex.map((exercise, exerciseIdx) =>
         exerciseIdx === exerciseIndex
           ? {
@@ -320,9 +324,33 @@ export const WorkoutScreen = () => {
               ),
             }
           : exercise,
-      );
+      ),
+    );
+  };
 
-    setExercises(updater);
+  const handleUpdateSetProperty = (
+    exerciseIndex: number,
+    setId: string,
+    property: keyof DraftSet,
+    value: string,
+  ) => {
+    setExercises((ex: DraftWorkoutExercise[]) =>
+      ex.map((exercise, exerciseIdx) =>
+        exerciseIdx === exerciseIndex
+          ? {
+              ...exercise,
+              sets: exercise.sets.map((set) =>
+                set.id === setId
+                  ? {
+                      ...set,
+                      [property]: value,
+                    }
+                  : set,
+              ),
+            }
+          : exercise,
+      ),
+    );
   };
 
   const renderHeader = () => null;
@@ -424,6 +452,22 @@ export const WorkoutScreen = () => {
                     status={set.status}
                     reps={set.reps}
                     weight={set.weight || ''}
+                    onUpdateReps={(value: string) => {
+                      handleUpdateSetProperty(
+                        exerciseIndex,
+                        set.id,
+                        'reps',
+                        value,
+                      );
+                    }}
+                    onUpdateWeight={(value: string) => {
+                      handleUpdateSetProperty(
+                        exerciseIndex,
+                        set.id,
+                        'weight',
+                        value,
+                      );
+                    }}
                   />
                 )}
                 contentContainerStyle={styles.exerciseWrapper}
@@ -446,53 +490,41 @@ export const WorkoutScreen = () => {
         })}
       </Tabs.Container>
       <View style={styles.actionBar}>
-        {/* SET INFO */}
-
+        {/* SET TOOLBAR */}
         {isSetInProgress && doesCurrentSetBelongToDisplayedExercise && (
-          <View style={styles.currentSetWrapper}>
-            <CustomButton
-              onPress={() =>
-                handleProcessSet({
-                  exerciseIndex: displayedExerciseIndex,
-                  setId: currentSetId,
-                  status: 'skipped',
-                })
-              }
-              style={{
-                marginRight: 'auto',
-                height: 40,
-                width: 60,
-                backgroundColor: colors.black,
-              }}
-              icon={<Icon name="times" color={colors.red} size={16} />}
-            />
-            {/* @TODO: edit reps */}
-            <TextInput
-              value={currentSet?.reps ?? ''}
-              keyboardType="numeric"
-              style={styles.setInput}
-            />
-            <Text style={styles.setLabel}>Reps</Text>
-            {/* @TODO: edit weight */}
-            <TextInput
-              value={currentSet?.weight ?? ''}
-              keyboardType="numeric"
-              style={styles.setInput}
-            />
-            <Text style={[styles.setLabel, { marginRight: 0 }]}>Kg</Text>
-
-            <CustomButton
-              onPress={() =>
-                handleProcessSet({
-                  exerciseIndex: displayedExerciseIndex,
-                  setId: currentSetId,
-                  status: 'completed',
-                })
-              }
-              style={{ marginLeft: 'auto', height: 40, width: 60 }}
-              icon={<Icon name="check" color={colors.text} size={16} />}
-            />
-          </View>
+          <CurrentSetToolbar
+            currentSet={currentSet}
+            onSkip={() =>
+              handleProcessSet({
+                exerciseIndex: displayedExerciseIndex,
+                setId: currentSetId,
+                status: 'skipped',
+              })
+            }
+            onComplete={() =>
+              handleProcessSet({
+                exerciseIndex: displayedExerciseIndex,
+                setId: currentSetId,
+                status: 'completed',
+              })
+            }
+            onUpdateReps={(value: string) => {
+              handleUpdateSetProperty(
+                displayedExerciseIndex,
+                currentSet.id,
+                'reps',
+                value,
+              );
+            }}
+            onUpdateWeight={(value: string) => {
+              handleUpdateSetProperty(
+                displayedExerciseIndex,
+                currentSet.id,
+                'weight',
+                value,
+              );
+            }}
+          />
         )}
 
         {/* SKIP REST BUTTON */}
@@ -512,17 +544,7 @@ export const WorkoutScreen = () => {
           doesDisplayedExerciseHavePendingSets && (
             <CustomButton
               style={{ backgroundColor: colors.green, height: '100%' }}
-              onPress={() => {
-                restTimer.reset();
-                if (restTimeoutId.current) {
-                  clearTimeout(restTimeoutId.current);
-                  restTimeoutId.current = null;
-                }
-
-                goToSpecificExercise({
-                  currentExerciseIndex: displayedExerciseIndex,
-                });
-              }}>
+              onPress={handlePlayExercise}>
               <Text style={{ fontSize: 16 }}>Play this exercise</Text>
             </CustomButton>
           )}
@@ -609,6 +631,13 @@ const getAreAllSetsCompletedInExercise = (exercise: DraftWorkoutExercise) => {
   );
 };
 
+const getAreAllSetsProcessed = (exercises: DraftWorkoutExercise[]) =>
+  exercises.every((e) =>
+    e.sets.every(
+      (set) => set.status === 'completed' || set.status === 'skipped',
+    ),
+  );
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.page,
@@ -616,7 +645,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     position: 'relative',
   },
-  //
   mainTitle: {
     color: colors.text,
     fontSize: 24,
@@ -639,8 +667,6 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 20,
   },
-
-  //
   actionBar: {
     paddingHorizontal: 20,
     paddingVertical: 12,
@@ -648,11 +674,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#181a1c',
     width: '100%',
     height: 70,
-  },
-  currentSetWrapper: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   setInput: {
     backgroundColor: colors.text,
@@ -664,11 +685,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginRight: 8,
-  },
-  setLabel: {
-    color: '#707172',
-    fontSize: 16,
-    marginRight: 25,
   },
   button: {
     paddingVertical: 14,

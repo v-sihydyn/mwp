@@ -54,4 +54,4 @@ export const EditSetRepsModal = ({
   );
 };
 
-export const openEditRepsModal = create(EditSetRepsModal);
+export const openEditRepsModal = create<Props, string>(EditSetRepsModal);

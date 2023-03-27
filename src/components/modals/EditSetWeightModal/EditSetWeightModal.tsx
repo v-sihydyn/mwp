@@ -18,7 +18,7 @@ export const EditSetWeightModal = ({
   const [value, setValue] = useState(initialValue);
 
   return (
-    <NBModal isOpen={isOpen} onClose={() => {}}>
+    <NBModal isOpen={isOpen} onClose={() => onReject()}>
       <NBModal.Content backgroundColor={colors.page}>
         <NBModal.Header
           backgroundColor={colors.page}
@@ -40,7 +40,7 @@ export const EditSetWeightModal = ({
           borderTopWidth={0}>
           <TouchableOpacity
             style={[modalStyles.modalButton, { marginRight: 40 }]}
-            onPress={() => {}}>
+            onPress={() => onReject()}>
             <Text style={modalStyles.modalButtonText}>Cancel</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -54,4 +54,4 @@ export const EditSetWeightModal = ({
   );
 };
 
-export const openEditWeightModal = create(EditSetWeightModal);
+export const openEditWeightModal = create<Props, string>(EditSetWeightModal);

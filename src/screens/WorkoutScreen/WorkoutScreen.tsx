@@ -24,6 +24,8 @@ import groupBy from 'lodash.groupby';
 import sumBy from 'lodash.sumby';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const ONE_HOUR = 3600;
+
 export const WorkoutScreen = () => {
   const navigation = useNavigation();
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
@@ -202,7 +204,11 @@ export const WorkoutScreen = () => {
                 { backgroundColor: colors.black, shadowColor: colors.black },
               ]}
             />
-            <Text style={styles.timerText}>
+            <Text
+              style={[
+                styles.timerText,
+                exerciseTimer.time >= ONE_HOUR && { fontSize: 12 },
+              ]}>
               {formatTime(exerciseTimer.time)}
             </Text>
           </View>

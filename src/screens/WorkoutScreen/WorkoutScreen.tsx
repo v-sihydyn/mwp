@@ -393,6 +393,7 @@ export const WorkoutScreen = () => {
               isDisabled={isSavingWorkout}
               isLoadingText="Saving..."
               _text={{ fontSize: 16 }}
+              _loading={{ opacity: 1 }}
               backgroundColor={colors.green}
               style={[
                 styles.button,

@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   DraftSet,
   DraftSetStatus,
@@ -6,13 +6,14 @@ import {
 } from '../../../types/draftWorkout';
 import { useTimer } from 'use-timer';
 import { CollapsibleRef } from 'react-native-collapsible-tab-view';
+import { AppState, AppStateStatus } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import dayjs from 'dayjs';
 
 type WorkoutPlayerConfig = {
   draftWorkoutExercises: DraftWorkoutExercise[];
   restTimeBetweenExercisesInSeconds: number;
 };
-
-const MILISECOND = 1000;
 
 type PlayerState = 'playing' | 'set-rest' | 'exercise-rest' | 'finished';
 
@@ -35,12 +36,17 @@ export const useWorkoutPlayer = ({
   const exerciseTimer = useTimer({
     autostart: true,
   });
+  const restTimeOverCb = useRef<() => void | null>(null);
   const restTimer = useTimer({
     timerType: 'DECREMENTAL',
     endTime: 0,
+    onTimeOver: () => {
+      if (restTimeOverCb.current) {
+        restTimeOverCb.current();
+      }
+    },
   });
-
-  const restTimeoutId = useRef<NodeJS.Timeout | null>(null);
+  const appState = useRef<AppStateStatus>(AppState.currentState);
 
   const [displayedExerciseIndex, setDisplayedExerciseIndex] = useState(0);
   const [currentSetId, setCurrentSetId] = useState<string | null>(
@@ -62,6 +68,84 @@ export const useWorkoutPlayer = ({
       }
     }
   }, [currentSetId, exercises]);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener(
+      'change',
+      handleAppStateChange,
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }, [
+    appState.current,
+    playerState,
+    restTimer.time,
+    displayedExercise?.restTimeInSeconds,
+  ]);
+
+  const handleAppStateChange = async (nextAppState: AppStateStatus) => {
+    if (
+      nextAppState.match(/inactive|background/) &&
+      appState.current === 'active'
+    ) {
+      await recordStartTime();
+    }
+
+    if (
+      appState.current.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
+      const elapsedSeconds = await getElapsedTime();
+
+      if (elapsedSeconds && elapsedSeconds > 0) {
+        if (playerState === 'playing') {
+          exerciseTimer.advanceTime(elapsedSeconds);
+        } else if (
+          playerState === 'exercise-rest' ||
+          playerState === 'set-rest'
+        ) {
+          const restTime =
+            playerState === 'exercise-rest'
+              ? restTimeBetweenExercisesInSeconds
+              : displayedExercise!.restTimeInSeconds;
+
+          if (elapsedSeconds < restTime) {
+            restTimer.advanceTime(elapsedSeconds);
+          } else {
+            restTimer.reset();
+            if (restTimeOverCb.current) {
+              restTimeOverCb.current();
+            }
+          }
+        }
+      }
+    }
+
+    appState.current = nextAppState;
+  };
+
+  const recordStartTime = async () => {
+    try {
+      const now = Date.now();
+      await AsyncStorage.setItem('workoutPlayerCurrentTime', String(now));
+    } catch (err) {
+      // TODO: handle errors from setItem properly
+      console.log(err);
+    }
+  };
+
+  const getElapsedTime = async () => {
+    try {
+      const startTime = await AsyncStorage.getItem('workoutPlayerCurrentTime');
+
+      return dayjs().diff(dayjs(Number(startTime)), 'second');
+    } catch (err) {
+      // TODO: handle errors from setItem properly
+      console.log(err);
+    }
+  };
 
   const handleProcessSet = ({
     exerciseIndex,
@@ -154,11 +238,15 @@ export const useWorkoutPlayer = ({
       restTimer.advanceTime(-restTimeBetweenExercisesInSeconds);
       setPlayerState('exercise-rest');
 
-      restTimeoutId.current = setTimeout(() => {
+      restTimeOverCb.current = () => {
         updateSetStatus(nextExerciseIndex, nextSetId, 'inprogress');
         exerciseTimer.start();
+        restTimer.reset();
         setPlayerState('playing');
-      }, restTimeBetweenExercisesInSeconds * MILISECOND);
+        setTotalTimeInSeconds(
+          (time) => time + (restTimeBetweenExercisesInSeconds - restTimer.time),
+        );
+      };
     } else {
       updateSetStatus(nextExerciseIndex, nextSetId, 'inprogress');
       exerciseTimer.start();
@@ -201,11 +289,15 @@ export const useWorkoutPlayer = ({
       restTimer.advanceTime(-restTimeBetweenExercisesInSeconds);
       setPlayerState('exercise-rest');
 
-      restTimeoutId.current = setTimeout(() => {
+      restTimeOverCb.current = () => {
         updateSetStatus(currentExerciseIndex, nextSetId, 'inprogress');
         exerciseTimer.start();
+        restTimer.reset();
         setPlayerState('playing');
-      }, restTimeBetweenExercisesInSeconds * MILISECOND);
+        setTotalTimeInSeconds(
+          (time) => time + (restTimeBetweenExercisesInSeconds - restTimer.time),
+        );
+      };
     } else {
       updateSetStatus(currentExerciseIndex, nextSetId!, 'inprogress');
       exerciseTimer.start();
@@ -230,11 +322,16 @@ export const useWorkoutPlayer = ({
       restTimer.advanceTime(-displayedExercise.restTimeInSeconds);
       setPlayerState('set-rest');
 
-      restTimeoutId.current = setTimeout(() => {
+      restTimeOverCb.current = () => {
         updateSetStatus(displayedExerciseIndex, nextSetId, 'inprogress');
         exerciseTimer.start();
+        restTimer.reset();
         setPlayerState('playing');
-      }, displayedExercise.restTimeInSeconds * MILISECOND);
+        setTotalTimeInSeconds(
+          (time) =>
+            time + (displayedExercise.restTimeInSeconds - restTimer.time),
+        );
+      };
     } else {
       updateSetStatus(displayedExerciseIndex, nextSetId, 'inprogress');
       exerciseTimer.start();
@@ -262,19 +359,10 @@ export const useWorkoutPlayer = ({
     if (currentSetId) {
       updateSetStatus(displayedExerciseIndex, currentSetId, 'inprogress');
     }
-
-    if (restTimeoutId.current) {
-      clearTimeout(restTimeoutId.current);
-      restTimeoutId.current = null;
-    }
   };
 
   const handlePlayExercise = () => {
     restTimer.reset();
-    if (restTimeoutId.current) {
-      clearTimeout(restTimeoutId.current);
-      restTimeoutId.current = null;
-    }
 
     goToSpecificExercise({
       currentExerciseIndex: displayedExerciseIndex,

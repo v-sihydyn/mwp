@@ -15,7 +15,7 @@
     "@apollo/client": "3.7.7",
     "@aws-amplify/ui-react-native": "1.2.7",
     "@hookform/resolvers": "2.9.11",
-    "@react-native-async-storage/async-storage": "1.17.11",
+    "@react-native-async-storage/async-storage": "1.18.0",
     "@react-native-community/netinfo": "9.3.7",
     "@react-navigation/bottom-tabs": "^6.0.5",
     "@react-navigation/native": "^6.0.2",

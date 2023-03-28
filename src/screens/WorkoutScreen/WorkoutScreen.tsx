@@ -22,6 +22,7 @@ import { Button, Toast } from 'native-base';
 import { useWorkout } from './hooks/useWorkout/useWorkout';
 import groupBy from 'lodash.groupby';
 import sumBy from 'lodash.sumby';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const WorkoutScreen = () => {
   const navigation = useNavigation();
@@ -124,6 +125,7 @@ export const WorkoutScreen = () => {
       });
     } finally {
       setIsSavingWorkout(false);
+      AsyncStorage.removeItem('workoutPlayerCurrentTime');
     }
   };
 

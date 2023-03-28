@@ -28,6 +28,8 @@
     "color": "4.2.3",
     "dayjs": "1.11.5",
     "graphql": "^14",
+    "lodash.groupby": "4.6.0",
+    "lodash.sumby": "4.6.0",
     "moti": "0.21.0",
     "nanoid": "3.3.4",
     "native-base": "3.4.16",

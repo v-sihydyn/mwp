@@ -37,6 +37,9 @@ type WorkoutSummaryProps = {
 export const WorkoutSummary = React.memo(
   ({ title, workout, exercises, listStyle }: WorkoutSummaryProps) => {
     const insets = useSafeAreaInsets();
+    const formattedWorkoutTotalTime = workout.totalTimeInSeconds
+      ? formatTime(workout.totalTimeInSeconds)
+      : null;
     const formattedDateFinished = dayjs(workout.dateFinished).format(
       'DD.MM.YYYY HH:mm',
     );
@@ -109,14 +112,14 @@ export const WorkoutSummary = React.memo(
                       justifyContent: 'space-between',
                       width: '100%',
                     }}>
-                    {workout.totalTimeInSeconds != null && (
+                    {formattedWorkoutTotalTime && (
                       <>
                         <View style={styles.workoutDetails}>
                           <Text style={styles.workoutDetailsTitle}>
                             Workout time
                           </Text>
                           <Text style={styles.workoutDetailsText}>
-                            {formatTime(workout.totalTimeInSeconds)}
+                            {formattedWorkoutTotalTime}
                           </Text>
                         </View>
                         <View style={styles.detailsDivider} />

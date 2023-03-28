@@ -17,7 +17,7 @@ type Workout
   @model
   @auth(rules: [{ allow: private, operations: [read] }, { allow: owner }]) {
   id: ID!
-  status: WorkoutStatus!
+  status: WorkoutStatus! @index(name: "workoutsByDate", queryField: "workoutsByDate", sortKeyFields: ["dateFinished"])
   dateFinished: AWSDateTime
   totalTimeInSeconds: Int
   WorkoutPlanRoutine: WorkoutPlanRoutine @hasOne

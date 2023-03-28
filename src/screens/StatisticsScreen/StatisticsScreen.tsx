@@ -17,97 +17,8 @@ import { useNavigation } from '@react-navigation/native';
 import Portal from '../../components/Portal/Portal';
 import { MarkedDates } from 'react-native-calendars/src/types';
 import { MarkingProps } from 'react-native-calendars/src/calendar/day/marking';
-
-const WORKOUTS = [
-  {
-    date: '4d ago',
-    workout: {
-      name: 'Legs',
-      exercisesCount: 4,
-      duration: '48:05',
-    },
-  },
-  {
-    date: '4d ago',
-    workout: {
-      name: 'Legs',
-      exercisesCount: 4,
-      duration: '48:05',
-    },
-  },
-  {
-    date: '4d ago',
-    workout: {
-      name: 'Legs',
-      exercisesCount: 4,
-      duration: '48:05',
-    },
-  },
-  {
-    date: '4d ago',
-    workout: {
-      name: 'Legs',
-      exercisesCount: 4,
-      duration: '48:05',
-    },
-  },
-  {
-    date: '4d ago',
-    workout: {
-      name: 'Legs',
-      exercisesCount: 4,
-      duration: '48:05',
-    },
-  },
-  {
-    date: '4d ago',
-    workout: {
-      name: 'Legs',
-      exercisesCount: 4,
-      duration: '48:05',
-    },
-  },
-  {
-    date: '4d ago',
-    workout: {
-      name: 'Legs',
-      exercisesCount: 4,
-      duration: '48:05',
-    },
-  },
-  {
-    date: '4d ago',
-    workout: {
-      name: 'Legs',
-      exercisesCount: 4,
-      duration: '48:05',
-    },
-  },
-  {
-    date: '4d ago',
-    workout: {
-      name: 'Legs',
-      exercisesCount: 4,
-      duration: '48:05',
-    },
-  },
-  {
-    date: '4d ago',
-    workout: {
-      name: 'Legs',
-      exercisesCount: 4,
-      duration: '48:05',
-    },
-  },
-  {
-    date: '4d ago',
-    workout: {
-      name: 'Legs',
-      exercisesCount: 4,
-      duration: '48:05',
-    },
-  },
-];
+import { useWorkoutsList } from './hooks/useWorkoutsList/useWorkoutsList';
+import { FullscreenLoader } from '../../components/FullscreenLoader/FullscreenLoader';
 
 const DATES_WITH_WORKOUT_RECORDS = [
   '2023-01-31',
@@ -120,6 +31,7 @@ const DATES_WITH_WORKOUT_RECORDS = [
 export const StatisticsScreen = () => {
   const navigation = useNavigation();
   const { width: windowWidth } = useWindowDimensions();
+  const { workouts, loading } = useWorkoutsList();
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const currentDate = dayjs().format('YYYY-MM-DD');
   const [filterDate, setFilterDate] = useState<string | null>(null);
@@ -177,18 +89,22 @@ export const StatisticsScreen = () => {
     ? `Workouts of ${dayjs(filterDate).format('MM/DD/YYYY')}`
     : 'All workouts';
 
+  if (loading) return <FullscreenLoader />;
+
   return (
     <View style={[styles.container]}>
       <FlatList
-        data={WORKOUTS}
-        renderItem={({ item, index }) => (
-          <WorkoutHistoryItem
-            item={item}
-            isFirst={index === 0}
-            isLast={index == WORKOUTS.length - 1}
-            onPress={handleGoToDetails}
-          />
-        )}
+        data={workouts}
+        renderItem={({ item, index }) =>
+          item && (
+            <WorkoutHistoryItem
+              item={item}
+              isFirst={index === 0}
+              isLast={index === workouts.length - 1}
+              onPress={handleGoToDetails}
+            />
+          )
+        }
         bounces={false}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 80 }}

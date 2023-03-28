@@ -215,6 +215,17 @@ export const schema = {
                     "properties": {}
                 },
                 {
+                    "type": "key",
+                    "properties": {
+                        "name": "workoutsByDate",
+                        "queryField": "workoutsByDate",
+                        "fields": [
+                            "status",
+                            "dateFinished"
+                        ]
+                    }
+                },
+                {
                     "type": "auth",
                     "properties": {
                         "rules": [

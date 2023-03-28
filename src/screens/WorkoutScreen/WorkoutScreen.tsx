@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { Tabs } from 'react-native-collapsible-tab-view';
 import { colors } from '../../styles/colors';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { WorkoutExerciseSet } from './components/WorkoutExerciseSet/WorkoutExerciseSet';
 import { CustomButton } from '../../components/CustomButton/CustomButton';
 import { MaterialTabBar } from '../../components/MaterialTabBar/TabBar';
@@ -9,7 +9,7 @@ import { TimerAnimation } from './components/TimerAnimation/TimerAnimation';
 import Portal from '../../components/Portal/Portal';
 import { BottomSheet } from '../../components/BottomSheet/BottomSheet';
 import { WorkoutSummary } from './components/WorkoutSummary/WorkoutSummary';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { WorkoutRouteProp } from '../../../types';
 import { Icon } from '../../components/Icon/Icon';
 import { DraftWorkoutExercise } from '../../types/draftWorkout';
@@ -18,19 +18,26 @@ import { formatTime } from '../../utils/formatTime';
 import { MaterialTabItem } from '../../components/MaterialTabBar/TabItem';
 import { CurrentSetToolbar } from './components/CurrentSetToolbar/CurrentSetToolbar';
 import { useWorkoutPlayer } from './hooks/useWorkoutPlayer';
+import { Button, Toast } from 'native-base';
+import { useWorkout } from './hooks/useWorkout/useWorkout';
+import groupBy from 'lodash.groupby';
+import sumBy from 'lodash.sumby';
 
 export const WorkoutScreen = () => {
+  const navigation = useNavigation();
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   const [isWorkoutSummarySheetOpen, setIsWorkoutSummarySheetOpen] =
     useState(false);
   const route = useRoute<WorkoutRouteProp>();
   const {
+    draftWorkout,
     draftWorkoutExercises,
     restTimeInSeconds: restTimeBetweenExercisesInSeconds,
   } = route.params;
 
   const {
     exercises,
+    totalTimeInSeconds,
     displayedExercise,
     currentSetId,
     currentSet,
@@ -48,6 +55,8 @@ export const WorkoutScreen = () => {
     draftWorkoutExercises,
     restTimeBetweenExercisesInSeconds,
   });
+  const [isSavingWorkout, setIsSavingWorkout] = useState(false);
+  const { saveWorkout } = useWorkout();
 
   const doesDisplayedExerciseHavePendingSets = displayedExercise?.sets.some(
     (set) => set.status === 'idle',
@@ -56,6 +65,67 @@ export const WorkoutScreen = () => {
   const doesCurrentSetBelongToDisplayedExercise = displayedExercise?.sets.some(
     (set) => set.id === currentSetId,
   );
+
+  const workoutToSave = useMemo(() => {
+    return {
+      ...draftWorkout,
+      totalTimeInSeconds,
+      dateFinished: new Date().toISOString(),
+    };
+  }, [draftWorkout, totalTimeInSeconds]);
+  const exercisesToSave = useMemo(() => {
+    return exercises.map((dwe) => {
+      const completedSets = dwe.sets.filter(
+        (set) => set.status === 'completed',
+      );
+      const sets = Object.entries(
+        groupBy(completedSets, (item) => item.reps + ':' + item.weight),
+      )
+        .map(([_, value]) => {
+          return value;
+        })
+        .map((arr) => {
+          return {
+            ...arr[0],
+            sets: sumBy(arr, 'sets'),
+          };
+        });
+
+      return {
+        ...dwe,
+        setsConfig: JSON.stringify(sets),
+        sortOrder: dwe.sortOrder,
+      };
+    });
+  }, [exercises]);
+
+  const previewWorkoutResults = () => {
+    setIsWorkoutSummarySheetOpen(true);
+  };
+
+  const handleSaveWorkout = async () => {
+    try {
+      setIsSavingWorkout(true);
+
+      await saveWorkout({
+        workout: workoutToSave,
+        exercises,
+      });
+
+      navigation.navigate('Root', {
+        screen: 'WorkoutPlan',
+      });
+    } catch (e) {
+      Toast.show({
+        title: 'Failed to save workout',
+        description: (e as Error).message,
+        duration: 3000,
+        backgroundColor: colors.red,
+      });
+    } finally {
+      setIsSavingWorkout(false);
+    }
+  };
 
   const renderHeader = () => null;
 
@@ -283,12 +353,13 @@ export const WorkoutScreen = () => {
 
         {/* FINISH BUTTON */}
 
-        {playerState === 'finished' && (
-          <CustomButton
-            style={{ backgroundColor: colors.green, height: '100%' }}
-            onPress={() => setIsWorkoutSummarySheetOpen(true)}>
-            <Text style={{ fontSize: 16 }}>Finish</Text>
-          </CustomButton>
+        {isPlayerFinished && (
+          <Button
+            _text={{ fontSize: 16 }}
+            backgroundColor={colors.green}
+            onPress={previewWorkoutResults}>
+            Finish
+          </Button>
         )}
       </View>
 
@@ -304,19 +375,26 @@ export const WorkoutScreen = () => {
             }}>
             <WorkoutSummary
               title="Nice workout!"
-              listStyle={{ paddingBottom: 80 }}
+              listStyle={styles.workoutSummaryListStyle}
+              workout={workoutToSave}
+              exercises={exercisesToSave}
             />
 
-            <CustomButton
+            <Button
+              isLoading={isSavingWorkout}
+              isDisabled={isSavingWorkout}
+              isLoadingText="Saving..."
+              _text={{ fontSize: 16 }}
+              backgroundColor={colors.green}
               style={[
                 styles.button,
                 {
                   width: windowWidth - 40,
                 },
               ]}
-              onPress={() => {}}>
-              Ok
-            </CustomButton>
+              onPress={handleSaveWorkout}>
+              OK
+            </Button>
             <View
               style={{
                 position: 'absolute',
@@ -428,4 +506,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
   },
+  workoutSummaryListStyle: { paddingBottom: 80 },
 });

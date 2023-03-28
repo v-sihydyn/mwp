@@ -1,4 +1,4 @@
-import { Workout } from '../API';
+import { MuscleGroup, Workout } from '../API';
 
 export type DraftWorkout = Pick<
   Workout,
@@ -14,6 +14,9 @@ export type DraftWorkoutExercise = {
   sets: DraftSet[];
   sortOrder?: number | null;
   restTimeInSeconds: number;
+  workoutExerciseWorkoutRoutineExerciseId: string;
+  muscleGroup?: MuscleGroup | null;
+  color?: string | null;
 };
 
 export type DraftSetStatus =
@@ -28,4 +31,5 @@ export type DraftSet = {
   reps: string;
   weight: string | null;
   status: DraftSetStatus;
+  sets: number;
 };

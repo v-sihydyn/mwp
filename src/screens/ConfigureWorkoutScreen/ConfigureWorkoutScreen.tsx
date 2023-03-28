@@ -77,6 +77,7 @@ export const ConfigureWorkoutScreen = () => {
           Array.from({ length: setsCount }).forEach(() => {
             sets.push({
               id: nanoid(),
+              sets: 1,
               reps: config.reps,
               weight: config.weight,
               status: 'idle',
@@ -85,6 +86,7 @@ export const ConfigureWorkoutScreen = () => {
         } else {
           sets.push({
             id: nanoid(),
+            sets: 1,
             reps: config.reps,
             weight: config.weight,
             status: 'idle',
@@ -95,29 +97,14 @@ export const ConfigureWorkoutScreen = () => {
       return {
         name: e.name,
         description: e.description,
+        muscleGroup: e.muscleGroup,
+        color: e.color,
         sets,
         sortOrder: e.sortOrder,
         restTimeInSeconds: e.restTimeInSeconds ?? 0,
+        workoutExerciseWorkoutRoutineExerciseId: e.id,
       };
     });
-
-    // try {
-    //   const res = await bulkCreateWorkoutExercises({
-    //     variables: {
-    //       exercises: draftWorkoutExercises.map((dwe, idx) => ({
-    //         // id: idx, // @TODO remove
-    //         workoutID: '96758bb8-4120-4284-99c6-336dd086bd68',
-    //         setsConfig: JSON.stringify(dwe.sets),
-    //         sortOrder: dwe.sortOrder,
-    //         workoutExerciseWorkoutRoutineExerciseId: exercises[idx].id,
-    //       })),
-    //     },
-    //   });
-    //
-    //   console.log('success', res);
-    // } catch (e) {
-    //   console.log(JSON.stringify(e));
-    // }
 
     navigation.navigate('Workout', {
       restTimeInSeconds,

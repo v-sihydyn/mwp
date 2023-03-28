@@ -1,8 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   StyleSheet,
   View,
-  Image,
   Text,
   StyleProp,
   ViewStyle,
@@ -23,6 +22,11 @@ export const WorkoutExerciseCard = ({
   style,
   onPress,
 }: WorkoutExerciseCardProps) => {
+  const [contentDimensions, setContentDimensions] = useState<{
+    height?: number;
+    width?: number;
+  }>({});
+
   const displayMuscleGroup = item.muscleGroup
     ? MUSCLE_VALUES_MAP[item.muscleGroup]
     : null;
@@ -37,16 +41,38 @@ export const WorkoutExerciseCard = ({
 
   return (
     <Pressable onPress={onPress} style={[styles.root, style]}>
-      <View style={styles.content}>
-        <Image
-          style={styles.image}
-          source={{
-            uri: 'https://dummyimage.com/60x60/fff/aaa',
+      <View>
+        <View
+          style={{
+            ...StyleSheet.absoluteFillObject,
+            width: '100%',
+            height: contentDimensions.height,
+            backgroundColor:
+              !item.color || item.color === '#000000'
+                ? colors.surface2
+                : item.color,
+            alignSelf: 'flex-end',
+            borderRadius: 12,
           }}
         />
-        <View style={{ flexDirection: 'column' }}>
-          <Text style={styles.title}>{item.name}</Text>
-          <Text style={styles.subtitle}>{displayMuscleGroup}</Text>
+        <View
+          style={styles.content}
+          onLayout={(e) => {
+            setContentDimensions({
+              width: e.nativeEvent.layout.width,
+              height: e.nativeEvent.layout.height,
+            });
+          }}>
+          {/*<Image*/}
+          {/*  style={styles.image}*/}
+          {/*  source={{*/}
+          {/*    uri: 'https://dummyimage.com/60x60/fff/aaa',*/}
+          {/*  }}*/}
+          {/*/>*/}
+          <View style={{ flexDirection: 'column', margin: 16 }}>
+            <Text style={styles.title}>{item.name}</Text>
+            <Text style={styles.subtitle}>{displayMuscleGroup}</Text>
+          </View>
         </View>
       </View>
       <View style={styles.footer}>
@@ -86,10 +112,13 @@ const styles = StyleSheet.create({
     marginRight: 14,
   },
   content: {
-    padding: 16,
     flexDirection: 'row',
     backgroundColor: colors.surface2,
     borderRadius: 12,
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+    justifyContent: 'space-between',
+    width: '98%',
   },
   title: {
     color: colors.text,

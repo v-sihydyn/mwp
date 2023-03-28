@@ -539,6 +539,16 @@ export type ModelWorkoutConnection = {
   startedAt?: number | null,
 };
 
+export type ModelStringKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+};
+
 export type ModelExerciseFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -2231,6 +2241,112 @@ export type SyncWorkoutsQueryVariables = {
 
 export type SyncWorkoutsQuery = {
   syncWorkouts?:  {
+    __typename: "ModelWorkoutConnection",
+    items:  Array< {
+      __typename: "Workout",
+      id: string,
+      status: WorkoutStatus,
+      dateFinished?: string | null,
+      totalTimeInSeconds?: number | null,
+      WorkoutPlanRoutine?:  {
+        __typename: "WorkoutPlanRoutine",
+        id: string,
+        name: string,
+        sortOrder?: number | null,
+        workoutPlanID: string,
+        WorkoutRoutineExercises?:  {
+          __typename: "ModelWorkoutRoutineExerciseConnection",
+          items:  Array< {
+            __typename: "WorkoutRoutineExercise",
+            id: string,
+            name: string,
+            muscleGroup?: MuscleGroup | null,
+            equipment?: ExerciseEquipment | null,
+            color?: string | null,
+            description?: string | null,
+            restTimeInSeconds?: number | null,
+            sortOrder?: number | null,
+            workoutPlanRoutineID: string,
+            setsConfig: string,
+            createdAt: string,
+            updatedAt: string,
+            _version: number,
+            _deleted?: boolean | null,
+            _lastChangedAt: number,
+            owner?: string | null,
+          } | null >,
+          nextToken?: string | null,
+          startedAt?: number | null,
+        } | null,
+        createdAt: string,
+        updatedAt: string,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        owner?: string | null,
+      } | null,
+      WorkoutExercises?:  {
+        __typename: "ModelWorkoutExerciseConnection",
+        items:  Array< {
+          __typename: "WorkoutExercise",
+          id: string,
+          setsConfig: string,
+          sortOrder?: number | null,
+          workoutID: string,
+          WorkoutRoutineExercise?:  {
+            __typename: "WorkoutRoutineExercise",
+            id: string,
+            name: string,
+            muscleGroup?: MuscleGroup | null,
+            equipment?: ExerciseEquipment | null,
+            color?: string | null,
+            description?: string | null,
+            restTimeInSeconds?: number | null,
+            sortOrder?: number | null,
+            workoutPlanRoutineID: string,
+            setsConfig: string,
+            createdAt: string,
+            updatedAt: string,
+            _version: number,
+            _deleted?: boolean | null,
+            _lastChangedAt: number,
+            owner?: string | null,
+          } | null,
+          createdAt: string,
+          updatedAt: string,
+          _version: number,
+          _deleted?: boolean | null,
+          _lastChangedAt: number,
+          workoutExerciseWorkoutRoutineExerciseId?: string | null,
+          owner?: string | null,
+        } | null >,
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      workoutWorkoutPlanRoutineId?: string | null,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type WorkoutsByDateQueryVariables = {
+  status: WorkoutStatus,
+  dateFinished?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelWorkoutFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type WorkoutsByDateQuery = {
+  workoutsByDate?:  {
     __typename: "ModelWorkoutConnection",
     items:  Array< {
       __typename: "Workout",

@@ -7,6 +7,10 @@ import InAppBrowser from 'react-native-inappbrowser-reborn';
 import App from './App';
 import { name as appName } from './app.json';
 import awsconfig from './src/aws-exports';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 const urlOpener = async (url, redirectUrl) => {
   await InAppBrowser.isAvailable();

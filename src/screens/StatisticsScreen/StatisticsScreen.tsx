@@ -17,7 +17,6 @@ import dayjs from 'dayjs';
 import { useNavigation } from '@react-navigation/native';
 import Portal from '../../components/Portal/Portal';
 import { MarkedDates } from 'react-native-calendars/src/types';
-import { MarkingProps } from 'react-native-calendars/src/calendar/day/marking';
 import { useWorkoutsList } from './hooks/useWorkoutsList/useWorkoutsList';
 import { FullscreenLoader } from '../../components/FullscreenLoader/FullscreenLoader';
 import { Workout } from '../../API';
@@ -25,55 +24,41 @@ import { DraftWorkout } from '../../types/draftWorkout';
 import { ListEmptyComponent } from './components/ListEmptyComponent/ListEmptyComponent';
 import { ApiErrorMessage } from '../../components/ApiErrorMessage/ApiErrorMessage';
 
-const DATES_WITH_WORKOUT_RECORDS = [
-  '2023-01-31',
-  '2023-01-30',
-  '2023-01-28',
-  '2023-01-18',
-  '2023-01-08',
-];
-
 export const StatisticsScreen = () => {
   const navigation = useNavigation();
   const { width: windowWidth } = useWindowDimensions();
-  const { workouts, refetch, refetching, loading, error } = useWorkoutsList();
+  const [filterDate, setFilterDate] = useState<string | null>(null);
+  const { workouts, refetch, refetching, loading, error } =
+    useWorkoutsList(filterDate);
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const currentDate = dayjs().format('YYYY-MM-DD');
-  const [filterDate, setFilterDate] = useState<string | null>(null);
 
   const markedDates = useMemo<MarkedDates>(() => {
-    const result = DATES_WITH_WORKOUT_RECORDS.reduce<Record<string, object>>(
-      (acc, date) => {
-        const obj: MarkingProps = {
-          disabled: false,
-          customStyles: {
-            text: {
-              color: colors.text,
-            },
-          },
-        };
-
-        if (date === filterDate) {
-          obj.selected = true;
-          obj.selectedColor = colors.green;
-        }
-
-        acc[date] = obj;
-
-        return acc;
-      },
-      {},
-    );
+    const result: MarkedDates = {};
 
     if (!filterDate) {
       result[currentDate] = {
         selected: true,
         selectedColor: colors.green,
       };
+    } else {
+      result[filterDate] = {
+        selected: true,
+        selectedColor: colors.green,
+      };
+      if (filterDate !== currentDate) {
+        result[currentDate] = {
+          customStyles: {
+            text: {
+              color: colors.green,
+            },
+          },
+        };
+      }
     }
 
     return result;
-  }, [filterDate]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [filterDate, currentDate]);
 
   const handleClearFilterDate = () => {
     setFilterDate(null);
@@ -115,7 +100,7 @@ export const StatisticsScreen = () => {
     <Icon name={'calendar'} color={colors.text} size={18} />
   );
   const filterButtonText = filterDate
-    ? `Workouts of ${dayjs(filterDate).format('MM/DD/YYYY')}`
+    ? `Workouts of ${dayjs(filterDate).format('DD.MM.YYYY')}`
     : 'All workouts';
 
   if (loading) return <FullscreenLoader />;
@@ -133,6 +118,8 @@ export const StatisticsScreen = () => {
       </View>
     );
   }
+
+  const isFilterDateVisible = Boolean(filterDate) || workouts.length > 0;
 
   return (
     <View style={styles.container}>
@@ -160,7 +147,7 @@ export const StatisticsScreen = () => {
         }
       />
 
-      {workouts.length > 0 && (
+      {isFilterDateVisible && (
         <>
           <Pressable
             onPress={() => setIsFilterSheetOpen(true)}
@@ -193,17 +180,19 @@ export const StatisticsScreen = () => {
             markingType="custom"
             markedDates={markedDates}
             onDayPress={({ dateString }) => {
-              if (DATES_WITH_WORKOUT_RECORDS.includes(dateString)) {
+              if (dayjs(dateString) <= dayjs(currentDate)) {
                 setFilterDate(dateString);
                 setIsFilterSheetOpen(false);
               }
             }}
             horizontal={true}
             pagingEnabled={true}
-            disabledByDefault={true}
+            disabledByDefault={false}
             disableAllTouchEventsForDisabledDays={true}
+            futureScrollRange={0}
             theme={{
               calendarBackground: colors.page,
+              textDayStyle: { color: colors.text },
               textDisabledColor: '#747678',
               textMonthFontSize: 14,
               textDayFontSize: 13,

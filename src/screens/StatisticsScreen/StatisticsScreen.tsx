@@ -1,6 +1,7 @@
 import {
   FlatList,
   Pressable,
+  RefreshControl,
   StyleSheet,
   Text,
   useWindowDimensions,
@@ -22,6 +23,7 @@ import { FullscreenLoader } from '../../components/FullscreenLoader/FullscreenLo
 import { Workout } from '../../API';
 import { DraftWorkout } from '../../types/draftWorkout';
 import { ListEmptyComponent } from './components/ListEmptyComponent/ListEmptyComponent';
+import { ApiErrorMessage } from '../../components/ApiErrorMessage/ApiErrorMessage';
 
 const DATES_WITH_WORKOUT_RECORDS = [
   '2023-01-31',
@@ -34,7 +36,7 @@ const DATES_WITH_WORKOUT_RECORDS = [
 export const StatisticsScreen = () => {
   const navigation = useNavigation();
   const { width: windowWidth } = useWindowDimensions();
-  const { workouts, loading } = useWorkoutsList();
+  const { workouts, refetch, refetching, loading, error } = useWorkoutsList();
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const currentDate = dayjs().format('YYYY-MM-DD');
   const [filterDate, setFilterDate] = useState<string | null>(null);
@@ -88,7 +90,7 @@ export const StatisticsScreen = () => {
     const workoutExercises = (item.WorkoutExercises?.items ?? []).map((e) => ({
       name: e?.WorkoutRoutineExercise?.name ?? '',
       description: e?.WorkoutRoutineExercise?.description,
-      sets: JSON.parse(e?.WorkoutRoutineExercise?.setsConfig ?? ''),
+      sets: JSON.parse(e?.setsConfig ?? ''),
       sortOrder: e?.WorkoutRoutineExercise?.sortOrder,
       restTimeInSeconds: e?.WorkoutRoutineExercise?.restTimeInSeconds || 0,
       workoutExerciseWorkoutRoutineExerciseId:
@@ -118,8 +120,22 @@ export const StatisticsScreen = () => {
 
   if (loading) return <FullscreenLoader />;
 
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <ApiErrorMessage
+          title="Failed to fetch workouts"
+          message={error.message}
+          onRetry={() => {
+            if (!refetching) refetch();
+          }}
+        />
+      </View>
+    );
+  }
+
   return (
-    <View style={[styles.container]}>
+    <View style={styles.container}>
       <FlatList
         data={workouts}
         renderItem={({ item, index }) =>
@@ -132,10 +148,16 @@ export const StatisticsScreen = () => {
             />
           )
         }
-        bounces={false}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 80, flexGrow: 1 }}
         ListEmptyComponent={ListEmptyComponent}
+        refreshControl={
+          <RefreshControl
+            refreshing={refetching}
+            onRefresh={refetch}
+            tintColor={colors.green}
+          />
+        }
       />
 
       {workouts.length > 0 && (

@@ -97,6 +97,7 @@ export const WorkoutScreen = () => {
       return {
         ...dwe,
         setsConfig: JSON.stringify(sets),
+        sets,
         sortOrder: dwe.sortOrder,
       };
     });
@@ -112,7 +113,7 @@ export const WorkoutScreen = () => {
 
       await saveWorkout({
         workout: workoutToSave,
-        exercises,
+        exercises: exercisesToSave,
       });
 
       navigation.navigate('Root', {

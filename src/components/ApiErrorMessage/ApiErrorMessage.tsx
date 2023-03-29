@@ -1,6 +1,7 @@
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
 import { colors } from '../../styles/colors';
+import { Button } from 'native-base';
 
 type ApiErrorMessageProps = {
   title?: string;
@@ -17,7 +18,9 @@ export const ApiErrorMessage = ({
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.message}>{message}</Text>
-      <Button title="Retry" onPress={onRetry} />
+      <Button variant={'unstyled'} onPress={onRetry}>
+        <Text style={{ color: colors.green, fontSize: 16 }}>Retry</Text>
+      </Button>
     </View>
   );
 };
@@ -34,7 +37,7 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   message: {
-    color: colors.text3,
+    color: colors.red,
     marginBottom: 10,
   },
 });

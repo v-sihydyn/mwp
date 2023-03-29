@@ -46,6 +46,18 @@ export declare type DeletePlanAndRoutinesResponse = LazyLoading extends LazyLoad
 
 export declare const DeletePlanAndRoutinesResponse: (new (init: ModelInit<DeletePlanAndRoutinesResponse>) => DeletePlanAndRoutinesResponse)
 
+type EagerDeleteWorkoutAndExercisesResponse = {
+  readonly id: string;
+}
+
+type LazyDeleteWorkoutAndExercisesResponse = {
+  readonly id: string;
+}
+
+export declare type DeleteWorkoutAndExercisesResponse = LazyLoading extends LazyLoadingDisabled ? EagerDeleteWorkoutAndExercisesResponse : LazyDeleteWorkoutAndExercisesResponse
+
+export declare const DeleteWorkoutAndExercisesResponse: (new (init: ModelInit<DeleteWorkoutAndExercisesResponse>) => DeleteWorkoutAndExercisesResponse)
+
 type EagerBulkCreateWorkoutExercisesResponse = {
   readonly exercises: WorkoutExercise[];
 }

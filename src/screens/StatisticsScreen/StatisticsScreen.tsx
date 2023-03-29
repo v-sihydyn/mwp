@@ -97,6 +97,7 @@ export const StatisticsScreen = () => {
     }));
 
     navigation.navigate('WorkoutDetails', {
+      id: item.id,
       title: item.WorkoutPlanRoutine?.name ?? '',
       workout,
       workoutExercises,

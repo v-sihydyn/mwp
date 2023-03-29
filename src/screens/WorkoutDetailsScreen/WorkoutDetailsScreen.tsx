@@ -7,19 +7,83 @@ import { Icon } from '../../components/Icon/Icon';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { openDeleteWorkoutModal } from '../../components/modals/DeleteWorkoutModal/DeleteWorkoutModal';
 import { WorkoutDetailsRouteProp } from '../../../types';
+import { useMutation } from '@apollo/client';
+import { deleteWorkoutAndExercisesMutation } from './mutations/deleteWorkoutAndExercisesMutation';
+import {
+  DeleteWorkoutAndExercisesMutation,
+  DeleteWorkoutAndExercisesMutationVariables,
+  ModelSortDirection,
+  Workout,
+  WorkoutsByDateQuery,
+  WorkoutsByDateQueryVariables,
+  WorkoutStatus,
+} from '../../API';
+import { Toast } from 'native-base';
+import { workoutsByDateQuery } from '../StatisticsScreen/hooks/useWorkoutsList/queuries/workoutsByDateQuery';
 
 export const WorkoutDetailsScreen = () => {
   const navigation = useNavigation();
   const route = useRoute<WorkoutDetailsRouteProp>();
-  const { title, workout, workoutExercises } = route.params;
+  const { id, title, workout, workoutExercises } = route.params;
+  const [deleteWorkout, { loading: deleteLoading }] = useMutation<
+    DeleteWorkoutAndExercisesMutation,
+    DeleteWorkoutAndExercisesMutationVariables
+  >(deleteWorkoutAndExercisesMutation);
 
   const handleDelete = async () => {
-    try {
-      await openDeleteWorkoutModal();
-      // onDelete(); @TODO delete workout
-      navigation.goBack();
-    } catch (e) {
-      console.log('promise modal reject: ', e);
+    if (deleteLoading) return;
+
+    const deleteConfirmed = await openDeleteWorkoutModal().catch(() => {});
+
+    if (deleteConfirmed) {
+      try {
+        await deleteWorkout({
+          variables: {
+            workoutId: id,
+          },
+          update(cache, { data }) {
+            if (!data?.deleteWorkoutAndExercises) return;
+
+            const deletedWorkoutId = data?.deleteWorkoutAndExercises.id;
+
+            cache.updateQuery<
+              WorkoutsByDateQuery,
+              WorkoutsByDateQueryVariables
+            >(
+              {
+                query: workoutsByDateQuery,
+                variables: {
+                  status: WorkoutStatus.FINISHED,
+                  sortDirection: ModelSortDirection.DESC,
+                },
+              },
+              (data) => {
+                if (!data?.workoutsByDate?.items) return;
+
+                return {
+                  workoutsByDate: {
+                    ...data.workoutsByDate,
+                    items: (data?.workoutsByDate?.items ?? []).filter(
+                      (_workout: Workout | null) => {
+                        return _workout?.id !== deletedWorkoutId;
+                      },
+                    ),
+                  },
+                };
+              },
+            );
+          },
+        });
+
+        navigation.goBack();
+      } catch (e) {
+        Toast.show({
+          title: 'Failed to delete workout',
+          description: (e as Error).message,
+          duration: 3000,
+          backgroundColor: colors.red,
+        });
+      }
     }
   };
 

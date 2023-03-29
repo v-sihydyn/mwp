@@ -7,6 +7,11 @@ export type DeletePlanAndRoutinesResponse = {
   id: string,
 };
 
+export type DeleteWorkoutAndExercisesResponse = {
+  __typename: "DeleteWorkoutAndExercisesResponse",
+  id: string,
+};
+
 export type CreateWorkoutExerciseInput = {
   id?: string | null,
   setsConfig: string,
@@ -737,6 +742,17 @@ export type DeletePlanAndRoutinesMutationVariables = {
 export type DeletePlanAndRoutinesMutation = {
   deletePlanAndRoutines?:  {
     __typename: "DeletePlanAndRoutinesResponse",
+    id: string,
+  } | null,
+};
+
+export type DeleteWorkoutAndExercisesMutationVariables = {
+  workoutId: string,
+};
+
+export type DeleteWorkoutAndExercisesMutation = {
+  deleteWorkoutAndExercises?:  {
+    __typename: "DeleteWorkoutAndExercisesResponse",
     id: string,
   } | null,
 };

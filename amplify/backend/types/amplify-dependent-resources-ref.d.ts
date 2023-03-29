@@ -33,6 +33,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "deleteWorkoutAndExercises": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "editPlanAndRoutines": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

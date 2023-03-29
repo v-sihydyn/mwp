@@ -91,6 +91,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "deleteWorkoutAndExercises": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "editPlanAndRoutines": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -127,6 +132,22 @@
         {
           "category": "function",
           "resourceName": "bulkCreateWorkoutExercises"
+        }
+      ]
+    },
+    "AMPLIFY_function_deleteWorkoutAndExercises_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "deleteWorkoutAndExercises"
+        }
+      ]
+    },
+    "AMPLIFY_function_deleteWorkoutAndExercises_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "deleteWorkoutAndExercises"
         }
       ]
     },

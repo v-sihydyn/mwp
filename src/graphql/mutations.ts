@@ -9,6 +9,13 @@ export const deletePlanAndRoutines = /* GraphQL */ `
     }
   }
 `;
+export const deleteWorkoutAndExercises = /* GraphQL */ `
+  mutation DeleteWorkoutAndExercises($workoutId: ID!) {
+    deleteWorkoutAndExercises(workoutId: $workoutId) {
+      id
+    }
+  }
+`;
 export const bulkCreateWorkoutExercises = /* GraphQL */ `
   mutation BulkCreateWorkoutExercises(
     $exercises: [CreateWorkoutExerciseInput!]!

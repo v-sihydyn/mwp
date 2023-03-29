@@ -28,6 +28,10 @@
         "bulkCreateWorkoutExercises": {
           "deploymentBucketName": "amplify-mwp-staging-91319-deployment",
           "s3Key": "amplify-builds/bulkCreateWorkoutExercises-5879416143535a616668-build.zip"
+        },
+        "deleteWorkoutAndExercises": {
+          "deploymentBucketName": "amplify-mwp-staging-91319-deployment",
+          "s3Key": "amplify-builds/deleteWorkoutAndExercises-47374f67627a46374575-build.zip"
         }
       },
       "api": {

@@ -46,6 +46,7 @@ export type RootStackParamList = {
     draftWorkoutExercises: DraftWorkoutExercise[];
   };
   WorkoutDetails: {
+    id: string;
     title: string;
     workout: DraftWorkout;
     workoutExercises: DraftWorkoutExercise[];

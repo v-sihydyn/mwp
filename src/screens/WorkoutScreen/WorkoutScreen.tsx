@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
+import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { Tabs } from 'react-native-collapsible-tab-view';
 import { colors } from '../../styles/colors';
 import React, { useMemo, useState } from 'react';
@@ -23,6 +23,14 @@ import { useWorkout } from './hooks/useWorkout/useWorkout';
 import groupBy from 'lodash.groupby';
 import sumBy from 'lodash.sumby';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useApolloClient } from '@apollo/client';
+import { workoutsByDateQuery } from '../StatisticsScreen/hooks/useWorkoutsList/queuries/workoutsByDateQuery';
+import {
+  ModelSortDirection,
+  WorkoutsByDateQuery,
+  WorkoutsByDateQueryVariables,
+  WorkoutStatus,
+} from '../../API';
 
 const ONE_HOUR = 3600;
 
@@ -31,6 +39,7 @@ export const WorkoutScreen = () => {
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   const [isWorkoutSummarySheetOpen, setIsWorkoutSummarySheetOpen] =
     useState(false);
+  const client = useApolloClient();
   const route = useRoute<WorkoutRouteProp>();
   const {
     draftWorkout,
@@ -111,10 +120,44 @@ export const WorkoutScreen = () => {
     try {
       setIsSavingWorkout(true);
 
-      await saveWorkout({
+      const response = await saveWorkout({
         workout: workoutToSave,
         exercises: exercisesToSave,
       });
+
+      client.cache.updateQuery<
+        WorkoutsByDateQuery,
+        WorkoutsByDateQueryVariables
+      >(
+        {
+          query: workoutsByDateQuery,
+          variables: {
+            status: WorkoutStatus.FINISHED,
+            sortDirection: ModelSortDirection.DESC,
+          },
+        },
+        (data) => {
+          if (!data?.workoutsByDate) return;
+
+          return {
+            workoutsByDate: {
+              ...data.workoutsByDate,
+              items: [
+                {
+                  ...response?.savedWorkout,
+                  WorkoutExercises: {
+                    items: response?.savedExercises ?? [],
+                    __typename: 'ModelWorkoutExerciseConnection',
+                    nextToken: null,
+                    startedAt: null,
+                  },
+                },
+                ...(data.workoutsByDate.items ?? []),
+              ],
+            },
+          };
+        },
+      );
 
       navigation.navigate('Root', {
         screen: 'WorkoutPlan',

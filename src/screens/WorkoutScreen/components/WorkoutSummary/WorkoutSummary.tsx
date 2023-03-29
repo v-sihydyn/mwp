@@ -141,7 +141,10 @@ export const WorkoutSummary = React.memo(
             keyExtractor={(_, index) => String(index)}
             renderItem={({ item: exercise }) => (
               <WorkoutExerciseCard
-                item={exercise}
+                name={exercise.name}
+                muscleGroup={exercise.muscleGroup}
+                sets={exercise.sets}
+                color={exercise.color}
                 style={{ marginHorizontal: 20 }}
               />
             )}

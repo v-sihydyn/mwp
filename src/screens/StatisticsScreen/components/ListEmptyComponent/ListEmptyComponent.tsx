@@ -4,7 +4,7 @@ import { colors } from '../../../../styles/colors';
 export const ListEmptyComponent = () => {
   return (
     <View style={styles.root}>
-      <Text style={styles.heading}>No workouts yet</Text>
+      <Text style={styles.heading}>No workouts found</Text>
     </View>
   );
 };

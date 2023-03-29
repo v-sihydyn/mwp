@@ -63,6 +63,8 @@
     "@tsconfig/react-native": "^2.0.2",
     "@types/color": "3.0.3",
     "@types/jest": "^26.0.23",
+    "@types/lodash.groupby": "4.6.7",
+    "@types/lodash.sumby": "4.6.7",
     "@types/react": "^18.0.21",
     "@types/react-native": "^0.70.6",
     "@types/react-native-vector-icons": "6.4.12",

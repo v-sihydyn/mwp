@@ -10,7 +10,7 @@ import { colors } from '../../../../styles/colors';
 import { PieChart } from '../../../../components/PieChart/PieChart';
 import { Icon } from '../../../../components/Icon/Icon';
 import * as React from 'react';
-import { WorkoutExerciseCard } from '../../../WorkoutPlanScreen/components/WorkoutRoutinesList/WorkoutExerciseCard/WorkoutExerciseCard';
+import { WorkoutExerciseCard } from '../../../../components/WorkoutExerciseCard/WorkoutExerciseCard';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {

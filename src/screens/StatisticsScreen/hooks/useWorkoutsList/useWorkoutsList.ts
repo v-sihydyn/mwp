@@ -18,7 +18,9 @@ export const useWorkoutsList = () => {
     },
   });
 
-  const workouts = data?.workoutsByDate?.items ?? [];
+  const workouts = (data?.workoutsByDate?.items ?? []).filter(
+    (x) => !x?._deleted,
+  );
 
   return { workouts, loading };
 };

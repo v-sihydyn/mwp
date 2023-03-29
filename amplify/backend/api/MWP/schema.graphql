@@ -112,6 +112,8 @@ type WorkoutPlan
 type Mutation {
   deletePlanAndRoutines(planId: ID!): DeletePlanAndRoutinesResponse
     @function(name: "editPlanAndRoutines-${env}")
+  deleteWorkoutAndExercises(workoutId: ID!): DeleteWorkoutAndExercisesResponse
+  @function(name: "deleteWorkoutAndExercises-${env}")
   bulkCreateWorkoutExercises(
     exercises: [CreateWorkoutExerciseInput!]!
   ): BulkCreateWorkoutExercisesResponse
@@ -119,6 +121,10 @@ type Mutation {
 }
 
 type DeletePlanAndRoutinesResponse {
+  id: ID!
+}
+
+type DeleteWorkoutAndExercisesResponse {
   id: ID!
 }
 

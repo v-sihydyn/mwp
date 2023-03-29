@@ -851,6 +851,18 @@ export const schema = {
                 }
             }
         },
+        "DeleteWorkoutAndExercisesResponse": {
+            "name": "DeleteWorkoutAndExercisesResponse",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
+        },
         "BulkCreateWorkoutExercisesResponse": {
             "name": "BulkCreateWorkoutExercisesResponse",
             "fields": {
@@ -868,5 +880,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.6",
-    "version": "4297c0ca3e50cbadf6de6618f48efc02"
+    "version": "be07061f2ff05a2287a2d24bf31aa2fc"
 };

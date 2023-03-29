@@ -131,7 +131,7 @@ export const ConfigureWorkoutScreen = () => {
         </CustomButton>
       ),
     });
-  }, [playWorkout]);
+  }, [playWorkout]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleRemoveExercise = (id: string) => {
     if (exercises.length < 2) return;

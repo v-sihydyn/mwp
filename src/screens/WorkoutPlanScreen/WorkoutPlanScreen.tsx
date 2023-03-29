@@ -22,7 +22,6 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CustomButton } from '../../components/CustomButton/CustomButton';
 import { openCreateRoutineModal } from '../../components/modals/CreateRoutineModal/CreateRoutineModal';
-import { WorkoutExerciseCard } from './components/WorkoutRoutinesList/WorkoutExerciseCard/WorkoutExerciseCard';
 import { useWorkoutPlansByUser } from './hooks/useWorkoutPlansByUser';
 import { FullscreenLoader } from '../../components/FullscreenLoader/FullscreenLoader';
 import { useAuthContext } from '../../contexts/AuthContext';
@@ -40,6 +39,7 @@ import { StoreObject } from '@apollo/client';
 import { useWorkoutPlanRoutineActions } from '../../hooks/useWorkoutPlanRoutineActions';
 import { workoutPlansByUserIDQuery } from './hooks/queries/workoutPlansByUserIDQuery';
 import { PagerViewProps } from 'react-native-pager-view';
+import { WorkoutExerciseCard } from '../../components/WorkoutExerciseCard/WorkoutExerciseCard';
 
 type Props = RootTabScreenProps<'WorkoutPlan'>;
 

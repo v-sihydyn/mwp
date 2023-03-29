@@ -127,7 +127,7 @@ export const AddExerciseToRoutineScreen = () => {
         </CustomButton>
       ),
     });
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <KeyboardAwareScrollView

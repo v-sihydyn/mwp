@@ -7,10 +7,10 @@ import {
   ViewStyle,
   Pressable,
 } from 'react-native';
-import { colors } from '../../../../../styles/colors';
-import { MuscleGroup } from '../../../../../API';
-import { MUSCLE_VALUES_MAP } from '../../../../../constants/muscleSelectOptions';
-import { DraftSet } from '../../../../../types/draftWorkout';
+import { colors } from '../../styles/colors';
+import { MuscleGroup } from '../../API';
+import { MUSCLE_VALUES_MAP } from '../../constants/muscleSelectOptions';
+import { DraftSet } from '../../types/draftWorkout';
 
 type WorkoutExerciseCardProps = {
   name: string;

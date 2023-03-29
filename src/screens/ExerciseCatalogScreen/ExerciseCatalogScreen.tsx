@@ -34,7 +34,7 @@ export const ExerciseCatalogScreen = () => {
         <ExerciseFilterInput onChange={(q) => setSearchQuery(q)} />
       ),
     });
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleGoToAddExerciseScreen = (exercise: Exercise) => {
     navigation.navigate('AddExerciseToRoutine', {

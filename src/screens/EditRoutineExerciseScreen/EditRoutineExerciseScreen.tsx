@@ -11,11 +11,7 @@ import {
   ExerciseFormData,
   validationSchema,
 } from '../../components/ExerciseForm/ExerciseForm';
-import {
-  AddExerciseToRoutineRouteProp,
-  EditRoutineExerciseRouteProp,
-} from '../../../types';
-import { useAuthContext } from '../../contexts/AuthContext';
+import { EditRoutineExerciseRouteProp } from '../../../types';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useApolloClient, useMutation } from '@apollo/client';
@@ -29,7 +25,6 @@ import {
 } from '../../API';
 import { Toast } from 'native-base';
 import { updateWorkoutRoutineExerciseMutation } from './mutations/updateWorkoutRoutineExerciseMutation';
-import { openDeleteRoutineModal } from '../../components/modals/DeleteRoutineModal/DeleteRoutineModal';
 import { openDeleteExerciseModal } from '../../components/modals/DeleteExerciseModal/DeleteExerciseModal';
 import { deleteWorkoutRoutineExerciseMutation } from './mutations/deleteWorkoutRoutineExerciseMutation';
 import { routineFragment } from '../../fragments/routineFragment';
@@ -220,7 +215,7 @@ export const EditRoutineExerciseScreen = () => {
         </View>
       ),
     });
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <KeyboardAwareScrollView

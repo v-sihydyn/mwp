@@ -71,7 +71,7 @@ export const StatisticsScreen = () => {
     }
 
     return result;
-  }, [filterDate]);
+  }, [filterDate]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleClearFilterDate = () => {
     setFilterDate(null);

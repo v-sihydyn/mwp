@@ -12,11 +12,7 @@ import { openCreatePlanModal } from '../../../../components/modals/CreatePlanMod
 
 import { useAuthContext } from '../../../../contexts/AuthContext';
 
-type CreateWorkoutPlanSectionProps = {};
-
-export const CreateWorkoutPlanSection = (
-  props: CreateWorkoutPlanSectionProps,
-) => {
+export const CreateWorkoutPlanSection = () => {
   const { userId } = useAuthContext();
   const { width: windowWidth } = useWindowDimensions();
 

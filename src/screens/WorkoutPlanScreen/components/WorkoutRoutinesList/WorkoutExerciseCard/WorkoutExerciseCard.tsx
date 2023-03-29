@@ -8,17 +8,26 @@ import {
   Pressable,
 } from 'react-native';
 import { colors } from '../../../../../styles/colors';
-import { WorkoutRoutineExercise } from '../../../../../API';
+import { MuscleGroup } from '../../../../../API';
 import { MUSCLE_VALUES_MAP } from '../../../../../constants/muscleSelectOptions';
+import { DraftSet } from '../../../../../types/draftWorkout';
 
 type WorkoutExerciseCardProps = {
-  item: WorkoutRoutineExercise;
+  name: string;
+  muscleGroup?: MuscleGroup | null;
+  sets?: DraftSet[];
+  setsConfig?: string;
+  color?: string | null;
   style?: StyleProp<ViewStyle>;
   onPress?: () => void;
 };
 
 export const WorkoutExerciseCard = ({
-  item,
+  name,
+  muscleGroup,
+  sets,
+  setsConfig,
+  color,
   style,
   onPress,
 }: WorkoutExerciseCardProps) => {
@@ -27,17 +36,27 @@ export const WorkoutExerciseCard = ({
     width?: number;
   }>({});
 
-  const displayMuscleGroup = item.muscleGroup
-    ? MUSCLE_VALUES_MAP[item.muscleGroup]
+  const displayMuscleGroup = muscleGroup
+    ? MUSCLE_VALUES_MAP[muscleGroup]
     : null;
 
-  const sets = useMemo<{ sets: string; reps: string; weight: string }[]>(() => {
+  const _sets = useMemo<
+    { sets: string; reps: string; weight: string }[]
+  >(() => {
     try {
-      return JSON.parse(item.setsConfig);
+      if (sets?.length) {
+        return sets;
+      }
+
+      if (setsConfig) {
+        return JSON.parse(setsConfig);
+      }
+
+      return [];
     } catch (e) {
       return [];
     }
-  }, [item.setsConfig]);
+  }, [sets, setsConfig]);
 
   return (
     <Pressable onPress={onPress} style={[styles.root, style]}>
@@ -48,9 +67,7 @@ export const WorkoutExerciseCard = ({
             width: '100%',
             height: contentDimensions.height,
             backgroundColor:
-              !item.color || item.color === '#000000'
-                ? colors.surface2
-                : item.color,
+              !color || color === '#000000' ? colors.surface2 : color,
             alignSelf: 'flex-end',
             borderRadius: 12,
           }}
@@ -70,23 +87,23 @@ export const WorkoutExerciseCard = ({
           {/*  }}*/}
           {/*/>*/}
           <View style={{ flexDirection: 'column', margin: 16 }}>
-            <Text style={styles.title}>{item.name}</Text>
+            <Text style={styles.title}>{name}</Text>
             <Text style={styles.subtitle}>{displayMuscleGroup}</Text>
           </View>
         </View>
       </View>
       <View style={styles.footer}>
-        {sets.map((set, index) => (
+        {_sets.map((set, index) => (
           <View
             key={index}
             style={[
               styles.set,
-              index === sets.length - 1 && { marginBottom: 0 },
+              index === _sets.length - 1 && { marginBottom: 0 },
             ]}>
             <View
               style={[
                 styles.colorIndicator,
-                { backgroundColor: item.color || '#000000' },
+                { backgroundColor: color || '#000000' },
               ]}
             />
             <Text style={styles.setItem}>{set.sets} sets</Text>

@@ -4,11 +4,14 @@ import { WorkoutSummary } from '../WorkoutScreen/components/WorkoutSummary/Worko
 import React, { useEffect } from 'react';
 import { CustomButton } from '../../components/CustomButton/CustomButton';
 import { Icon } from '../../components/Icon/Icon';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { openDeleteWorkoutModal } from '../../components/modals/DeleteWorkoutModal/DeleteWorkoutModal';
+import { WorkoutDetailsRouteProp } from '../../../types';
 
 export const WorkoutDetailsScreen = () => {
   const navigation = useNavigation();
+  const route = useRoute<WorkoutDetailsRouteProp>();
+  const { title, workout, workoutExercises } = route.params;
 
   const handleDelete = async () => {
     try {
@@ -35,7 +38,11 @@ export const WorkoutDetailsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <WorkoutSummary title="Workout Routine 1" />
+      <WorkoutSummary
+        title={title}
+        workout={workout}
+        exercises={workoutExercises}
+      />
     </View>
   );
 };

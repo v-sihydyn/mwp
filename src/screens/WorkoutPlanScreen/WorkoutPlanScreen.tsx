@@ -39,6 +39,7 @@ import { Icon } from '../../components/Icon/Icon';
 import { StoreObject } from '@apollo/client';
 import { useWorkoutPlanRoutineActions } from '../../hooks/useWorkoutPlanRoutineActions';
 import { workoutPlansByUserIDQuery } from './hooks/queries/workoutPlansByUserIDQuery';
+import { PagerViewProps } from 'react-native-pager-view';
 
 type Props = RootTabScreenProps<'WorkoutPlan'>;
 
@@ -390,13 +391,16 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
 
   const _tabs = routines.map((routine) => {
     return (
-      <Tabs.Tab name={routine!.name} key={routine!.id}>
+      <Tabs.Tab name={routine!.name!} key={routine!.id}>
         <Tabs.FlatList
           data={routine.WorkoutRoutineExercises.items}
           renderItem={({ item }) =>
             item && (
               <WorkoutExerciseCard
-                item={item}
+                name={item.name}
+                muscleGroup={item.muscleGroup}
+                setsConfig={item.setsConfig}
+                color={item.color}
                 onPress={() => handleInitiateEditExercise(item.id)}
               />
             )
@@ -425,9 +429,11 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
         }}
       />
       <Tabs.Container
-        pagerProps={{
-          onPageSelected: (e) => setActiveTabPosition(e.nativeEvent.position),
-        }}
+        pagerProps={
+          {
+            onPageSelected: (e) => setActiveTabPosition(e.nativeEvent.position),
+          } as Omit<PagerViewProps, 'onPageScroll' | 'initialPage'>
+        }
         key={tabContainerKey}
         ref={tabContainerRef}
         revealHeaderOnScroll={true}

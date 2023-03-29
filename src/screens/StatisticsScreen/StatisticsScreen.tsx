@@ -19,6 +19,8 @@ import { MarkedDates } from 'react-native-calendars/src/types';
 import { MarkingProps } from 'react-native-calendars/src/calendar/day/marking';
 import { useWorkoutsList } from './hooks/useWorkoutsList/useWorkoutsList';
 import { FullscreenLoader } from '../../components/FullscreenLoader/FullscreenLoader';
+import { Workout } from '../../API';
+import { DraftWorkout } from '../../types/draftWorkout';
 
 const DATES_WITH_WORKOUT_RECORDS = [
   '2023-01-31',
@@ -74,8 +76,31 @@ export const StatisticsScreen = () => {
     setFilterDate(null);
   };
 
-  const handleGoToDetails = () => {
-    navigation.navigate('WorkoutDetails');
+  const handleGoToDetails = (item: Workout) => {
+    const workout: DraftWorkout = {
+      status: item.status,
+      dateFinished: item.dateFinished,
+      totalTimeInSeconds: item.totalTimeInSeconds,
+      workoutWorkoutPlanRoutineId: item.workoutWorkoutPlanRoutineId,
+    };
+
+    const workoutExercises = (item.WorkoutExercises?.items ?? []).map((e) => ({
+      name: e?.WorkoutRoutineExercise?.name ?? '',
+      description: e?.WorkoutRoutineExercise?.description,
+      sets: JSON.parse(e?.WorkoutRoutineExercise?.setsConfig ?? ''),
+      sortOrder: e?.WorkoutRoutineExercise?.sortOrder,
+      restTimeInSeconds: e?.WorkoutRoutineExercise?.restTimeInSeconds || 0,
+      workoutExerciseWorkoutRoutineExerciseId:
+        e!.workoutExerciseWorkoutRoutineExerciseId!,
+      muscleGroup: e?.WorkoutRoutineExercise?.muscleGroup,
+      color: e?.WorkoutRoutineExercise?.color,
+    }));
+
+    navigation.navigate('WorkoutDetails', {
+      title: item.WorkoutPlanRoutine?.name ?? '',
+      workout,
+      workoutExercises,
+    });
   };
 
   const leftIcon = filterDate ? (
@@ -101,7 +126,7 @@ export const StatisticsScreen = () => {
               item={item}
               isFirst={index === 0}
               isLast={index === workouts.length - 1}
-              onPress={handleGoToDetails}
+              onPress={() => handleGoToDetails(item)}
             />
           )
         }

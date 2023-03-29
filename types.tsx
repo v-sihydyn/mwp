@@ -45,7 +45,11 @@ export type RootStackParamList = {
     draftWorkout: DraftWorkout;
     draftWorkoutExercises: DraftWorkoutExercise[];
   };
-  WorkoutDetails: undefined;
+  WorkoutDetails: {
+    title: string;
+    workout: DraftWorkout;
+    workoutExercises: DraftWorkoutExercise[];
+  };
   EditRoutineExercise: {
     workoutPlanId: string;
     workoutRoutineId: string;
@@ -96,6 +100,17 @@ export type ConfigureWorkoutNavigationProp = NativeStackNavigationProp<
 export type ConfigureWorkoutRouteProp = RouteProp<
   RootStackParamList,
   'ConfigureWorkout'
+>;
+
+// WorkoutDetails
+
+export type WorkoutDetailsNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'WorkoutDetails'
+>;
+export type WorkoutDetailsRouteProp = RouteProp<
+  RootStackParamList,
+  'WorkoutDetails'
 >;
 
 // Workout

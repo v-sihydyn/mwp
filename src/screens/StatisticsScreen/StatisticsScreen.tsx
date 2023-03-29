@@ -21,6 +21,7 @@ import { useWorkoutsList } from './hooks/useWorkoutsList/useWorkoutsList';
 import { FullscreenLoader } from '../../components/FullscreenLoader/FullscreenLoader';
 import { Workout } from '../../API';
 import { DraftWorkout } from '../../types/draftWorkout';
+import { ListEmptyComponent } from './components/ListEmptyComponent/ListEmptyComponent';
 
 const DATES_WITH_WORKOUT_RECORDS = [
   '2023-01-31',
@@ -133,27 +134,32 @@ export const StatisticsScreen = () => {
         }
         bounces={false}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 80 }}
+        contentContainerStyle={{ paddingBottom: 80, flexGrow: 1 }}
+        ListEmptyComponent={ListEmptyComponent}
       />
 
-      <Pressable
-        onPress={() => setIsFilterSheetOpen(true)}
-        style={[styles.filterButton, { width: windowWidth - 40 }]}>
-        {leftIcon}
-        <Text style={styles.filterButtonText}>{filterButtonText}</Text>
-        <Icon name="chevron-up" color={colors.text} size={12} />
-      </Pressable>
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          width: windowWidth,
-          backgroundColor: colors.page,
-          height: 20,
-          alignSelf: 'center',
-          opacity: 0.9,
-        }}
-      />
+      {workouts.length > 0 && (
+        <>
+          <Pressable
+            onPress={() => setIsFilterSheetOpen(true)}
+            style={[styles.filterButton, { width: windowWidth - 40 }]}>
+            {leftIcon}
+            <Text style={styles.filterButtonText}>{filterButtonText}</Text>
+            <Icon name="chevron-up" color={colors.text} size={12} />
+          </Pressable>
+          <View
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              width: windowWidth,
+              backgroundColor: colors.page,
+              height: 20,
+              alignSelf: 'center',
+              opacity: 0.9,
+            }}
+          />
+        </>
+      )}
 
       <Portal>
         <BottomSheet

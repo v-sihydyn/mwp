@@ -19,9 +19,17 @@ import { FormSetControl } from './FormSetControl/FormSetControl';
 import { MUSCLE_SELECT_OPTIONS } from '../../constants/muscleSelectOptions';
 import { MuscleGroup } from '../../API';
 import * as yup from 'yup';
+import {
+  TimeIntervalPicker,
+  ValueMap,
+} from '../TimeIntervalPicker/TimeIntervalPicker';
+
+const isIos = Platform.OS === 'ios';
+const isAndroid = Platform.OS === 'android';
 
 export const ExerciseForm = () => {
-  const { control, watch, setValue } = useFormContext();
+  const { control, watch, setValue, getFieldState, formState } =
+    useFormContext();
   const {
     fields: sets,
     append,
@@ -30,9 +38,13 @@ export const ExerciseForm = () => {
     control,
     name: 'sets',
   });
+  const { isDirty: isSetsDirty } = getFieldState('sets', formState);
 
   const color = watch('color');
   const setsValue = watch('sets');
+  const restTimeMins = watch('restTimeMins');
+  const restTimeSecs = watch('restTimeSecs');
+  const isRestTimeSet = restTimeMins > 0 || restTimeSecs > 0;
 
   const allSetsCount = (setsValue as ExerciseFormData['sets']).reduce(
     (acc, cur) => {
@@ -41,13 +53,15 @@ export const ExerciseForm = () => {
     0,
   );
 
-  const [canSetRestTime, setCanSetRestTime] = useState(allSetsCount > 1);
+  const [canSetRestTime, setCanSetRestTime] = useState(
+    allSetsCount > 1 && isRestTimeSet,
+  );
 
   useEffect(() => {
-    if (allSetsCount < 2 && canSetRestTime) {
+    if (isSetsDirty && allSetsCount < 2 && canSetRestTime) {
       setCanSetRestTime(false);
     }
-  }, [allSetsCount, sets, canSetRestTime]);
+  }, [allSetsCount, sets, canSetRestTime, isSetsDirty]);
 
   useEffect(() => {
     if (!canSetRestTime) {
@@ -153,43 +167,42 @@ export const ExerciseForm = () => {
 
           {canSetRestTime && (
             <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: 16,
-              }}>
-              <Text style={{ fontSize: 16, color: colors.text }}>Time:</Text>
-              <View
-                style={{
+              style={[
+                {
+                  justifyContent: 'space-between',
+                  marginBottom: 16,
+                  flexGrow: 1,
+                },
+                isIos && {
+                  flexDirection: 'column',
+                },
+                isAndroid && {
                   flexDirection: 'row',
                   alignItems: 'center',
-                  justifyContent: 'space-between',
-                  flexGrow: 1,
-                  marginLeft: 10,
-                }}>
-                <FormInput
-                  name="restTimeMins"
-                  control={control}
-                  inputStyle={styles.setInput}
-                  variant="unstyled"
-                  width={60}
-                  maxLength={2}
-                  keyboardType="numeric"
-                />
-                <Text style={styles.setLabel}>Minutes</Text>
-                <View style={styles.setsFieldsDivider}></View>
-                <FormInput
-                  name="restTimeSecs"
-                  control={control}
-                  inputStyle={styles.setInput}
-                  variant="unstyled"
-                  width={60}
-                  maxLength={2}
-                  keyboardType="numeric"
-                />
-                <Text style={styles.setLabel}>Seconds</Text>
-              </View>
+                },
+              ]}>
+              <Text
+                style={[
+                  {
+                    fontSize: 16,
+                    color: colors.text,
+                  },
+                  isIos && { alignSelf: 'flex-start' },
+                ]}>
+                Time:
+              </Text>
+
+              <TimeIntervalPicker
+                initialValue={{
+                  hours: 0,
+                  minutes: Number(restTimeMins),
+                  seconds: Number(restTimeSecs),
+                }}
+                onChange={(value: ValueMap) => {
+                  setValue('restTimeMins', value.minutes);
+                  setValue('restTimeSecs', value.seconds);
+                }}
+              />
             </View>
           )}
         </View>
@@ -229,8 +242,8 @@ export type ExerciseFormData = {
   name: string;
   muscleGroup: MuscleGroup | null;
   sets: SetData[];
-  restTimeMins?: string | null;
-  restTimeSecs?: string | null;
+  restTimeMins?: number | null;
+  restTimeSecs?: number | null;
   color?: string | null;
   description?: string | null;
 };
@@ -323,7 +336,6 @@ const styles = StyleSheet.create({
     height: 56,
     width: '100%',
     backgroundColor: colors.surface,
-
     marginBottom: 16,
   },
   buttonText: {

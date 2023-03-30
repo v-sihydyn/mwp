@@ -76,7 +76,6 @@ export const TimeIntervalPicker = ({
 const styles = StyleSheet.create({
   root: {
     flexDirection: 'row',
-    flexGrow: 1,
   },
 });
 

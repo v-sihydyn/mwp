@@ -55,12 +55,8 @@ export const EditRoutineExerciseScreen = () => {
     sets: exercise.setsConfig
       ? JSON.parse(exercise.setsConfig)
       : blankInitialValues.sets,
-    restTimeMins: restTimeMins
-      ? String(restTimeMins)
-      : blankInitialValues.restTimeMins,
-    restTimeSecs: restTimeSecs
-      ? String(restTimeSecs)
-      : blankInitialValues.restTimeSecs,
+    restTimeMins: restTimeMins ? restTimeMins : blankInitialValues.restTimeMins,
+    restTimeSecs: restTimeSecs ? restTimeSecs : blankInitialValues.restTimeSecs,
     color: exercise.color ?? blankInitialValues.color,
     description: exercise.description ?? blankInitialValues.description,
   };

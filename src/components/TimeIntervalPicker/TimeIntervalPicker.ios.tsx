@@ -37,7 +37,6 @@ export const TimeIntervalPicker = ({
       dropdownIconColor={colors.text}
       minutesUnit="min."
       secondsUnit="sec."
-      mode={'dropdown'}
     />
   );
 };

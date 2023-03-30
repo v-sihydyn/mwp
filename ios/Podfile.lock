@@ -384,9 +384,11 @@ PODS:
     - React-perflogger (= 0.70.6)
   - RNAWSCognito (6.1.2):
     - React-Core
-  - RNCAsyncStorage (1.17.11):
+  - RNCAsyncStorage (1.18.0):
     - React-Core
-  - RNGestureHandler (2.2.1):
+  - RNCPicker (2.4.9):
+    - React-Core
+  - RNGestureHandler (2.8.0):
     - React-Core
   - RNInAppBrowser (3.7.0):
     - React-Core
@@ -495,6 +497,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNAWSCognito (from `../node_modules/amazon-cognito-identity-js`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNInAppBrowser (from `../node_modules/react-native-inappbrowser-reborn`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -602,6 +605,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/amazon-cognito-identity-js"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNCPicker:
+    :path: "../node_modules/@react-native-picker/picker"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNInAppBrowser:
@@ -670,8 +675,9 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 15437b576139df27635400de0599d9844f1ab817
   ReactCommon: 349be31adeecffc7986a0de875d7fb0dcf4e251c
   RNAWSCognito: 06ca81fa480fd7f9ff539d01bc41f9d531ff0a19
-  RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
-  RNGestureHandler: 1dc1ea9d4b64f999042afafbaccf5b143f0b2fa2
+  RNCAsyncStorage: a46ee6bf15cf1ba863d0a47287236f9c95d5b213
+  RNCPicker: 567de6dc0c6735cf249700d940c80b90b090e4db
+  RNGestureHandler: 62232ba8f562f7dea5ba1b3383494eb5bf97a4d3
   RNInAppBrowser: e36d6935517101ccba0e875bac8ad7b0cb655364
   RNReanimated: ce445c233a6ff5600223484a88ad5704945d972a
   RNScreens: aa9a97835afbbdc18a4757870b2b59b7d9fae16a

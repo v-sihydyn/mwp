@@ -354,6 +354,8 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   const handlePlayWorkout = () => {
     if (!selectedRoutine?.id) return;
 
+    // @TODO: if there is only 1 exercise then play workout immediately
+
     navigation.navigate('ConfigureWorkout', {
       workoutRoutineId: selectedRoutine.id,
     });

@@ -1,4 +1,10 @@
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import { Tabs } from 'react-native-collapsible-tab-view';
 import { colors } from '../../styles/colors';
 import React, { useMemo, useState } from 'react';
@@ -163,6 +169,7 @@ export const WorkoutScreen = () => {
         screen: 'WorkoutPlan',
       });
     } catch (e) {
+      setIsSavingWorkout(false);
       Toast.show({
         title: 'Failed to save workout',
         description: (e as Error).message,
@@ -170,59 +177,62 @@ export const WorkoutScreen = () => {
         backgroundColor: colors.red,
       });
     } finally {
-      setIsSavingWorkout(false);
       AsyncStorage.removeItem('workoutPlayerCurrentTime');
     }
   };
 
   const renderHeader = () => null;
 
-  const renderTabBar = (props: any) => (
-    <MaterialTabBar
-      {...props}
-      style={{
-        marginTop: 20,
-        width: windowWidth - 40,
-        alignSelf: 'center',
-      }}
-      contentContainerStyle={{
-        flexGrow: 1,
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}
-      tabStyle={{
-        width: 38,
-        height: 38,
-        borderRadius: 38,
-      }}
-      indicatorStyle={{
-        height: 0,
-      }}
-      labelStyle={{
-        fontWeight: '700',
-        fontSize: 14,
-        color: colors.text,
-      }}
-      activeColor={colors.text}
-      activeBgColor={colors.green}
-      inactiveColor={colors.text}
-      inactiveBgColor={colors.black}
-      scrollEnabled
-      TabItemComponent={(tabItemProps) => (
-        <MaterialTabItem
-          {...tabItemProps}
-          label={
-            getAreAllSetsCompletedInExercise(exercises[tabItemProps.index])
-              ? () => <Icon name="check" size={14} color={colors.text} />
-              : String(tabItemProps.index + 1)
-          }
-          externalIsActive={getAreAllSetsCompletedInExercise(
-            exercises[tabItemProps.index],
-          )}
-        />
-      )}
-    />
-  );
+  const renderTabBar = (props: any) => {
+    if (exercises.length < 2) return null;
+
+    return (
+      <MaterialTabBar
+        {...props}
+        style={{
+          marginTop: 20,
+          width: windowWidth - 40,
+          alignSelf: 'center',
+        }}
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+        tabStyle={{
+          width: 38,
+          height: 38,
+          borderRadius: 38,
+        }}
+        indicatorStyle={{
+          height: 0,
+        }}
+        labelStyle={{
+          fontWeight: '700',
+          fontSize: 14,
+          color: colors.text,
+        }}
+        activeColor={colors.text}
+        activeBgColor={colors.green}
+        inactiveColor={colors.text}
+        inactiveBgColor={colors.black}
+        scrollEnabled
+        TabItemComponent={(tabItemProps) => (
+          <MaterialTabItem
+            {...tabItemProps}
+            label={
+              getAreAllSetsCompletedInExercise(exercises[tabItemProps.index])
+                ? () => <Icon name="check" size={14} color={colors.text} />
+                : String(tabItemProps.index + 1)
+            }
+            externalIsActive={getAreAllSetsCompletedInExercise(
+              exercises[tabItemProps.index],
+            )}
+          />
+        )}
+      />
+    );
+  };
 
   const isPlayerFinished = playerState === 'finished';
 
@@ -270,7 +280,13 @@ export const WorkoutScreen = () => {
                 { backgroundColor: colors.black, shadowColor: colors.black },
               ]}
             />
-            <Text style={styles.timerText}>{formatTime(restTimer.time)}</Text>
+            <Text
+              style={[
+                styles.timerText,
+                restTimer.time >= ONE_HOUR && { fontSize: 12 },
+              ]}>
+              {formatTime(restTimer.time)}
+            </Text>
           </View>
         </View>
       )}
@@ -338,6 +354,7 @@ export const WorkoutScreen = () => {
                     )}
                   </>
                 )}
+                style={[Platform.OS === 'android' && { marginTop: 60 }]}
               />
             </Tabs.Tab>
           );

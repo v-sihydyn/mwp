@@ -1,18 +1,15 @@
 import { Text, TouchableOpacity } from 'react-native';
 import { Modal as NBModal, IModalProps as INBModalProps } from 'native-base';
 import React from 'react';
-import { create } from 'react-modal-promise';
+import { create, InstanceProps } from 'react-modal-promise';
 import { modalStyles } from '../modalStyles';
 import { colors } from '../../../styles/colors';
 
-type Props = INBModalProps & {
-  onResolve: (value?: any) => void;
-  onReject: (reason?: any) => void;
-};
+type Props = InstanceProps<boolean>;
 
 export const ConfirmLogoutModal = ({ isOpen, onResolve, onReject }: Props) => {
   return (
-    <NBModal isOpen={isOpen} onClose={() => onReject('close reject')}>
+    <NBModal isOpen={isOpen} onClose={() => onReject()}>
       <NBModal.Content backgroundColor={colors.page}>
         <NBModal.Header
           backgroundColor={colors.page}
@@ -34,7 +31,7 @@ export const ConfirmLogoutModal = ({ isOpen, onResolve, onReject }: Props) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={modalStyles.modalButton}
-            onPress={() => onResolve()}>
+            onPress={() => onResolve(true)}>
             <Text style={modalStyles.modalButtonText}>Ok</Text>
           </TouchableOpacity>
         </NBModal.Footer>
@@ -43,4 +40,6 @@ export const ConfirmLogoutModal = ({ isOpen, onResolve, onReject }: Props) => {
   );
 };
 
-export const openConfirmLogoutModal = create(ConfirmLogoutModal);
+export const openConfirmLogoutModal = create<Props, boolean>(
+  ConfirmLogoutModal,
+);

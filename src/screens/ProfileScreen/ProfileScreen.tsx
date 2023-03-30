@@ -1,13 +1,26 @@
-import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { colors } from '../../styles/colors';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
-import { Icon } from '../../components/Icon/Icon';
 import { openConfirmLogoutModal } from '../../components/modals/ConfirmLogoutModal/ConfirmLogoutModal';
 import { Auth } from 'aws-amplify';
+import { useAuthContext } from '../../contexts/AuthContext';
+import { useApolloClient } from '@apollo/client';
+import { GetUserQuery, GetUserQueryVariables } from '../../API';
+import { getUserQuery } from '../../queries/getUserQuery';
+import Octicons from 'react-native-vector-icons/Octicons';
 
 export const ProfileScreen = () => {
   const navigation = useNavigation();
+  const client = useApolloClient();
+  const { userId } = useAuthContext();
+  const userQuery = client.cache.readQuery<GetUserQuery, GetUserQueryVariables>(
+    {
+      query: getUserQuery,
+      variables: { id: userId },
+    },
+  );
+  const user = userQuery?.getUser ?? null;
 
   useEffect(() => {
     navigation.setOptions({
@@ -16,32 +29,26 @@ export const ProfileScreen = () => {
           style={{ marginLeft: 20 }}
           onPress={handleLogout}
           hitSlop={20}>
-          <Icon
-            name="sign-out-alt" // @TODO: mb use alternative icon font
-            color={colors.text}
-            size={18}
-            light={true}
-          />
+          <Octicons name="sign-out" color={colors.text} size={18} />
         </Pressable>
       ),
     });
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleLogout = async () => {
     try {
-      await openConfirmLogoutModal();
-      await Auth.signOut();
+      const confirmed = await openConfirmLogoutModal();
+
+      if (confirmed) {
+        await Auth.signOut();
+      }
     } catch (e) {}
   };
 
   return (
     <View style={styles.container}>
-      <Image
-        source={{ uri: 'https://i.pravatar.cc/120' }}
-        style={styles.avatar}
-      />
-      <Text style={styles.name}>John Doe</Text>
-      <Text style={styles.email}>johndoe@gmail.com</Text>
+      <Text style={styles.name}>{user?.username}</Text>
+      <Text style={styles.email}>{user?.email}</Text>
     </View>
   );
 };

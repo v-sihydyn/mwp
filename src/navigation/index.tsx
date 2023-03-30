@@ -19,13 +19,11 @@ import { ProfileScreen } from '../screens/ProfileScreen/ProfileScreen';
 import { Icon, IconProps } from '../components/Icon/Icon';
 import { EditRoutineExerciseScreen } from '../screens/EditRoutineExerciseScreen/EditRoutineExerciseScreen';
 import { useAuthContext } from '../contexts/AuthContext';
-import { ActivityIndicator, View } from 'react-native';
 import AuthStackNavigator from './AuthStackNavigator';
 import { EditProfileScreen } from '../screens/EditProfileScreen/EditProfileScreen';
 import { useQuery } from '@apollo/client';
 import { GetUserQuery, GetUserQueryVariables } from '../API';
-import { getUser } from '../queries/getUser';
-import { Spinner } from 'native-base';
+import { getUserQuery } from '../queries/getUserQuery';
 import { FullscreenLoader } from '../components/FullscreenLoader/FullscreenLoader';
 
 export default function Navigation() {
@@ -41,7 +39,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 const RootNavigator = () => {
   const { user, userId } = useAuthContext();
   const { data, loading } = useQuery<GetUserQuery, GetUserQueryVariables>(
-    getUser,
+    getUserQuery,
     {
       variables: { id: userId },
       skip: !userId,

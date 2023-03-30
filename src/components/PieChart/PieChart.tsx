@@ -189,6 +189,7 @@ export const PieChart = ({
           )}
 
           {areGapsVisible &&
+            sortedValues.length > 1 &&
             sortedValues.map((value, index) => (
               <Rect
                 key={index}

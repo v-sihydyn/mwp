@@ -9,7 +9,11 @@ import { SortableListItem } from '../../components/SortableList/SortableListItem
 import { Icon } from '../../components/Icon/Icon';
 import { ListHeader } from './ListHeader/ListHeader';
 import { CustomButton } from '../../components/CustomButton/CustomButton';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import {
+  StackActions,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import { ConfigureWorkoutRouteProp } from '../../../types';
 import { useApolloClient } from '@apollo/client';
 import { routineFragment } from '../../fragments/routineFragment';
@@ -24,6 +28,7 @@ import {
   DraftWorkoutExercise,
 } from '../../types/draftWorkout';
 import { nanoid } from 'nanoid';
+import { ValueMap } from '../../components/TimeIntervalPicker/TimeIntervalPicker';
 
 type Set = {
   sets: string;
@@ -48,13 +53,16 @@ export const ConfigureWorkoutScreen = () => {
         []) as WorkoutRoutineExercise[]
     ).filter((x) => !x?._deleted);
   });
-  const [restMinutes, setRestMinutes] = useState('');
-  const [restSeconds, setRestSeconds] = useState('');
+  const [restTime, setRestTime] = useState<ValueMap>({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
   const playWorkout = async () => {
     let restTimeInSeconds = 0;
-    const _restTimeMins = Number(restMinutes);
-    const _restTimeSecs = Number(restSeconds);
+    const _restTimeMins = Number(restTime.minutes);
+    const _restTimeSecs = Number(restTime.seconds);
 
     if (!Number.isNaN(_restTimeMins) && !Number.isNaN(_restTimeSecs)) {
       restTimeInSeconds = _restTimeMins * 60 + _restTimeSecs;
@@ -106,11 +114,13 @@ export const ConfigureWorkoutScreen = () => {
       };
     });
 
-    navigation.navigate('Workout', {
-      restTimeInSeconds,
-      draftWorkout,
-      draftWorkoutExercises,
-    });
+    navigation.dispatch(
+      StackActions.replace('Workout', {
+        restTimeInSeconds,
+        draftWorkout,
+        draftWorkoutExercises,
+      }),
+    );
   };
 
   useEffect(() => {
@@ -163,13 +173,10 @@ export const ConfigureWorkoutScreen = () => {
     );
   };
 
-  const renderListHeader = useCallback(
-    () => (
-      <ListHeader
-        onRestMinutesChange={(value: string) => setRestMinutes(value)}
-        onRestSecondsChange={(value: string) => setRestSeconds(value)}
-      />
-    ),
+  const onTimeChange = useCallback((value: ValueMap) => setRestTime(value), []);
+
+  const ListHeaderComponent = useCallback(
+    () => <ListHeader onRestTimeChange={onTimeChange} />,
     [],
   );
 
@@ -188,7 +195,7 @@ export const ConfigureWorkoutScreen = () => {
         keyExtractor={(item) => String(item.id)}
         renderItem={renderItem}
         refreshing={false}
-        ListHeaderComponent={renderListHeader}
+        ListHeaderComponent={ListHeaderComponent}
         showsVerticalScrollIndicator={false}
         bounces={false}
         style={styles.list}

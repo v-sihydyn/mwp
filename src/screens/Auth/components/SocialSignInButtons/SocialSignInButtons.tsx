@@ -1,8 +1,8 @@
 import React from 'react';
-import CustomButton from '../CustomButton';
 import { Auth } from 'aws-amplify';
 import { Alert } from 'react-native';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth/src/types/Auth';
+import { Button } from 'native-base';
 
 const SocialSignInButtons = () => {
   const onSignInGoogle = async () => {
@@ -17,12 +17,18 @@ const SocialSignInButtons = () => {
 
   return (
     <>
-      <CustomButton
-        text="Sign In with Google"
-        onPress={onSignInGoogle}
-        bgColor="#FAE9EA"
-        fgColor="#DD4D44"
-      />
+      <Button
+        bgColor={'#FAE9EA'}
+        padding={15}
+        w="100%"
+        mt={5}
+        mb={5}
+        borderRadius={5}
+        _text={{ fontWeight: 'bold', color: '#DD4D44' }}
+        onPress={onSignInGoogle}>
+        Sign In with Google
+      </Button>
+
       {/*<CustomButton*/}
       {/*  text="Sign In with Apple"*/}
       {/*  onPress={onSignInApple}*/}

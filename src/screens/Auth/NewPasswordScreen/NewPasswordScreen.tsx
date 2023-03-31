@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import FormInput from '../components/FormInput';
-import CustomButton from '../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import { NewPasswordNavigationProp } from '../../../types/navigation';
 import { Auth } from 'aws-amplify';
 import { colors } from '../../../styles/colors';
+import { Button } from 'native-base';
 
 type NewPasswordType = {
   email: string;
@@ -87,13 +87,24 @@ const NewPasswordScreen = () => {
           }}
         />
 
-        <CustomButton text="Submit" onPress={handleSubmit(onSubmitPressed)} />
-
-        <CustomButton
-          text="Back to Sign in"
+        <Button
+          bgColor={colors.green}
+          padding={15}
+          w="100%"
+          mt={1.5}
+          borderRadius={5}
+          _text={{ fontWeight: 'bold', color: colors.text }}
+          onPress={handleSubmit(onSubmitPressed)}>
+          Submit
+        </Button>
+        <Button
           onPress={onSignInPress}
-          type="TERTIARY"
-        />
+          variant="unstyled"
+          _text={{ fontWeight: 'bold' }}
+          mt={1.5}
+          mb={1.5}>
+          Back to Sign in
+        </Button>
       </View>
     </ScrollView>
   );

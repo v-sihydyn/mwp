@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import FormInput from '../components/FormInput';
-import CustomButton from '../components/CustomButton';
 import { useNavigation } from '@react-navigation/core';
 import { useForm } from 'react-hook-form';
 import {
@@ -11,6 +10,7 @@ import {
 import { useRoute } from '@react-navigation/native';
 import { Auth } from 'aws-amplify';
 import { colors } from '../../../styles/colors';
+import { Button } from 'native-base';
 
 type ConfirmEmailData = {
   email: string;
@@ -54,7 +54,7 @@ const ConfirmEmailScreen = () => {
   const onResendPress = async () => {
     try {
       await Auth.resendSignUp(watchEmail);
-      Alert.alert('Chek your email', 'The code has been sent');
+      Alert.alert('Check your email', 'The code has been sent');
     } catch (e) {
       Alert.alert('Oops', (e as Error).message);
     }
@@ -63,7 +63,8 @@ const ConfirmEmailScreen = () => {
   return (
     <ScrollView
       contentContainerStyle={{ flex: 1 }}
-      showsVerticalScrollIndicator={false}>
+      showsVerticalScrollIndicator={false}
+      bounces={false}>
       <View style={styles.root}>
         <Text style={styles.title}>Confirm your email</Text>
 
@@ -85,23 +86,44 @@ const ConfirmEmailScreen = () => {
             required: 'Confirmation code is required',
           }}
         />
+        <Button
+          isLoading={loading}
+          bgColor={colors.green}
+          padding={15}
+          w="100%"
+          mt={2}
+          borderRadius={5}
+          _text={{ fontWeight: 'bold', color: colors.text }}
+          onPress={handleSubmit(onConfirmPressed)}>
+          {loading ? 'Loading...' : 'Confirm'}
+        </Button>
 
-        <CustomButton
-          text={loading ? 'Loading' : 'Confirm'}
-          onPress={handleSubmit(onConfirmPressed)}
-        />
-
-        <CustomButton
-          text="Resend code"
+        <Button
+          padding={15}
+          w="100%"
+          mt={2}
+          borderRadius={5}
+          borderColor={colors.green}
+          borderWidth={2}
+          _text={{ fontWeight: 'bold', color: colors.green }}
           onPress={onResendPress}
-          type="SECONDARY"
-        />
+          variant="outline">
+          Resend code
+        </Button>
 
-        <CustomButton
-          text="Back to Sign in"
+        {/*<CustomButton*/}
+        {/*  text="Back to Sign in"*/}
+        {/*  onPress={onSignInPress}*/}
+        {/*  type="TERTIARY"*/}
+        {/*/>*/}
+        <Button
           onPress={onSignInPress}
-          type="TERTIARY"
-        />
+          variant="unstyled"
+          _text={{ fontWeight: 'bold' }}
+          mt={1.5}
+          mb={1.5}>
+          Back to Sign in
+        </Button>
       </View>
     </ScrollView>
   );

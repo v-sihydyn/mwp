@@ -1,13 +1,13 @@
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import FormInput from '../components/FormInput';
-import CustomButton from '../components/CustomButton';
 import SocialSignInButtons from '../components/SocialSignInButtons';
 import { useNavigation } from '@react-navigation/core';
 import { useForm } from 'react-hook-form';
 import { SignUpNavigationProp } from '../../../types/navigation';
 import { Auth } from 'aws-amplify';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { colors } from '../../../styles/colors';
+import { Button } from 'native-base';
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -65,7 +65,8 @@ const SignUpScreen = () => {
   return (
     <ScrollView
       contentContainerStyle={{ flex: 1 }}
-      showsVerticalScrollIndicator={false}>
+      showsVerticalScrollIndicator={false}
+      bounces={false}>
       <View style={styles.root}>
         <Text style={styles.title}>Create an account</Text>
 
@@ -119,10 +120,18 @@ const SignUpScreen = () => {
           }}
         />
 
-        <CustomButton
-          text={loading ? 'Loading...' : 'Register'}
-          onPress={handleSubmit(onRegisterPressed)}
-        />
+        <Button
+          isLoading={loading}
+          bgColor={colors.green}
+          padding={15}
+          w="100%"
+          mt={1.5}
+          mb={1.5}
+          borderRadius={5}
+          _text={{ fontWeight: 'bold', color: colors.text }}
+          onPress={handleSubmit(onRegisterPressed)}>
+          {loading ? 'Loading...' : 'Register'}
+        </Button>
 
         <Text style={styles.text}>
           By registering, you confirm that you accept our{' '}
@@ -137,11 +146,14 @@ const SignUpScreen = () => {
 
         <SocialSignInButtons />
 
-        <CustomButton
-          text="Have an account? Sign in"
+        <Button
           onPress={onSignInPress}
-          type="TERTIARY"
-        />
+          variant="unstyled"
+          mt={1.5}
+          mb={1.5}
+          _text={{ fontWeight: 'bold' }}>
+          Have an account? Sign in
+        </Button>
       </View>
     </ScrollView>
   );

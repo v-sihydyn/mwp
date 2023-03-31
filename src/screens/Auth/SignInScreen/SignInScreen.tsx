@@ -1,6 +1,5 @@
-import { View, StyleSheet, ScrollView, Alert, Text } from 'react-native';
+import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import FormInput from '../components/FormInput';
-import CustomButton from '../components/CustomButton';
 import SocialSignInButtons from '../components/SocialSignInButtons';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
@@ -9,6 +8,7 @@ import { Auth } from 'aws-amplify';
 import React, { useState } from 'react';
 import { colors } from '../../../styles/colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Button } from 'native-base';
 
 type SignInData = {
   email: string;
@@ -23,7 +23,7 @@ const SignInScreen = () => {
   const navigation = useNavigation<SignInNavigationProp>();
   const [loading, setLoading] = useState(false);
 
-  const { control, handleSubmit, reset } = useForm<SignInData>();
+  const { control, handleSubmit } = useForm<SignInData>();
 
   const onSignInPressed = async ({ email, password }: SignInData) => {
     if (loading) {
@@ -35,14 +35,13 @@ const SignInScreen = () => {
     try {
       await Auth.signIn(email, password);
     } catch (e) {
+      setLoading(false);
+
       if ((e as Error).name === 'UserNotConfirmedException') {
         navigation.navigate('Confirm email', { email });
       } else {
         Alert.alert('Oops', (e as Error).message);
       }
-    } finally {
-      setLoading(false);
-      reset();
     }
   };
 
@@ -57,7 +56,8 @@ const SignInScreen = () => {
   return (
     <ScrollView
       contentContainerStyle={{ flex: 1 }}
-      showsVerticalScrollIndicator={false}>
+      showsVerticalScrollIndicator={false}
+      bounces={false}>
       <View style={[styles.root, { paddingTop: insets.top }]}>
         <FormInput
           name="email"
@@ -83,24 +83,36 @@ const SignInScreen = () => {
           }}
         />
 
-        <CustomButton
-          text={loading ? 'Loading...' : 'Sign In'}
-          onPress={handleSubmit(onSignInPressed)}
-        />
+        <Button
+          isLoading={loading}
+          bgColor={colors.green}
+          padding={15}
+          w="100%"
+          mt={1.5}
+          mb={1.5}
+          borderRadius={5}
+          _text={{ fontWeight: 'bold', color: colors.text }}
+          onPress={handleSubmit(onSignInPressed)}>
+          {loading ? 'Loading...' : 'Sign In'}
+        </Button>
 
-        <CustomButton
-          text="Forgot password?"
+        <Button
           onPress={onForgotPasswordPressed}
-          type="TERTIARY"
-        />
+          variant="unstyled"
+          _text={{ fontWeight: 'bold' }}
+          mt={1.5}
+          mb={1.5}>
+          Forgot password?
+        </Button>
 
         <SocialSignInButtons />
 
-        <CustomButton
-          text="Don't have an account? Create one"
+        <Button
           onPress={onSignUpPress}
-          type="TERTIARY"
-        />
+          variant="unstyled"
+          _text={{ fontWeight: 'bold' }}>
+          Don't have an account? Create one
+        </Button>
       </View>
     </ScrollView>
   );

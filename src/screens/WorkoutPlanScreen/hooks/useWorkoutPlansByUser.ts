@@ -7,7 +7,7 @@ import {
 import { useMemo } from 'react';
 
 export const useWorkoutPlansByUser = (userId: string) => {
-  const { data, loading } = useQuery<
+  const { data, loading, error } = useQuery<
     WorkoutPlansByUserIDQuery,
     WorkoutPlansByUserIDQueryVariables
   >(workoutPlansByUserIDQuery, {
@@ -54,5 +54,6 @@ export const useWorkoutPlansByUser = (userId: string) => {
   return {
     workoutPlans,
     areWorkoutPlansLoading: loading,
+    error,
   };
 };

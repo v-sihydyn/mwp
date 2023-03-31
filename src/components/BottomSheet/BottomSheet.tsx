@@ -7,7 +7,6 @@ import {
   LayoutChangeEvent,
   Pressable,
   PanResponder,
-  TouchableWithoutFeedback,
   BackHandler,
 } from 'react-native';
 import { colors } from '../../styles/colors';
@@ -127,7 +126,7 @@ export const BottomSheet: React.FC<Props> = ({
 
   return (
     <View style={StyleSheet.absoluteFill}>
-      <Pressable style={[styles.backdrop]} onPress={onClose}></Pressable>
+      <Pressable style={styles.backdrop} onPress={onClose} />
       <Animated.View
         style={[
           styles.wrapper,

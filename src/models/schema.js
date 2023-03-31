@@ -149,6 +149,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "userID": {
+                    "name": "userID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "WorkoutPlanRoutine": {
                     "name": "WorkoutPlanRoutine",
                     "isArray": false,
@@ -221,6 +228,17 @@ export const schema = {
                         "queryField": "workoutsByDate",
                         "fields": [
                             "status",
+                            "dateFinished"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "workoutsByUser",
+                        "queryField": "workoutsByUser",
+                        "fields": [
+                            "userID",
                             "dateFinished"
                         ]
                     }
@@ -636,6 +654,22 @@ export const schema = {
                         ]
                     }
                 },
+                "Workouts": {
+                    "name": "Workouts",
+                    "isArray": true,
+                    "type": {
+                        "model": "Workout"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "userID"
+                        ]
+                    }
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -880,5 +914,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.6",
-    "version": "be07061f2ff05a2287a2d24bf31aa2fc"
+    "version": "b97c1bb8099eb3ced0f8befcb38ffba9"
 };

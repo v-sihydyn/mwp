@@ -1,17 +1,17 @@
 import { gql } from '@apollo/client';
 import { workoutFragment } from '../../../../../fragments/workoutFragment';
 
-export const workoutsByDateQuery = gql`
-  query WorkoutsByDate(
-    $status: WorkoutStatus!
+export const workoutsByUserQuery = gql`
+  query WorkoutsByUser(
+    $userID: ID!
     $dateFinished: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelWorkoutFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    workoutsByDate(
-      status: $status
+    workoutsByUser(
+      userID: $userID
       dateFinished: $dateFinished
       sortDirection: $sortDirection
       filter: $filter

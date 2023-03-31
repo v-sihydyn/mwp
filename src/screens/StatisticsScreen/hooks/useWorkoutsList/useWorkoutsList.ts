@@ -1,25 +1,32 @@
 import { NetworkStatus, useLazyQuery } from '@apollo/client';
 import {
   ModelSortDirection,
-  WorkoutsByDateQuery,
-  WorkoutsByDateQueryVariables,
+  WorkoutsByUserQuery,
+  WorkoutsByUserQueryVariables,
   WorkoutStatus,
 } from '../../../../API';
-import { workoutsByDateQuery } from './queuries/workoutsByDateQuery';
 import { useEffect } from 'react';
 import dayjs from 'dayjs';
+import { workoutsByUserQuery } from './queuries/workoutsByUserQuery';
+import { useAuthContext } from '../../../../contexts/AuthContext';
 
 export const useWorkoutsList = (filterDate: string | null) => {
+  const { userId } = useAuthContext();
   const [fetch, { data, refetch, loading, networkStatus, error }] =
-    useLazyQuery<WorkoutsByDateQuery, WorkoutsByDateQueryVariables>(
-      workoutsByDateQuery,
+    useLazyQuery<WorkoutsByUserQuery, WorkoutsByUserQueryVariables>(
+      workoutsByUserQuery,
       {},
     );
 
   useEffect(() => {
-    const variables: WorkoutsByDateQueryVariables = {
-      status: WorkoutStatus.FINISHED,
+    const variables: WorkoutsByUserQueryVariables = {
+      userID: userId,
       sortDirection: ModelSortDirection.DESC,
+      filter: {
+        status: {
+          eq: WorkoutStatus.FINISHED,
+        },
+      },
     };
     let start;
     let end;
@@ -37,7 +44,7 @@ export const useWorkoutsList = (filterDate: string | null) => {
     });
   }, [filterDate]);
 
-  const workouts = (data?.workoutsByDate?.items ?? [])
+  const workouts = (data?.workoutsByUser?.items ?? [])
     .filter((x) => !x?._deleted)
     .map((workout) => ({
       ...workout,

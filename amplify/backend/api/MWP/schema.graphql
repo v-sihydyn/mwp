@@ -20,6 +20,7 @@ type Workout
   status: WorkoutStatus! @index(name: "workoutsByDate", queryField: "workoutsByDate", sortKeyFields: ["dateFinished"])
   dateFinished: AWSDateTime
   totalTimeInSeconds: Int
+  userID: ID! @index(name: "workoutsByUser", queryField: "workoutsByUser", sortKeyFields: ["dateFinished"])
   WorkoutPlanRoutine: WorkoutPlanRoutine @hasOne
   WorkoutExercises: [WorkoutExercise]
     @hasMany(indexName: "byWorkout", fields: ["id"])
@@ -97,6 +98,7 @@ type User
   username: String
     @index(name: "usersByUsername", queryField: "usersByUsername")
   WorkoutPlans: [WorkoutPlan] @hasMany(indexName: "byUser", fields: ["id"])
+  Workouts: [Workout] @hasMany(indexName: "workoutsByUser", fields: ["id"])
 }
 
 type WorkoutPlan

@@ -91,6 +91,8 @@ export const AddExerciseToRoutineScreen = () => {
               ...routine!,
               WorkoutRoutineExercises: {
                 ...routine!.WorkoutRoutineExercises,
+                startedAt: null,
+                nextToken: null,
                 __typename: 'ModelWorkoutRoutineExerciseConnection',
                 items: (routine?.WorkoutRoutineExercises?.items ?? []).concat(
                   newExercise,

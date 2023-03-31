@@ -40,13 +40,17 @@ import { useWorkoutPlanRoutineActions } from '../../hooks/useWorkoutPlanRoutineA
 import { workoutPlansByUserIDQuery } from './hooks/queries/workoutPlansByUserIDQuery';
 import { PagerViewProps } from 'react-native-pager-view';
 import { WorkoutExerciseCard } from '../../components/WorkoutExerciseCard/WorkoutExerciseCard';
+import { ApiErrorMessage } from '../../components/ApiErrorMessage/ApiErrorMessage';
 
 type Props = RootTabScreenProps<'WorkoutPlan'>;
 
 export const WorkoutPlanScreen = ({ navigation }: Props) => {
   const { userId } = useAuthContext();
-  const { workoutPlans, areWorkoutPlansLoading } =
-    useWorkoutPlansByUser(userId);
+  const {
+    workoutPlans,
+    areWorkoutPlansLoading,
+    error: workoutPlansFetchError,
+  } = useWorkoutPlansByUser(userId);
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
   const [isWorkoutPlanSheetVisible, setWorkoutPlanSheetVisible] =
     useState(false);
@@ -365,6 +369,17 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   };
 
   if (areWorkoutPlansLoading) return <FullscreenLoader />;
+
+  if (workoutPlansFetchError) {
+    return (
+      <View style={[styles.container, { paddingTop: insets.top }]}>
+        <ApiErrorMessage
+          title="Error fetching workout plans"
+          message={workoutPlansFetchError.message}
+        />
+      </View>
+    );
+  }
 
   if (workoutPlans.length === 0) {
     return <CreateWorkoutPlanSection />;

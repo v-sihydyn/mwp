@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -6,12 +6,13 @@ import {
   LayoutRectangle,
   TouchableOpacity,
   LayoutAnimation,
+  Pressable,
 } from 'react-native';
 import { colors } from '../../../../styles/colors';
 import Portal from '../../../../components/Portal/Portal';
 import { ActionItem } from './ActionItem/ActionItem';
-import { useNavigation } from '@react-navigation/native';
-import { openBeforeWorkoutStartModal } from '../../../../components/modals/BeforeWorkoutStartModal/BeforeWorkoutStartModal';
+// import { useNavigation } from '@react-navigation/native';
+// import { openBeforeWorkoutStartModal } from '../../../../components/modals/BeforeWorkoutStartModal/BeforeWorkoutStartModal';
 import { Icon } from '../../../../components/Icon/Icon';
 import color from 'color';
 
@@ -46,7 +47,7 @@ export const RoutineToolbar: React.FC<RoutineToolbarProps> = ({
     new Animated.Value(BUTTON_BORDER_TOP_RADIUS_CLOSED),
   ).current;
 
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
   const handleToggleDropdown = () => {
     const nextIsVisible = !isDropdownVisible;
@@ -107,6 +108,9 @@ export const RoutineToolbar: React.FC<RoutineToolbarProps> = ({
 
   return (
     <>
+      {isDropdownVisible && (
+        <Pressable style={styles.backdrop} onPress={handleToggleDropdown} />
+      )}
       <Animated.View
         style={[
           styles.root,
@@ -151,16 +155,16 @@ export const RoutineToolbar: React.FC<RoutineToolbarProps> = ({
               styles.dropdown,
               {
                 position: 'absolute',
-                top: buttonLayout ? buttonLayout?.y - 160 - 3 : 0,
+                top: buttonLayout ? buttonLayout?.y - DROPDOWN_HEIGHT - 3 : 0,
                 left: buttonLayout?.x,
               },
             ]}>
-            <ActionItem name="Edit Superset" icon="link" onPress={() => {}} />
-            <ActionItem
-              name="Reorder Exercises"
-              icon="list"
-              onPress={() => {}}
-            />
+            {/*<ActionItem name="Edit Superset" icon="link" onPress={() => {}} />*/}
+            {/*<ActionItem*/}
+            {/*  name="Reorder Exercises"*/}
+            {/*  icon="list"*/}
+            {/*  onPress={() => {}}*/}
+            {/*/>*/}
             <ActionItem
               name="Rename Routine"
               icon="pencil-alt"
@@ -180,6 +184,7 @@ export const RoutineToolbar: React.FC<RoutineToolbarProps> = ({
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const BUTTON_WIDTH = 280;
+const DROPDOWN_HEIGHT = 80; // @TODO: 160
 
 const styles = StyleSheet.create({
   root: {
@@ -195,9 +200,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     borderRadius: 18,
   },
+  backdrop: {
+    flex: 1,
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+  },
   dropdown: {
     backgroundColor: colors.green,
-    height: 160,
+    height: DROPDOWN_HEIGHT,
     width: BUTTON_WIDTH,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,

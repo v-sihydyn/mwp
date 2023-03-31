@@ -41,6 +41,7 @@ import { workoutPlansByUserIDQuery } from './hooks/queries/workoutPlansByUserIDQ
 import { PagerViewProps } from 'react-native-pager-view';
 import { WorkoutExerciseCard } from '../../components/WorkoutExerciseCard/WorkoutExerciseCard';
 import { ApiErrorMessage } from '../../components/ApiErrorMessage/ApiErrorMessage';
+import PortalHost from '../../components/Portal/PortalHost';
 
 type Props = RootTabScreenProps<'WorkoutPlan'>;
 
@@ -441,97 +442,101 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
 
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          height: insets.top,
-          zIndex: 1,
-          backgroundColor: colors.page,
-        }}
-      />
-      <Tabs.Container
-        pagerProps={
-          {
-            onPageSelected: (e) => setActiveTabPosition(e.nativeEvent.position),
-          } as Omit<PagerViewProps, 'onPageScroll' | 'initialPage'>
-        }
-        key={tabContainerKey}
-        ref={tabContainerRef}
-        revealHeaderOnScroll={true}
-        renderHeader={() => header}
-        headerHeight={64}
-        renderTabBar={(props: any) =>
-          !areWorkoutPlansLoading && routines.length === 0 ? null : (
-            <View
-              style={{
-                marginTop: 20,
-                flexDirection: 'row',
-                alignItems: 'center',
-                width: '100%',
-                flex: 1,
-              }}>
-              <MaterialTabBar
-                {...props}
-                width={windowWidth - 105 - 20}
-                style={{
-                  marginLeft: 20,
-                  flex: 1,
-                }}
-                indicatorStyle={{
-                  backgroundColor: colors.text,
-                  height: 1,
-                }}
-                labelStyle={{
-                  fontWeight: '700',
-                  textTransform: 'capitalize',
-                  fontSize: 15,
-                  margin: 0,
-                }}
-                tabStyle={{
-                  marginRight: 20,
-                  paddingHorizontal: 0,
-                  height: 30,
-                }}
-                activeColor={colors.text}
-                inactiveColor="#b5b5b5"
-                scrollEnabled
-              />
-              {routines.length > 0 && (
-                <CustomButton
-                  style={{
-                    height: 32,
-                    borderTopLeftRadius: 12,
-                    borderBottomLeftRadius: 12,
-                    borderTopRightRadius: 0,
-                    borderBottomRightRadius: 0,
-                  }}
-                  onPress={handleOpenCreateRoutineModal}>
-                  <Text style={{ fontSize: 13, fontWeight: 'bold' }}>
-                    New Routine
-                  </Text>
-                </CustomButton>
-              )}
-            </View>
-          )
-        }
-        tabBarHeight={68}
-        headerContainerStyle={{
-          backgroundColor: colors.page,
-          elevation: 0,
-          shadowOpacity: 0,
-        }}>
-        {hasNoRoutines ? emptyTabElement : _tabs}
-      </Tabs.Container>
-      {!hasNoRoutines && (
-        <RoutineToolbar
-          isPlayButtonDisabled={
-            selectedRoutine?.WorkoutRoutineExercises?.items?.length === 0
-          }
-          onPlayWorkout={handlePlayWorkout}
-          onAddExercise={handleInitiateAddExercise}
-          onRenameRoutine={handleOpenRenameRoutineModal}
-          onDeleteRoutine={handleOpenDeleteRoutineModal}
+      <PortalHost>
+        <View
+          style={{
+            height: insets.top,
+            zIndex: 1,
+            backgroundColor: colors.page,
+          }}
         />
-      )}
+        <Tabs.Container
+          pagerProps={
+            {
+              onPageSelected: (e) =>
+                setActiveTabPosition(e.nativeEvent.position),
+            } as Omit<PagerViewProps, 'onPageScroll' | 'initialPage'>
+          }
+          key={tabContainerKey}
+          ref={tabContainerRef}
+          revealHeaderOnScroll={true}
+          renderHeader={() => header}
+          headerHeight={64}
+          renderTabBar={(props: any) =>
+            !areWorkoutPlansLoading && routines.length === 0 ? null : (
+              <View
+                style={{
+                  marginTop: 20,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '100%',
+                  flex: 1,
+                }}>
+                <MaterialTabBar
+                  {...props}
+                  width={windowWidth - 105 - 20}
+                  style={{
+                    marginLeft: 20,
+                    flex: 1,
+                  }}
+                  indicatorStyle={{
+                    backgroundColor: colors.text,
+                    height: 1,
+                  }}
+                  labelStyle={{
+                    fontWeight: '700',
+                    textTransform: 'capitalize',
+                    fontSize: 15,
+                    margin: 0,
+                  }}
+                  tabStyle={{
+                    marginRight: 20,
+                    paddingHorizontal: 0,
+                    height: 30,
+                  }}
+                  activeColor={colors.text}
+                  inactiveColor="#b5b5b5"
+                  scrollEnabled
+                />
+                {routines.length > 0 && (
+                  <CustomButton
+                    style={{
+                      height: 32,
+                      borderTopLeftRadius: 12,
+                      borderBottomLeftRadius: 12,
+                      borderTopRightRadius: 0,
+                      borderBottomRightRadius: 0,
+                    }}
+                    onPress={handleOpenCreateRoutineModal}>
+                    <Text style={{ fontSize: 13, fontWeight: 'bold' }}>
+                      New Routine
+                    </Text>
+                  </CustomButton>
+                )}
+              </View>
+            )
+          }
+          tabBarHeight={68}
+          headerContainerStyle={{
+            backgroundColor: colors.page,
+            elevation: 0,
+            shadowOpacity: 0,
+          }}>
+          {hasNoRoutines ? emptyTabElement : _tabs}
+        </Tabs.Container>
+        {!hasNoRoutines && (
+          <RoutineToolbar
+            isPlayButtonDisabled={
+              selectedRoutine?.WorkoutRoutineExercises?.items?.length === 0
+            }
+            onPlayWorkout={handlePlayWorkout}
+            onAddExercise={handleInitiateAddExercise}
+            onRenameRoutine={handleOpenRenameRoutineModal}
+            onDeleteRoutine={handleOpenDeleteRoutineModal}
+          />
+        )}
+      </PortalHost>
+
       <Portal>
         <WorkoutPlanSheet
           selectedPlanId={selectedPlan?.id ?? null}

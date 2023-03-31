@@ -114,8 +114,11 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   // WORKOUT PLAN ACTIONS
   const handleCreateWorkoutPlan = async () => {
     const newPlanId = await openCreatePlanModal({ userId }).catch(() => {});
-    setSelectedPlanId(newPlanId as string | null);
-    onCloseWorkoutPlanSheet();
+
+    if (newPlanId) {
+      setSelectedPlanId(newPlanId as string | null);
+      onCloseWorkoutPlanSheet();
+    }
   };
 
   const handleOpenRenamePlanModal = async () => {

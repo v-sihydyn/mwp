@@ -115,6 +115,7 @@ type EagerWorkout = {
   readonly status: WorkoutStatus | keyof typeof WorkoutStatus;
   readonly dateFinished?: string | null;
   readonly totalTimeInSeconds?: number | null;
+  readonly userID: string;
   readonly WorkoutPlanRoutine?: WorkoutPlanRoutine | null;
   readonly WorkoutExercises?: (WorkoutExercise | null)[] | null;
   readonly createdAt?: string | null;
@@ -131,6 +132,7 @@ type LazyWorkout = {
   readonly status: WorkoutStatus | keyof typeof WorkoutStatus;
   readonly dateFinished?: string | null;
   readonly totalTimeInSeconds?: number | null;
+  readonly userID: string;
   readonly WorkoutPlanRoutine: AsyncItem<WorkoutPlanRoutine | undefined>;
   readonly WorkoutExercises: AsyncCollection<WorkoutExercise>;
   readonly createdAt?: string | null;
@@ -265,6 +267,7 @@ type EagerUser = {
   readonly image?: string | null;
   readonly username?: string | null;
   readonly WorkoutPlans?: (WorkoutPlan | null)[] | null;
+  readonly Workouts?: (Workout | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -280,6 +283,7 @@ type LazyUser = {
   readonly image?: string | null;
   readonly username?: string | null;
   readonly WorkoutPlans: AsyncCollection<WorkoutPlan>;
+  readonly Workouts: AsyncCollection<Workout>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

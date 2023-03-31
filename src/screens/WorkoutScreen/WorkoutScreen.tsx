@@ -30,17 +30,19 @@ import groupBy from 'lodash.groupby';
 import sumBy from 'lodash.sumby';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useApolloClient } from '@apollo/client';
-import { workoutsByDateQuery } from '../StatisticsScreen/hooks/useWorkoutsList/queuries/workoutsByDateQuery';
 import {
   ModelSortDirection,
-  WorkoutsByDateQuery,
-  WorkoutsByDateQueryVariables,
+  WorkoutsByUserQuery,
+  WorkoutsByUserQueryVariables,
   WorkoutStatus,
 } from '../../API';
+import { useAuthContext } from '../../contexts/AuthContext';
+import { workoutsByUserQuery } from '../StatisticsScreen/hooks/useWorkoutsList/queuries/workoutsByUserQuery';
 
 const ONE_HOUR = 3600;
 
 export const WorkoutScreen = () => {
+  const { userId } = useAuthContext();
   const navigation = useNavigation();
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   const [isWorkoutSummarySheetOpen, setIsWorkoutSummarySheetOpen] =
@@ -132,22 +134,27 @@ export const WorkoutScreen = () => {
       });
 
       client.cache.updateQuery<
-        WorkoutsByDateQuery,
-        WorkoutsByDateQueryVariables
+        WorkoutsByUserQuery,
+        WorkoutsByUserQueryVariables
       >(
         {
-          query: workoutsByDateQuery,
+          query: workoutsByUserQuery,
           variables: {
-            status: WorkoutStatus.FINISHED,
+            userID: userId,
+            filter: {
+              status: {
+                eq: WorkoutStatus.FINISHED,
+              },
+            },
             sortDirection: ModelSortDirection.DESC,
           },
         },
         (data) => {
-          if (!data?.workoutsByDate) return;
+          if (!data?.workoutsByUser) return;
 
           return {
-            workoutsByDate: {
-              ...data.workoutsByDate,
+            workoutsByUser: {
+              ...data.workoutsByUser,
               items: [
                 {
                   ...response?.savedWorkout,
@@ -158,7 +165,7 @@ export const WorkoutScreen = () => {
                     startedAt: null,
                   },
                 },
-                ...(data.workoutsByDate.items ?? []),
+                ...(data.workoutsByUser.items ?? []),
               ],
             },
           };

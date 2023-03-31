@@ -14,14 +14,16 @@ import {
   DeleteWorkoutAndExercisesMutationVariables,
   ModelSortDirection,
   Workout,
-  WorkoutsByDateQuery,
-  WorkoutsByDateQueryVariables,
+  WorkoutsByUserQuery,
+  WorkoutsByUserQueryVariables,
   WorkoutStatus,
 } from '../../API';
 import { Toast } from 'native-base';
-import { workoutsByDateQuery } from '../StatisticsScreen/hooks/useWorkoutsList/queuries/workoutsByDateQuery';
+import { workoutsByUserQuery } from '../StatisticsScreen/hooks/useWorkoutsList/queuries/workoutsByUserQuery';
+import { useAuthContext } from '../../contexts/AuthContext';
 
 export const WorkoutDetailsScreen = () => {
+  const { userId } = useAuthContext();
   const navigation = useNavigation();
   const route = useRoute<WorkoutDetailsRouteProp>();
   const { id, title, workout, workoutExercises } = route.params;
@@ -47,23 +49,28 @@ export const WorkoutDetailsScreen = () => {
             const deletedWorkoutId = data?.deleteWorkoutAndExercises.id;
 
             cache.updateQuery<
-              WorkoutsByDateQuery,
-              WorkoutsByDateQueryVariables
+              WorkoutsByUserQuery,
+              WorkoutsByUserQueryVariables
             >(
               {
-                query: workoutsByDateQuery,
+                query: workoutsByUserQuery,
                 variables: {
-                  status: WorkoutStatus.FINISHED,
+                  userID: userId,
+                  filter: {
+                    status: {
+                      eq: WorkoutStatus.FINISHED,
+                    },
+                  },
                   sortDirection: ModelSortDirection.DESC,
                 },
               },
               (data) => {
-                if (!data?.workoutsByDate?.items) return;
+                if (!data?.workoutsByUser?.items) return;
 
                 return {
-                  workoutsByDate: {
-                    ...data.workoutsByDate,
-                    items: (data?.workoutsByDate?.items ?? []).filter(
+                  workoutsByUser: {
+                    ...data.workoutsByUser,
+                    items: (data?.workoutsByUser?.items ?? []).filter(
                       (_workout: Workout | null) => {
                         return _workout?.id !== deletedWorkoutId;
                       },

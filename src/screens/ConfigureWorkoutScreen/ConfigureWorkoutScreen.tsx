@@ -51,7 +51,12 @@ export const ConfigureWorkoutScreen = () => {
     return (
       (routine?.WorkoutRoutineExercises?.items ??
         []) as WorkoutRoutineExercise[]
-    ).filter((x) => !x?._deleted);
+    )
+      .filter((x) => !x?._deleted)
+      .sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+      );
   });
   const [restTime, setRestTime] = useState<ValueMap>({
     hours: 0,

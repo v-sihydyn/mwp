@@ -179,6 +179,7 @@ export const createWorkout = /* GraphQL */ `
       status
       dateFinished
       totalTimeInSeconds
+      userID
       WorkoutPlanRoutine {
         id
         name
@@ -268,6 +269,7 @@ export const updateWorkout = /* GraphQL */ `
       status
       dateFinished
       totalTimeInSeconds
+      userID
       WorkoutPlanRoutine {
         id
         name
@@ -357,6 +359,7 @@ export const deleteWorkout = /* GraphQL */ `
       status
       dateFinished
       totalTimeInSeconds
+      userID
       WorkoutPlanRoutine {
         id
         name
@@ -737,6 +740,93 @@ export const createUser = /* GraphQL */ `
         nextToken
         startedAt
       }
+      Workouts {
+        items {
+          id
+          status
+          dateFinished
+          totalTimeInSeconds
+          userID
+          WorkoutPlanRoutine {
+            id
+            name
+            sortOrder
+            workoutPlanID
+            WorkoutRoutineExercises {
+              items {
+                id
+                name
+                muscleGroup
+                equipment
+                color
+                description
+                restTimeInSeconds
+                sortOrder
+                workoutPlanRoutineID
+                setsConfig
+                createdAt
+                updatedAt
+                _version
+                _deleted
+                _lastChangedAt
+                owner
+              }
+              nextToken
+              startedAt
+            }
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            owner
+          }
+          WorkoutExercises {
+            items {
+              id
+              setsConfig
+              sortOrder
+              workoutID
+              WorkoutRoutineExercise {
+                id
+                name
+                muscleGroup
+                equipment
+                color
+                description
+                restTimeInSeconds
+                sortOrder
+                workoutPlanRoutineID
+                setsConfig
+                createdAt
+                updatedAt
+                _version
+                _deleted
+                _lastChangedAt
+                owner
+              }
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+              workoutExerciseWorkoutRoutineExerciseId
+              owner
+            }
+            nextToken
+            startedAt
+          }
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          workoutWorkoutPlanRoutineId
+          owner
+        }
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -792,6 +882,93 @@ export const updateUser = /* GraphQL */ `
         nextToken
         startedAt
       }
+      Workouts {
+        items {
+          id
+          status
+          dateFinished
+          totalTimeInSeconds
+          userID
+          WorkoutPlanRoutine {
+            id
+            name
+            sortOrder
+            workoutPlanID
+            WorkoutRoutineExercises {
+              items {
+                id
+                name
+                muscleGroup
+                equipment
+                color
+                description
+                restTimeInSeconds
+                sortOrder
+                workoutPlanRoutineID
+                setsConfig
+                createdAt
+                updatedAt
+                _version
+                _deleted
+                _lastChangedAt
+                owner
+              }
+              nextToken
+              startedAt
+            }
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            owner
+          }
+          WorkoutExercises {
+            items {
+              id
+              setsConfig
+              sortOrder
+              workoutID
+              WorkoutRoutineExercise {
+                id
+                name
+                muscleGroup
+                equipment
+                color
+                description
+                restTimeInSeconds
+                sortOrder
+                workoutPlanRoutineID
+                setsConfig
+                createdAt
+                updatedAt
+                _version
+                _deleted
+                _lastChangedAt
+                owner
+              }
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+              workoutExerciseWorkoutRoutineExerciseId
+              owner
+            }
+            nextToken
+            startedAt
+          }
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          workoutWorkoutPlanRoutineId
+          owner
+        }
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -842,6 +1019,93 @@ export const deleteUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
+        }
+        nextToken
+        startedAt
+      }
+      Workouts {
+        items {
+          id
+          status
+          dateFinished
+          totalTimeInSeconds
+          userID
+          WorkoutPlanRoutine {
+            id
+            name
+            sortOrder
+            workoutPlanID
+            WorkoutRoutineExercises {
+              items {
+                id
+                name
+                muscleGroup
+                equipment
+                color
+                description
+                restTimeInSeconds
+                sortOrder
+                workoutPlanRoutineID
+                setsConfig
+                createdAt
+                updatedAt
+                _version
+                _deleted
+                _lastChangedAt
+                owner
+              }
+              nextToken
+              startedAt
+            }
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            owner
+          }
+          WorkoutExercises {
+            items {
+              id
+              setsConfig
+              sortOrder
+              workoutID
+              WorkoutRoutineExercise {
+                id
+                name
+                muscleGroup
+                equipment
+                color
+                description
+                restTimeInSeconds
+                sortOrder
+                workoutPlanRoutineID
+                setsConfig
+                createdAt
+                updatedAt
+                _version
+                _deleted
+                _lastChangedAt
+                owner
+              }
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+              workoutExerciseWorkoutRoutineExerciseId
+              owner
+            }
+            nextToken
+            startedAt
+          }
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          workoutWorkoutPlanRoutineId
           owner
         }
         nextToken

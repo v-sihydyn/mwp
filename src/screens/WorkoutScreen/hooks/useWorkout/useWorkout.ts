@@ -12,8 +12,10 @@ import {
   DraftWorkoutExercise,
 } from '../../../../types/draftWorkout';
 import { bulkCreateWorkoutExercisesMutation } from './mutations/bulkCreateWorkoutExercisesMutation';
+import { useAuthContext } from '../../../../contexts/AuthContext';
 
 export const useWorkout = () => {
+  const { userId } = useAuthContext();
   const [createWorkout] = useMutation<
     CreateWorkoutMutation,
     CreateWorkoutMutationVariables
@@ -36,7 +38,7 @@ export const useWorkout = () => {
           status: WorkoutStatus.FINISHED,
           dateFinished: new Date().toISOString(),
           totalTimeInSeconds: workout.totalTimeInSeconds,
-          // _version: number | null,
+          userID: userId,
           workoutWorkoutPlanRoutineId: workout.workoutWorkoutPlanRoutineId,
         },
       },
@@ -46,12 +48,14 @@ export const useWorkout = () => {
 
     const exercisesData = await bulkCreateWorkoutExercises({
       variables: {
-        exercises: exercises.map((dwe) => ({
+        exercises: exercises.map((dwe, index) => ({
           workoutID: workoutData.data!.createWorkout!.id,
           setsConfig: JSON.stringify(
             dwe.sets.filter((set) => set.status === 'completed'),
           ),
-          sortOrder: dwe.sortOrder,
+          sortOrder: Number.isNaN(Number(dwe.sortOrder))
+            ? index
+            : dwe.sortOrder,
           workoutExerciseWorkoutRoutineExerciseId:
             dwe.workoutExerciseWorkoutRoutineExerciseId,
         })),

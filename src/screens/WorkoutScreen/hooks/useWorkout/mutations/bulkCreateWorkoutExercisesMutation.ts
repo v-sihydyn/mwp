@@ -3,8 +3,12 @@ import { gql } from '@apollo/client';
 export const bulkCreateWorkoutExercisesMutation = gql`
   mutation BulkCreateWorkoutExercises(
     $exercises: [CreateWorkoutExerciseInput!]!
+    $routineExercisesToUpdate: [RoutineExerciseToUpdateInput]
   ) {
-    bulkCreateWorkoutExercises(exercises: $exercises) {
+    bulkCreateWorkoutExercises(
+      exercises: $exercises
+      routineExercisesToUpdate: $routineExercisesToUpdate
+    ) {
       exercises {
         id
         setsConfig
@@ -35,6 +39,10 @@ export const bulkCreateWorkoutExercisesMutation = gql`
         _lastChangedAt
         workoutExerciseWorkoutRoutineExerciseId
         owner
+      }
+      updatedRoutineExercises {
+        id
+        setsConfig
       }
     }
   }

@@ -21,9 +21,15 @@ export type CreateWorkoutExerciseInput = {
   workoutExerciseWorkoutRoutineExerciseId?: string | null,
 };
 
+export type RoutineExerciseToUpdateInput = {
+  id: string,
+  setsConfig: string,
+};
+
 export type BulkCreateWorkoutExercisesResponse = {
   __typename: "BulkCreateWorkoutExercisesResponse",
   exercises:  Array<WorkoutExercise >,
+  updatedRoutineExercises:  Array<RoutineExerciseToUpdateResponse | null >,
 };
 
 export type WorkoutExercise = {
@@ -90,6 +96,12 @@ export enum ExerciseEquipment {
   WEIGHTED = "WEIGHTED",
 }
 
+
+export type RoutineExerciseToUpdateResponse = {
+  __typename: "RoutineExerciseToUpdateResponse",
+  id: string,
+  setsConfig: string,
+};
 
 export type ModelWorkoutExerciseConditionInput = {
   setsConfig?: ModelStringInput | null,
@@ -766,6 +778,7 @@ export type DeleteWorkoutAndExercisesMutation = {
 
 export type BulkCreateWorkoutExercisesMutationVariables = {
   exercises: Array< CreateWorkoutExerciseInput >,
+  routineExercisesToUpdate?: Array< RoutineExerciseToUpdateInput | null > | null,
 };
 
 export type BulkCreateWorkoutExercisesMutation = {
@@ -804,6 +817,11 @@ export type BulkCreateWorkoutExercisesMutation = {
       workoutExerciseWorkoutRoutineExerciseId?: string | null,
       owner?: string | null,
     } >,
+    updatedRoutineExercises:  Array< {
+      __typename: "RoutineExerciseToUpdateResponse",
+      id: string,
+      setsConfig: string,
+    } | null >,
   } | null,
 };
 

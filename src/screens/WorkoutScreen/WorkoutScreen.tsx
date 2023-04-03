@@ -93,6 +93,7 @@ export const WorkoutScreen = () => {
       dateFinished: new Date().toISOString(),
     };
   }, [draftWorkout, totalTimeInSeconds]);
+
   const exercisesToSave = useMemo(() => {
     return exercises.map((dwe) => {
       const completedSets = dwe.sets.filter(
@@ -120,17 +121,46 @@ export const WorkoutScreen = () => {
     });
   }, [exercises]);
 
+  const routineExercisesToUpdate = useMemo(
+    () =>
+      exercisesToSave
+        .map((e, i) => {
+          const setsConfig = JSON.stringify(
+            e.sets.map((x) => ({
+              reps: x.reps,
+              sets: String(x.sets),
+              weight: x.weight,
+            })),
+          );
+          const dwe = draftWorkoutExercises[i];
+
+          if (setsConfig !== dwe.setsConfig) {
+            return {
+              id: dwe.workoutExerciseWorkoutRoutineExerciseId,
+              setsConfig,
+            };
+          }
+        })
+        .filter(Boolean) as { id: string; setsConfig: string }[],
+    [draftWorkoutExercises, exercisesToSave],
+  );
+
   const previewWorkoutResults = () => {
     setIsWorkoutSummarySheetOpen(true);
   };
 
-  const handleSaveWorkout = async () => {
+  const handleSaveWorkout = async (shouldUpdateExercises: boolean) => {
+    if (isSavingWorkout) return;
+
     try {
       setIsSavingWorkout(true);
 
       const response = await saveWorkout({
         workout: workoutToSave,
         exercises: exercisesToSave,
+        routineExercisesToUpdate: shouldUpdateExercises
+          ? routineExercisesToUpdate
+          : [],
       });
 
       client.cache.updateQuery<
@@ -456,33 +486,94 @@ export const WorkoutScreen = () => {
               exercises={exercisesToSave}
             />
 
-            <Button
-              isLoading={isSavingWorkout}
-              isDisabled={isSavingWorkout}
-              isLoadingText="Saving..."
-              _text={{ fontSize: 16 }}
-              _loading={{ opacity: 1 }}
-              backgroundColor={colors.green}
-              style={[
-                styles.button,
-                {
-                  width: windowWidth - 40,
-                },
-              ]}
-              onPress={handleSaveWorkout}>
-              OK
-            </Button>
-            <View
-              style={{
-                position: 'absolute',
-                bottom: 20,
-                width: windowWidth,
-                backgroundColor: colors.page,
-                height: 20,
-                alignSelf: 'center',
-                opacity: 0.9,
-              }}
-            />
+            {routineExercisesToUpdate.length > 0 && (
+              <>
+                <View
+                  style={{
+                    position: 'absolute',
+                    bottom: 20,
+                    width: windowWidth,
+                    backgroundColor: colors.page,
+                    height: 60,
+                    alignSelf: 'center',
+                    opacity: 0.4,
+                  }}
+                />
+                <View>
+                  <Button
+                    isDisabled={isSavingWorkout}
+                    _disabled={{ opacity: 1 }}
+                    _text={{ fontSize: 16, fontWeight: 'bold' }}
+                    backgroundColor={colors.black}
+                    leftIcon={
+                      <Icon name="times-circle" color={colors.red} size={16} />
+                    }
+                    borderRadius={8}
+                    style={[
+                      styles.button,
+                      {
+                        left: 20,
+                        width: (windowWidth - 40 - 20) / 2,
+                        height: 45,
+                      },
+                    ]}
+                    onPress={() => handleSaveWorkout(false)}>
+                    Discard changes
+                  </Button>
+                  <Button
+                    isDisabled={isSavingWorkout}
+                    _disabled={{ opacity: 1 }}
+                    _text={{ fontSize: 16, fontWeight: 'bold' }}
+                    backgroundColor={colors.green}
+                    leftIcon={
+                      <Icon name="check" color={colors.text} size={14} />
+                    }
+                    borderRadius={8}
+                    style={[
+                      styles.button,
+                      {
+                        right: 20,
+                        width: (windowWidth - 40 - 20) / 2,
+                        height: 45,
+                      },
+                    ]}
+                    onPress={() => handleSaveWorkout(true)}>
+                    Save changes
+                  </Button>
+                </View>
+              </>
+            )}
+
+            {routineExercisesToUpdate.length === 0 && (
+              <>
+                <Button
+                  isDisabled={isSavingWorkout}
+                  _disabled={{ opacity: 1 }}
+                  _text={{ fontSize: 16 }}
+                  backgroundColor={colors.green}
+                  borderRadius={8}
+                  style={[
+                    styles.button,
+                    {
+                      width: windowWidth - 40,
+                    },
+                  ]}
+                  onPress={() => handleSaveWorkout(false)}>
+                  OK
+                </Button>
+                <View
+                  style={{
+                    position: 'absolute',
+                    bottom: 20,
+                    width: windowWidth,
+                    backgroundColor: colors.page,
+                    height: 20,
+                    alignSelf: 'center',
+                    opacity: 0.9,
+                  }}
+                />
+              </>
+            )}
           </View>
         </BottomSheet>
       </Portal>

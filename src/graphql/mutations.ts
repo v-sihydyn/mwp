@@ -19,8 +19,12 @@ export const deleteWorkoutAndExercises = /* GraphQL */ `
 export const bulkCreateWorkoutExercises = /* GraphQL */ `
   mutation BulkCreateWorkoutExercises(
     $exercises: [CreateWorkoutExerciseInput!]!
+    $routineExercisesToUpdate: [RoutineExerciseToUpdateInput]
   ) {
-    bulkCreateWorkoutExercises(exercises: $exercises) {
+    bulkCreateWorkoutExercises(
+      exercises: $exercises
+      routineExercisesToUpdate: $routineExercisesToUpdate
+    ) {
       exercises {
         id
         setsConfig
@@ -51,6 +55,10 @@ export const bulkCreateWorkoutExercises = /* GraphQL */ `
         _lastChangedAt
         workoutExerciseWorkoutRoutineExerciseId
         owner
+      }
+      updatedRoutineExercises {
+        id
+        setsConfig
       }
     }
   }

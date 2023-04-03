@@ -909,10 +909,39 @@ export const schema = {
                     "isRequired": true,
                     "attributes": [],
                     "isArrayNullable": false
+                },
+                "updatedRoutineExercises": {
+                    "name": "updatedRoutineExercises",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "RoutineExerciseToUpdateResponse"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": false
+                }
+            }
+        },
+        "RoutineExerciseToUpdateResponse": {
+            "name": "RoutineExerciseToUpdateResponse",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "setsConfig": {
+                    "name": "setsConfig",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": true,
+                    "attributes": []
                 }
             }
         }
     },
     "codegenVersion": "3.3.6",
-    "version": "b97c1bb8099eb3ced0f8befcb38ffba9"
+    "version": "7d6e02434b40d1dd10fb5ac6892e2b4a"
 };

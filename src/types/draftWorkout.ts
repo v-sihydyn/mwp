@@ -12,6 +12,7 @@ export type DraftWorkoutExercise = {
   name: string;
   description?: string | null;
   sets: DraftSet[];
+  setsConfig: string;
   sortOrder?: number | null;
   restTimeInSeconds: number;
   workoutExerciseWorkoutRoutineExerciseId: string;

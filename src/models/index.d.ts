@@ -60,15 +60,31 @@ export declare const DeleteWorkoutAndExercisesResponse: (new (init: ModelInit<De
 
 type EagerBulkCreateWorkoutExercisesResponse = {
   readonly exercises: WorkoutExercise[];
+  readonly updatedRoutineExercises: (RoutineExerciseToUpdateResponse | null)[];
 }
 
 type LazyBulkCreateWorkoutExercisesResponse = {
   readonly exercises: AsyncCollection<WorkoutExercise>;
+  readonly updatedRoutineExercises: (RoutineExerciseToUpdateResponse | null)[];
 }
 
 export declare type BulkCreateWorkoutExercisesResponse = LazyLoading extends LazyLoadingDisabled ? EagerBulkCreateWorkoutExercisesResponse : LazyBulkCreateWorkoutExercisesResponse
 
 export declare const BulkCreateWorkoutExercisesResponse: (new (init: ModelInit<BulkCreateWorkoutExercisesResponse>) => BulkCreateWorkoutExercisesResponse)
+
+type EagerRoutineExerciseToUpdateResponse = {
+  readonly id: string;
+  readonly setsConfig: string;
+}
+
+type LazyRoutineExerciseToUpdateResponse = {
+  readonly id: string;
+  readonly setsConfig: string;
+}
+
+export declare type RoutineExerciseToUpdateResponse = LazyLoading extends LazyLoadingDisabled ? EagerRoutineExerciseToUpdateResponse : LazyRoutineExerciseToUpdateResponse
+
+export declare const RoutineExerciseToUpdateResponse: (new (init: ModelInit<RoutineExerciseToUpdateResponse>) => RoutineExerciseToUpdateResponse)
 
 type EagerWorkoutExercise = {
   readonly [__modelMeta__]: {

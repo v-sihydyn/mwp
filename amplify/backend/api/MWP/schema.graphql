@@ -118,6 +118,7 @@ type Mutation {
   @function(name: "deleteWorkoutAndExercises-${env}")
   bulkCreateWorkoutExercises(
     exercises: [CreateWorkoutExerciseInput!]!
+    routineExercisesToUpdate: [RoutineExerciseToUpdateInput]
   ): BulkCreateWorkoutExercisesResponse
     @function(name: "bulkCreateWorkoutExercises-${env}")
 }
@@ -132,6 +133,17 @@ type DeleteWorkoutAndExercisesResponse {
 
 type BulkCreateWorkoutExercisesResponse {
   exercises: [WorkoutExercise!]!
+  updatedRoutineExercises: [RoutineExerciseToUpdateResponse]!
+}
+
+input RoutineExerciseToUpdateInput {
+  id: ID!
+  setsConfig: AWSJSON!
+}
+
+type RoutineExerciseToUpdateResponse {
+  id: ID!
+  setsConfig: AWSJSON!
 }
 
 input CreateWorkoutExerciseInput {

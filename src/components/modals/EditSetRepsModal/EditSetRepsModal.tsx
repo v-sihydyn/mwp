@@ -1,10 +1,11 @@
-import { Text, TextInput, TouchableOpacity } from 'react-native';
+import { Keyboard, Text, TextInput, TouchableOpacity } from 'react-native';
 import { Modal as NBModal } from 'native-base';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { create, InstanceProps } from 'react-modal-promise';
 import { modalStyles } from '../modalStyles';
 import { colors } from '../../../styles/colors';
 import { KeyboardAvoidingModal } from '../../KeyboardAvoidingModal/KeyboardAvoidingModal';
+import { usePrevious } from '../../../hooks/usePrevious';
 
 type Props = InstanceProps<string> & {
   initialValue: string;
@@ -17,6 +18,28 @@ export const EditSetRepsModal = ({
   onReject,
 }: Props) => {
   const [value, setValue] = useState(initialValue);
+  const inputRef = useRef<TextInput>(null);
+  const prevIsOpen = usePrevious(isOpen);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    if (isOpen && !prevIsOpen) {
+      timeoutId = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 250);
+
+      return;
+    }
+
+    if (!isOpen && prevIsOpen) {
+      Keyboard.dismiss();
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [isOpen, prevIsOpen]);
 
   return (
     <KeyboardAvoidingModal isOpen={isOpen} onClose={() => onReject()}>
@@ -32,6 +55,9 @@ export const EditSetRepsModal = ({
           onChangeText={setValue}
           keyboardType="numeric"
           style={modalStyles.modalInput}
+          ref={inputRef}
+          selectionColor={colors.green}
+          selectTextOnFocus={true}
         />
       </NBModal.Body>
       <NBModal.Footer

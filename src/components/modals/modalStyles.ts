@@ -30,7 +30,7 @@ export const modalStyles = StyleSheet.create({
   },
   modalInput: {
     width: '100%',
-    color: colors.green,
+    color: colors.text,
     borderBottomWidth: 1,
     borderBottomColor: colors.green,
     fontSize: 16,

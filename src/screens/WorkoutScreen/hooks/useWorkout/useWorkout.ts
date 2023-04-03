@@ -5,6 +5,7 @@ import {
   BulkCreateWorkoutExercisesMutationVariables,
   CreateWorkoutMutation,
   CreateWorkoutMutationVariables,
+  WorkoutRoutineExercise,
   WorkoutStatus,
 } from '../../../../API';
 import {
@@ -28,9 +29,14 @@ export const useWorkout = () => {
   const saveWorkout = async ({
     workout,
     exercises,
+    routineExercisesToUpdate,
   }: {
     workout: DraftWorkout;
     exercises: DraftWorkoutExercise[];
+    routineExercisesToUpdate: Pick<
+      WorkoutRoutineExercise,
+      'id' | 'setsConfig'
+    >[];
   }) => {
     const workoutData = await createWorkout({
       variables: {
@@ -59,16 +65,21 @@ export const useWorkout = () => {
           workoutExerciseWorkoutRoutineExerciseId:
             dwe.workoutExerciseWorkoutRoutineExerciseId,
         })),
+        routineExercisesToUpdate,
       },
     });
 
     const savedWorkout = workoutData.data.createWorkout;
     const savedExercises =
       exercisesData.data?.bulkCreateWorkoutExercises?.exercises ?? [];
+    const updatedRoutineExercises =
+      exercisesData.data?.bulkCreateWorkoutExercises?.updatedRoutineExercises ??
+      [];
 
     return {
       savedWorkout,
       savedExercises,
+      updatedRoutineExercises,
     };
   };
 

@@ -113,6 +113,7 @@ export const ConfigureWorkoutScreen = () => {
         muscleGroup: e.muscleGroup,
         color: e.color,
         sets,
+        setsConfig: e.setsConfig,
         sortOrder: e.sortOrder,
         restTimeInSeconds: e.restTimeInSeconds ?? 0,
         workoutExerciseWorkoutRoutineExerciseId: e.id,

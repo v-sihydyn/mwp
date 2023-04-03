@@ -11,17 +11,17 @@ export type Exercise = Pick<
 
 export const EXERCISES: Exercise[] = [
   {
-    name: 'Pull-ups (top grip)',
+    name: 'Pull-ups',
     muscleGroup: MuscleGroup.BACK,
     equipment: ExerciseEquipment.BODYWEIGHT,
   },
   {
-    name: 'Pull-ups (bottom grip)',
+    name: 'Pull-ups (supinated grip)',
     muscleGroup: MuscleGroup.BICEPS,
     equipment: ExerciseEquipment.BODYWEIGHT,
   },
   {
-    name: 'Dips (wide grip)',
+    name: 'Dips',
     muscleGroup: MuscleGroup.CHEST,
     equipment: ExerciseEquipment.BODYWEIGHT,
   },

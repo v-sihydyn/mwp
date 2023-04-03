@@ -1,6 +1,6 @@
-import { Text, TextInput, TouchableOpacity } from 'react-native';
+import { Keyboard, Text, TextInput, TouchableOpacity } from 'react-native';
 import { Modal as NBModal, Toast } from 'native-base';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { create, InstanceProps } from 'react-modal-promise';
 import { modalStyles } from '../modalStyles';
 import { colors } from '../../../styles/colors';
@@ -13,6 +13,7 @@ import {
 } from '../../../API';
 import { workoutPlansByUserIDQuery } from '../../../screens/WorkoutPlanScreen/hooks/queries/workoutPlansByUserIDQuery';
 import { KeyboardAvoidingModal } from '../../KeyboardAvoidingModal/KeyboardAvoidingModal';
+import { usePrevious } from '../../../hooks/usePrevious';
 
 type Props = InstanceProps<WorkoutPlanRoutine | null> & {
   workoutPlanId: string;
@@ -29,6 +30,28 @@ export const CreateRoutineModal = ({
   const { createWorkoutPlanRoutine, createLoading } =
     useWorkoutPlanRoutineActions();
   const [name, setName] = useState<string>('');
+  const inputRef = useRef<TextInput>(null);
+  const prevIsOpen = usePrevious(isOpen);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    if (isOpen && !prevIsOpen) {
+      timeoutId = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 250);
+
+      return;
+    }
+
+    if (!isOpen && prevIsOpen) {
+      Keyboard.dismiss();
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [isOpen, prevIsOpen]);
 
   const handleSubmit = async () => {
     if (createLoading) return;
@@ -111,8 +134,9 @@ export const CreateRoutineModal = ({
         <TextInput
           value={name}
           onChangeText={setName}
-          selectTextOnFocus={true}
           style={modalStyles.modalInput}
+          ref={inputRef}
+          selectionColor={colors.green}
         />
       </NBModal.Body>
       <NBModal.Footer

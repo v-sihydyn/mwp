@@ -1,6 +1,6 @@
-import { Text, TextInput, TouchableOpacity } from 'react-native';
+import { Keyboard, Text, TextInput, TouchableOpacity } from 'react-native';
 import { Modal as NBModal, Toast } from 'native-base';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { create, InstanceProps } from 'react-modal-promise';
 import { modalStyles } from '../modalStyles';
 import { colors } from '../../../styles/colors';
@@ -13,6 +13,7 @@ import {
 import { useWorkoutPlanRoutineActions } from '../../../hooks/useWorkoutPlanRoutineActions';
 import { workoutPlansByUserIDQuery } from '../../../screens/WorkoutPlanScreen/hooks/queries/workoutPlansByUserIDQuery';
 import { KeyboardAvoidingModal } from '../../KeyboardAvoidingModal/KeyboardAvoidingModal';
+import { usePrevious } from '../../../hooks/usePrevious';
 
 type Props = InstanceProps<{ name: string; _version: number }> & {
   routine: Pick<WorkoutPlanRoutine, 'id' | 'name' | '_version'>;
@@ -31,6 +32,28 @@ export const RenameRoutineModal = ({
   const { updateWorkoutPlanRoutine, updateLoading } =
     useWorkoutPlanRoutineActions();
   const [name, setName] = useState<string>(routine.name);
+  const inputRef = useRef<TextInput>(null);
+  const prevIsOpen = usePrevious(isOpen);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    if (isOpen && !prevIsOpen) {
+      timeoutId = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 250);
+
+      return;
+    }
+
+    if (!isOpen && prevIsOpen) {
+      Keyboard.dismiss();
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [isOpen, prevIsOpen]);
 
   const handleSubmit = async () => {
     if (updateLoading) return;
@@ -89,8 +112,11 @@ export const RenameRoutineModal = ({
         },
       });
       if (response?.data?.updateWorkoutPlanRoutine) {
-        const routine = response.data.updateWorkoutPlanRoutine;
-        onResolve({ name: routine.name, _version: routine._version });
+        const updatedRoutine = response.data.updateWorkoutPlanRoutine;
+        onResolve({
+          name: updatedRoutine.name,
+          _version: updatedRoutine._version,
+        });
       }
     } catch (e) {
       Toast.show({
@@ -116,6 +142,8 @@ export const RenameRoutineModal = ({
           onChangeText={setName}
           selectTextOnFocus={true}
           style={modalStyles.modalInput}
+          ref={inputRef}
+          selectionColor={colors.green}
         />
       </NBModal.Body>
       <NBModal.Footer

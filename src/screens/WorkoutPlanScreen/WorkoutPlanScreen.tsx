@@ -42,6 +42,7 @@ import { PagerViewProps } from 'react-native-pager-view';
 import { WorkoutExerciseCard } from '../../components/WorkoutExerciseCard/WorkoutExerciseCard';
 import { ApiErrorMessage } from '../../components/ApiErrorMessage/ApiErrorMessage';
 import PortalHost from '../../components/Portal/PortalHost';
+import { ListEmptyComponent } from './components/ListEmptyComponent/ListEmptyComponent';
 
 type Props = RootTabScreenProps<'WorkoutPlan'>;
 
@@ -433,6 +434,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
             marginTop: 20,
             paddingBottom: 94,
           }}
+          ListEmptyComponent={ListEmptyComponent}
         />
       </Tabs.Tab>
     );

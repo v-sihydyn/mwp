@@ -7,7 +7,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import { colors } from '../../../../styles/colors';
-import { PieChart } from '../../../../components/PieChart/PieChart';
+import { ChartData, PieChart } from '../../../../components/PieChart/PieChart';
 import { Icon } from '../../../../components/Icon/Icon';
 import * as React from 'react';
 import { WorkoutExerciseCard } from '../../../../components/WorkoutExerciseCard/WorkoutExerciseCard';
@@ -20,12 +20,8 @@ import {
 import { formatTime } from '../../../../utils/formatTime';
 import dayjs from 'dayjs';
 import groupBy from 'lodash.groupby';
-
-type ChartData = {
-  value: number;
-  textLine1: string;
-  textLine2: string;
-};
+import { MUSCLE_VALUES_MAP } from '../../../../constants/muscleSelectOptions';
+import { MuscleGroup } from '../../../../API';
 
 type WorkoutSummaryProps = {
   title: string;
@@ -48,8 +44,8 @@ export const WorkoutSummary = React.memo(
       groupBy(exercises, (item) => item.muscleGroup),
     ).map(([muscleGroup, value]) => ({
       value: value.length,
-      textLine1: muscleGroup,
-      textLine2: String(value.length),
+      muscleGroup: MUSCLE_VALUES_MAP[muscleGroup as MuscleGroup],
+      exerciseCount: String(value.length),
     }));
 
     return (

@@ -17,10 +17,10 @@ import Animated, {
 } from 'react-native-reanimated';
 import { View } from 'react-native';
 
-type ChartData = {
+export type ChartData = {
   value: number;
-  textLine1: string;
-  textLine2: string;
+  muscleGroup: string;
+  exerciseCount: string;
 };
 
 type Props = {
@@ -166,13 +166,15 @@ export const PieChart = ({
                   })`}>
                   <TSpan
                     x={chartData?.[index]?.textX}
-                    y={chartData?.[index]?.textY - 8}>
-                    Back
+                    y={chartData?.[index]?.textY - 8}
+                    fontSize={14}>
+                    {item.muscleGroup}
                   </TSpan>
                   <TSpan
                     x={chartData?.[index]?.textX}
-                    y={chartData?.[index]?.textY + 8}>
-                    1
+                    y={chartData?.[index]?.textY + 8}
+                    fontSize={14}>
+                    {item.exerciseCount}
                   </TSpan>
                 </Text>
               )}

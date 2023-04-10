@@ -11,8 +11,6 @@ import {
 import { colors } from '../../../../styles/colors';
 import Portal from '../../../../components/Portal/Portal';
 import { ActionItem } from './ActionItem/ActionItem';
-// import { useNavigation } from '@react-navigation/native';
-// import { openBeforeWorkoutStartModal } from '../../../../components/modals/BeforeWorkoutStartModal/BeforeWorkoutStartModal';
 import { Icon } from '../../../../components/Icon/Icon';
 import color from 'color';
 
@@ -46,8 +44,6 @@ export const RoutineToolbar: React.FC<RoutineToolbarProps> = ({
   const buttonBorderBottomRadius = useRef(
     new Animated.Value(BUTTON_BORDER_TOP_RADIUS_CLOSED),
   ).current;
-
-  // const navigation = useNavigation();
 
   const handleToggleDropdown = () => {
     const nextIsVisible = !isDropdownVisible;
@@ -102,8 +98,6 @@ export const RoutineToolbar: React.FC<RoutineToolbarProps> = ({
 
   const handleStartWorkout = async () => {
     onPlayWorkout();
-
-    // await openBeforeWorkoutStartModal(); @TODO return
   };
 
   return (

@@ -41,9 +41,13 @@ export type RootStackParamList = {
     workoutRoutineId: string;
   };
   Workout: {
+    workoutRoutineId: string;
     restTimeInSeconds: number;
     draftWorkout: DraftWorkout;
     draftWorkoutExercises: DraftWorkoutExercise[];
+    displayedExerciseIndex?: number;
+    currentSetId?: string | null;
+    totalTimeInSeconds?: number;
   };
   WorkoutDetails: {
     id: string;

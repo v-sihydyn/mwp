@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity } from 'react-native';
-import { Modal as NBModal, IModalProps as INBModalProps } from 'native-base';
+import { Modal as NBModal } from 'native-base';
 import React from 'react';
 import { create, InstanceProps } from 'react-modal-promise';
 import { modalStyles } from '../modalStyles';

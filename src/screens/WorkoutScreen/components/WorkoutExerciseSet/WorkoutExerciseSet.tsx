@@ -104,6 +104,8 @@ export const WorkoutExerciseSet = React.memo(
   },
 );
 
+WorkoutExerciseSet.displayName = 'WorkoutExerciseSet';
+
 const styles = StyleSheet.create({
   root: {
     flexDirection: 'row',

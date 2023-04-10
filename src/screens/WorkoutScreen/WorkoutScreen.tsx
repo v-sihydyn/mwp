@@ -7,7 +7,13 @@ import {
 } from 'react-native';
 import { Tabs } from 'react-native-collapsible-tab-view';
 import { colors } from '../../styles/colors';
-import React, { useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { WorkoutExerciseSet } from './components/WorkoutExerciseSet/WorkoutExerciseSet';
 import { CustomButton } from '../../components/CustomButton/CustomButton';
 import { MaterialTabBar } from '../../components/MaterialTabBar/TabBar';
@@ -38,6 +44,8 @@ import {
 } from '../../API';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { workoutsByUserQuery } from '../StatisticsScreen/hooks/useWorkoutsList/queuries/workoutsByUserQuery';
+import { deleteDraftWorkoutData } from '../../utils/persistWorkout';
+import { openLeaveWorkoutModal } from '../../components/modals/LeaveWorkoutModal/LeaveWorkoutModal';
 
 const ONE_HOUR = 3600;
 
@@ -53,6 +61,10 @@ export const WorkoutScreen = () => {
     draftWorkout,
     draftWorkoutExercises,
     restTimeInSeconds: restTimeBetweenExercisesInSeconds,
+    workoutRoutineId,
+    displayedExerciseIndex: persistedDisplayedExerciseIndex,
+    currentSetId: persistedCurrentSetId,
+    totalTimeInSeconds: persistedTotalTimeInSeconds,
   } = route.params;
 
   const {
@@ -72,11 +84,37 @@ export const WorkoutScreen = () => {
     skipRest,
     handlePlayExercise,
   } = useWorkoutPlayer({
+    draftWorkout,
     draftWorkoutExercises,
     restTimeBetweenExercisesInSeconds,
+    workoutRoutineId,
+    persistedDisplayedExerciseIndex,
+    persistedCurrentSetId,
+    persistedTotalTimeInSeconds,
   });
   const [isSavingWorkout, setIsSavingWorkout] = useState(false);
   const { saveWorkout } = useWorkout();
+
+  const leaveListenerRef = useRef<((e: any) => void) | null>(null);
+
+  const beforeLeaveHandler = useCallback((e: any) => {
+    e.preventDefault();
+
+    openLeaveWorkoutModal()
+      .then(() => navigation.dispatch(e.data.action))
+      .catch(() => {});
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    leaveListenerRef.current = beforeLeaveHandler;
+    const subscription = navigation.addListener('beforeRemove', (e) => {
+      if (leaveListenerRef.current) leaveListenerRef.current(e);
+    });
+
+    return () => {
+      navigation.removeListener('beforeRemove', subscription);
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const doesDisplayedExerciseHavePendingSets = displayedExercise?.sets.some(
     (set) => set.status === 'idle',
@@ -202,6 +240,10 @@ export const WorkoutScreen = () => {
         },
       );
 
+      await deleteDraftWorkoutData(workoutRoutineId);
+
+      leaveListenerRef.current = null;
+
       navigation.navigate('Root', {
         screen: 'WorkoutPlan',
       });
@@ -214,7 +256,7 @@ export const WorkoutScreen = () => {
         backgroundColor: colors.red,
       });
     } finally {
-      AsyncStorage.removeItem('workoutPlayerCurrentTime');
+      await AsyncStorage.removeItem('workoutPlayerCurrentTime');
     }
   };
 
@@ -328,6 +370,7 @@ export const WorkoutScreen = () => {
         </View>
       )}
       <Tabs.Container
+        initialTabName={String(displayedExerciseIndex + 1)}
         pagerProps={
           {
             onPageSelected: (e) =>

@@ -43,6 +43,12 @@ import { WorkoutExerciseCard } from '../../components/WorkoutExerciseCard/Workou
 import { ApiErrorMessage } from '../../components/ApiErrorMessage/ApiErrorMessage';
 import PortalHost from '../../components/Portal/PortalHost';
 import { ListEmptyComponent } from './components/ListEmptyComponent/ListEmptyComponent';
+import {
+  deleteDraftWorkoutData,
+  getPersistedDraftWorkoutData,
+} from '../../utils/persistWorkout';
+import { openBeforeWorkoutStartModal } from '../../components/modals/BeforeWorkoutStartModal/BeforeWorkoutStartModal';
+import { DraftWorkoutExercise } from '../../types/draftWorkout';
 
 type Props = RootTabScreenProps<'WorkoutPlan'>;
 
@@ -349,25 +355,71 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
 
   const handleInitiateEditExercise = (exerciseId: string) => {
     const focusedTab = tabContainerRef?.current?.getFocusedTab();
-    const selectedRoutine = routines.find((r) => r?.name === focusedTab);
+    const _selectedRoutine = routines.find((r) => r?.name === focusedTab);
 
-    if (!selectedPlan || !selectedRoutine) return;
+    if (!selectedPlan?.id || !_selectedRoutine?.id) return;
 
     navigation.navigate('EditRoutineExercise', {
-      workoutPlanId: selectedPlan.id!,
-      workoutRoutineId: selectedRoutine.id!,
+      workoutPlanId: selectedPlan.id,
+      workoutRoutineId: _selectedRoutine.id,
       exerciseId,
     });
   };
 
-  const handlePlayWorkout = () => {
+  const handlePlayWorkout = async () => {
     if (!selectedRoutine?.id) return;
 
-    // @TODO: if there is only 1 exercise then play workout immediately
+    const persistedWorkoutData = await getPersistedDraftWorkoutData(
+      selectedRoutine.id,
+    );
+
+    if (persistedWorkoutData) {
+      const shouldResumeWorkout = await openBeforeWorkoutStartModal().catch(
+        () => {},
+      );
+      if (typeof shouldResumeWorkout === 'undefined') return;
+
+      if (shouldResumeWorkout) {
+        let displayedExerciseIndex;
+        const draftWorkoutExercises: DraftWorkoutExercise[] =
+          persistedWorkoutData.exercises.map((e, exerciseIdx) => ({
+            ...e,
+            sets: e.sets.map((s) => {
+              if (
+                s.id === persistedWorkoutData.currentSetId &&
+                persistedWorkoutData.currentSetId !== null
+              ) {
+                displayedExerciseIndex = exerciseIdx;
+                return {
+                  ...s,
+                  status: 'inprogress',
+                };
+              }
+
+              return s;
+            }),
+          }));
+
+        navigation.navigate('Workout', {
+          workoutRoutineId: selectedRoutine.id,
+          restTimeInSeconds: persistedWorkoutData.restTimeInSeconds,
+          draftWorkout: persistedWorkoutData.workout,
+          draftWorkoutExercises,
+          displayedExerciseIndex,
+          currentSetId: persistedWorkoutData.currentSetId,
+          totalTimeInSeconds: persistedWorkoutData.totalTimeInSeconds,
+        });
+        return;
+      } else {
+        await deleteDraftWorkoutData(selectedRoutine.id);
+      }
+    }
 
     navigation.navigate('ConfigureWorkout', {
       workoutRoutineId: selectedRoutine.id,
     });
+
+    // @TODO: if there is only 1 exercise then play workout immediately
   };
 
   if (areWorkoutPlansLoading) return <FullscreenLoader />;

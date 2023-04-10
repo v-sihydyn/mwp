@@ -79,15 +79,25 @@ export const ConfigureWorkoutScreen = () => {
       totalTimeInSeconds: null,
       workoutWorkoutPlanRoutineId: workoutRoutineId,
     };
-    const draftWorkoutExercises: DraftWorkoutExercise[] = exercises.map((e) => {
-      const sets: DraftSet[] = [];
-      const setsConfig: Set[] = JSON.parse(e.setsConfig);
+    const draftWorkoutExercises: DraftWorkoutExercise[] = exercises
+      .map((e) => {
+        const sets: DraftSet[] = [];
+        const setsConfig: Set[] = JSON.parse(e.setsConfig);
 
-      setsConfig.forEach((config) => {
-        const setsCount = Number(config.sets);
+        setsConfig.forEach((config) => {
+          const setsCount = Number(config.sets);
 
-        if (setsCount > 1) {
-          Array.from({ length: setsCount }).forEach(() => {
+          if (setsCount > 1) {
+            Array.from({ length: setsCount }).forEach(() => {
+              sets.push({
+                id: nanoid(),
+                sets: 1,
+                reps: config.reps,
+                weight: config.weight,
+                status: 'idle',
+              });
+            });
+          } else {
             sets.push({
               id: nanoid(),
               sets: 1,
@@ -95,33 +105,28 @@ export const ConfigureWorkoutScreen = () => {
               weight: config.weight,
               status: 'idle',
             });
-          });
-        } else {
-          sets.push({
-            id: nanoid(),
-            sets: 1,
-            reps: config.reps,
-            weight: config.weight,
-            status: 'idle',
-          });
-        }
-      });
+          }
+        });
 
-      return {
-        name: e.name,
-        description: e.description,
-        muscleGroup: e.muscleGroup,
-        color: e.color,
-        sets,
-        setsConfig: e.setsConfig,
-        sortOrder: e.sortOrder,
-        restTimeInSeconds: e.restTimeInSeconds ?? 0,
-        workoutExerciseWorkoutRoutineExerciseId: e.id,
-      };
-    });
+        return {
+          name: e.name,
+          description: e.description,
+          muscleGroup: e.muscleGroup,
+          color: e.color,
+          sets,
+          setsConfig: e.setsConfig,
+          sortOrder: e.sortOrder,
+          restTimeInSeconds: e.restTimeInSeconds ?? 0,
+          workoutExerciseWorkoutRoutineExerciseId: e.id,
+        };
+      })
+      .sort((a, b) => Number(a.sortOrder) - Number(b.sortOrder));
+
+    draftWorkoutExercises[0].sets[0].status = 'inprogress';
 
     navigation.dispatch(
       StackActions.replace('Workout', {
+        workoutRoutineId,
         restTimeInSeconds,
         draftWorkout,
         draftWorkoutExercises,

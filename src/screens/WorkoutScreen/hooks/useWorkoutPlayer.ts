@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   DraftSet,
   DraftSetStatus,
+  DraftWorkout,
   DraftWorkoutExercise,
 } from '../../../types/draftWorkout';
 import { useTimer } from 'use-timer';
@@ -9,32 +10,45 @@ import { CollapsibleRef } from 'react-native-collapsible-tab-view';
 import { AppState, AppStateStatus } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import dayjs from 'dayjs';
+import { persistDraftWorkoutData } from '../../../utils/persistWorkout';
+import { usePrevious } from '../../../hooks/usePrevious';
 
 type WorkoutPlayerConfig = {
+  draftWorkout: DraftWorkout;
   draftWorkoutExercises: DraftWorkoutExercise[];
   restTimeBetweenExercisesInSeconds: number;
+  workoutRoutineId: string;
+  persistedDisplayedExerciseIndex?: number;
+  persistedCurrentSetId?: string | null;
+  persistedTotalTimeInSeconds?: number;
 };
 
 type PlayerState = 'playing' | 'set-rest' | 'exercise-rest' | 'finished';
 
 export const useWorkoutPlayer = ({
+  draftWorkout,
   draftWorkoutExercises,
   restTimeBetweenExercisesInSeconds,
+  workoutRoutineId,
+  persistedDisplayedExerciseIndex,
+  persistedCurrentSetId,
+  persistedTotalTimeInSeconds,
 }: WorkoutPlayerConfig) => {
   const tabContainerRef = useRef<CollapsibleRef>();
-  const [playerState, setPlayerState] = useState<PlayerState>('playing');
-  const [exercises, setExercises] = useState(() => {
-    const result = draftWorkoutExercises
-      .slice()
-      .sort((a, b) => Number(a.sortOrder) - Number(b.sortOrder));
-
-    result[0].sets[0].status = 'inprogress';
-
-    return result;
-  });
-  const [totalTimeInSeconds, setTotalTimeInSeconds] = useState(0);
+  const [exercises, setExercises] = useState(draftWorkoutExercises);
+  const prevExercises = usePrevious(exercises);
+  const [totalTimeInSeconds, setTotalTimeInSeconds] = useState(
+    persistedTotalTimeInSeconds ?? 0,
+  );
+  const areAllSetsProcessed = useMemo(
+    () => getAreAllSetsProcessed(exercises),
+    [exercises],
+  );
+  const [playerState, setPlayerState] = useState<PlayerState>(
+    areAllSetsProcessed ? 'finished' : 'playing',
+  );
   const exerciseTimer = useTimer({
-    autostart: true,
+    autostart: !areAllSetsProcessed,
   });
   const restTimeOverCb = useRef<() => void | null>(null);
   const restTimer = useTimer({
@@ -48,10 +62,20 @@ export const useWorkoutPlayer = ({
   });
   const appState = useRef<AppStateStatus>(AppState.currentState);
 
-  const [displayedExerciseIndex, setDisplayedExerciseIndex] = useState(0);
-  const [currentSetId, setCurrentSetId] = useState<string | null>(
-    exercises[0].sets[0].id,
+  const [displayedExerciseIndex, setDisplayedExerciseIndex] = useState<number>(
+    () => {
+      if (areAllSetsProcessed && exercises.length > 0)
+        return exercises.length - 1;
+
+      return persistedDisplayedExerciseIndex ?? 0;
+    },
   );
+  const [currentSetId, setCurrentSetId] = useState<string | null>(
+    typeof persistedCurrentSetId !== 'undefined'
+      ? persistedCurrentSetId
+      : exercises[0].sets[0].id,
+  );
+  const prevCurrentSetId = usePrevious(currentSetId);
 
   const displayedExercise =
     exercises.find((_, index) => index === displayedExerciseIndex) ?? null;
@@ -68,6 +92,30 @@ export const useWorkoutPlayer = ({
       }
     }
   }, [currentSetId, exercises]);
+
+  useEffect(() => {
+    if (
+      currentSetId !== prevCurrentSetId ||
+      JSON.stringify(exercises) !== JSON.stringify(prevExercises)
+    ) {
+      persistDraftWorkoutData(workoutRoutineId, {
+        workout: draftWorkout,
+        restTimeInSeconds: restTimeBetweenExercisesInSeconds,
+        exercises,
+        totalTimeInSeconds,
+        currentSetId,
+      });
+    }
+  }, [
+    currentSetId,
+    draftWorkout,
+    exercises,
+    prevExercises,
+    prevCurrentSetId,
+    restTimeBetweenExercisesInSeconds,
+    totalTimeInSeconds,
+    workoutRoutineId,
+  ]);
 
   useEffect(() => {
     const subscription = AppState.addEventListener(
@@ -183,7 +231,6 @@ export const useWorkoutPlayer = ({
     const isLastSetOfNotLastExercise =
       displayedExerciseIndex < exercises.length - 1 &&
       currentSetIndex === _currentExercise.sets.length - 1;
-    const areAllSetsProcessed = getAreAllSetsProcessed(exercises);
 
     if (isLastExerciseAndLastSet || areAllSetsProcessed) {
       processLastSet();

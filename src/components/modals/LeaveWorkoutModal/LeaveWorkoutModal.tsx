@@ -5,13 +5,9 @@ import { create, InstanceProps } from 'react-modal-promise';
 import { modalStyles } from '../modalStyles';
 import { colors } from '../../../styles/colors';
 
-type Props = InstanceProps<boolean>;
+type Props = InstanceProps<void>;
 
-export const BeforeWorkoutStartModal = ({
-  isOpen,
-  onResolve,
-  onReject,
-}: Props) => {
+export const LeaveWorkoutModal = ({ isOpen, onResolve, onReject }: Props) => {
   return (
     <NBModal isOpen={isOpen} onClose={() => onReject()}>
       <NBModal.Content backgroundColor={colors.page}>
@@ -19,11 +15,11 @@ export const BeforeWorkoutStartModal = ({
           backgroundColor={colors.page}
           padding={4}
           borderBottomWidth={0}>
-          <Text style={modalStyles.modalTitle}>Play Routine</Text>
+          <Text style={modalStyles.modalTitle}>Leave workout</Text>
         </NBModal.Header>
         <NBModal.Body padding={4} paddingTop={2}>
           <Text style={modalStyles.modalSubtitle}>
-            You haven't finished your previous workout
+            You will be able to resume later
           </Text>
         </NBModal.Body>
         <NBModal.Footer
@@ -32,13 +28,13 @@ export const BeforeWorkoutStartModal = ({
           borderTopWidth={0}>
           <TouchableOpacity
             style={[modalStyles.modalButton, { marginRight: 40 }]}
-            onPress={() => onResolve(false)}>
-            <Text style={modalStyles.modalButtonText}>Start new</Text>
+            onPress={() => onReject()}>
+            <Text style={modalStyles.modalButtonText}>Cancel</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={modalStyles.modalButton}
-            onPress={() => onResolve(true)}>
-            <Text style={modalStyles.modalButtonText}>Resume previous</Text>
+            onPress={() => onResolve()}>
+            <Text style={modalStyles.modalButtonText}>Ok</Text>
           </TouchableOpacity>
         </NBModal.Footer>
       </NBModal.Content>
@@ -46,6 +42,4 @@ export const BeforeWorkoutStartModal = ({
   );
 };
 
-export const openBeforeWorkoutStartModal = create<Props, boolean>(
-  BeforeWorkoutStartModal,
-);
+export const openLeaveWorkoutModal = create<Props>(LeaveWorkoutModal);

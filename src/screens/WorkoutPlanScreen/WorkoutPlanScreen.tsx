@@ -30,6 +30,7 @@ import {
   WorkoutPlan,
   WorkoutPlansByUserIDQuery,
   WorkoutPlansByUserIDQueryVariables,
+  WorkoutRoutineExercise,
 } from '../../API';
 import { openCreatePlanModal } from '../../components/modals/CreatePlanModal/CreatePlanModal';
 import { useWorkoutPlanActions } from '../../hooks/useWorkoutPlanActions';
@@ -49,10 +50,12 @@ import {
 } from '../../utils/persistWorkout';
 import { openBeforeWorkoutStartModal } from '../../components/modals/BeforeWorkoutStartModal/BeforeWorkoutStartModal';
 import { DraftWorkoutExercise } from '../../types/draftWorkout';
+import { useWorkout } from '../../hooks/useWorkout/useWorkout';
 
 type Props = RootTabScreenProps<'WorkoutPlan'>;
 
 export const WorkoutPlanScreen = ({ navigation }: Props) => {
+  const { createDraftWorkoutAndExercises } = useWorkout();
   const { userId } = useAuthContext();
   const {
     workoutPlans,
@@ -121,7 +124,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
         setTabToDelayedFocus(null);
       }
     }
-  }, [routines, tabToDelayedFocus, tabContainerRef?.current]);
+  }, [routines, tabToDelayedFocus]);
 
   // WORKOUT PLAN ACTIONS
   const handleCreateWorkoutPlan = async () => {
@@ -415,11 +418,28 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
       }
     }
 
-    navigation.navigate('ConfigureWorkout', {
-      workoutRoutineId: selectedRoutine.id,
-    });
+    const exercises = selectedRoutine.WorkoutRoutineExercises.items ?? [];
 
-    // @TODO: if there is only 1 exercise then play workout immediately
+    if (exercises.length > 1) {
+      navigation.navigate('ConfigureWorkout', {
+        workoutRoutineId: selectedRoutine.id,
+      });
+    } else {
+      const { draftWorkout, draftWorkoutExercises } =
+        createDraftWorkoutAndExercises(
+          selectedRoutine.id,
+          exercises as WorkoutRoutineExercise[],
+        );
+
+      draftWorkoutExercises[0].sets[0].status = 'inprogress';
+
+      navigation.navigate('Workout', {
+        workoutRoutineId: selectedRoutine.id,
+        restTimeInSeconds: 0,
+        draftWorkout,
+        draftWorkoutExercises,
+      });
+    }
   };
 
   if (areWorkoutPlansLoading) return <FullscreenLoader />;

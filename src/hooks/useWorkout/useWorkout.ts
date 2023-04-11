@@ -7,13 +7,21 @@ import {
   CreateWorkoutMutationVariables,
   WorkoutRoutineExercise,
   WorkoutStatus,
-} from '../../../../API';
+} from '../../API';
 import {
+  DraftSet,
   DraftWorkout,
   DraftWorkoutExercise,
-} from '../../../../types/draftWorkout';
+} from '../../types/draftWorkout';
 import { bulkCreateWorkoutExercisesMutation } from './mutations/bulkCreateWorkoutExercisesMutation';
-import { useAuthContext } from '../../../../contexts/AuthContext';
+import { useAuthContext } from '../../contexts/AuthContext';
+import { nanoid } from 'nanoid';
+
+type Set = {
+  sets: string;
+  reps: string;
+  weight: string | null;
+};
 
 export const useWorkout = () => {
   const { userId } = useAuthContext();
@@ -25,6 +33,66 @@ export const useWorkout = () => {
     BulkCreateWorkoutExercisesMutation,
     BulkCreateWorkoutExercisesMutationVariables
   >(bulkCreateWorkoutExercisesMutation);
+
+  const createDraftWorkoutAndExercises = (
+    workoutRoutineId: string,
+    exercises: WorkoutRoutineExercise[],
+  ) => {
+    const draftWorkout: DraftWorkout = {
+      status: WorkoutStatus.INPROGRESS,
+      dateFinished: null,
+      totalTimeInSeconds: null,
+      workoutWorkoutPlanRoutineId: workoutRoutineId,
+    };
+
+    const draftWorkoutExercises: DraftWorkoutExercise[] = exercises
+      .map((e) => {
+        const sets: DraftSet[] = [];
+        const setsConfig: Set[] = JSON.parse(e.setsConfig);
+
+        setsConfig.forEach((config) => {
+          const setsCount = Number(config.sets);
+
+          if (setsCount > 1) {
+            Array.from({ length: setsCount }).forEach(() => {
+              sets.push({
+                id: nanoid(),
+                sets: 1,
+                reps: config.reps,
+                weight: config.weight,
+                status: 'idle',
+              });
+            });
+          } else {
+            sets.push({
+              id: nanoid(),
+              sets: 1,
+              reps: config.reps,
+              weight: config.weight,
+              status: 'idle',
+            });
+          }
+        });
+
+        return {
+          name: e.name,
+          description: e.description,
+          muscleGroup: e.muscleGroup,
+          color: e.color,
+          sets,
+          setsConfig: e.setsConfig,
+          sortOrder: e.sortOrder,
+          restTimeInSeconds: e.restTimeInSeconds ?? 0,
+          workoutExerciseWorkoutRoutineExerciseId: e.id,
+        };
+      })
+      .sort((a, b) => Number(a.sortOrder) - Number(b.sortOrder));
+
+    return {
+      draftWorkout,
+      draftWorkoutExercises,
+    };
+  };
 
   const saveWorkout = async ({
     workout,
@@ -83,5 +151,5 @@ export const useWorkout = () => {
     };
   };
 
-  return { saveWorkout };
+  return { createDraftWorkoutAndExercises, saveWorkout };
 };

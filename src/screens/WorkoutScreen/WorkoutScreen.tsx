@@ -31,7 +31,7 @@ import { MaterialTabItem } from '../../components/MaterialTabBar/TabItem';
 import { CurrentSetToolbar } from './components/CurrentSetToolbar/CurrentSetToolbar';
 import { useWorkoutPlayer } from './hooks/useWorkoutPlayer';
 import { Button, Toast } from 'native-base';
-import { useWorkout } from './hooks/useWorkout/useWorkout';
+import { useWorkout } from '../../hooks/useWorkout/useWorkout';
 import groupBy from 'lodash.groupby';
 import sumBy from 'lodash.sumby';
 import AsyncStorage from '@react-native-async-storage/async-storage';

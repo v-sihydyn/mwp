@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { workoutFragment } from '../../../../../fragments/workoutFragment';
+import { workoutFragment } from '../../../fragments/workoutFragment';
 
 export const createWorkoutMutation = gql`
   mutation CreateWorkout(

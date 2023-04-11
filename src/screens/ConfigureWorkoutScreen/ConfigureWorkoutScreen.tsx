@@ -17,24 +17,9 @@ import {
 import { ConfigureWorkoutRouteProp } from '../../../types';
 import { useApolloClient } from '@apollo/client';
 import { routineFragment } from '../../fragments/routineFragment';
-import {
-  WorkoutPlanRoutine,
-  WorkoutRoutineExercise,
-  WorkoutStatus,
-} from '../../API';
-import {
-  DraftSet,
-  DraftWorkout,
-  DraftWorkoutExercise,
-} from '../../types/draftWorkout';
-import { nanoid } from 'nanoid';
+import { WorkoutPlanRoutine, WorkoutRoutineExercise } from '../../API';
 import { ValueMap } from '../../components/TimeIntervalPicker/TimeIntervalPicker';
-
-type Set = {
-  sets: string;
-  reps: string;
-  weight: string | null;
-};
+import { useWorkout } from '../../hooks/useWorkout/useWorkout';
 
 export const ConfigureWorkoutScreen = () => {
   const navigation = useNavigation();
@@ -47,6 +32,7 @@ export const ConfigureWorkoutScreen = () => {
     fragmentName: 'Routine',
   });
 
+  const { createDraftWorkoutAndExercises } = useWorkout();
   const [exercises, setExercises] = useState<WorkoutRoutineExercise[]>(() => {
     return (
       (routine?.WorkoutRoutineExercises?.items ??
@@ -73,54 +59,8 @@ export const ConfigureWorkoutScreen = () => {
       restTimeInSeconds = _restTimeMins * 60 + _restTimeSecs;
     }
 
-    const draftWorkout: DraftWorkout = {
-      status: WorkoutStatus.INPROGRESS,
-      dateFinished: null,
-      totalTimeInSeconds: null,
-      workoutWorkoutPlanRoutineId: workoutRoutineId,
-    };
-    const draftWorkoutExercises: DraftWorkoutExercise[] = exercises
-      .map((e) => {
-        const sets: DraftSet[] = [];
-        const setsConfig: Set[] = JSON.parse(e.setsConfig);
-
-        setsConfig.forEach((config) => {
-          const setsCount = Number(config.sets);
-
-          if (setsCount > 1) {
-            Array.from({ length: setsCount }).forEach(() => {
-              sets.push({
-                id: nanoid(),
-                sets: 1,
-                reps: config.reps,
-                weight: config.weight,
-                status: 'idle',
-              });
-            });
-          } else {
-            sets.push({
-              id: nanoid(),
-              sets: 1,
-              reps: config.reps,
-              weight: config.weight,
-              status: 'idle',
-            });
-          }
-        });
-
-        return {
-          name: e.name,
-          description: e.description,
-          muscleGroup: e.muscleGroup,
-          color: e.color,
-          sets,
-          setsConfig: e.setsConfig,
-          sortOrder: e.sortOrder,
-          restTimeInSeconds: e.restTimeInSeconds ?? 0,
-          workoutExerciseWorkoutRoutineExerciseId: e.id,
-        };
-      })
-      .sort((a, b) => Number(a.sortOrder) - Number(b.sortOrder));
+    const { draftWorkout, draftWorkoutExercises } =
+      createDraftWorkoutAndExercises(workoutRoutineId, exercises);
 
     draftWorkoutExercises[0].sets[0].status = 'inprogress';
 
@@ -188,7 +128,7 @@ export const ConfigureWorkoutScreen = () => {
 
   const ListHeaderComponent = useCallback(
     () => <ListHeader onRestTimeChange={onTimeChange} />,
-    [],
+    [], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   return (

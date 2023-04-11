@@ -16,7 +16,7 @@ import { KeyboardAvoidingModal } from '../../KeyboardAvoidingModal/KeyboardAvoid
 import { usePrevious } from '../../../hooks/usePrevious';
 
 type Props = InstanceProps<{ name: string; _version: number }> & {
-  routine: Pick<WorkoutPlanRoutine, 'id' | 'name' | '_version'>;
+  routine: Partial<Pick<WorkoutPlanRoutine, 'id' | 'name' | '_version'>>;
   workoutPlanId: string;
   userId: string;
 };

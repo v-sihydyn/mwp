@@ -6,7 +6,7 @@ import { modalStyles } from '../modalStyles';
 import { colors } from '../../../styles/colors';
 
 type Props = InstanceProps<boolean> & {
-  name: string;
+  name?: string;
 };
 
 export const DeleteRoutineModal = ({

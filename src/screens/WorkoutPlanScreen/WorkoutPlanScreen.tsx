@@ -28,6 +28,7 @@ import { useAuthContext } from '../../contexts/AuthContext';
 import { CreateWorkoutPlanSection } from './components/CreateWorkoutPlanSection/CreateWorkoutPlanSection';
 import {
   WorkoutPlan,
+  WorkoutPlanRoutine,
   WorkoutPlansByUserIDQuery,
   WorkoutPlansByUserIDQueryVariables,
   WorkoutRoutineExercise,
@@ -35,15 +36,12 @@ import {
 import { openCreatePlanModal } from '../../components/modals/CreatePlanModal/CreatePlanModal';
 import { useWorkoutPlanActions } from '../../hooks/useWorkoutPlanActions';
 import { Toast } from 'native-base';
-import { Icon } from '../../components/Icon/Icon';
 import { StoreObject } from '@apollo/client';
 import { useWorkoutPlanRoutineActions } from '../../hooks/useWorkoutPlanRoutineActions';
 import { workoutPlansByUserIDQuery } from './hooks/queries/workoutPlansByUserIDQuery';
 import { PagerViewProps } from 'react-native-pager-view';
-import { WorkoutExerciseCard } from '../../components/WorkoutExerciseCard/WorkoutExerciseCard';
 import { ApiErrorMessage } from '../../components/ApiErrorMessage/ApiErrorMessage';
 import PortalHost from '../../components/Portal/PortalHost';
-import { ListEmptyComponent } from './components/ListEmptyComponent/ListEmptyComponent';
 import {
   deleteDraftWorkoutData,
   getPersistedDraftWorkoutData,
@@ -51,6 +49,8 @@ import {
 import { openBeforeWorkoutStartModal } from '../../components/modals/BeforeWorkoutStartModal/BeforeWorkoutStartModal';
 import { DraftWorkoutExercise } from '../../types/draftWorkout';
 import { useWorkout } from '../../hooks/useWorkout/useWorkout';
+import { EmptyWorkoutPlanTab } from './components/EmptyWorkoutPlanTab/EmptyWorkoutPlanTab';
+import { WorkoutPlanRoutineTab } from './components/WorkoutPlanRoutineTab/WorkoutPlanRoutineTab';
 
 type Props = RootTabScreenProps<'WorkoutPlan'>;
 
@@ -140,7 +140,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     if (!selectedPlan) return;
 
     await openRenamePlanModal({
-      workoutPlan: selectedPlan!,
+      workoutPlan: selectedPlan as WorkoutPlan,
       userId,
     }).catch(() => {});
   };
@@ -173,17 +173,17 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
                   userID: userId,
                 },
               },
-              (data) => {
-                if (!data?.workoutPlansByUserID?.items) return;
+              (updateData) => {
+                if (!updateData?.workoutPlansByUserID?.items) return;
 
                 return {
                   workoutPlansByUserID: {
-                    ...data.workoutPlansByUserID,
-                    items: (data?.workoutPlansByUserID?.items ?? []).filter(
-                      (_plan: WorkoutPlan | null) => {
-                        return _plan?.id !== deletedPlanId;
-                      },
-                    ),
+                    ...updateData.workoutPlansByUserID,
+                    items: (
+                      updateData?.workoutPlansByUserID?.items ?? []
+                    ).filter((_plan: WorkoutPlan | null) => {
+                      return _plan?.id !== deletedPlanId;
+                    }),
                   },
                 };
               },
@@ -220,25 +220,25 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   };
 
   const handleOpenRenameRoutineModal = async () => {
-    const focusedTab = tabContainerRef?.current?.getFocusedTab();
-    const _selectedRoutine = routines.find((r) => r?.name === focusedTab);
+    // const focusedTab = tabContainerRef?.current?.getFocusedTab();
+    // const _selectedRoutine = routines.find((r) => r?.name === focusedTab);
 
-    if (!selectedPlan || !_selectedRoutine) return;
+    if (!selectedPlan || !selectedRoutine) return;
 
     await openRenameRoutineModal({
       workoutPlanId: selectedPlan.id!,
       userId,
       routine: {
-        id: _selectedRoutine.id,
-        name: _selectedRoutine.name,
-        _version: _selectedRoutine._version,
+        id: selectedRoutine.id,
+        name: selectedRoutine.name,
+        _version: selectedRoutine._version,
       },
     }).catch(() => {});
   };
 
   const handleOpenDeleteRoutineModal = async () => {
-    const focusedTab = tabContainerRef?.current?.getFocusedTab();
-    const selectedRoutine = routines.find((r) => r?.name === focusedTab);
+    // const focusedTab = tabContainerRef?.current?.getFocusedTab();
+    // const selectedRoutine = routines.find((r) => r?.name === focusedTab);
 
     if (!selectedPlan || !selectedRoutine) return;
     if (deleteRoutineLoading) return;
@@ -252,7 +252,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
         await deleteWorkoutPlanRoutine({
           variables: {
             input: {
-              id: selectedRoutine.id,
+              id: selectedRoutine.id!,
               _version: selectedRoutine._version,
             },
           },
@@ -461,52 +461,16 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
 
   const emptyTabElement = (
     <Tabs.Tab name="__empty__" key="Empty">
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <CustomButton
-          icon={<Icon name="plus-circle" size={14} color={colors.text} />}
-          onPress={handleOpenCreateRoutineModal}
-          style={{
-            paddingVertical: 14,
-            paddingHorizontal: 16,
-            borderRadius: 16,
-          }}>
-          <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-            Add your first routine
-          </Text>
-        </CustomButton>
-      </View>
+      <EmptyWorkoutPlanTab onCreateRoutine={handleOpenCreateRoutineModal} />
     </Tabs.Tab>
   );
 
   const _tabs = routines.map((routine) => {
     return (
       <Tabs.Tab name={routine!.name!} key={routine!.id}>
-        <Tabs.FlatList
-          data={routine.WorkoutRoutineExercises.items}
-          renderItem={({ item }) =>
-            item && (
-              <WorkoutExerciseCard
-                name={item.name}
-                muscleGroup={item.muscleGroup}
-                setsConfig={item.setsConfig}
-                color={item.color}
-                onPress={() => handleInitiateEditExercise(item.id)}
-              />
-            )
-          }
-          bounces={false}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingHorizontal: 20,
-            marginTop: 20,
-            paddingBottom: 94,
-          }}
-          ListEmptyComponent={ListEmptyComponent}
+        <WorkoutPlanRoutineTab
+          routine={routine as WorkoutPlanRoutine}
+          onEditExercise={handleInitiateEditExercise}
         />
       </Tabs.Tab>
     );

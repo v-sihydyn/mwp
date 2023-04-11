@@ -103,7 +103,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
 
       setDidPlansInitLoaded(true);
     }
-  }, [workoutPlans, didPlansInitLoaded, tabContainerRef?.current]);
+  }, [workoutPlans, didPlansInitLoaded]);
 
   useEffect(() => {
     if (tabToDelayedFocus) {
@@ -218,17 +218,17 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
 
   const handleOpenRenameRoutineModal = async () => {
     const focusedTab = tabContainerRef?.current?.getFocusedTab();
-    const selectedRoutine = routines.find((r) => r?.name === focusedTab);
+    const _selectedRoutine = routines.find((r) => r?.name === focusedTab);
 
-    if (!selectedPlan || !selectedRoutine) return;
+    if (!selectedPlan || !_selectedRoutine) return;
 
     await openRenameRoutineModal({
       workoutPlanId: selectedPlan.id!,
       userId,
       routine: {
-        id: selectedRoutine.id,
-        name: selectedRoutine.name,
-        _version: selectedRoutine._version,
+        id: _selectedRoutine.id,
+        name: _selectedRoutine.name,
+        _version: _selectedRoutine._version,
       },
     }).catch(() => {});
   };
@@ -343,13 +343,13 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
 
   const handleInitiateAddExercise = () => {
     const focusedTab = tabContainerRef?.current?.getFocusedTab();
-    const selectedRoutine = routines.find((r) => r?.name === focusedTab);
+    const _selectedRoutine = routines.find((r) => r?.name === focusedTab);
 
-    if (!selectedPlan || !selectedRoutine) return;
+    if (!selectedPlan || !_selectedRoutine) return;
 
     navigation.navigate('ExerciseCatalog', {
       workoutPlanId: selectedPlan.id!,
-      workoutRoutineId: selectedRoutine.id!,
+      workoutRoutineId: _selectedRoutine.id!,
     });
   };
 

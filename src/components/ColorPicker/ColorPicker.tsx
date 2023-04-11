@@ -42,7 +42,6 @@ export const ColorPicker = ({ value, onChange }: ColorPickerProps) => {
 
   const initialScrollIndex = COLORS.findIndex((c) => c === value);
 
-  // @TODO: verify initialScrollIndex works on real device
   return (
     <FlatList
       data={COLORS}

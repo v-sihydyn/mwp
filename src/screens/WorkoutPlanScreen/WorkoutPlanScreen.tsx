@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-
+import { StyleSheet, Text, View } from 'react-native';
 import { WorkoutPlanSelector } from './components/WorkoutPlanSelector/WorkoutPlanSelector';
 import { WorkoutPlanActionsButton } from './components/WorkoutPlanActionsButton/WorkoutPlanActionsButton';
 import { WorkoutPlanSheet } from './components/WorkoutPlanSheet/WorkoutPlanSheet';
@@ -16,7 +15,7 @@ import { openRenamePlanModal } from '../../components/modals/RenamePlanModal/Ren
 import { openDeletePlanModal } from '../../components/modals/DeletePlanModal/DeletePlanModal';
 import {
   CollapsibleRef,
-  MaterialTabBar,
+  TabBarProps,
   Tabs,
 } from 'react-native-collapsible-tab-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -47,8 +46,11 @@ import { DraftWorkoutExercise } from '../../types/draftWorkout';
 import { useWorkout } from '../../hooks/useWorkout/useWorkout';
 import { EmptyWorkoutPlanTab } from './components/EmptyWorkoutPlanTab/EmptyWorkoutPlanTab';
 import { WorkoutPlanRoutineTab } from './components/WorkoutPlanRoutineTab/WorkoutPlanRoutineTab';
+import { WorkoutRoutineTabBar } from './components/WorkoutRoutineTabBar/WorkoutRoutineTabBar';
 
 type Props = RootTabScreenProps<'WorkoutPlan'>;
+
+const HEADER_HEIGHT = 64;
 
 export const WorkoutPlanScreen = ({ navigation }: Props) => {
   const { createDraftWorkoutAndExercises } = useWorkout();
@@ -63,7 +65,6 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     useState(false);
   const [isWorkoutActionsSheetVisible, setWorkoutActionsSheetVisible] =
     useState(false);
-  const { width: windowWidth } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const { doDeleteWorkoutPlan, deleteLoading: deletePlanLoading } =
     useWorkoutPlanActions();
@@ -125,7 +126,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
 
   // WORKOUT PLAN ACTIONS
   const handleCreateWorkoutPlan = async () => {
-    const newPlanId = await openCreatePlanModal({ userId }).catch(() => {});
+    const newPlanId = await openCreatePlanModal().catch(() => {});
 
     if (newPlanId) {
       setSelectedPlanId(newPlanId as string | null);
@@ -275,26 +276,20 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   };
 
   const handleInitiateAddExercise = () => {
-    const focusedTab = tabContainerRef?.current?.getFocusedTab();
-    const _selectedRoutine = routines.find((r) => r?.name === focusedTab);
-
-    if (!selectedPlan || !_selectedRoutine) return;
+    if (!selectedPlan || !selectedRoutine) return;
 
     navigation.navigate('ExerciseCatalog', {
       workoutPlanId: selectedPlan.id!,
-      workoutRoutineId: _selectedRoutine.id!,
+      workoutRoutineId: selectedRoutine.id!,
     });
   };
 
   const handleInitiateEditExercise = (exerciseId: string) => {
-    const focusedTab = tabContainerRef?.current?.getFocusedTab();
-    const _selectedRoutine = routines.find((r) => r?.name === focusedTab);
-
-    if (!selectedPlan?.id || !_selectedRoutine?.id) return;
+    if (!selectedPlan?.id || !selectedRoutine?.id) return;
 
     navigation.navigate('EditRoutineExercise', {
       workoutPlanId: selectedPlan.id,
-      workoutRoutineId: _selectedRoutine.id,
+      workoutRoutineId: selectedRoutine.id,
       exerciseId,
     });
   };
@@ -429,52 +424,14 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
           ref={tabContainerRef}
           revealHeaderOnScroll={true}
           renderHeader={() => header}
-          headerHeight={64}
-          renderTabBar={(props: any) =>
+          headerHeight={HEADER_HEIGHT}
+          renderTabBar={(props: TabBarProps<string>) =>
             !areWorkoutPlansLoading && routines.length === 0 ? null : (
-              <View
-                style={{
-                  marginTop: 20,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  width: '100%',
-                  flex: 1,
-                }}>
-                <MaterialTabBar
-                  {...props}
-                  width={windowWidth - 105 - 20}
-                  style={{
-                    marginLeft: 20,
-                    flex: 1,
-                  }}
-                  indicatorStyle={{
-                    backgroundColor: colors.text,
-                    height: 1,
-                  }}
-                  labelStyle={{
-                    fontWeight: '700',
-                    textTransform: 'capitalize',
-                    fontSize: 15,
-                    margin: 0,
-                  }}
-                  tabStyle={{
-                    marginRight: 20,
-                    paddingHorizontal: 0,
-                    height: 30,
-                  }}
-                  activeColor={colors.text}
-                  inactiveColor="#b5b5b5"
-                  scrollEnabled
-                />
+              <View style={styles.tabBarSpacer}>
+                <WorkoutRoutineTabBar {...props} />
                 {routines.length > 0 && (
                   <CustomButton
-                    style={{
-                      height: 32,
-                      borderTopLeftRadius: 12,
-                      borderBottomLeftRadius: 12,
-                      borderTopRightRadius: 0,
-                      borderBottomRightRadius: 0,
-                    }}
+                    style={styles.newRoutineButton}
                     onPress={handleOpenCreateRoutineModal}>
                     <Text style={{ fontSize: 13, fontWeight: 'bold' }}>
                       New Routine
@@ -550,5 +507,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: colors.text,
+  },
+  tabBarSpacer: {
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    flex: 1,
+  },
+  newRoutineButton: {
+    height: 32,
+    borderTopLeftRadius: 12,
+    borderBottomLeftRadius: 12,
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
   },
 });

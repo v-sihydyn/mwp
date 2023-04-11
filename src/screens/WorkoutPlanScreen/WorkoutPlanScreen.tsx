@@ -29,16 +29,12 @@ import { CreateWorkoutPlanSection } from './components/CreateWorkoutPlanSection/
 import {
   WorkoutPlan,
   WorkoutPlanRoutine,
-  WorkoutPlansByUserIDQuery,
-  WorkoutPlansByUserIDQueryVariables,
   WorkoutRoutineExercise,
 } from '../../API';
 import { openCreatePlanModal } from '../../components/modals/CreatePlanModal/CreatePlanModal';
 import { useWorkoutPlanActions } from '../../hooks/useWorkoutPlanActions';
 import { Toast } from 'native-base';
-import { StoreObject } from '@apollo/client';
 import { useWorkoutPlanRoutineActions } from '../../hooks/useWorkoutPlanRoutineActions';
-import { workoutPlansByUserIDQuery } from './hooks/queries/workoutPlansByUserIDQuery';
 import { PagerViewProps } from 'react-native-pager-view';
 import { ApiErrorMessage } from '../../components/ApiErrorMessage/ApiErrorMessage';
 import PortalHost from '../../components/Portal/PortalHost';
@@ -69,9 +65,9 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     useState(false);
   const { width: windowWidth } = useWindowDimensions();
   const insets = useSafeAreaInsets();
-  const { deleteWorkoutPlan, deleteLoading: deletePlanLoading } =
+  const { doDeleteWorkoutPlan, deleteLoading: deletePlanLoading } =
     useWorkoutPlanActions();
-  const { deleteWorkoutPlanRoutine, deleteLoading: deleteRoutineLoading } =
+  const { doDeleteWorkoutPlanRoutine, deleteLoading: deleteRoutineLoading } =
     useWorkoutPlanRoutineActions();
   const [didPlansInitLoaded, setDidPlansInitLoaded] = useState(false);
   const [tabToDelayedFocus, setTabToDelayedFocus] = useState<string | null>(
@@ -101,6 +97,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
 
   useEffect(() => {
     if (workoutPlans.length > 0 && !didPlansInitLoaded) {
+      // @TODO: select previously selected plan
       const plan = workoutPlans[0] as WorkoutPlan;
       handleSelectPlan(plan);
 
@@ -155,41 +152,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
 
     if (deleteConfirmed) {
       try {
-        await deleteWorkoutPlan({
-          variables: {
-            planId: selectedPlan.id!,
-          },
-          update(cache, { data }) {
-            if (!data?.deletePlanAndRoutines) return;
-            const deletedPlanId = data?.deletePlanAndRoutines.id;
-
-            cache.updateQuery<
-              WorkoutPlansByUserIDQuery,
-              WorkoutPlansByUserIDQueryVariables
-            >(
-              {
-                query: workoutPlansByUserIDQuery,
-                variables: {
-                  userID: userId,
-                },
-              },
-              (updateData) => {
-                if (!updateData?.workoutPlansByUserID?.items) return;
-
-                return {
-                  workoutPlansByUserID: {
-                    ...updateData.workoutPlansByUserID,
-                    items: (
-                      updateData?.workoutPlansByUserID?.items ?? []
-                    ).filter((_plan: WorkoutPlan | null) => {
-                      return _plan?.id !== deletedPlanId;
-                    }),
-                  },
-                };
-              },
-            );
-          },
-        });
+        await doDeleteWorkoutPlan(selectedPlan.id!);
         setDidPlansInitLoaded(false);
       } catch (e) {
         Toast.show({
@@ -220,9 +183,6 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   };
 
   const handleOpenRenameRoutineModal = async () => {
-    // const focusedTab = tabContainerRef?.current?.getFocusedTab();
-    // const _selectedRoutine = routines.find((r) => r?.name === focusedTab);
-
     if (!selectedPlan || !selectedRoutine) return;
 
     await openRenameRoutineModal({
@@ -237,9 +197,6 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   };
 
   const handleOpenDeleteRoutineModal = async () => {
-    // const focusedTab = tabContainerRef?.current?.getFocusedTab();
-    // const selectedRoutine = routines.find((r) => r?.name === focusedTab);
-
     if (!selectedPlan || !selectedRoutine) return;
     if (deleteRoutineLoading) return;
 
@@ -249,38 +206,11 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
 
     if (deleteConfirmed) {
       try {
-        await deleteWorkoutPlanRoutine({
-          variables: {
-            input: {
-              id: selectedRoutine.id!,
-              _version: selectedRoutine._version,
-            },
-          },
-          update(cache, { data }) {
-            if (!data?.deleteWorkoutPlanRoutine) return;
-
-            cache.modify({
-              id: cache.identify(data.deleteWorkoutPlanRoutine),
-              fields: {
-                workoutPlansByUserID(existingItems = [], { readField }) {
-                  return existingItems.map((planRef: StoreObject) => {
-                    if (readField('id', planRef) === selectedPlan.id) {
-                      return {
-                        ...planRef,
-                        WorkoutPlanRoutines: planRef.WorkoutPlanRoutines.filter(
-                          (routineRef: StoreObject) =>
-                            readField('id', routineRef) === selectedRoutine.id,
-                        ),
-                      };
-                    }
-
-                    return planRef;
-                  });
-                },
-              },
-            });
-          },
-        });
+        await doDeleteWorkoutPlanRoutine(
+          selectedRoutine.id!,
+          selectedRoutine._version,
+          selectedPlan.id!,
+        );
 
         const updatedRoutines = routines.filter(
           (x) => x?.id !== selectedRoutine.id,

@@ -5,13 +5,7 @@ import { create, InstanceProps } from 'react-modal-promise';
 import { modalStyles } from '../modalStyles';
 import { colors } from '../../../styles/colors';
 import { useWorkoutPlanRoutineActions } from '../../../hooks/useWorkoutPlanRoutineActions';
-import {
-  WorkoutPlan,
-  WorkoutPlanRoutine,
-  WorkoutPlansByUserIDQuery,
-  WorkoutPlansByUserIDQueryVariables,
-} from '../../../API';
-import { workoutPlansByUserIDQuery } from '../../../screens/WorkoutPlanScreen/hooks/queries/workoutPlansByUserIDQuery';
+import { WorkoutPlanRoutine } from '../../../API';
 import { KeyboardAvoidingModal } from '../../KeyboardAvoidingModal/KeyboardAvoidingModal';
 import { usePrevious } from '../../../hooks/usePrevious';
 
@@ -22,12 +16,11 @@ type Props = InstanceProps<WorkoutPlanRoutine | null> & {
 
 export const CreateRoutineModal = ({
   workoutPlanId,
-  userId,
   isOpen,
   onResolve,
   onReject,
 }: Props) => {
-  const { createWorkoutPlanRoutine, createLoading } =
+  const { doCreateWorkoutPlanRoutine, createLoading } =
     useWorkoutPlanRoutineActions();
   const [name, setName] = useState<string>('');
   const inputRef = useRef<TextInput>(null);
@@ -58,58 +51,7 @@ export const CreateRoutineModal = ({
     if (!name) return onResolve();
 
     try {
-      const response = await createWorkoutPlanRoutine({
-        variables: {
-          input: {
-            name,
-            workoutPlanID: workoutPlanId,
-          },
-        },
-        update(cache, { data }) {
-          const newRoutine = data?.createWorkoutPlanRoutine;
-          if (!newRoutine) return;
-
-          cache.updateQuery<
-            WorkoutPlansByUserIDQuery,
-            WorkoutPlansByUserIDQueryVariables
-          >(
-            {
-              query: workoutPlansByUserIDQuery,
-              variables: {
-                userID: userId,
-              },
-            },
-            (data) => {
-              if (!data?.workoutPlansByUserID?.items) return;
-
-              return {
-                workoutPlansByUserID: {
-                  ...data.workoutPlansByUserID,
-                  items: (data?.workoutPlansByUserID?.items ?? []).map(
-                    (_plan: WorkoutPlan | null) => {
-                      const plan = _plan! || {};
-
-                      return {
-                        ...plan,
-                        WorkoutPlanRoutines: {
-                          ...plan.WorkoutPlanRoutines,
-                          items:
-                            plan.id === workoutPlanId
-                              ? [
-                                  ...(plan.WorkoutPlanRoutines?.items ?? []),
-                                  newRoutine,
-                                ]
-                              : plan.WorkoutPlanRoutines?.items,
-                        },
-                      };
-                    },
-                  ),
-                },
-              };
-            },
-          );
-        },
-      });
+      const response = await doCreateWorkoutPlanRoutine(name, workoutPlanId);
 
       onResolve(response?.data?.createWorkoutPlanRoutine ?? null);
     } catch (e) {

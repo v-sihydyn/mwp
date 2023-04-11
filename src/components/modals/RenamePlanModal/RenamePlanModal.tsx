@@ -51,7 +51,7 @@ export const RenamePlanModal = ({
     if (!name) return onResolve();
 
     try {
-      const response = await updateWorkoutPlan({
+      await updateWorkoutPlan({
         variables: {
           input: {
             id: workoutPlan.id,
@@ -60,23 +60,8 @@ export const RenamePlanModal = ({
             _version: workoutPlan._version,
           },
         },
-        update(cache, { data }) {
-          if (!data?.updateWorkoutPlan) return;
-
-          cache.modify({
-            id: cache.identify(data.updateWorkoutPlan),
-            fields: {
-              workoutPlansByUserID(existingItems = [], { INVALIDATE }) {
-                return INVALIDATE;
-              },
-            },
-          });
-        },
       });
-      if (response?.data?.updateWorkoutPlan) {
-        const workoutPlan = response.data.updateWorkoutPlan;
-        onResolve({ name: workoutPlan.name, _version: workoutPlan._version });
-      }
+      onResolve();
     } catch (e) {
       Toast.show({
         title: 'Failed to rename a plan',
@@ -124,7 +109,4 @@ export const RenamePlanModal = ({
   );
 };
 
-export const openRenamePlanModal = create<
-  Props,
-  { name: string; _version: number }
->(RenamePlanModal);
+export const openRenamePlanModal = create<Props>(RenamePlanModal);

@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import { planFragment } from '../../fragments/planFragment';
 
 export const createWorkoutPlanMutation = gql`
   mutation CreateWorkoutPlan(
@@ -6,14 +7,8 @@ export const createWorkoutPlanMutation = gql`
     $condition: ModelWorkoutPlanConditionInput
   ) {
     createWorkoutPlan(input: $input, condition: $condition) {
-      id
-      name
-      userID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
+      ...Plan
     }
   }
+  ${planFragment}
 `;

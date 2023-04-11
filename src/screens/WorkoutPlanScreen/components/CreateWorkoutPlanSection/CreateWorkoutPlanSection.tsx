@@ -10,14 +10,11 @@ import React from 'react';
 import { Icon } from '../../../../components/Icon/Icon';
 import { openCreatePlanModal } from '../../../../components/modals/CreatePlanModal/CreatePlanModal';
 
-import { useAuthContext } from '../../../../contexts/AuthContext';
-
 export const CreateWorkoutPlanSection = () => {
-  const { userId } = useAuthContext();
   const { width: windowWidth } = useWindowDimensions();
 
   const handleCreateWorkoutPlan = async () => {
-    await openCreatePlanModal({ userId }).catch(() => {});
+    await openCreatePlanModal().catch(() => {});
   };
 
   return (

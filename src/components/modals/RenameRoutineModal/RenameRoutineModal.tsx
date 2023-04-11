@@ -4,14 +4,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { create, InstanceProps } from 'react-modal-promise';
 import { modalStyles } from '../modalStyles';
 import { colors } from '../../../styles/colors';
-import {
-  WorkoutPlan,
-  WorkoutPlanRoutine,
-  WorkoutPlansByUserIDQuery,
-  WorkoutPlansByUserIDQueryVariables,
-} from '../../../API';
+import { WorkoutPlanRoutine } from '../../../API';
 import { useWorkoutPlanRoutineActions } from '../../../hooks/useWorkoutPlanRoutineActions';
-import { workoutPlansByUserIDQuery } from '../../../screens/WorkoutPlanScreen/hooks/queries/workoutPlansByUserIDQuery';
 import { KeyboardAvoidingModal } from '../../KeyboardAvoidingModal/KeyboardAvoidingModal';
 import { usePrevious } from '../../../hooks/usePrevious';
 
@@ -24,14 +18,13 @@ type Props = InstanceProps<{ name: string; _version: number }> & {
 export const RenameRoutineModal = ({
   routine,
   workoutPlanId,
-  userId,
   isOpen,
   onResolve,
   onReject,
 }: Props) => {
   const { updateWorkoutPlanRoutine, updateLoading } =
     useWorkoutPlanRoutineActions();
-  const [name, setName] = useState<string>(routine.name);
+  const [name, setName] = useState<string>(routine.name!);
   const inputRef = useRef<TextInput>(null);
   const prevIsOpen = usePrevious(isOpen);
 
@@ -60,64 +53,17 @@ export const RenameRoutineModal = ({
     if (!name) return onResolve();
 
     try {
-      const response = await updateWorkoutPlanRoutine({
+      await updateWorkoutPlanRoutine({
         variables: {
           input: {
-            id: routine.id,
+            id: routine.id!,
             name,
             workoutPlanID: workoutPlanId,
             _version: routine._version,
           },
         },
-        update(cache, { data }) {
-          if (!data?.updateWorkoutPlanRoutine) return;
-
-          // @ts-ignore
-          cache.updateQuery<
-            WorkoutPlansByUserIDQuery,
-            WorkoutPlansByUserIDQueryVariables
-          >(
-            {
-              query: workoutPlansByUserIDQuery,
-              variables: {
-                userID: userId,
-              },
-            },
-            (data) => {
-              if (!data?.workoutPlansByUserID?.items) return;
-
-              return {
-                workoutPlansByUserID: {
-                  ...data.workoutPlansByUserID,
-                  items: (data?.workoutPlansByUserID?.items ?? []).map(
-                    (_plan: WorkoutPlan | null) => {
-                      const plan = _plan! || {};
-
-                      return {
-                        ...plan,
-                        WorkoutPlanRoutines: {
-                          ...plan.WorkoutPlanRoutines,
-                          items: plan.WorkoutPlanRoutines?.items.map((r) => ({
-                            ...r,
-                            name: r?.id === routine.id ? name : r?.name,
-                          })),
-                        },
-                      };
-                    },
-                  ),
-                },
-              };
-            },
-          );
-        },
       });
-      if (response?.data?.updateWorkoutPlanRoutine) {
-        const updatedRoutine = response.data.updateWorkoutPlanRoutine;
-        onResolve({
-          name: updatedRoutine.name,
-          _version: updatedRoutine._version,
-        });
-      }
+      onResolve();
     } catch (e) {
       Toast.show({
         title: 'Failed to rename a routine',
@@ -165,7 +111,4 @@ export const RenameRoutineModal = ({
   );
 };
 
-export const openRenameRoutineModal = create<
-  Props,
-  { name: string; _version: number }
->(RenameRoutineModal);
+export const openRenameRoutineModal = create<Props>(RenameRoutineModal);

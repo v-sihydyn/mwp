@@ -8,17 +8,10 @@ import { useWorkoutPlanActions } from '../../../hooks/useWorkoutPlanActions';
 import { KeyboardAvoidingModal } from '../../KeyboardAvoidingModal/KeyboardAvoidingModal';
 import { usePrevious } from '../../../hooks/usePrevious';
 
-type Props = InstanceProps<string | null> & {
-  userId: string;
-};
+type Props = InstanceProps<string | null>;
 
-export const CreatePlanModal = ({
-  userId,
-  isOpen,
-  onResolve,
-  onReject,
-}: Props) => {
-  const { createWorkoutPlan, createLoading } = useWorkoutPlanActions();
+export const CreatePlanModal = ({ isOpen, onResolve, onReject }: Props) => {
+  const { doCreateWorkoutPlan, createLoading } = useWorkoutPlanActions();
   const [name, setName] = useState<string>('My Workout Plan'); // @TODO: name must be unique
   const inputRef = useRef<TextInput>(null);
   const prevIsOpen = usePrevious(isOpen);
@@ -48,15 +41,7 @@ export const CreatePlanModal = ({
     if (!name) return onResolve();
 
     try {
-      const response = await createWorkoutPlan({
-        variables: {
-          input: {
-            name,
-            userID: userId,
-          },
-        },
-        refetchQueries: ['WorkoutPlansByUserID'],
-      });
+      const response = await doCreateWorkoutPlan(name);
       onResolve(response?.data?.createWorkoutPlan?.id ?? null);
     } catch (e) {
       Toast.show({

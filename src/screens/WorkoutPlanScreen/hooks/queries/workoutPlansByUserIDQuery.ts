@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { routineFragment } from '../../../../fragments/routineFragment';
+import { planFragment } from '../../../../fragments/planFragment';
 
 export const workoutPlansByUserIDQuery = gql`
   query WorkoutPlansByUserID(
@@ -17,23 +17,11 @@ export const workoutPlansByUserIDQuery = gql`
       nextToken: $nextToken
     ) {
       items {
-        id
-        name
-        userID
-        WorkoutPlanRoutines {
-          items {
-            ...Routine
-          }
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
+        ...Plan
       }
       nextToken
       startedAt
     }
   }
-  ${routineFragment}
+  ${planFragment}
 `;

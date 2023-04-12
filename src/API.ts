@@ -562,6 +562,15 @@ export type ModelWorkoutExerciseFilterInput = {
   not?: ModelWorkoutExerciseFilterInput | null,
 };
 
+export type ModelIntKeyConditionInput = {
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+};
+
 export enum ModelSortDirection {
   ASC = "ASC",
   DESC = "DESC",
@@ -575,9 +584,17 @@ export type ModelWorkoutFilterInput = {
   dateFinished?: ModelStringInput | null,
   totalTimeInSeconds?: ModelIntInput | null,
   userID?: ModelIDInput | null,
+  _deleted?: ModelBooleanInput | null,
   and?: Array< ModelWorkoutFilterInput | null > | null,
   or?: Array< ModelWorkoutFilterInput | null > | null,
   not?: ModelWorkoutFilterInput | null,
+};
+
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
 };
 
 export type ModelStringKeyConditionInput = {
@@ -618,6 +635,7 @@ export type ModelWorkoutRoutineExerciseFilterInput = {
   sortOrder?: ModelIntInput | null,
   workoutPlanRoutineID?: ModelIDInput | null,
   setsConfig?: ModelStringInput | null,
+  _deleted?: ModelBooleanInput | null,
   and?: Array< ModelWorkoutRoutineExerciseFilterInput | null > | null,
   or?: Array< ModelWorkoutRoutineExerciseFilterInput | null > | null,
   not?: ModelWorkoutRoutineExerciseFilterInput | null,
@@ -628,6 +646,7 @@ export type ModelWorkoutPlanRoutineFilterInput = {
   name?: ModelStringInput | null,
   sortOrder?: ModelIntInput | null,
   workoutPlanID?: ModelIDInput | null,
+  _deleted?: ModelBooleanInput | null,
   and?: Array< ModelWorkoutPlanRoutineFilterInput | null > | null,
   or?: Array< ModelWorkoutPlanRoutineFilterInput | null > | null,
   not?: ModelWorkoutPlanRoutineFilterInput | null,
@@ -655,6 +674,7 @@ export type ModelWorkoutPlanFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
   userID?: ModelIDInput | null,
+  _deleted?: ModelBooleanInput | null,
   and?: Array< ModelWorkoutPlanFilterInput | null > | null,
   or?: Array< ModelWorkoutPlanFilterInput | null > | null,
   not?: ModelWorkoutPlanFilterInput | null,
@@ -1920,16 +1940,17 @@ export type SyncWorkoutExercisesQuery = {
   } | null,
 };
 
-export type WorkoutExercisesByWorkoutIDQueryVariables = {
+export type WorkoutExercisesByWorkoutIDAndSortOrderQueryVariables = {
   workoutID: string,
+  sortOrder?: ModelIntKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelWorkoutExerciseFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type WorkoutExercisesByWorkoutIDQuery = {
-  workoutExercisesByWorkoutID?:  {
+export type WorkoutExercisesByWorkoutIDAndSortOrderQuery = {
+  workoutExercisesByWorkoutIDAndSortOrder?:  {
     __typename: "ModelWorkoutExerciseConnection",
     items:  Array< {
       __typename: "WorkoutExercise",

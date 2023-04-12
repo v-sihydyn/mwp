@@ -38,7 +38,7 @@ export const ConfigureWorkoutScreen = () => {
       (routine?.WorkoutRoutineExercises?.items ??
         []) as WorkoutRoutineExercise[]
     )
-      .filter((x) => !x?._deleted)
+      .slice()
       .sort(
         (a, b) =>
           new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),

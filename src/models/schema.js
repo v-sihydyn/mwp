@@ -95,9 +95,10 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byWorkout",
+                        "name": "byWorkoutBySortOrder",
                         "fields": [
-                            "workoutID"
+                            "workoutID",
+                            "sortOrder"
                         ]
                     }
                 },
@@ -864,6 +865,21 @@ export const schema = {
                 "TRICEPS",
                 "WEIGHTLIFTING"
             ]
+        },
+        "ModelAttributeTypes": {
+            "name": "ModelAttributeTypes",
+            "values": [
+                "binary",
+                "binarySet",
+                "bool",
+                "list",
+                "map",
+                "number",
+                "numberSet",
+                "string",
+                "stringSet",
+                "_null"
+            ]
         }
     },
     "nonModels": {
@@ -937,5 +953,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.6",
-    "version": "39b1030cf389a52e05a219df8d2bdfe9"
+    "version": "bfbf3bbddc74e440e67f0ce51782dc8c"
 };

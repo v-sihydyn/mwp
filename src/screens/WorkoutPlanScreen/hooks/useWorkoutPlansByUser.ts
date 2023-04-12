@@ -18,36 +18,34 @@ export const useWorkoutPlansByUser = (userId: string) => {
 
   const workoutPlans = useMemo(
     () =>
-      (data?.workoutPlansByUserID?.items! ?? [])
-        .filter((plan) => !plan?._deleted)
-        .map((plan) => ({
-          ...plan,
-          WorkoutPlanRoutines: {
-            ...plan!.WorkoutPlanRoutines,
-            items: plan!
-              .WorkoutPlanRoutines!.items.filter((x) => !x?._deleted)
-              .sort((a, b) => {
-                return (
-                  new Date(a!.createdAt).getTime() -
-                  new Date(b!.createdAt).getTime()
-                );
-              })
-              .map((routine) => ({
-                ...routine,
-                WorkoutRoutineExercises: {
-                  ...routine!.WorkoutRoutineExercises,
-                  items: routine!
-                    .WorkoutRoutineExercises!.items.filter((x) => !x?._deleted)
-                    .sort((a, b) => {
-                      return (
-                        new Date(a!.createdAt).getTime() -
-                        new Date(b!.createdAt).getTime()
-                      );
-                    }),
-                },
-              })),
-          },
-        })),
+      (data?.workoutPlansByUserID?.items! ?? []).map((plan) => ({
+        ...plan,
+        WorkoutPlanRoutines: {
+          ...plan!.WorkoutPlanRoutines,
+          items: plan!
+            .WorkoutPlanRoutines!.items.slice()
+            .sort((a, b) => {
+              return (
+                new Date(a!.createdAt).getTime() -
+                new Date(b!.createdAt).getTime()
+              );
+            })
+            .map((routine) => ({
+              ...routine,
+              WorkoutRoutineExercises: {
+                ...routine!.WorkoutRoutineExercises,
+                items: routine!
+                  .WorkoutRoutineExercises!.items.slice()
+                  .sort((a, b) => {
+                    return (
+                      new Date(a!.createdAt).getTime() -
+                      new Date(b!.createdAt).getTime()
+                    );
+                  }),
+              },
+            })),
+        },
+      })),
     [data],
   );
 

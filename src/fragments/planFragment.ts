@@ -6,7 +6,7 @@ export const planFragment = gql`
     id
     name
     userID
-    WorkoutPlanRoutines {
+    WorkoutPlanRoutines(filter: { _deleted: { ne: true } }) {
       items {
         ...Routine
       }

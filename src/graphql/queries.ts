@@ -91,16 +91,18 @@ export const syncWorkoutExercises = /* GraphQL */ `
     }
   }
 `;
-export const workoutExercisesByWorkoutID = /* GraphQL */ `
-  query WorkoutExercisesByWorkoutID(
+export const workoutExercisesByWorkoutIDAndSortOrder = /* GraphQL */ `
+  query WorkoutExercisesByWorkoutIDAndSortOrder(
     $workoutID: ID!
+    $sortOrder: ModelIntKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelWorkoutExerciseFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    workoutExercisesByWorkoutID(
+    workoutExercisesByWorkoutIDAndSortOrder(
       workoutID: $workoutID
+      sortOrder: $sortOrder
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit

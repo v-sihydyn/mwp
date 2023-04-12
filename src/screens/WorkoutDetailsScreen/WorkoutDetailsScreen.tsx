@@ -60,6 +60,9 @@ export const WorkoutDetailsScreen = () => {
                     status: {
                       eq: WorkoutStatus.FINISHED,
                     },
+                    _deleted: {
+                      ne: true,
+                    },
                   },
                   sortDirection: ModelSortDirection.DESC,
                 },

@@ -34,6 +34,19 @@ export enum MuscleGroup {
   WEIGHTLIFTING = "WEIGHTLIFTING"
 }
 
+export enum ModelAttributeTypes {
+  BINARY = "binary",
+  BINARY_SET = "binarySet",
+  BOOL = "bool",
+  LIST = "list",
+  MAP = "map",
+  NUMBER = "number",
+  NUMBER_SET = "numberSet",
+  STRING = "string",
+  STRING_SET = "stringSet",
+  NULL = "_null"
+}
+
 type EagerDeletePlanAndRoutinesResponse = {
   readonly id: string;
 }

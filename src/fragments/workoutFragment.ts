@@ -7,7 +7,7 @@ export const workoutFragment = gql`
     status
     dateFinished
     totalTimeInSeconds
-    WorkoutExercises {
+    WorkoutExercises(sortDirection: ASC) {
       items {
         id
         name

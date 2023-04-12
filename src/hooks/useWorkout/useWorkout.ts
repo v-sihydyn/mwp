@@ -158,6 +158,9 @@ export const useWorkout = () => {
             status: {
               eq: WorkoutStatus.FINISHED,
             },
+            _deleted: {
+              ne: true,
+            },
           },
           sortDirection: ModelSortDirection.DESC,
         },

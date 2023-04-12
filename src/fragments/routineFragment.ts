@@ -10,7 +10,7 @@ export const routineFragment = gql`
     _version
     _deleted
     _lastChangedAt
-    WorkoutRoutineExercises {
+    WorkoutRoutineExercises(filter: { _deleted: { ne: true } }) {
       items {
         ...Exercise
       }

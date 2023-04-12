@@ -34,6 +34,19 @@ const MuscleGroup = {
   "WEIGHTLIFTING": "WEIGHTLIFTING"
 };
 
+const ModelAttributeTypes = {
+  "BINARY": "binary",
+  "BINARY_SET": "binarySet",
+  "BOOL": "bool",
+  "LIST": "list",
+  "MAP": "map",
+  "NUMBER": "number",
+  "NUMBER_SET": "numberSet",
+  "STRING": "string",
+  "STRING_SET": "stringSet",
+  "NULL": "_null"
+};
+
 const { WorkoutExercise, Workout, Exercise, WorkoutRoutineExercise, WorkoutPlanRoutine, User, WorkoutPlan, DeletePlanAndRoutinesResponse, DeleteWorkoutAndExercisesResponse, BulkCreateWorkoutExercisesResponse, RoutineExerciseToUpdateResponse } = initSchema(schema);
 
 export {
@@ -47,6 +60,7 @@ export {
   WorkoutStatus,
   ExerciseEquipment,
   MuscleGroup,
+  ModelAttributeTypes,
   DeletePlanAndRoutinesResponse,
   DeleteWorkoutAndExercisesResponse,
   BulkCreateWorkoutExercisesResponse,

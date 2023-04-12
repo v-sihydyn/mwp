@@ -1,7 +1,6 @@
 import { NetworkStatus, useLazyQuery } from '@apollo/client';
 import {
   ModelSortDirection,
-  Workout,
   WorkoutsByUserQuery,
   WorkoutsByUserQueryVariables,
   WorkoutStatus,
@@ -27,6 +26,9 @@ export const useWorkoutsList = (filterDate: string | null) => {
         status: {
           eq: WorkoutStatus.FINISHED,
         },
+        _deleted: {
+          ne: true,
+        },
       },
     };
     let start;
@@ -45,19 +47,10 @@ export const useWorkoutsList = (filterDate: string | null) => {
     });
   }, [filterDate, userId]);
 
-  const workouts = (data?.workoutsByUser?.items ?? [])
-    .filter((x) => !x?._deleted)
-    .map((workout) => ({
-      ...workout,
-      __typename: 'Workout',
-      WorkoutExercises: {
-        ...workout!.WorkoutExercises,
-        items: workout!
-          .WorkoutExercises!.items.slice()
-          .sort((a, b) => Number(a!.sortOrder) - Number(b!.sortOrder)),
-      },
-    }));
+  const workouts = data?.workoutsByUser?.items ?? [];
   const refetching = networkStatus === NetworkStatus.refetch;
+
+  console.log(workouts);
 
   return { workouts, refetch, refetching, loading, error };
 };

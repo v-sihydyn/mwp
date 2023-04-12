@@ -27,7 +27,7 @@
         },
         "bulkCreateWorkoutExercises": {
           "deploymentBucketName": "amplify-mwp-staging-91319-deployment",
-          "s3Key": "amplify-builds/bulkCreateWorkoutExercises-36517a42624445756169-build.zip"
+          "s3Key": "amplify-builds/bulkCreateWorkoutExercises-69346f6e6a72436f4f33-build.zip"
         },
         "deleteWorkoutAndExercises": {
           "deploymentBucketName": "amplify-mwp-staging-91319-deployment",

@@ -1,11 +1,14 @@
-import { useMutation } from '@apollo/client';
+import { useApolloClient, useMutation } from '@apollo/client';
 import { createWorkoutMutation } from './mutations/createWorkoutMutation';
 import {
   BulkCreateWorkoutExercisesMutation,
   BulkCreateWorkoutExercisesMutationVariables,
   CreateWorkoutMutation,
   CreateWorkoutMutationVariables,
+  ModelSortDirection,
   WorkoutRoutineExercise,
+  WorkoutsByUserQuery,
+  WorkoutsByUserQueryVariables,
   WorkoutStatus,
 } from '../../API';
 import {
@@ -16,6 +19,7 @@ import {
 import { bulkCreateWorkoutExercisesMutation } from './mutations/bulkCreateWorkoutExercisesMutation';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { nanoid } from 'nanoid';
+import { workoutsByUserQuery } from '../../screens/StatisticsScreen/hooks/useWorkoutsList/queuries/workoutsByUserQuery';
 
 type Set = {
   sets: string;
@@ -25,6 +29,7 @@ type Set = {
 
 export const useWorkout = () => {
   const { userId } = useAuthContext();
+  const client = useApolloClient();
   const [createWorkout] = useMutation<
     CreateWorkoutMutation,
     CreateWorkoutMutationVariables
@@ -35,14 +40,14 @@ export const useWorkout = () => {
   >(bulkCreateWorkoutExercisesMutation);
 
   const createDraftWorkoutAndExercises = (
-    workoutRoutineId: string,
+    workoutName: string,
     exercises: WorkoutRoutineExercise[],
   ) => {
     const draftWorkout: DraftWorkout = {
+      name: workoutName,
       status: WorkoutStatus.INPROGRESS,
       dateFinished: null,
       totalTimeInSeconds: null,
-      workoutWorkoutPlanRoutineId: workoutRoutineId,
     };
 
     const draftWorkoutExercises: DraftWorkoutExercise[] = exercises
@@ -83,7 +88,7 @@ export const useWorkout = () => {
           setsConfig: e.setsConfig,
           sortOrder: e.sortOrder,
           restTimeInSeconds: e.restTimeInSeconds ?? 0,
-          workoutExerciseWorkoutRoutineExerciseId: e.id,
+          workoutRoutineExerciseId: e.id,
         };
       })
       .sort((a, b) => Number(a.sortOrder) - Number(b.sortOrder));
@@ -109,11 +114,11 @@ export const useWorkout = () => {
     const workoutData = await createWorkout({
       variables: {
         input: {
+          name: workout.name,
           status: WorkoutStatus.FINISHED,
           dateFinished: new Date().toISOString(),
           totalTimeInSeconds: workout.totalTimeInSeconds,
           userID: userId,
-          workoutWorkoutPlanRoutineId: workout.workoutWorkoutPlanRoutineId,
         },
       },
     });
@@ -124,14 +129,17 @@ export const useWorkout = () => {
       variables: {
         exercises: exercises.map((dwe, index) => ({
           workoutID: workoutData.data!.createWorkout!.id,
+          name: dwe.name,
+          description: dwe.description,
+          muscleGroup: dwe.muscleGroup,
+          color: dwe.color,
+          restTimeInSeconds: dwe.restTimeInSeconds,
           setsConfig: JSON.stringify(
             dwe.sets.filter((set) => set.status === 'completed'),
           ),
           sortOrder: Number.isNaN(Number(dwe.sortOrder))
             ? index
             : dwe.sortOrder,
-          workoutExerciseWorkoutRoutineExerciseId:
-            dwe.workoutExerciseWorkoutRoutineExerciseId,
         })),
         routineExercisesToUpdate,
       },
@@ -140,15 +148,42 @@ export const useWorkout = () => {
     const savedWorkout = workoutData.data.createWorkout;
     const savedExercises =
       exercisesData.data?.bulkCreateWorkoutExercises?.exercises ?? [];
-    const updatedRoutineExercises =
-      exercisesData.data?.bulkCreateWorkoutExercises?.updatedRoutineExercises ??
-      [];
 
-    return {
-      savedWorkout,
-      savedExercises,
-      updatedRoutineExercises,
-    };
+    client.cache.updateQuery<WorkoutsByUserQuery, WorkoutsByUserQueryVariables>(
+      {
+        query: workoutsByUserQuery,
+        variables: {
+          userID: userId,
+          filter: {
+            status: {
+              eq: WorkoutStatus.FINISHED,
+            },
+          },
+          sortDirection: ModelSortDirection.DESC,
+        },
+      },
+      (data) => {
+        if (!data?.workoutsByUser) return;
+
+        return {
+          workoutsByUser: {
+            ...data.workoutsByUser,
+            items: [
+              {
+                ...savedWorkout,
+                WorkoutExercises: {
+                  items: savedExercises ?? [],
+                  __typename: 'ModelWorkoutExerciseConnection',
+                  nextToken: null,
+                  startedAt: null,
+                },
+              },
+              ...(data.workoutsByUser.items ?? []),
+            ],
+          },
+        };
+      },
+    );
   };
 
   return { createDraftWorkoutAndExercises, saveWorkout };

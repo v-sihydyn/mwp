@@ -20,7 +20,7 @@ import { MarkedDates } from 'react-native-calendars/src/types';
 import { useWorkoutsList } from './hooks/useWorkoutsList/useWorkoutsList';
 import { FullscreenLoader } from '../../components/FullscreenLoader/FullscreenLoader';
 import { Workout } from '../../API';
-import { DraftWorkout } from '../../types/draftWorkout';
+import { DisplayWorkoutExercise, DraftWorkout } from '../../types/draftWorkout';
 import { ListEmptyComponent } from './components/ListEmptyComponent/ListEmptyComponent';
 import { ApiErrorMessage } from '../../components/ApiErrorMessage/ApiErrorMessage';
 
@@ -66,27 +66,27 @@ export const StatisticsScreen = () => {
 
   const handleGoToDetails = (item: Workout) => {
     const workout: DraftWorkout = {
+      name: item.name,
       status: item.status,
       dateFinished: item.dateFinished,
       totalTimeInSeconds: item.totalTimeInSeconds,
-      workoutWorkoutPlanRoutineId: item.workoutWorkoutPlanRoutineId,
     };
 
-    const workoutExercises = (item.WorkoutExercises?.items ?? []).map((e) => ({
-      name: e?.WorkoutRoutineExercise?.name ?? '',
-      description: e?.WorkoutRoutineExercise?.description,
+    const workoutExercises: DisplayWorkoutExercise[] = (
+      item.WorkoutExercises?.items ?? []
+    ).map((e) => ({
+      name: e?.name ?? '',
+      description: e?.description,
       sets: JSON.parse(e?.setsConfig ?? ''),
-      sortOrder: e?.WorkoutRoutineExercise?.sortOrder,
-      restTimeInSeconds: e?.WorkoutRoutineExercise?.restTimeInSeconds || 0,
-      workoutExerciseWorkoutRoutineExerciseId:
-        e!.workoutExerciseWorkoutRoutineExerciseId!,
-      muscleGroup: e?.WorkoutRoutineExercise?.muscleGroup,
-      color: e?.WorkoutRoutineExercise?.color,
+      sortOrder: e?.sortOrder,
+      restTimeInSeconds: e?.restTimeInSeconds || 0,
+      muscleGroup: e?.muscleGroup,
+      color: e?.color,
     }));
 
     navigation.navigate('WorkoutDetails', {
       id: item.id,
-      title: item.WorkoutPlanRoutine?.name ?? '',
+      title: item.name ?? '',
       workout,
       workoutExercises,
     });
@@ -128,10 +128,10 @@ export const StatisticsScreen = () => {
         renderItem={({ item, index }) =>
           item && (
             <WorkoutHistoryItem
-              item={item}
+              item={item as Workout}
               isFirst={index === 0}
               isLast={index === workouts.length - 1}
-              onPress={() => handleGoToDetails(item)}
+              onPress={() => handleGoToDetails(item as Workout)}
             />
           )
         }

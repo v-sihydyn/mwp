@@ -2,10 +2,14 @@ type WorkoutExercise
   @model
   @auth(rules: [{ allow: private, operations: [read] }, { allow: owner }]) {
   id: ID!
+  name: String!
+  description: String
+  muscleGroup: MuscleGroup
+  color: String
+  restTimeInSeconds: Int
   setsConfig: AWSJSON!
   sortOrder: Int
   workoutID: ID! @index(name: "byWorkout")
-  WorkoutRoutineExercise: WorkoutRoutineExercise @hasOne
 }
 
 enum WorkoutStatus {
@@ -17,11 +21,11 @@ type Workout
   @model
   @auth(rules: [{ allow: private, operations: [read] }, { allow: owner }]) {
   id: ID!
+  name: String!
   status: WorkoutStatus! @index(name: "workoutsByDate", queryField: "workoutsByDate", sortKeyFields: ["dateFinished"])
   dateFinished: AWSDateTime
   totalTimeInSeconds: Int
   userID: ID! @index(name: "workoutsByUser", queryField: "workoutsByUser", sortKeyFields: ["dateFinished"])
-  WorkoutPlanRoutine: WorkoutPlanRoutine @hasOne
   WorkoutExercises: [WorkoutExercise]
     @hasMany(indexName: "byWorkout", fields: ["id"])
 }
@@ -151,6 +155,10 @@ input CreateWorkoutExerciseInput {
   setsConfig: AWSJSON!
   sortOrder: Int
   workoutID: ID!
+  name: String!
+  description: String
+  muscleGroup: MuscleGroup
+  color: String
+  restTimeInSeconds: Int
   _version: Int
-  workoutExerciseWorkoutRoutineExerciseId: ID
 }

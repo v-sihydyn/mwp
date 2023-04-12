@@ -35,27 +35,16 @@ import { useWorkout } from '../../hooks/useWorkout/useWorkout';
 import groupBy from 'lodash.groupby';
 import sumBy from 'lodash.sumby';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useApolloClient } from '@apollo/client';
-import {
-  ModelSortDirection,
-  WorkoutsByUserQuery,
-  WorkoutsByUserQueryVariables,
-  WorkoutStatus,
-} from '../../API';
-import { useAuthContext } from '../../contexts/AuthContext';
-import { workoutsByUserQuery } from '../StatisticsScreen/hooks/useWorkoutsList/queuries/workoutsByUserQuery';
 import { deleteDraftWorkoutData } from '../../utils/persistWorkout';
 import { openLeaveWorkoutModal } from '../../components/modals/LeaveWorkoutModal/LeaveWorkoutModal';
 
 const ONE_HOUR = 3600;
 
 export const WorkoutScreen = () => {
-  const { userId } = useAuthContext();
   const navigation = useNavigation();
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   const [isWorkoutSummarySheetOpen, setIsWorkoutSummarySheetOpen] =
     useState(false);
-  const client = useApolloClient();
   const route = useRoute<WorkoutRouteProp>();
   const {
     draftWorkout,
@@ -174,7 +163,7 @@ export const WorkoutScreen = () => {
 
           if (setsConfig !== dwe.setsConfig) {
             return {
-              id: dwe.workoutExerciseWorkoutRoutineExerciseId,
+              id: dwe.workoutRoutineExerciseId,
               setsConfig,
             };
           }
@@ -193,52 +182,13 @@ export const WorkoutScreen = () => {
     try {
       setIsSavingWorkout(true);
 
-      const response = await saveWorkout({
+      await saveWorkout({
         workout: workoutToSave,
         exercises: exercisesToSave,
         routineExercisesToUpdate: shouldUpdateExercises
           ? routineExercisesToUpdate
           : [],
       });
-
-      client.cache.updateQuery<
-        WorkoutsByUserQuery,
-        WorkoutsByUserQueryVariables
-      >(
-        {
-          query: workoutsByUserQuery,
-          variables: {
-            userID: userId,
-            filter: {
-              status: {
-                eq: WorkoutStatus.FINISHED,
-              },
-            },
-            sortDirection: ModelSortDirection.DESC,
-          },
-        },
-        (data) => {
-          if (!data?.workoutsByUser) return;
-
-          return {
-            workoutsByUser: {
-              ...data.workoutsByUser,
-              items: [
-                {
-                  ...response?.savedWorkout,
-                  WorkoutExercises: {
-                    items: response?.savedExercises ?? [],
-                    __typename: 'ModelWorkoutExerciseConnection',
-                    nextToken: null,
-                    startedAt: null,
-                  },
-                },
-                ...(data.workoutsByUser.items ?? []),
-              ],
-            },
-          };
-        },
-      );
 
       await deleteDraftWorkoutData(workoutRoutineId);
 
@@ -248,6 +198,7 @@ export const WorkoutScreen = () => {
         screen: 'WorkoutPlan',
       });
     } catch (e) {
+      console.log(e);
       setIsSavingWorkout(false);
       Toast.show({
         title: 'Failed to save workout',

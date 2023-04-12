@@ -1,6 +1,6 @@
 import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
 // @ts-ignore
-import { LazyLoading, LazyLoadingDisabled, AsyncItem, AsyncCollection } from "@aws-amplify/datastore";
+import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/datastore";
 
 export enum WorkoutStatus {
   INPROGRESS = "INPROGRESS",
@@ -92,13 +92,16 @@ type EagerWorkoutExercise = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly name: string;
+  readonly description?: string | null;
+  readonly muscleGroup?: MuscleGroup | keyof typeof MuscleGroup | null;
+  readonly color?: string | null;
+  readonly restTimeInSeconds?: number | null;
   readonly setsConfig: string;
   readonly sortOrder?: number | null;
   readonly workoutID: string;
-  readonly WorkoutRoutineExercise?: WorkoutRoutineExercise | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly workoutExerciseWorkoutRoutineExerciseId?: string | null;
 }
 
 type LazyWorkoutExercise = {
@@ -107,13 +110,16 @@ type LazyWorkoutExercise = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly name: string;
+  readonly description?: string | null;
+  readonly muscleGroup?: MuscleGroup | keyof typeof MuscleGroup | null;
+  readonly color?: string | null;
+  readonly restTimeInSeconds?: number | null;
   readonly setsConfig: string;
   readonly sortOrder?: number | null;
   readonly workoutID: string;
-  readonly WorkoutRoutineExercise: AsyncItem<WorkoutRoutineExercise | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly workoutExerciseWorkoutRoutineExerciseId?: string | null;
 }
 
 export declare type WorkoutExercise = LazyLoading extends LazyLoadingDisabled ? EagerWorkoutExercise : LazyWorkoutExercise
@@ -128,15 +134,14 @@ type EagerWorkout = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly name: string;
   readonly status: WorkoutStatus | keyof typeof WorkoutStatus;
   readonly dateFinished?: string | null;
   readonly totalTimeInSeconds?: number | null;
   readonly userID: string;
-  readonly WorkoutPlanRoutine?: WorkoutPlanRoutine | null;
   readonly WorkoutExercises?: (WorkoutExercise | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly workoutWorkoutPlanRoutineId?: string | null;
 }
 
 type LazyWorkout = {
@@ -145,15 +150,14 @@ type LazyWorkout = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly name: string;
   readonly status: WorkoutStatus | keyof typeof WorkoutStatus;
   readonly dateFinished?: string | null;
   readonly totalTimeInSeconds?: number | null;
   readonly userID: string;
-  readonly WorkoutPlanRoutine: AsyncItem<WorkoutPlanRoutine | undefined>;
   readonly WorkoutExercises: AsyncCollection<WorkoutExercise>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly workoutWorkoutPlanRoutineId?: string | null;
 }
 
 export declare type Workout = LazyLoading extends LazyLoadingDisabled ? EagerWorkout : LazyWorkout

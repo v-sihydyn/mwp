@@ -352,7 +352,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     } else {
       const { draftWorkout, draftWorkoutExercises } =
         createDraftWorkoutAndExercises(
-          selectedRoutine.id,
+          selectedRoutine.name!,
           exercises as WorkoutRoutineExercise[],
         );
 

@@ -164,6 +164,8 @@ export const EditRoutineExerciseScreen = () => {
                 ...routine!,
                 WorkoutRoutineExercises: {
                   ...routine!.WorkoutRoutineExercises,
+                  startedAt: null,
+                  nextToken: null,
                   __typename: 'ModelWorkoutRoutineExerciseConnection',
                   items: (routine?.WorkoutRoutineExercises?.items ?? []).filter(
                     (x) => x?.id !== data?.deleteWorkoutRoutineExercise?.id,

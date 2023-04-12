@@ -14,7 +14,11 @@ import {
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 import { Exercise } from './src/screens/ExerciseCatalogScreen/exercises';
-import { DraftWorkout, DraftWorkoutExercise } from './src/types/draftWorkout';
+import {
+  DisplayWorkoutExercise,
+  DraftWorkout,
+  DraftWorkoutExercise,
+} from './src/types/draftWorkout';
 
 declare global {
   namespace ReactNavigation {
@@ -53,7 +57,7 @@ export type RootStackParamList = {
     id: string;
     title: string;
     workout: DraftWorkout;
-    workoutExercises: DraftWorkoutExercise[];
+    workoutExercises: DisplayWorkoutExercise[];
   };
   EditRoutineExercise: {
     workoutPlanId: string;

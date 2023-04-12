@@ -2,10 +2,7 @@ import { MuscleGroup, Workout } from '../API';
 
 export type DraftWorkout = Pick<
   Workout,
-  | 'status'
-  | 'dateFinished'
-  | 'totalTimeInSeconds'
-  | 'workoutWorkoutPlanRoutineId'
+  'name' | 'status' | 'dateFinished' | 'totalTimeInSeconds'
 >;
 
 export type DraftWorkoutExercise = {
@@ -15,10 +12,15 @@ export type DraftWorkoutExercise = {
   setsConfig: string;
   sortOrder?: number | null;
   restTimeInSeconds: number;
-  workoutExerciseWorkoutRoutineExerciseId: string;
   muscleGroup?: MuscleGroup | null;
   color?: string | null;
+  workoutRoutineExerciseId: string | null;
 };
+
+export type DisplayWorkoutExercise = Omit<
+  DraftWorkoutExercise,
+  'workoutRoutineExerciseId' | 'setsConfig'
+>;
 
 export type DraftSetStatus =
   | 'idle'

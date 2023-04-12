@@ -10,6 +10,43 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "muscleGroup": {
+                    "name": "muscleGroup",
+                    "isArray": false,
+                    "type": {
+                        "enum": "MuscleGroup"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "color": {
+                    "name": "color",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "restTimeInSeconds": {
+                    "name": "restTimeInSeconds",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "setsConfig": {
                     "name": "setsConfig",
                     "isArray": false,
@@ -31,24 +68,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "WorkoutRoutineExercise": {
-                    "name": "WorkoutRoutineExercise",
-                    "isArray": false,
-                    "type": {
-                        "model": "WorkoutRoutineExercise"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": [
-                            "id"
-                        ],
-                        "targetNames": [
-                            "workoutExerciseWorkoutRoutineExerciseId"
-                        ]
-                    }
-                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -64,13 +83,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "workoutExerciseWorkoutRoutineExerciseId": {
-                    "name": "workoutExerciseWorkoutRoutineExerciseId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -126,6 +138,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "status": {
                     "name": "status",
                     "isArray": false,
@@ -155,24 +174,6 @@ export const schema = {
                     "type": "ID",
                     "isRequired": true,
                     "attributes": []
-                },
-                "WorkoutPlanRoutine": {
-                    "name": "WorkoutPlanRoutine",
-                    "isArray": false,
-                    "type": {
-                        "model": "WorkoutPlanRoutine"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": [
-                            "id"
-                        ],
-                        "targetNames": [
-                            "workoutWorkoutPlanRoutineId"
-                        ]
-                    }
                 },
                 "WorkoutExercises": {
                     "name": "WorkoutExercises",
@@ -205,13 +206,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "workoutWorkoutPlanRoutineId": {
-                    "name": "workoutWorkoutPlanRoutineId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -943,5 +937,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.6",
-    "version": "7d6e02434b40d1dd10fb5ac6892e2b4a"
+    "version": "39b1030cf389a52e05a219df8d2bdfe9"
 };

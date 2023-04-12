@@ -60,7 +60,7 @@ export const ConfigureWorkoutScreen = () => {
     }
 
     const { draftWorkout, draftWorkoutExercises } =
-      createDraftWorkoutAndExercises(workoutRoutineId, exercises);
+      createDraftWorkoutAndExercises(routine?.name ?? '', exercises);
 
     draftWorkoutExercises[0].sets[0].status = 'inprogress';
 

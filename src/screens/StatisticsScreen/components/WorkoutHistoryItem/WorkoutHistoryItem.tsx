@@ -62,9 +62,7 @@ export const WorkoutHistoryItem = ({
 
         <View style={styles.workoutOverview}>
           <View style={styles.workoutOverviewContent}>
-            <Text style={styles.workoutName}>
-              {item.WorkoutPlanRoutine?.name || '-'}
-            </Text>
+            <Text style={styles.workoutName}>{item.name || '-'}</Text>
           </View>
           <View style={styles.workoutOverviewFooter}>
             <View style={[styles.workoutOverviewFooterSection, { width: 90 }]}>

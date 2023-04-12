@@ -1,6 +1,7 @@
 import { NetworkStatus, useLazyQuery } from '@apollo/client';
 import {
   ModelSortDirection,
+  Workout,
   WorkoutsByUserQuery,
   WorkoutsByUserQueryVariables,
   WorkoutStatus,
@@ -42,12 +43,13 @@ export const useWorkoutsList = (filterDate: string | null) => {
     fetch({
       variables,
     });
-  }, [filterDate]);
+  }, [filterDate, userId]);
 
   const workouts = (data?.workoutsByUser?.items ?? [])
     .filter((x) => !x?._deleted)
     .map((workout) => ({
       ...workout,
+      __typename: 'Workout',
       WorkoutExercises: {
         ...workout!.WorkoutExercises,
         items: workout!

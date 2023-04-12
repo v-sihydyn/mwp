@@ -11,6 +11,11 @@ export const bulkCreateWorkoutExercisesMutation = gql`
     ) {
       exercises {
         id
+        name
+        description
+        muscleGroup
+        color
+        restTimeInSeconds
         setsConfig
         sortOrder
         workoutID

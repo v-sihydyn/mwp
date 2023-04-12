@@ -20,6 +20,7 @@ import { bulkCreateWorkoutExercisesMutation } from './mutations/bulkCreateWorkou
 import { useAuthContext } from '../../contexts/AuthContext';
 import { nanoid } from 'nanoid';
 import { workoutsByUserQuery } from '../../screens/StatisticsScreen/hooks/useWorkoutsList/queuries/workoutsByUserQuery';
+import { exerciseFragment } from '../../fragments/exerciseFragment';
 
 type Set = {
   sets: string;
@@ -148,6 +149,9 @@ export const useWorkout = () => {
     const savedWorkout = workoutData.data.createWorkout;
     const savedExercises =
       exercisesData.data?.bulkCreateWorkoutExercises?.exercises ?? [];
+    const updatedRoutineExercises =
+      exercisesData.data?.bulkCreateWorkoutExercises?.updatedRoutineExercises ??
+      [];
 
     client.cache.updateQuery<WorkoutsByUserQuery, WorkoutsByUserQueryVariables>(
       {
@@ -187,6 +191,26 @@ export const useWorkout = () => {
         };
       },
     );
+
+    updatedRoutineExercises.forEach((e) => {
+      if (!e) return;
+
+      const exercise = client.readFragment({
+        id: `WorkoutRoutineExercise:${e.id}`,
+        fragment: exerciseFragment,
+      });
+
+      if (exercise) {
+        client.writeFragment({
+          id: `WorkoutRoutineExercise:${e.id}`,
+          fragment: exerciseFragment,
+          data: {
+            ...exercise,
+            setsConfig: e.setsConfig,
+          },
+        });
+      }
+    });
   };
 
   return { createDraftWorkoutAndExercises, saveWorkout };

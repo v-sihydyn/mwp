@@ -8,10 +8,9 @@ import {
 import { useTimer } from 'use-timer';
 import { CollapsibleRef } from 'react-native-collapsible-tab-view';
 import { AppState, AppStateStatus } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import dayjs from 'dayjs';
 import { persistDraftWorkoutData } from '../../../utils/persistWorkout';
 import { usePrevious } from '../../../hooks/usePrevious';
+import { getElapsedTime, recordStartTime } from '../utils';
 
 type WorkoutPlayerConfig = {
   draftWorkout: DraftWorkout;
@@ -50,7 +49,7 @@ export const useWorkoutPlayer = ({
   const exerciseTimer = useTimer({
     autostart: !areAllSetsProcessed,
   });
-  const restTimeOverCb = useRef<() => void | null>(null);
+  const restTimeOverCb = useRef<(() => void) | null>(null);
   const restTimer = useTimer({
     timerType: 'DECREMENTAL',
     endTime: 0,
@@ -126,12 +125,7 @@ export const useWorkoutPlayer = ({
     return () => {
       subscription.remove();
     };
-  }, [
-    appState.current,
-    playerState,
-    restTimer.time,
-    displayedExercise?.restTimeInSeconds,
-  ]);
+  }, [playerState, restTimer.time, displayedExercise?.restTimeInSeconds]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleAppStateChange = async (nextAppState: AppStateStatus) => {
     if (
@@ -172,27 +166,6 @@ export const useWorkoutPlayer = ({
     }
 
     appState.current = nextAppState;
-  };
-
-  const recordStartTime = async () => {
-    try {
-      const now = Date.now();
-      await AsyncStorage.setItem('workoutPlayerCurrentTime', String(now));
-    } catch (err) {
-      // TODO: handle errors from setItem properly
-      console.log(err);
-    }
-  };
-
-  const getElapsedTime = async () => {
-    try {
-      const startTime = await AsyncStorage.getItem('workoutPlayerCurrentTime');
-
-      return dayjs().diff(dayjs(Number(startTime)), 'second');
-    } catch (err) {
-      // TODO: handle errors from setItem properly
-      console.log(err);
-    }
   };
 
   const handleProcessSet = ({

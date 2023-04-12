@@ -34,9 +34,9 @@ import { Button, Toast } from 'native-base';
 import { useWorkout } from '../../hooks/useWorkout/useWorkout';
 import groupBy from 'lodash.groupby';
 import sumBy from 'lodash.sumby';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { deleteDraftWorkoutData } from '../../utils/persistWorkout';
 import { openLeaveWorkoutModal } from '../../components/modals/LeaveWorkoutModal/LeaveWorkoutModal';
+import { clearStartTime } from './utils';
 
 const ONE_HOUR = 3600;
 
@@ -207,7 +207,7 @@ export const WorkoutScreen = () => {
         backgroundColor: colors.red,
       });
     } finally {
-      await AsyncStorage.removeItem('workoutPlayerCurrentTime');
+      await clearStartTime();
     }
   };
 

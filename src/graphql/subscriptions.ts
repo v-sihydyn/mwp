@@ -471,6 +471,7 @@ export const onCreateUser = /* GraphQL */ `
           id
           name
           userID
+          createdAt
           WorkoutPlanRoutines {
             items {
               id
@@ -491,7 +492,6 @@ export const onCreateUser = /* GraphQL */ `
             nextToken
             startedAt
           }
-          createdAt
           updatedAt
           _version
           _deleted
@@ -565,6 +565,7 @@ export const onUpdateUser = /* GraphQL */ `
           id
           name
           userID
+          createdAt
           WorkoutPlanRoutines {
             items {
               id
@@ -585,7 +586,6 @@ export const onUpdateUser = /* GraphQL */ `
             nextToken
             startedAt
           }
-          createdAt
           updatedAt
           _version
           _deleted
@@ -659,6 +659,7 @@ export const onDeleteUser = /* GraphQL */ `
           id
           name
           userID
+          createdAt
           WorkoutPlanRoutines {
             items {
               id
@@ -679,7 +680,6 @@ export const onDeleteUser = /* GraphQL */ `
             nextToken
             startedAt
           }
-          createdAt
           updatedAt
           _version
           _deleted
@@ -746,6 +746,7 @@ export const onCreateWorkoutPlan = /* GraphQL */ `
       id
       name
       userID
+      createdAt
       WorkoutPlanRoutines {
         items {
           id
@@ -784,7 +785,6 @@ export const onCreateWorkoutPlan = /* GraphQL */ `
         nextToken
         startedAt
       }
-      createdAt
       updatedAt
       _version
       _deleted
@@ -802,6 +802,7 @@ export const onUpdateWorkoutPlan = /* GraphQL */ `
       id
       name
       userID
+      createdAt
       WorkoutPlanRoutines {
         items {
           id
@@ -840,7 +841,6 @@ export const onUpdateWorkoutPlan = /* GraphQL */ `
         nextToken
         startedAt
       }
-      createdAt
       updatedAt
       _version
       _deleted
@@ -858,6 +858,7 @@ export const onDeleteWorkoutPlan = /* GraphQL */ `
       id
       name
       userID
+      createdAt
       WorkoutPlanRoutines {
         items {
           id
@@ -896,7 +897,6 @@ export const onDeleteWorkoutPlan = /* GraphQL */ `
         nextToken
         startedAt
       }
-      createdAt
       updatedAt
       _version
       _deleted

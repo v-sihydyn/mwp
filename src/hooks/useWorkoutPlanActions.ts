@@ -4,11 +4,12 @@ import {
   CreateWorkoutPlanMutationVariables,
   DeletePlanAndRoutinesMutation,
   DeletePlanAndRoutinesMutationVariables,
+  ModelSortDirection,
   UpdateWorkoutPlanMutation,
   UpdateWorkoutPlanMutationVariables,
   WorkoutPlan,
-  WorkoutPlansByUserIDQuery,
-  WorkoutPlansByUserIDQueryVariables,
+  WorkoutPlansByUserIDAndCreatedAtQuery,
+  WorkoutPlansByUserIDAndCreatedAtQueryVariables,
 } from '../API';
 import { createWorkoutPlanMutation } from './mutations/createWorkoutPlanMutation';
 import { updateWorkoutPlanMutation } from './mutations/updateWorkoutPlanMutation';
@@ -37,6 +38,7 @@ export const useWorkoutPlanActions = () => {
         input: {
           name,
           userID: userId,
+          createdAt: new Date().toISOString(),
         },
       },
       update(cache, { data }) {
@@ -44,24 +46,25 @@ export const useWorkoutPlanActions = () => {
         const createdPlan = data?.createWorkoutPlan;
 
         cache.updateQuery<
-          WorkoutPlansByUserIDQuery,
-          WorkoutPlansByUserIDQueryVariables
+          WorkoutPlansByUserIDAndCreatedAtQuery,
+          WorkoutPlansByUserIDAndCreatedAtQueryVariables
         >(
           {
             query: workoutPlansByUserIDQuery,
             variables: {
               userID: userId,
+              sortDirection: ModelSortDirection.ASC,
             },
           },
           (updateData) => {
-            if (!updateData?.workoutPlansByUserID?.items) return;
+            if (!updateData?.workoutPlansByUserIDAndCreatedAt?.items) return;
 
             return {
-              workoutPlansByUserID: {
-                ...updateData.workoutPlansByUserID,
-                items: (updateData?.workoutPlansByUserID?.items ?? []).concat(
-                  createdPlan,
-                ),
+              workoutPlansByUserIDAndCreatedAt: {
+                ...updateData.workoutPlansByUserIDAndCreatedAt,
+                items: (
+                  updateData?.workoutPlansByUserIDAndCreatedAt?.items ?? []
+                ).concat(createdPlan),
               },
             };
           },
@@ -80,26 +83,27 @@ export const useWorkoutPlanActions = () => {
         const deletedPlanId = data?.deletePlanAndRoutines.id;
 
         cache.updateQuery<
-          WorkoutPlansByUserIDQuery,
-          WorkoutPlansByUserIDQueryVariables
+          WorkoutPlansByUserIDAndCreatedAtQuery,
+          WorkoutPlansByUserIDAndCreatedAtQueryVariables
         >(
           {
             query: workoutPlansByUserIDQuery,
             variables: {
               userID: userId,
+              sortDirection: ModelSortDirection.ASC,
             },
           },
           (updateData) => {
-            if (!updateData?.workoutPlansByUserID?.items) return;
+            if (!updateData?.workoutPlansByUserIDAndCreatedAt?.items) return;
 
             return {
-              workoutPlansByUserID: {
-                ...updateData.workoutPlansByUserID,
-                items: (updateData?.workoutPlansByUserID?.items ?? []).filter(
-                  (_plan: WorkoutPlan | null) => {
-                    return _plan?.id !== deletedPlanId;
-                  },
-                ),
+              workoutPlansByUserIDAndCreatedAt: {
+                ...updateData.workoutPlansByUserIDAndCreatedAt,
+                items: (
+                  updateData?.workoutPlansByUserIDAndCreatedAt?.items ?? []
+                ).filter((_plan: WorkoutPlan | null) => {
+                  return _plan?.id !== deletedPlanId;
+                }),
               },
             };
           },

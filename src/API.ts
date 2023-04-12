@@ -483,8 +483,8 @@ export type WorkoutPlan = {
   id: string,
   name: string,
   userID: string,
-  WorkoutPlanRoutines?: ModelWorkoutPlanRoutineConnection | null,
   createdAt: string,
+  WorkoutPlanRoutines?: ModelWorkoutPlanRoutineConnection | null,
   updatedAt: string,
   _version: number,
   _deleted?: boolean | null,
@@ -524,12 +524,14 @@ export type CreateWorkoutPlanInput = {
   id?: string | null,
   name: string,
   userID: string,
+  createdAt?: string | null,
   _version?: number | null,
 };
 
 export type ModelWorkoutPlanConditionInput = {
   name?: ModelStringInput | null,
   userID?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
   and?: Array< ModelWorkoutPlanConditionInput | null > | null,
   or?: Array< ModelWorkoutPlanConditionInput | null > | null,
   not?: ModelWorkoutPlanConditionInput | null,
@@ -539,6 +541,7 @@ export type UpdateWorkoutPlanInput = {
   id: string,
   name?: string | null,
   userID?: string | null,
+  createdAt?: string | null,
   _version?: number | null,
 };
 
@@ -794,6 +797,7 @@ export type ModelSubscriptionWorkoutPlanFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   name?: ModelSubscriptionStringInput | null,
   userID?: ModelSubscriptionIDInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionWorkoutPlanFilterInput | null > | null,
   or?: Array< ModelSubscriptionWorkoutPlanFilterInput | null > | null,
 };
@@ -1369,6 +1373,7 @@ export type CreateUserMutation = {
         id: string,
         name: string,
         userID: string,
+        createdAt: string,
         WorkoutPlanRoutines?:  {
           __typename: "ModelWorkoutPlanRoutineConnection",
           items:  Array< {
@@ -1392,7 +1397,6 @@ export type CreateUserMutation = {
           nextToken?: string | null,
           startedAt?: number | null,
         } | null,
-        createdAt: string,
         updatedAt: string,
         _version: number,
         _deleted?: boolean | null,
@@ -1474,6 +1478,7 @@ export type UpdateUserMutation = {
         id: string,
         name: string,
         userID: string,
+        createdAt: string,
         WorkoutPlanRoutines?:  {
           __typename: "ModelWorkoutPlanRoutineConnection",
           items:  Array< {
@@ -1497,7 +1502,6 @@ export type UpdateUserMutation = {
           nextToken?: string | null,
           startedAt?: number | null,
         } | null,
-        createdAt: string,
         updatedAt: string,
         _version: number,
         _deleted?: boolean | null,
@@ -1579,6 +1583,7 @@ export type DeleteUserMutation = {
         id: string,
         name: string,
         userID: string,
+        createdAt: string,
         WorkoutPlanRoutines?:  {
           __typename: "ModelWorkoutPlanRoutineConnection",
           items:  Array< {
@@ -1602,7 +1607,6 @@ export type DeleteUserMutation = {
           nextToken?: string | null,
           startedAt?: number | null,
         } | null,
-        createdAt: string,
         updatedAt: string,
         _version: number,
         _deleted?: boolean | null,
@@ -1675,6 +1679,7 @@ export type CreateWorkoutPlanMutation = {
     id: string,
     name: string,
     userID: string,
+    createdAt: string,
     WorkoutPlanRoutines?:  {
       __typename: "ModelWorkoutPlanRoutineConnection",
       items:  Array< {
@@ -1717,7 +1722,6 @@ export type CreateWorkoutPlanMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    createdAt: string,
     updatedAt: string,
     _version: number,
     _deleted?: boolean | null,
@@ -1737,6 +1741,7 @@ export type UpdateWorkoutPlanMutation = {
     id: string,
     name: string,
     userID: string,
+    createdAt: string,
     WorkoutPlanRoutines?:  {
       __typename: "ModelWorkoutPlanRoutineConnection",
       items:  Array< {
@@ -1779,7 +1784,6 @@ export type UpdateWorkoutPlanMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    createdAt: string,
     updatedAt: string,
     _version: number,
     _deleted?: boolean | null,
@@ -1799,6 +1803,7 @@ export type DeleteWorkoutPlanMutation = {
     id: string,
     name: string,
     userID: string,
+    createdAt: string,
     WorkoutPlanRoutines?:  {
       __typename: "ModelWorkoutPlanRoutineConnection",
       items:  Array< {
@@ -1841,7 +1846,6 @@ export type DeleteWorkoutPlanMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    createdAt: string,
     updatedAt: string,
     _version: number,
     _deleted?: boolean | null,
@@ -2657,6 +2661,7 @@ export type GetUserQuery = {
         id: string,
         name: string,
         userID: string,
+        createdAt: string,
         WorkoutPlanRoutines?:  {
           __typename: "ModelWorkoutPlanRoutineConnection",
           items:  Array< {
@@ -2680,7 +2685,6 @@ export type GetUserQuery = {
           nextToken?: string | null,
           startedAt?: number | null,
         } | null,
-        createdAt: string,
         updatedAt: string,
         _version: number,
         _deleted?: boolean | null,
@@ -2765,6 +2769,7 @@ export type ListUsersQuery = {
           id: string,
           name: string,
           userID: string,
+          createdAt: string,
           WorkoutPlanRoutines?:  {
             __typename: "ModelWorkoutPlanRoutineConnection",
             items:  Array< {
@@ -2783,7 +2788,6 @@ export type ListUsersQuery = {
             nextToken?: string | null,
             startedAt?: number | null,
           } | null,
-          createdAt: string,
           updatedAt: string,
           _version: number,
           _deleted?: boolean | null,
@@ -2872,6 +2876,7 @@ export type SyncUsersQuery = {
           id: string,
           name: string,
           userID: string,
+          createdAt: string,
           WorkoutPlanRoutines?:  {
             __typename: "ModelWorkoutPlanRoutineConnection",
             items:  Array< {
@@ -2890,7 +2895,6 @@ export type SyncUsersQuery = {
             nextToken?: string | null,
             startedAt?: number | null,
           } | null,
-          createdAt: string,
           updatedAt: string,
           _version: number,
           _deleted?: boolean | null,
@@ -2980,6 +2984,7 @@ export type UsersByUsernameQuery = {
           id: string,
           name: string,
           userID: string,
+          createdAt: string,
           WorkoutPlanRoutines?:  {
             __typename: "ModelWorkoutPlanRoutineConnection",
             items:  Array< {
@@ -2998,7 +3003,6 @@ export type UsersByUsernameQuery = {
             nextToken?: string | null,
             startedAt?: number | null,
           } | null,
-          createdAt: string,
           updatedAt: string,
           _version: number,
           _deleted?: boolean | null,
@@ -3073,6 +3077,7 @@ export type GetWorkoutPlanQuery = {
     id: string,
     name: string,
     userID: string,
+    createdAt: string,
     WorkoutPlanRoutines?:  {
       __typename: "ModelWorkoutPlanRoutineConnection",
       items:  Array< {
@@ -3115,7 +3120,6 @@ export type GetWorkoutPlanQuery = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    createdAt: string,
     updatedAt: string,
     _version: number,
     _deleted?: boolean | null,
@@ -3138,6 +3142,7 @@ export type ListWorkoutPlansQuery = {
       id: string,
       name: string,
       userID: string,
+      createdAt: string,
       WorkoutPlanRoutines?:  {
         __typename: "ModelWorkoutPlanRoutineConnection",
         items:  Array< {
@@ -3180,7 +3185,6 @@ export type ListWorkoutPlansQuery = {
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
-      createdAt: string,
       updatedAt: string,
       _version: number,
       _deleted?: boolean | null,
@@ -3207,6 +3211,7 @@ export type SyncWorkoutPlansQuery = {
       id: string,
       name: string,
       userID: string,
+      createdAt: string,
       WorkoutPlanRoutines?:  {
         __typename: "ModelWorkoutPlanRoutineConnection",
         items:  Array< {
@@ -3249,7 +3254,6 @@ export type SyncWorkoutPlansQuery = {
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
-      createdAt: string,
       updatedAt: string,
       _version: number,
       _deleted?: boolean | null,
@@ -3261,22 +3265,24 @@ export type SyncWorkoutPlansQuery = {
   } | null,
 };
 
-export type WorkoutPlansByUserIDQueryVariables = {
+export type WorkoutPlansByUserIDAndCreatedAtQueryVariables = {
   userID: string,
+  createdAt?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelWorkoutPlanFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type WorkoutPlansByUserIDQuery = {
-  workoutPlansByUserID?:  {
+export type WorkoutPlansByUserIDAndCreatedAtQuery = {
+  workoutPlansByUserIDAndCreatedAt?:  {
     __typename: "ModelWorkoutPlanConnection",
     items:  Array< {
       __typename: "WorkoutPlan",
       id: string,
       name: string,
       userID: string,
+      createdAt: string,
       WorkoutPlanRoutines?:  {
         __typename: "ModelWorkoutPlanRoutineConnection",
         items:  Array< {
@@ -3319,7 +3325,6 @@ export type WorkoutPlansByUserIDQuery = {
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
-      createdAt: string,
       updatedAt: string,
       _version: number,
       _deleted?: boolean | null,
@@ -3846,6 +3851,7 @@ export type OnCreateUserSubscription = {
         id: string,
         name: string,
         userID: string,
+        createdAt: string,
         WorkoutPlanRoutines?:  {
           __typename: "ModelWorkoutPlanRoutineConnection",
           items:  Array< {
@@ -3869,7 +3875,6 @@ export type OnCreateUserSubscription = {
           nextToken?: string | null,
           startedAt?: number | null,
         } | null,
-        createdAt: string,
         updatedAt: string,
         _version: number,
         _deleted?: boolean | null,
@@ -3951,6 +3956,7 @@ export type OnUpdateUserSubscription = {
         id: string,
         name: string,
         userID: string,
+        createdAt: string,
         WorkoutPlanRoutines?:  {
           __typename: "ModelWorkoutPlanRoutineConnection",
           items:  Array< {
@@ -3974,7 +3980,6 @@ export type OnUpdateUserSubscription = {
           nextToken?: string | null,
           startedAt?: number | null,
         } | null,
-        createdAt: string,
         updatedAt: string,
         _version: number,
         _deleted?: boolean | null,
@@ -4056,6 +4061,7 @@ export type OnDeleteUserSubscription = {
         id: string,
         name: string,
         userID: string,
+        createdAt: string,
         WorkoutPlanRoutines?:  {
           __typename: "ModelWorkoutPlanRoutineConnection",
           items:  Array< {
@@ -4079,7 +4085,6 @@ export type OnDeleteUserSubscription = {
           nextToken?: string | null,
           startedAt?: number | null,
         } | null,
-        createdAt: string,
         updatedAt: string,
         _version: number,
         _deleted?: boolean | null,
@@ -4152,6 +4157,7 @@ export type OnCreateWorkoutPlanSubscription = {
     id: string,
     name: string,
     userID: string,
+    createdAt: string,
     WorkoutPlanRoutines?:  {
       __typename: "ModelWorkoutPlanRoutineConnection",
       items:  Array< {
@@ -4194,7 +4200,6 @@ export type OnCreateWorkoutPlanSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    createdAt: string,
     updatedAt: string,
     _version: number,
     _deleted?: boolean | null,
@@ -4214,6 +4219,7 @@ export type OnUpdateWorkoutPlanSubscription = {
     id: string,
     name: string,
     userID: string,
+    createdAt: string,
     WorkoutPlanRoutines?:  {
       __typename: "ModelWorkoutPlanRoutineConnection",
       items:  Array< {
@@ -4256,7 +4262,6 @@ export type OnUpdateWorkoutPlanSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    createdAt: string,
     updatedAt: string,
     _version: number,
     _deleted?: boolean | null,
@@ -4276,6 +4281,7 @@ export type OnDeleteWorkoutPlanSubscription = {
     id: string,
     name: string,
     userID: string,
+    createdAt: string,
     WorkoutPlanRoutines?:  {
       __typename: "ModelWorkoutPlanRoutineConnection",
       items:  Array< {
@@ -4318,7 +4324,6 @@ export type OnDeleteWorkoutPlanSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    createdAt: string,
     updatedAt: string,
     _version: number,
     _deleted?: boolean | null,

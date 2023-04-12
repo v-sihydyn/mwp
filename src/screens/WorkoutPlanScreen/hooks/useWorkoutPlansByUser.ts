@@ -1,24 +1,26 @@
 import { useQuery } from '@apollo/client';
 import { workoutPlansByUserIDQuery } from './queries/workoutPlansByUserIDQuery';
 import {
-  WorkoutPlansByUserIDQuery,
-  WorkoutPlansByUserIDQueryVariables,
+  ModelSortDirection,
+  WorkoutPlansByUserIDAndCreatedAtQuery,
+  WorkoutPlansByUserIDAndCreatedAtQueryVariables,
 } from '../../../API';
 import { useMemo } from 'react';
 
 export const useWorkoutPlansByUser = (userId: string) => {
   const { data, loading, error } = useQuery<
-    WorkoutPlansByUserIDQuery,
-    WorkoutPlansByUserIDQueryVariables
+    WorkoutPlansByUserIDAndCreatedAtQuery,
+    WorkoutPlansByUserIDAndCreatedAtQueryVariables
   >(workoutPlansByUserIDQuery, {
     variables: {
       userID: userId,
+      sortDirection: ModelSortDirection.ASC,
     },
   });
 
   const workoutPlans = useMemo(
     () =>
-      (data?.workoutPlansByUserID?.items! ?? []).map((plan) => ({
+      (data?.workoutPlansByUserIDAndCreatedAt?.items! ?? []).map((plan) => ({
         ...plan,
         WorkoutPlanRoutines: {
           ...plan!.WorkoutPlanRoutines,

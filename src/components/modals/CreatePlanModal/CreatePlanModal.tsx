@@ -44,6 +44,7 @@ export const CreatePlanModal = ({ isOpen, onResolve, onReject }: Props) => {
       const response = await doCreateWorkoutPlan(name);
       onResolve(response?.data?.createWorkoutPlan?.id ?? null);
     } catch (e) {
+      console.log(e);
       Toast.show({
         title: 'Failed to create a plan',
         description: (e as Error).message,

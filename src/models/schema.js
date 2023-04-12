@@ -750,6 +750,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "WorkoutPlanRoutines": {
                     "name": "WorkoutPlanRoutines",
                     "isArray": true,
@@ -765,14 +772,6 @@ export const schema = {
                             "workoutPlanID"
                         ]
                     }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
                 },
                 "updatedAt": {
                     "name": "updatedAt",
@@ -795,7 +794,8 @@ export const schema = {
                     "properties": {
                         "name": "byUser",
                         "fields": [
-                            "userID"
+                            "userID",
+                            "createdAt"
                         ]
                     }
                 },
@@ -953,5 +953,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.6",
-    "version": "bfbf3bbddc74e440e67f0ce51782dc8c"
+    "version": "8979d753a069ba0048c3f02a98edeb04"
 };

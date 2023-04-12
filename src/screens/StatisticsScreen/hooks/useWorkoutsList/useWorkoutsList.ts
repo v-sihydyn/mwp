@@ -50,7 +50,5 @@ export const useWorkoutsList = (filterDate: string | null) => {
   const workouts = data?.workoutsByUser?.items ?? [];
   const refetching = networkStatus === NetworkStatus.refetch;
 
-  console.log(workouts);
-
   return { workouts, refetch, refetching, loading, error };
 };

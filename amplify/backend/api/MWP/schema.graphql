@@ -110,7 +110,8 @@ type WorkoutPlan
   @auth(rules: [{ allow: private, operations: [read] }, { allow: owner }]) {
   id: ID!
   name: String!
-  userID: ID! @index(name: "byUser")
+  userID: ID! @index(name: "byUser", sortKeyFields: ["createdAt"])
+  createdAt: String!
   WorkoutPlanRoutines: [WorkoutPlanRoutine]
     @hasMany(indexName: "byWorkoutPlan", fields: ["id"])
 }

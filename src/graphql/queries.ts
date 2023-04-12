@@ -790,6 +790,7 @@ export const getUser = /* GraphQL */ `
           id
           name
           userID
+          createdAt
           WorkoutPlanRoutines {
             items {
               id
@@ -810,7 +811,6 @@ export const getUser = /* GraphQL */ `
             nextToken
             startedAt
           }
-          createdAt
           updatedAt
           _version
           _deleted
@@ -886,6 +886,7 @@ export const listUsers = /* GraphQL */ `
             id
             name
             userID
+            createdAt
             WorkoutPlanRoutines {
               items {
                 id
@@ -902,7 +903,6 @@ export const listUsers = /* GraphQL */ `
               nextToken
               startedAt
             }
-            createdAt
             updatedAt
             _version
             _deleted
@@ -987,6 +987,7 @@ export const syncUsers = /* GraphQL */ `
             id
             name
             userID
+            createdAt
             WorkoutPlanRoutines {
               items {
                 id
@@ -1003,7 +1004,6 @@ export const syncUsers = /* GraphQL */ `
               nextToken
               startedAt
             }
-            createdAt
             updatedAt
             _version
             _deleted
@@ -1090,6 +1090,7 @@ export const usersByUsername = /* GraphQL */ `
             id
             name
             userID
+            createdAt
             WorkoutPlanRoutines {
               items {
                 id
@@ -1106,7 +1107,6 @@ export const usersByUsername = /* GraphQL */ `
               nextToken
               startedAt
             }
-            createdAt
             updatedAt
             _version
             _deleted
@@ -1173,6 +1173,7 @@ export const getWorkoutPlan = /* GraphQL */ `
       id
       name
       userID
+      createdAt
       WorkoutPlanRoutines {
         items {
           id
@@ -1211,7 +1212,6 @@ export const getWorkoutPlan = /* GraphQL */ `
         nextToken
         startedAt
       }
-      createdAt
       updatedAt
       _version
       _deleted
@@ -1231,6 +1231,7 @@ export const listWorkoutPlans = /* GraphQL */ `
         id
         name
         userID
+        createdAt
         WorkoutPlanRoutines {
           items {
             id
@@ -1269,7 +1270,6 @@ export const listWorkoutPlans = /* GraphQL */ `
           nextToken
           startedAt
         }
-        createdAt
         updatedAt
         _version
         _deleted
@@ -1298,6 +1298,7 @@ export const syncWorkoutPlans = /* GraphQL */ `
         id
         name
         userID
+        createdAt
         WorkoutPlanRoutines {
           items {
             id
@@ -1336,7 +1337,6 @@ export const syncWorkoutPlans = /* GraphQL */ `
           nextToken
           startedAt
         }
-        createdAt
         updatedAt
         _version
         _deleted
@@ -1348,16 +1348,18 @@ export const syncWorkoutPlans = /* GraphQL */ `
     }
   }
 `;
-export const workoutPlansByUserID = /* GraphQL */ `
-  query WorkoutPlansByUserID(
+export const workoutPlansByUserIDAndCreatedAt = /* GraphQL */ `
+  query WorkoutPlansByUserIDAndCreatedAt(
     $userID: ID!
+    $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelWorkoutPlanFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    workoutPlansByUserID(
+    workoutPlansByUserIDAndCreatedAt(
       userID: $userID
+      createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -1367,6 +1369,7 @@ export const workoutPlansByUserID = /* GraphQL */ `
         id
         name
         userID
+        createdAt
         WorkoutPlanRoutines {
           items {
             id
@@ -1405,7 +1408,6 @@ export const workoutPlansByUserID = /* GraphQL */ `
           nextToken
           startedAt
         }
-        createdAt
         updatedAt
         _version
         _deleted

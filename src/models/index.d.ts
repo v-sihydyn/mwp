@@ -330,26 +330,26 @@ export declare const User: (new (init: ModelInit<User>) => User) & {
 type EagerWorkoutPlan = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<WorkoutPlan, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    readOnlyFields: 'updatedAt';
   };
   readonly id: string;
   readonly name: string;
   readonly userID: string;
+  readonly createdAt: string;
   readonly WorkoutPlanRoutines?: (WorkoutPlanRoutine | null)[] | null;
-  readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
 type LazyWorkoutPlan = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<WorkoutPlan, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    readOnlyFields: 'updatedAt';
   };
   readonly id: string;
   readonly name: string;
   readonly userID: string;
+  readonly createdAt: string;
   readonly WorkoutPlanRoutines: AsyncCollection<WorkoutPlanRoutine>;
-  readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 

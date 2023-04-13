@@ -21,8 +21,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { createWorkoutRoutineExerciseMutation } from './mutations/createWorkoutRoutineExerciseMutation';
 import { useMutation } from '@apollo/client';
 import { Toast } from 'native-base';
-import { AddExerciseToRoutineRouteProp } from '../../../types';
 import { routineFragment } from '../../fragments/routineFragment';
+import { AddExerciseToRoutineRouteProp } from '../../types/navigation';
 
 export const AddExerciseToRoutineScreen = () => {
   const navigation = useNavigation();

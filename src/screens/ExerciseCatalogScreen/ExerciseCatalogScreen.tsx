@@ -4,10 +4,11 @@ import { StyleSheet, View, FlatList } from 'react-native';
 import { ExerciseListItem } from '../../components/ExerciseListItem/ExerciseListItem';
 
 import { ListHeader } from './components/ListHeader/ListHeader';
-import { Exercise, EXERCISES } from './exercises';
+import { EXERCISES } from './exercises';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { ExerciseCatalogRouteProp } from '../../../types';
 import { ExerciseFilterInput } from './components/ExerciseFilterInput/ExerciseFilterInput';
+import { ExerciseCatalogRouteProp } from '../../types/navigation';
+import { Exercise } from '../../types/exercise';
 
 export const ExerciseCatalogScreen = () => {
   const navigation = useNavigation();

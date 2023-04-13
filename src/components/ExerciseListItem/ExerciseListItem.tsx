@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet, Image } from 'react-native';
 import { colors } from '../../styles/colors';
-import { Exercise } from '../../screens/ExerciseCatalogScreen/exercises';
+import { Exercise } from '../../types/exercise';
 
 type ExerciseListItemProps = {
   item: Exercise;

@@ -6,7 +6,6 @@ import { CustomButton } from '../../components/CustomButton/CustomButton';
 import { Icon } from '../../components/Icon/Icon';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { openDeleteWorkoutModal } from '../../components/modals/DeleteWorkoutModal/DeleteWorkoutModal';
-import { WorkoutDetailsRouteProp } from '../../../types';
 import { useMutation } from '@apollo/client';
 import { deleteWorkoutAndExercisesMutation } from './mutations/deleteWorkoutAndExercisesMutation';
 import {
@@ -21,6 +20,7 @@ import {
 import { Toast } from 'native-base';
 import { workoutsByUserQuery } from '../StatisticsScreen/hooks/useWorkoutsList/queuries/workoutsByUserQuery';
 import { useAuthContext } from '../../contexts/AuthContext';
+import { WorkoutDetailsRouteProp } from '../../types/navigation';
 
 export const WorkoutDetailsScreen = () => {
   const { userId } = useAuthContext();

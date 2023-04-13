@@ -10,7 +10,7 @@ import {
 import { colors } from '../../../../styles/colors';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Icon } from '../../../../components/Icon/Icon';
-import { ExerciseCatalogRouteProp } from '../../../../../types';
+import { ExerciseCatalogRouteProp } from '../../../../types/navigation';
 
 type AddCustomExerciseButtonProps = {
   style?: StyleProp<ViewStyle>;

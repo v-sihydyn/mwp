@@ -22,7 +22,6 @@ import Portal from '../../components/Portal/Portal';
 import { BottomSheet } from '../../components/BottomSheet/BottomSheet';
 import { WorkoutSummary } from './components/WorkoutSummary/WorkoutSummary';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { WorkoutRouteProp } from '../../../types';
 import { Icon } from '../../components/Icon/Icon';
 import { DraftWorkoutExercise } from '../../types/draftWorkout';
 import { PagerViewProps } from 'react-native-pager-view';
@@ -37,6 +36,7 @@ import sumBy from 'lodash.sumby';
 import { deleteDraftWorkoutData } from '../../utils/persistWorkout';
 import { openLeaveWorkoutModal } from '../../components/modals/LeaveWorkoutModal/LeaveWorkoutModal';
 import { clearStartTime } from './utils';
+import { WorkoutRouteProp } from '../../types/navigation';
 
 const ONE_HOUR = 3600;
 

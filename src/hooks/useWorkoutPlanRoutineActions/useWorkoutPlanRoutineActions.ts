@@ -7,11 +7,11 @@ import {
   UpdateWorkoutPlanRoutineMutation,
   UpdateWorkoutPlanRoutineMutationVariables,
   WorkoutPlan,
-} from '../API';
+} from '../../API';
 import { createWorkoutPlanRoutineMutation } from './mutations/createWorkoutPlanRoutineMutation';
 import { updateWorkoutPlanRoutineMutation } from './mutations/updateWorkoutPlanRoutineMutation';
 import { deleteWorkoutPlanRoutineMutation } from './mutations/deleteWorkoutPlanRoutineMutation';
-import { planFragment } from '../fragments/planFragment';
+import { planFragment } from '../../fragments/planFragment';
 
 export const useWorkoutPlanRoutineActions = () => {
   const [createWorkoutPlanRoutine, { loading: createLoading }] = useMutation<

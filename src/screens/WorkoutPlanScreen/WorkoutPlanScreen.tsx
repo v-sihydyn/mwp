@@ -8,7 +8,6 @@ import { RoutineToolbar } from './components/RoutineToolbar/RoutineToolbar';
 import { colors } from '../../styles/colors';
 import { WorkoutPlanActions } from './components/WorkoutPlanActions/WorkoutPlanActions';
 import { BottomSheet } from '../../components/BottomSheet/BottomSheet';
-import { RootTabScreenProps } from '../../../types';
 import { openRenameRoutineModal } from '../../components/modals/RenameRoutineModal/RenameRoutineModal';
 import { openDeleteRoutineModal } from '../../components/modals/DeleteRoutineModal/DeleteRoutineModal';
 import { openRenamePlanModal } from '../../components/modals/RenamePlanModal/RenamePlanModal';
@@ -31,9 +30,9 @@ import {
   WorkoutRoutineExercise,
 } from '../../API';
 import { openCreatePlanModal } from '../../components/modals/CreatePlanModal/CreatePlanModal';
-import { useWorkoutPlanActions } from '../../hooks/useWorkoutPlanActions';
+import { useWorkoutPlanActions } from '../../hooks/useWorkoutPlanActions/useWorkoutPlanActions';
 import { Toast } from 'native-base';
-import { useWorkoutPlanRoutineActions } from '../../hooks/useWorkoutPlanRoutineActions';
+import { useWorkoutPlanRoutineActions } from '../../hooks/useWorkoutPlanRoutineActions/useWorkoutPlanRoutineActions';
 import { PagerViewProps } from 'react-native-pager-view';
 import { ApiErrorMessage } from '../../components/ApiErrorMessage/ApiErrorMessage';
 import PortalHost from '../../components/Portal/PortalHost';
@@ -47,6 +46,7 @@ import { useWorkout } from '../../hooks/useWorkout/useWorkout';
 import { EmptyWorkoutPlanTab } from './components/EmptyWorkoutPlanTab/EmptyWorkoutPlanTab';
 import { WorkoutPlanRoutineTab } from './components/WorkoutPlanRoutineTab/WorkoutPlanRoutineTab';
 import { WorkoutRoutineTabBar } from './components/WorkoutRoutineTabBar/WorkoutRoutineTabBar';
+import { RootTabScreenProps } from '../../types/navigation';
 
 type Props = RootTabScreenProps<'WorkoutPlan'>;
 

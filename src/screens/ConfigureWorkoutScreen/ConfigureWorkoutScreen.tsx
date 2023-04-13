@@ -14,12 +14,12 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
-import { ConfigureWorkoutRouteProp } from '../../../types';
 import { useApolloClient } from '@apollo/client';
 import { routineFragment } from '../../fragments/routineFragment';
 import { WorkoutPlanRoutine, WorkoutRoutineExercise } from '../../API';
 import { ValueMap } from '../../components/TimeIntervalPicker/TimeIntervalPicker';
 import { useWorkout } from '../../hooks/useWorkout/useWorkout';
+import { ConfigureWorkoutRouteProp } from '../../types/navigation';
 
 export const ConfigureWorkoutScreen = () => {
   const navigation = useNavigation();

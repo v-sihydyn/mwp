@@ -11,7 +11,6 @@ import {
   ExerciseFormData,
   validationSchema,
 } from '../../components/ExerciseForm/ExerciseForm';
-import { EditRoutineExerciseRouteProp } from '../../../types';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useApolloClient, useMutation } from '@apollo/client';
@@ -28,6 +27,7 @@ import { updateWorkoutRoutineExerciseMutation } from './mutations/updateWorkoutR
 import { openDeleteExerciseModal } from '../../components/modals/DeleteExerciseModal/DeleteExerciseModal';
 import { deleteWorkoutRoutineExerciseMutation } from './mutations/deleteWorkoutRoutineExerciseMutation';
 import { routineFragment } from '../../fragments/routineFragment';
+import { EditRoutineExerciseRouteProp } from '../../types/navigation';
 
 export const EditRoutineExerciseScreen = () => {
   const navigation = useNavigation();

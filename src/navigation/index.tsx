@@ -4,13 +4,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { WorkoutPlanScreen } from '../screens/WorkoutPlanScreen/WorkoutPlanScreen';
 import { StatisticsScreen } from '../screens/StatisticsScreen/StatisticsScreen';
-import { RootStackParamList, RootTabParamList } from '../../types';
 import { RoutineRemindersScreen } from '../screens/RoutineRemindersScreen/RoutineRemindersScreen';
 import { ModalSlideFromBottomIOS } from './customModalTransition';
 import { RoutinesManagementScreen } from '../screens/RoutinesManagementScreen/RoutinesManagementScreen';
 import { colors } from '../styles/colors';
 import { ExerciseCatalogScreen } from '../screens/ExerciseCatalogScreen/ExerciseCatalogScreen';
-import { ExerciseFilterInput } from '../screens/ExerciseCatalogScreen/components/ExerciseFilterInput/ExerciseFilterInput';
 import { AddExerciseToRoutineScreen } from '../screens/AddExerciseToRoutineScreen/AddExerciseToRoutineScreen';
 import { ConfigureWorkoutScreen } from '../screens/ConfigureWorkoutScreen/ConfigureWorkoutScreen';
 import { WorkoutScreen } from '../screens/WorkoutScreen/WorkoutScreen';
@@ -25,6 +23,7 @@ import { useQuery } from '@apollo/client';
 import { GetUserQuery, GetUserQueryVariables } from '../API';
 import { getUserQuery } from '../queries/getUserQuery';
 import { FullscreenLoader } from '../components/FullscreenLoader/FullscreenLoader';
+import { RootStackParamList, RootTabParamList } from '../types/navigation';
 
 export default function Navigation() {
   return (

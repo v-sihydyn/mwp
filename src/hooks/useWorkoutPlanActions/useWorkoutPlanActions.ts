@@ -10,12 +10,12 @@ import {
   WorkoutPlan,
   WorkoutPlansByUserIDAndCreatedAtQuery,
   WorkoutPlansByUserIDAndCreatedAtQueryVariables,
-} from '../API';
+} from '../../API';
 import { createWorkoutPlanMutation } from './mutations/createWorkoutPlanMutation';
 import { updateWorkoutPlanMutation } from './mutations/updateWorkoutPlanMutation';
 import { deletePlanAndRoutinesMutation } from './mutations/deleteWorkoutPlanMutation';
-import { workoutPlansByUserIDQuery } from '../screens/WorkoutPlanScreen/hooks/queries/workoutPlansByUserIDQuery';
-import { useAuthContext } from '../contexts/AuthContext';
+import { workoutPlansByUserIDQuery } from '../../screens/WorkoutPlanScreen/hooks/queries/workoutPlansByUserIDQuery';
+import { useAuthContext } from '../../contexts/AuthContext';
 
 export const useWorkoutPlanActions = () => {
   const { userId } = useAuthContext();

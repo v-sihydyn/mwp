@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { create, InstanceProps } from 'react-modal-promise';
 import { modalStyles } from '../modalStyles';
 import { colors } from '../../../styles/colors';
-import { useWorkoutPlanRoutineActions } from '../../../hooks/useWorkoutPlanRoutineActions';
+import { useWorkoutPlanRoutineActions } from '../../../hooks/useWorkoutPlanRoutineActions/useWorkoutPlanRoutineActions';
 import { WorkoutPlanRoutine } from '../../../API';
 import { KeyboardAvoidingModal } from '../../KeyboardAvoidingModal/KeyboardAvoidingModal';
 import { usePrevious } from '../../../hooks/usePrevious';

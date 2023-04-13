@@ -1,13 +1,5 @@
-import {
-  ExerciseEquipment,
-  MuscleGroup,
-  WorkoutRoutineExercise,
-} from '../../API';
-
-export type Exercise = Pick<
-  WorkoutRoutineExercise,
-  'name' | 'muscleGroup' | 'equipment'
->;
+import { ExerciseEquipment, MuscleGroup } from '../../API';
+import { Exercise } from '../../types/exercise';
 
 export const EXERCISES: Exercise[] = [
   {

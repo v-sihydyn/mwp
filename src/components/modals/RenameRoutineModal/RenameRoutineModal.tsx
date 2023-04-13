@@ -5,7 +5,7 @@ import { create, InstanceProps } from 'react-modal-promise';
 import { modalStyles } from '../modalStyles';
 import { colors } from '../../../styles/colors';
 import { WorkoutPlanRoutine } from '../../../API';
-import { useWorkoutPlanRoutineActions } from '../../../hooks/useWorkoutPlanRoutineActions';
+import { useWorkoutPlanRoutineActions } from '../../../hooks/useWorkoutPlanRoutineActions/useWorkoutPlanRoutineActions';
 import { KeyboardAvoidingModal } from '../../KeyboardAvoidingModal/KeyboardAvoidingModal';
 import { usePrevious } from '../../../hooks/usePrevious';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, StyleSheet, Dimensions } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 import { colors } from '../../../../styles/colors';
-import { Icon } from '../../../../components/Icon/Icon';
+import { Icon } from '../../../../components/Icon';
 
 type Props = {
   label: string | null;

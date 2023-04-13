@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Icon } from '../Icon/Icon';
+import { Icon } from '../Icon';
 import { colors } from '../../styles/colors';
 
 type SortableListItemProps = {

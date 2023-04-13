@@ -3,7 +3,7 @@ import React from 'react';
 import { colors } from '../../../../styles/colors';
 import { openEditRepsModal } from '../../../../components/modals/EditSetRepsModal/EditSetRepsModal';
 import { DraftSetStatus } from '../../../../types/draftWorkout';
-import { Icon } from '../../../../components/Icon/Icon';
+import { Icon } from '../../../../components/Icon';
 import { openEditWeightModal } from '../../../../components/modals/EditSetWeightModal/EditSetWeightModal';
 
 type WorkoutExerciseSetProps = {

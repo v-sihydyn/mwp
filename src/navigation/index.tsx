@@ -14,7 +14,7 @@ import { ConfigureWorkoutScreen } from '../screens/ConfigureWorkoutScreen/Config
 import { WorkoutScreen } from '../screens/WorkoutScreen/WorkoutScreen';
 import { WorkoutDetailsScreen } from '../screens/WorkoutDetailsScreen/WorkoutDetailsScreen';
 import { ProfileScreen } from '../screens/ProfileScreen/ProfileScreen';
-import { Icon, IconProps } from '../components/Icon/Icon';
+import { Icon, IconProps } from '../components/Icon';
 import { EditRoutineExerciseScreen } from '../screens/EditRoutineExerciseScreen/EditRoutineExerciseScreen';
 import { useAuthContext } from '../contexts/AuthContext';
 import AuthStackNavigator from './AuthStackNavigator';

@@ -1,6 +1,6 @@
 import { WorkoutPlanRoutine, WorkoutRoutineExercise } from '../../../../API';
 import { Tabs } from 'react-native-collapsible-tab-view';
-import { WorkoutExerciseCard } from '../../../../components/WorkoutExerciseCard/WorkoutExerciseCard';
+import { WorkoutExerciseCard } from '../../../../components/WorkoutExerciseCard';
 import { ListEmptyComponent } from '../ListEmptyComponent/ListEmptyComponent';
 import React from 'react';
 

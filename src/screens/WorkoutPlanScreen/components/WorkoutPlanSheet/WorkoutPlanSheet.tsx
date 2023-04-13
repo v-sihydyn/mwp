@@ -2,7 +2,7 @@ import React from 'react';
 import {
   BottomSheet,
   Props as BottomSheetProps,
-} from '../../../../components/BottomSheet/BottomSheet';
+} from '../../../../components/BottomSheet';
 import { WorkoutPlan } from '../../../../API';
 import { StyleSheet, View } from 'react-native';
 import { colors } from '../../../../styles/colors';

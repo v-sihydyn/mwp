@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, Pressable } from 'react-native';
 import { colors } from '../../../../styles/colors';
 import { Menu } from 'native-base';
-import { Icon } from '../../../../components/Icon/Icon';
+import { Icon } from '../../../../components/Icon';
 
 type RoutineListItemProps = {
   name: string;

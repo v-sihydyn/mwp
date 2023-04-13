@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { CustomButton } from '../../../../components/CustomButton/CustomButton';
 import { colors } from '../../../../styles/colors';
-import { Icon } from '../../../../components/Icon/Icon';
+import { Icon } from '../../../../components/Icon';
 import React from 'react';
 import { DraftSet } from '../../../../types/draftWorkout';
 import { openEditRepsModal } from '../../../../components/modals/EditSetRepsModal/EditSetRepsModal';

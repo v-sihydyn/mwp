@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 import { colors } from '../../../../styles/colors';
 import { ChartData, PieChart } from '../../../../components/PieChart/PieChart';
-import { Icon } from '../../../../components/Icon/Icon';
+import { Icon } from '../../../../components/Icon';
 import * as React from 'react';
-import { WorkoutExerciseCard } from '../../../../components/WorkoutExerciseCard/WorkoutExerciseCard';
+import { WorkoutExerciseCard } from '../../../../components/WorkoutExerciseCard';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {

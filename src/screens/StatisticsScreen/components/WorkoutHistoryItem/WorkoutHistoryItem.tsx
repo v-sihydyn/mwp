@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { colors } from '../../../../styles/colors';
-import { Icon } from '../../../../components/Icon/Icon';
+import { Icon } from '../../../../components/Icon';
 import { Workout } from '../../../../API';
 import dayjs from 'dayjs';
 import { formatTime } from '../../../../utils/formatTime';

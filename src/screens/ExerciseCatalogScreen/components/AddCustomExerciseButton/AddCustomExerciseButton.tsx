@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { colors } from '../../../../styles/colors';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Icon } from '../../../../components/Icon/Icon';
+import { Icon } from '../../../../components/Icon';
 import { ExerciseCatalogRouteProp } from '../../../../types/navigation';
 
 type AddCustomExerciseButtonProps = {

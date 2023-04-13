@@ -2,7 +2,7 @@ import React from 'react';
 import Ripple from 'react-native-material-ripple';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '../../../../styles/colors';
-import { Icon } from '../../../../components/Icon/Icon';
+import { Icon } from '../../../../components/Icon';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type AddWorkoutPlanButtonProps = {

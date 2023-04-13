@@ -7,7 +7,7 @@ import {
   Pressable,
 } from 'react-native';
 import { colors } from '../../../../../styles/colors';
-import { Icon } from '../../../../../components/Icon/Icon';
+import { Icon } from '../../../../../components/Icon';
 
 type Props = {
   name: string;

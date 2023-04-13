@@ -21,7 +21,7 @@ import { Auth } from 'aws-amplify';
 import { styles } from './styles';
 import { CustomInput } from './CustomInput';
 import { IEditableUser } from './types';
-import { ApiErrorMessage } from '../../components/ApiErrorMessage/ApiErrorMessage';
+import { ApiErrorMessage } from '../../components/ApiErrorMessage';
 import { CustomButton } from '../../components/CustomButton/CustomButton';
 import { colors } from '../../styles/colors';
 

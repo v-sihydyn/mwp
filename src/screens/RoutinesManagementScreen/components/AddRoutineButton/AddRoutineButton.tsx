@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, View, Text } from 'react-native';
 import { colors } from '../../../../styles/colors';
-import { Icon } from '../../../../components/Icon/Icon';
+import { Icon } from '../../../../components/Icon';
 
 interface AddRoutineButtonProps {}
 

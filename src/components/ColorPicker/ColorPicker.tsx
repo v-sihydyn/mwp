@@ -1,12 +1,6 @@
-import {
-  View,
-  ScrollView,
-  StyleSheet,
-  Pressable,
-  FlatList,
-} from 'react-native';
-import React, { useEffect, useRef } from 'react';
-import { Icon } from '../Icon/Icon';
+import { View, StyleSheet, Pressable, FlatList } from 'react-native';
+import React, { useRef } from 'react';
+import { Icon } from '../Icon';
 import { colors } from '../../styles/colors';
 
 const COLORS = [

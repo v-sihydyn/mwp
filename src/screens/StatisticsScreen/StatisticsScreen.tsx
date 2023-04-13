@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 import { colors } from '../../styles/colors';
 import { WorkoutHistoryItem } from './components/WorkoutHistoryItem/WorkoutHistoryItem';
-import { Icon } from '../../components/Icon/Icon';
+import { Icon } from '../../components/Icon';
 import React, { useMemo, useState } from 'react';
-import { BottomSheet } from '../../components/BottomSheet/BottomSheet';
+import { BottomSheet } from '../../components/BottomSheet';
 import { CalendarList } from 'react-native-calendars';
 import dayjs from 'dayjs';
 import { useNavigation } from '@react-navigation/native';
@@ -22,7 +22,7 @@ import { FullscreenLoader } from '../../components/FullscreenLoader/FullscreenLo
 import { Workout } from '../../API';
 import { DisplayWorkoutExercise, DraftWorkout } from '../../types/draftWorkout';
 import { ListEmptyComponent } from './components/ListEmptyComponent/ListEmptyComponent';
-import { ApiErrorMessage } from '../../components/ApiErrorMessage/ApiErrorMessage';
+import { ApiErrorMessage } from '../../components/ApiErrorMessage';
 
 export const StatisticsScreen = () => {
   const navigation = useNavigation();

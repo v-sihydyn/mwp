@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { colors } from '../../styles/colors';
 import { ReminderListItem } from './components/ReminderListItem/ReminderListItem';
-import { BottomSheet } from '../../components/BottomSheet/BottomSheet';
+import { BottomSheet } from '../../components/BottomSheet';
 import DatePicker from 'react-native-date-picker';
 import Layout from '../../constants/Layout';
 import dayjs from 'dayjs';

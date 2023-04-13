@@ -9,8 +9,8 @@ import {
 import { colors } from '../../styles/colors';
 import { Select } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { Icon } from '../Icon/Icon';
-import { ColorPicker } from '../ColorPicker/ColorPicker';
+import { Icon } from '../Icon';
+import { ColorPicker } from '../ColorPicker';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormInput } from './FormInput/FormInput';
 import { FormSelect } from './FormSelect/FormSelect';
@@ -68,7 +68,7 @@ export const ExerciseForm = () => {
       setValue('restTimeMins', null);
       setValue('restTimeSecs', null);
     }
-  }, [canSetRestTime]);
+  }, [canSetRestTime]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addSet = () => {
     append(getBlankSetItem());

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '../../styles/colors';
 import React, { useEffect } from 'react';
-import { Icon } from '../../components/Icon/Icon';
+import { Icon } from '../../components/Icon';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { CustomButton } from '../../components/CustomButton/CustomButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';

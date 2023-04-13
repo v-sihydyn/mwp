@@ -1,6 +1,5 @@
-import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { colors } from '../../../styles/colors';
-import { Icon } from '../../Icon/Icon';
 import React from 'react';
 import { Control, Controller } from 'react-hook-form';
 

@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, View, Text } from 'react-native';
 import { useDisclose } from 'native-base';
 import { colors } from '../../../../styles/colors';
 import { ExerciseListItem } from './ExerciseListItem/ExerciseListItem';
-import { Icon } from '../../../../components/Icon/Icon';
+import { Icon } from '../../../../components/Icon';
 
 type PreviousExerciseSelectorProps = {};
 

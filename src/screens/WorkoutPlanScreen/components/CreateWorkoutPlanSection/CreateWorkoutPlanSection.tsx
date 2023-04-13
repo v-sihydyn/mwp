@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { colors } from '../../../../styles/colors';
 import React from 'react';
-import { Icon } from '../../../../components/Icon/Icon';
+import { Icon } from '../../../../components/Icon';
 import { openCreatePlanModal } from '../../../../components/modals/CreatePlanModal/CreatePlanModal';
 
 export const CreateWorkoutPlanSection = () => {

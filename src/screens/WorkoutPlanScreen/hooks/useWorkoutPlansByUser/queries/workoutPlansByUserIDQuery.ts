@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { planFragment } from '../../../../fragments/planFragment';
+import { planFragment } from '../../../../../fragments/planFragment';
 
 export const workoutPlansByUserIDQuery = gql`
   query WorkoutPlansByUserIDAndCreatedAt(

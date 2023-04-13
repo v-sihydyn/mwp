@@ -4,7 +4,7 @@ import {
   ModelSortDirection,
   WorkoutPlansByUserIDAndCreatedAtQuery,
   WorkoutPlansByUserIDAndCreatedAtQueryVariables,
-} from '../../../API';
+} from '../../../../API';
 import { useMemo } from 'react';
 
 export const useWorkoutPlansByUser = (userId: string) => {

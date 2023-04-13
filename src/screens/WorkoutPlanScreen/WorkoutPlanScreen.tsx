@@ -20,7 +20,6 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CustomButton } from '../../components/CustomButton/CustomButton';
 import { openCreateRoutineModal } from '../../components/modals/CreateRoutineModal/CreateRoutineModal';
-import { useWorkoutPlansByUser } from './hooks/useWorkoutPlansByUser';
 import { FullscreenLoader } from '../../components/FullscreenLoader/FullscreenLoader';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { CreateWorkoutPlanSection } from './components/CreateWorkoutPlanSection/CreateWorkoutPlanSection';
@@ -31,66 +30,60 @@ import {
 } from '../../API';
 import { openCreatePlanModal } from '../../components/modals/CreatePlanModal/CreatePlanModal';
 import { useWorkoutPlanActions } from '../../hooks/useWorkoutPlanActions/useWorkoutPlanActions';
-import { Toast } from 'native-base';
+import { Toast, useDisclose } from 'native-base';
 import { useWorkoutPlanRoutineActions } from '../../hooks/useWorkoutPlanRoutineActions/useWorkoutPlanRoutineActions';
 import { PagerViewProps } from 'react-native-pager-view';
 import { ApiErrorMessage } from '../../components/ApiErrorMessage/ApiErrorMessage';
 import PortalHost from '../../components/Portal/PortalHost';
-import {
-  deleteDraftWorkoutData,
-  getPersistedDraftWorkoutData,
-} from '../../utils/persistWorkout';
-import { openBeforeWorkoutStartModal } from '../../components/modals/BeforeWorkoutStartModal/BeforeWorkoutStartModal';
-import { DraftWorkoutExercise } from '../../types/draftWorkout';
-import { useWorkout } from '../../hooks/useWorkout/useWorkout';
 import { EmptyWorkoutPlanTab } from './components/EmptyWorkoutPlanTab/EmptyWorkoutPlanTab';
 import { WorkoutPlanRoutineTab } from './components/WorkoutPlanRoutineTab/WorkoutPlanRoutineTab';
 import { WorkoutRoutineTabBar } from './components/WorkoutRoutineTabBar/WorkoutRoutineTabBar';
 import { RootTabScreenProps } from '../../types/navigation';
+import { useWorkoutPlanState } from './hooks/useWorkoutPlanState/useWorkoutPlanState';
+import { useWorkoutActions } from './hooks/useWorkoutActions/useWorkoutActions';
 
 type Props = RootTabScreenProps<'WorkoutPlan'>;
 
 const HEADER_HEIGHT = 64;
 
 export const WorkoutPlanScreen = ({ navigation }: Props) => {
-  const { createDraftWorkoutAndExercises } = useWorkout();
   const { userId } = useAuthContext();
   const {
     workoutPlans,
     areWorkoutPlansLoading,
-    error: workoutPlansFetchError,
-  } = useWorkoutPlansByUser(userId);
-  const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
-  const [isWorkoutPlanSheetVisible, setWorkoutPlanSheetVisible] =
-    useState(false);
-  const [isWorkoutActionsSheetVisible, setWorkoutActionsSheetVisible] =
-    useState(false);
+    workoutPlansFetchError,
+    selectedPlan,
+    routines,
+    setSelectedPlanId,
+  } = useWorkoutPlanState();
+  const { playWorkout } = useWorkoutActions();
+  const {
+    isOpen: isWorkoutPlanSheetVisible,
+    onOpen: onOpenWorkoutPlanSheet,
+    onClose: onCloseWorkoutPlanSheet,
+  } = useDisclose(false);
+  const {
+    isOpen: isWorkoutActionsSheetVisible,
+    onOpen: onOpenWorkoutActionsSheet,
+    onClose: onCloseWorkoutActionsSheet,
+  } = useDisclose(false);
   const insets = useSafeAreaInsets();
   const { doDeleteWorkoutPlan, deleteLoading: deletePlanLoading } =
     useWorkoutPlanActions();
   const { doDeleteWorkoutPlanRoutine, deleteLoading: deleteRoutineLoading } =
     useWorkoutPlanRoutineActions();
-  const [didPlansInitLoaded, setDidPlansInitLoaded] = useState(false);
+
   const [tabToDelayedFocus, setTabToDelayedFocus] = useState<string | null>(
     null,
   );
   const tabContainerRef = useRef<CollapsibleRef>();
   const [tabContainerKey, setTabContainerKey] = useState(0);
+  const [didPlansInitLoaded, setDidPlansInitLoaded] = useState(false);
   const [activeTabPosition, setActiveTabPosition] = useState<number | null>(
     null,
   );
 
   const forceUpdateTabContainer = () => setTabContainerKey((x) => x + 1);
-
-  const selectedPlan = useMemo(() => {
-    const plan = workoutPlans.find((x) => x?.id === selectedPlanId);
-
-    return plan ?? null;
-  }, [workoutPlans, selectedPlanId]);
-
-  const routines = useMemo(() => {
-    return selectedPlan?.WorkoutPlanRoutines?.items ?? [];
-  }, [selectedPlan]);
 
   const selectedRoutine = useMemo(() => {
     return activeTabPosition !== null ? routines[activeTabPosition] : null;
@@ -104,7 +97,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
 
       setDidPlansInitLoaded(true);
     }
-  }, [workoutPlans, didPlansInitLoaded]);
+  }, [workoutPlans, didPlansInitLoaded]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (tabToDelayedFocus) {
@@ -220,22 +213,6 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   };
   // WORKOUT ROUTINE ACTIONS END
 
-  const onOpenWorkoutPlanSheet = () => {
-    setWorkoutPlanSheetVisible(true);
-  };
-
-  const onCloseWorkoutPlanSheet = () => {
-    setWorkoutPlanSheetVisible(false);
-  };
-
-  const onOpenWorkoutActionsSheet = () => {
-    setWorkoutActionsSheetVisible(true);
-  };
-
-  const onCloseWorkoutActionsSheet = () => {
-    setWorkoutActionsSheetVisible(false);
-  };
-
   const handleGoToRoutinesList = () => {
     navigation.navigate('RoutinesManagement');
   };
@@ -254,7 +231,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
         <WorkoutPlanActionsButton onPress={onOpenWorkoutActionsSheet} />
       </View>
     );
-  }, [selectedPlan]);
+  }, [selectedPlan]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSelectPlan = (plan: WorkoutPlan) => {
     setSelectedPlanId(plan.id);
@@ -284,74 +261,13 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
   const handlePlayWorkout = async () => {
     if (!selectedRoutine?.id) return;
 
-    const persistedWorkoutData = await getPersistedDraftWorkoutData(
-      selectedRoutine.id,
-    );
-
-    if (persistedWorkoutData) {
-      const shouldResumeWorkout = await openBeforeWorkoutStartModal().catch(
-        () => {},
-      );
-      if (typeof shouldResumeWorkout === 'undefined') return;
-
-      if (shouldResumeWorkout) {
-        let displayedExerciseIndex;
-        const draftWorkoutExercises: DraftWorkoutExercise[] =
-          persistedWorkoutData.exercises.map((e, exerciseIdx) => ({
-            ...e,
-            sets: e.sets.map((s) => {
-              if (
-                s.id === persistedWorkoutData.currentSetId &&
-                persistedWorkoutData.currentSetId !== null
-              ) {
-                displayedExerciseIndex = exerciseIdx;
-                return {
-                  ...s,
-                  status: 'inprogress',
-                };
-              }
-
-              return s;
-            }),
-          }));
-
-        navigation.navigate('Workout', {
-          workoutRoutineId: selectedRoutine.id,
-          restTimeInSeconds: persistedWorkoutData.restTimeInSeconds,
-          draftWorkout: persistedWorkoutData.workout,
-          draftWorkoutExercises,
-          displayedExerciseIndex,
-          currentSetId: persistedWorkoutData.currentSetId,
-          totalTimeInSeconds: persistedWorkoutData.totalTimeInSeconds,
-        });
-        return;
-      } else {
-        await deleteDraftWorkoutData(selectedRoutine.id);
-      }
-    }
-
-    const exercises = selectedRoutine.WorkoutRoutineExercises.items ?? [];
-
-    if (exercises.length > 1) {
-      navigation.navigate('ConfigureWorkout', {
-        workoutRoutineId: selectedRoutine.id,
-      });
-    } else {
-      const { draftWorkout, draftWorkoutExercises } =
-        createDraftWorkoutAndExercises(
-          selectedRoutine.name!,
-          exercises as WorkoutRoutineExercise[],
-        );
-
-      draftWorkoutExercises[0].sets[0].status = 'inprogress';
-
-      navigation.navigate('Workout', {
-        workoutRoutineId: selectedRoutine.id,
-        restTimeInSeconds: 0,
-        draftWorkout,
-        draftWorkoutExercises,
-      });
-    }
+    const exercises = (selectedRoutine.WorkoutRoutineExercises.items ??
+      []) as WorkoutRoutineExercise[];
+    await playWorkout({
+      routineId: selectedRoutine.id,
+      routineName: selectedRoutine?.name ?? '',
+      exercises,
+    });
   };
 
   if (areWorkoutPlansLoading) return <FullscreenLoader />;

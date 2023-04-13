@@ -14,7 +14,7 @@ import {
 import { createWorkoutPlanMutation } from './mutations/createWorkoutPlanMutation';
 import { updateWorkoutPlanMutation } from './mutations/updateWorkoutPlanMutation';
 import { deletePlanAndRoutinesMutation } from './mutations/deleteWorkoutPlanMutation';
-import { workoutPlansByUserIDQuery } from '../../screens/WorkoutPlanScreen/hooks/queries/workoutPlansByUserIDQuery';
+import { workoutPlansByUserIDQuery } from '../../screens/WorkoutPlanScreen/hooks/useWorkoutPlansByUser/queries/workoutPlansByUserIDQuery';
 import { useAuthContext } from '../../contexts/AuthContext';
 
 export const useWorkoutPlanActions = () => {

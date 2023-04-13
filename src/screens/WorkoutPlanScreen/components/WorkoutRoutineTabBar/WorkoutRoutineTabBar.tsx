@@ -1,7 +1,11 @@
 import { useWindowDimensions } from 'react-native';
 import { colors } from '../../../../styles/colors';
-import { MaterialTabBar, TabBarProps } from 'react-native-collapsible-tab-view';
+import {
+  MaterialTabItem,
+  TabBarProps,
+} from 'react-native-collapsible-tab-view';
 import React from 'react';
+import { MaterialTabBar } from '../../../../components/MaterialTabBar/TabBar';
 
 type WorkoutRoutineTabBarProps = TabBarProps<string>;
 
@@ -33,7 +37,8 @@ export const WorkoutRoutineTabBar = (props: WorkoutRoutineTabBarProps) => {
       }}
       activeColor={colors.text}
       inactiveColor="#b5b5b5"
-      scrollEnabled
+      scrollEnabled={true}
+      TabItemComponent={MaterialTabItem}
     />
   );
 };

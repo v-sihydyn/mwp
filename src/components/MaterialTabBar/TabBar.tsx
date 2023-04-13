@@ -98,6 +98,14 @@ const MaterialTabBar = <T extends TabName = TabName>({
     }
   }, [scrollEnabled, nTabs, tabNames, width]);
 
+  React.useEffect(() => {
+    if (isFirstRender.current) return;
+
+    if (tabNames.length < itemsLayout.length) {
+      setItemsLayout((x) => x.slice(0, tabNames.length));
+    }
+  }, [tabNames, itemsLayout]);
+
   const onTabItemLayout = React.useCallback(
     (event: LayoutChangeEvent, name: T) => {
       if (scrollEnabled) {

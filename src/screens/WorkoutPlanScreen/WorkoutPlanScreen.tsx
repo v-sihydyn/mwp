@@ -212,15 +212,6 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
           selectedRoutine._version,
           selectedPlan.id!,
         );
-
-        const updatedRoutines = routines.filter(
-          (x) => x?.id !== selectedRoutine.id,
-        );
-        const routineIndex = routines.findIndex(
-          (r) => r?.id === selectedRoutine.id,
-        );
-        const nextIndex = Math.max(routineIndex - 1, 0);
-        setTabToDelayedFocus(updatedRoutines[nextIndex]?.name ?? null);
       } catch (e) {
         Toast.show({
           title: 'Failed to delete a routine',

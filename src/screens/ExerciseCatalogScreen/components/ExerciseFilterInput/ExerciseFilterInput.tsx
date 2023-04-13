@@ -30,16 +30,22 @@ export const ExerciseFilterInput = ({ onChange }: ExerciseFilterInputProps) => {
         InputLeftElement={<SearchIcon size={5} ml="2" />}
         InputRightElement={
           searchQuery.length > 0 ? (
-            <SmallCloseIcon
-              size={5}
-              mr="2"
+            <View
               style={{
-                borderRadius: 20,
-                color: colors.surface2,
-                backgroundColor: colors.text2,
-              }}
-              onPress={() => handleChange('')}
-            />
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 50,
+                backgroundColor: '#8D8D93',
+                marginRight: 8,
+              }}>
+              <SmallCloseIcon
+                size={4}
+                style={{
+                  color: colors.surface2,
+                }}
+                onPress={() => handleChange('')}
+              />
+            </View>
           ) : undefined
         }
       />

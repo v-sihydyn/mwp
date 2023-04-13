@@ -177,10 +177,6 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     }).catch(() => {});
 
     setTabToDelayedFocus(routine?.name ?? null);
-
-    if (routines.length === 0) {
-      forceUpdateTabContainer();
-    }
   };
 
   const handleOpenRenameRoutineModal = async () => {

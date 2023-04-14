@@ -78,6 +78,12 @@ export const useWorkoutPlanActions = () => {
       variables: {
         planId,
       },
+      optimisticResponse: {
+        deletePlanAndRoutines: {
+          id: planId,
+          __typename: 'DeletePlanAndRoutinesResponse',
+        },
+      },
       update(cache, { data }) {
         if (!data?.deletePlanAndRoutines) return;
         const deletedPlanId = data?.deletePlanAndRoutines.id;

@@ -23,7 +23,7 @@
         },
         "editPlanAndRoutines": {
           "deploymentBucketName": "amplify-mwp-staging-91319-deployment",
-          "s3Key": "amplify-builds/editPlanAndRoutines-795562664561756f3645-build.zip"
+          "s3Key": "amplify-builds/editPlanAndRoutines-446d2b51514643754431-build.zip"
         },
         "bulkCreateWorkoutExercises": {
           "deploymentBucketName": "amplify-mwp-staging-91319-deployment",

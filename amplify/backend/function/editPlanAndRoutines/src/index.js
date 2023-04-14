@@ -4,6 +4,7 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 
 const PLANTABLE = process.env.PLANTABLE;
 const ROUTINETABLE = process.env.ROUTINETABLE;
+const EXERCISETABLE = process.env.EXERCISETABLE;
 
 const resolvers = {
   Mutation: {
@@ -28,10 +29,12 @@ exports.handler = async function (event, context) {
 };
 
 async function deletePlanAndRoutines(event) {
-  const removeRoutinesProm = removeRoutinesOfPlan(event.arguments.planId);
+  const removeRoutinesAndExercisesProm = removeRoutinesAndExercises(
+    event.arguments.planId,
+  );
   const removePlanProm = removePlan(event.arguments.planId);
   const [_, deletedPlan] = await Promise.all([
-    removeRoutinesProm,
+    removeRoutinesAndExercisesProm,
     removePlanProm,
   ]);
   return { id: deletedPlan.id };
@@ -44,9 +47,19 @@ async function removePlan(planId) {
   return deletedPlan;
 }
 
-async function removeRoutinesOfPlan(planId) {
+async function removeRoutinesAndExercises(planId) {
   const routines = await listRoutinesForPlan(planId);
-  await deleteRoutines(routines);
+  console.log('routines', routines);
+  const routineIds = routines.map((x) => x.id);
+  console.log('routineIds', routineIds);
+
+  await deleteRecords(routines, ROUTINETABLE);
+  console.log('routines deleted successfully');
+
+  const exercises = await listExercises(routineIds);
+  console.log('exercises', exercises);
+  await deleteRecords(exercises, EXERCISETABLE);
+  console.log('exercises deleted successfully');
 }
 
 async function listRoutinesForPlan(planId) {
@@ -64,11 +77,35 @@ async function listRoutinesForPlan(planId) {
   }
 }
 
-async function deleteRoutines(routines) {
+async function listExercises(routineIds) {
+  try {
+    let exercises = [];
+
+    for (const routineId of routineIds) {
+      const params = {
+        TableName: EXERCISETABLE,
+        IndexName: 'byWorkoutPlanRoutine',
+        KeyConditionExpression: 'workoutPlanRoutineID = :routineId',
+        ExpressionAttributeValues: { ':routineId': routineId },
+      };
+
+      const data = await docClient.query(params).promise();
+      exercises = exercises.concat(data.Items);
+    }
+
+    return exercises;
+  } catch (err) {
+    return err;
+  }
+}
+
+async function deleteRecords(records, tableName) {
   // format data for docClient
-  const seedData = routines.map((item) => {
+  const seedData = records.map((item) => {
     return { DeleteRequest: { Key: { id: item.id } } };
   });
+
+  console.log(tableName, JSON.stringify(seedData));
 
   /* We can only batch-write 25 items at a time,
     so we'll store both the quotient, as well as what's left.
@@ -85,7 +122,7 @@ async function deleteRoutines(routines) {
         .batchWrite(
           {
             RequestItems: {
-              [ROUTINETABLE]: seedData.slice(i, 25 * batchMultiplier),
+              [tableName]: seedData.slice(i, 25 * batchMultiplier),
             },
           },
           (err, data) => {
@@ -107,7 +144,7 @@ async function deleteRoutines(routines) {
       .batchWrite(
         {
           RequestItems: {
-            [ROUTINETABLE]: seedData.slice(seedData.length - remainder),
+            [tableName]: seedData.slice(seedData.length - remainder),
           },
         },
         (err, data) => {

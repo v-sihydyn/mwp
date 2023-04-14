@@ -83,6 +83,11 @@
                 "Fn::Sub": "${apiGraphQLAPIIdOutput}:GetAtt:WorkoutPlanRoutineTable:Name"
               }
             },
+            "EXERCISETABLE": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apiGraphQLAPIIdOutput}:GetAtt:WorkoutRoutineExerciseTable:Name"
+              }
+            },
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": 1
           }
         },
@@ -198,6 +203,7 @@
               "Effect": "Allow",
               "Action": [
                 "dynamodb:BatchWriteItem",
+                "dynamodb:BatchGetItem",
                 "dynamodb:List*",
                 "dynamodb:Query",
                 "dynamodb:Delete*"
@@ -234,6 +240,30 @@
                       "tablename": {
                         "Fn::ImportValue": {
                           "Fn::Sub": "${apiGraphQLAPIIdOutput}:GetAtt:WorkoutPlanRoutineTable:Name"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}",
+                    {
+                      "tablename": {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apiGraphQLAPIIdOutput}:GetAtt:WorkoutRoutineExerciseTable:Name"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}/index/*",
+                    {
+                      "tablename": {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apiGraphQLAPIIdOutput}:GetAtt:WorkoutRoutineExerciseTable:Name"
                         }
                       }
                     }

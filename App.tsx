@@ -1,7 +1,7 @@
 import { extendTheme, NativeBaseProvider } from 'native-base';
 
 import Navigation from './src/navigation';
-import { UIManager } from 'react-native';
+import { StatusBar, UIManager } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Container as ModalContainer } from 'react-modal-promise';
 import PortalHost from './src/components/Portal/PortalHost';
@@ -26,6 +26,7 @@ export default function App() {
         <PortalHost>
           <AuthContextProvider>
             <ApolloClientProvider>
+              <StatusBar barStyle={'light-content'} />
               <ModalContainer />
               <Navigation />
             </ApolloClientProvider>

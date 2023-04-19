@@ -205,7 +205,7 @@ export const useWorkoutPlayer = ({
       displayedExerciseIndex < exercises.length - 1 &&
       currentSetIndex === _currentExercise.sets.length - 1;
 
-    if (isLastExerciseAndLastSet || areAllSetsProcessed) {
+    if (isLastExerciseAndLastSet || getAreAllSetsProcessed(exercises)) {
       processLastSet();
       return;
     }

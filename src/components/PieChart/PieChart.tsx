@@ -266,6 +266,7 @@ export const PieChartSegment = ({
       strokeWidth={strokeWidth}
       strokeDasharray={strokeDasharray}
       fill="transparent"
+      // @ts-ignore
       animatedProps={animatedProps}
     />
   );

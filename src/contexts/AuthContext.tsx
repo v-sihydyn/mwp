@@ -9,7 +9,8 @@ import { CognitoUser } from 'amazon-cognito-identity-js';
 import { Auth, Hub } from 'aws-amplify';
 import { HubCallback } from '@aws-amplify/core';
 
-type UserType = CognitoUser | undefined | null;
+type CognitoUserWithAttributes = CognitoUser & { attributes: { sub: string } };
+type UserType = CognitoUserWithAttributes | undefined | null;
 
 type AuthContextType = {
   user: UserType;
@@ -26,9 +27,10 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   const checkUser = async () => {
     try {
-      const authUser = await Auth.currentAuthenticatedUser({
-        bypassCache: true,
-      });
+      const authUser: CognitoUserWithAttributes =
+        await Auth.currentAuthenticatedUser({
+          bypassCache: true,
+        });
       setUser(authUser);
     } catch (e) {
       setUser(null);
@@ -57,7 +59,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, userId: user?.attributes?.sub }}>
+    <AuthContext.Provider value={{ user, userId: user?.attributes?.sub ?? '' }}>
       {children}
     </AuthContext.Provider>
   );

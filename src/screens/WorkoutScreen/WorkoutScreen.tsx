@@ -37,6 +37,7 @@ import { deleteDraftWorkoutData } from '../../utils/persistWorkout';
 import { openLeaveWorkoutModal } from '../../components/modals/LeaveWorkoutModal/LeaveWorkoutModal';
 import { clearStartTime } from './utils';
 import { WorkoutRouteProp } from '../../types/navigation';
+import { ArrowArcRight } from '../../components/icons/ArrowArcRight';
 
 const ONE_HOUR = 3600;
 
@@ -435,8 +436,8 @@ export const WorkoutScreen = () => {
           <CustomButton
             style={{ backgroundColor: colors.black, height: '100%' }}
             onPress={() => skipRest()}
-            icon={<Icon name="forward" color={colors.lime} size={16} />}>
-            <Text style={{ fontSize: 16 }}>Skip Rest</Text>
+            icon={<ArrowArcRight color={colors.lime} size={20} />}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Skip Rest</Text>
           </CustomButton>
         )}
 
@@ -447,7 +448,9 @@ export const WorkoutScreen = () => {
             <CustomButton
               style={{ backgroundColor: colors.green, height: '100%' }}
               onPress={handlePlayExercise}>
-              <Text style={{ fontSize: 16 }}>Play this exercise</Text>
+              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                Play this exercise
+              </Text>
             </CustomButton>
           )}
 

@@ -4,7 +4,7 @@ import Navigation from './src/navigation';
 import { StatusBar, UIManager } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Container as ModalContainer } from 'react-modal-promise';
-import PortalHost from './src/components/Portal/PortalHost';
+import { PortalHost } from './src/components/Portal';
 
 import { AuthContextProvider } from './src/contexts/AuthContext';
 import { ApolloClientProvider } from './src/apollo/ApolloClientProvider';

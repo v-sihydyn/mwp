@@ -7,7 +7,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import { colors } from '../../../../styles/colors';
-import { ChartData, PieChart } from '../../../../components/PieChart/PieChart';
+import { ChartData, PieChart } from '../../../../components/PieChart';
 import { Icon } from '../../../../components/Icon';
 import * as React from 'react';
 import { WorkoutExerciseCard } from '../../../../components/WorkoutExerciseCard';

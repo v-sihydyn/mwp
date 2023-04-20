@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
-import FormInput from '../components/FormInput';
+import { FormInput } from '../components/FormInput';
 import { useNavigation } from '@react-navigation/core';
 import { useForm } from 'react-hook-form';
 import { ForgotPasswordNavigationProp } from '../../../types/navigation';
@@ -15,7 +15,7 @@ type ForgotPasswordData = {
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-const ForgotPasswordScreen = () => {
+export const ForgotPasswordScreen = () => {
   const { control, handleSubmit } = useForm<ForgotPasswordData>();
   const navigation = useNavigation<ForgotPasswordNavigationProp>();
   const [loading, setLoading] = useState(false);
@@ -108,5 +108,3 @@ const styles = StyleSheet.create({
     color: '#FDB075',
   },
 });
-
-export default ForgotPasswordScreen;

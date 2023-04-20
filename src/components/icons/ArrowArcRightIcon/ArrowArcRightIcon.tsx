@@ -6,7 +6,7 @@ type Props = {
   size: number;
 };
 
-export const ArrowArcRight = ({ color, size }: Props) => {
+export const ArrowArcRightIcon = ({ color, size }: Props) => {
   return (
     <Svg width={size} height={size} viewBox="0 0 256 256">
       <Rect width="256" height="256" fill="none" />

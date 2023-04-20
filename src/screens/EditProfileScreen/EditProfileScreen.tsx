@@ -22,7 +22,7 @@ import { styles } from './styles';
 import { CustomInput } from './CustomInput';
 import { IEditableUser } from './types';
 import { ApiErrorMessage } from '../../components/ApiErrorMessage';
-import { CustomButton } from '../../components/CustomButton/CustomButton';
+import { CustomButton } from '../../components/CustomButton';
 import { colors } from '../../styles/colors';
 
 export const EditProfileScreen = () => {

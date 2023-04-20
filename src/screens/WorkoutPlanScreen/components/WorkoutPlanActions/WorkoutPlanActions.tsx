@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { WorkoutPlanActionItem } from './WorkoutPlanActionItem/WorkoutPlanActionItem';
+import { WorkoutPlanActionItem } from './WorkoutPlanActionItem';
 import { colors } from '../../../../styles/colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 

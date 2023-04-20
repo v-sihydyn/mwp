@@ -6,7 +6,7 @@ import { modalStyles } from '../modalStyles';
 import { colors } from '../../../styles/colors';
 import { WorkoutPlanRoutine } from '../../../API';
 import { useWorkoutPlanRoutineActions } from '../../../hooks/useWorkoutPlanRoutineActions/useWorkoutPlanRoutineActions';
-import { KeyboardAvoidingModal } from '../../KeyboardAvoidingModal/KeyboardAvoidingModal';
+import { KeyboardAvoidingModal } from '../../KeyboardAvoidingModal';
 import { usePrevious } from '../../../hooks/usePrevious';
 
 type Props = InstanceProps<{ name: string; _version: number }> & {

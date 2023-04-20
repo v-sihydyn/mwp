@@ -8,20 +8,20 @@ import {
   View,
 } from 'react-native';
 import { colors } from '../../styles/colors';
-import { WorkoutHistoryItem } from './components/WorkoutHistoryItem/WorkoutHistoryItem';
+import { WorkoutHistoryItem } from './components/WorkoutHistoryItem';
 import { Icon } from '../../components/Icon';
 import React, { useMemo, useState } from 'react';
 import { BottomSheet } from '../../components/BottomSheet';
 import { CalendarList } from 'react-native-calendars';
 import dayjs from 'dayjs';
 import { useNavigation } from '@react-navigation/native';
-import Portal from '../../components/Portal/Portal';
+import { Portal } from '../../components/Portal';
 import { MarkedDates } from 'react-native-calendars/src/types';
 import { useWorkoutsList } from './hooks/useWorkoutsList/useWorkoutsList';
-import { FullscreenLoader } from '../../components/FullscreenLoader/FullscreenLoader';
+import { FullscreenLoader } from '../../components/FullscreenLoader';
 import { Workout } from '../../API';
 import { DisplayWorkoutExercise, DraftWorkout } from '../../types/draftWorkout';
-import { ListEmptyComponent } from './components/ListEmptyComponent/ListEmptyComponent';
+import { ListEmptyComponent } from './components/ListEmptyComponent';
 import { ApiErrorMessage } from '../../components/ApiErrorMessage';
 
 export const StatisticsScreen = () => {

@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { WorkoutPlanSelector } from './components/WorkoutPlanSelector/WorkoutPlanSelector';
-import { WorkoutPlanActionsButton } from './components/WorkoutPlanActionsButton/WorkoutPlanActionsButton';
-import { WorkoutPlanSheet } from './components/WorkoutPlanSheet/WorkoutPlanSheet';
-import Portal from '../../components/Portal/Portal';
-import { RoutineToolbar } from './components/RoutineToolbar/RoutineToolbar';
+import { WorkoutPlanSelector } from './components/WorkoutPlanSelector';
+import { WorkoutPlanActionsButton } from './components/WorkoutPlanActionsButton';
+import { WorkoutPlanSheet } from './components/WorkoutPlanSheet';
+import { Portal } from '../../components/Portal';
+import { RoutineToolbar } from './components/RoutineToolbar';
 import { colors } from '../../styles/colors';
-import { WorkoutPlanActions } from './components/WorkoutPlanActions/WorkoutPlanActions';
+import { WorkoutPlanActions } from './components/WorkoutPlanActions';
 import { BottomSheet } from '../../components/BottomSheet';
 import { openRenameRoutineModal } from '../../components/modals/RenameRoutineModal/RenameRoutineModal';
 import { openDeleteRoutineModal } from '../../components/modals/DeleteRoutineModal/DeleteRoutineModal';
@@ -18,11 +18,11 @@ import {
   Tabs,
 } from 'react-native-collapsible-tab-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { CustomButton } from '../../components/CustomButton/CustomButton';
+import { CustomButton } from '../../components/CustomButton';
 import { openCreateRoutineModal } from '../../components/modals/CreateRoutineModal/CreateRoutineModal';
-import { FullscreenLoader } from '../../components/FullscreenLoader/FullscreenLoader';
+import { FullscreenLoader } from '../../components/FullscreenLoader';
 import { useAuthContext } from '../../contexts/AuthContext';
-import { CreateWorkoutPlanSection } from './components/CreateWorkoutPlanSection/CreateWorkoutPlanSection';
+import { CreateWorkoutPlanSection } from './components/CreateWorkoutPlanSection';
 import {
   WorkoutPlan,
   WorkoutPlanRoutine,
@@ -34,10 +34,10 @@ import { Toast, useDisclose } from 'native-base';
 import { useWorkoutPlanRoutineActions } from '../../hooks/useWorkoutPlanRoutineActions/useWorkoutPlanRoutineActions';
 import { PagerViewProps } from 'react-native-pager-view';
 import { ApiErrorMessage } from '../../components/ApiErrorMessage';
-import PortalHost from '../../components/Portal/PortalHost';
-import { EmptyWorkoutPlanTab } from './components/EmptyWorkoutPlanTab/EmptyWorkoutPlanTab';
-import { WorkoutPlanRoutineTab } from './components/WorkoutPlanRoutineTab/WorkoutPlanRoutineTab';
-import { WorkoutRoutineTabBar } from './components/WorkoutRoutineTabBar/WorkoutRoutineTabBar';
+import { PortalHost } from '../../components/Portal';
+import { EmptyWorkoutPlanTab } from './components/EmptyWorkoutPlanTab';
+import { WorkoutPlanRoutineTab } from './components/WorkoutPlanRoutineTab';
+import { WorkoutRoutineTabBar } from './components/WorkoutRoutineTabBar';
 import { RootTabScreenProps } from '../../types/navigation';
 import { useWorkoutPlanState } from './hooks/useWorkoutPlanState/useWorkoutPlanState';
 import { useWorkoutActions } from './hooks/useWorkoutActions/useWorkoutActions';

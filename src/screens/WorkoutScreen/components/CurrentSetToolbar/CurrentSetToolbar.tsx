@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { CustomButton } from '../../../../components/CustomButton/CustomButton';
+import { CustomButton } from '../../../../components/CustomButton';
 import { colors } from '../../../../styles/colors';
 import { Icon } from '../../../../components/Icon';
 import React from 'react';

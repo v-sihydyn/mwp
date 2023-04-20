@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
-import FormInput from '../components/FormInput';
+import { FormInput } from '../components/FormInput';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import { NewPasswordNavigationProp } from '../../../types/navigation';
@@ -17,7 +17,7 @@ type NewPasswordType = {
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-const NewPasswordScreen = () => {
+export const NewPasswordScreen = () => {
   const { control, handleSubmit } = useForm<NewPasswordType>();
 
   const navigation = useNavigation<NewPasswordNavigationProp>();
@@ -132,5 +132,3 @@ const styles = StyleSheet.create({
     color: '#FDB075',
   },
 });
-
-export default NewPasswordScreen;

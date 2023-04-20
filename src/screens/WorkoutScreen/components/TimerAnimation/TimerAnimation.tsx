@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { colors } from '../../../../styles/colors';
 import { MotiView } from 'moti';
 import { Easing } from 'react-native-reanimated';

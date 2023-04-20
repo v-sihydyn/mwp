@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { colors } from '../../styles/colors';
 import { WorkoutSummary } from '../WorkoutScreen/components/WorkoutSummary/WorkoutSummary';
 import React, { useEffect } from 'react';
-import { CustomButton } from '../../components/CustomButton/CustomButton';
+import { CustomButton } from '../../components/CustomButton';
 import { Icon } from '../../components/Icon';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { openDeleteWorkoutModal } from '../../components/modals/DeleteWorkoutModal/DeleteWorkoutModal';

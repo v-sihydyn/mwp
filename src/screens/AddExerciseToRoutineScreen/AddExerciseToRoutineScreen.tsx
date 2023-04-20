@@ -3,7 +3,7 @@ import { colors } from '../../styles/colors';
 import React, { useEffect } from 'react';
 import { Icon } from '../../components/Icon';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { CustomButton } from '../../components/CustomButton/CustomButton';
+import { CustomButton } from '../../components/CustomButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
   blankInitialValues,

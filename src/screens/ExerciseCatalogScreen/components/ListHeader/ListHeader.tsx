@@ -1,8 +1,8 @@
 import { Text, View } from 'react-native';
-import { AddCustomExerciseButton } from '../AddCustomExerciseButton/AddCustomExerciseButton';
-// import { PreviousExerciseSelector } from '../PrevioutExerciseSelector/PreviousExerciseSelector';
+import { AddCustomExerciseButton } from '../AddCustomExerciseButton';
+// import { PreviousExerciseSelector } from '../PreviousExerciseSelector/PreviousExerciseSelector';
 import { colors } from '../../../../styles/colors';
-import { Filters } from '../Filters/Filters';
+import { Filters } from '../Filters';
 import React from 'react';
 
 type ListHeaderProps = {

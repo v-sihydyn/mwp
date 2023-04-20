@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { colors } from '../../styles/colors';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
-import { AddRoutineButton } from './components/AddRoutineButton/AddRoutineButton';
+import { AddRoutineButton } from './components/AddRoutineButton';
 import { openRenameRoutineModal } from '../../components/modals/RenameRoutineModal/RenameRoutineModal';
 import DraggableFlatList, {
   RenderItemParams,
 } from 'react-native-draggable-flatlist';
-import { RoutineListItem } from './components/RoutineListItem/RoutineListItem';
+import { RoutineListItem } from './components/RoutineListItem';
 import { openDuplicateRoutineModal } from '../../components/modals/DuplicateRoutineModal/DuplicateRoutineModal';
 import { openDeleteRoutineModal } from '../../components/modals/DeleteRoutineModal/DeleteRoutineModal';
-import { SortableListItem } from '../../components/SortableList/SortableListItem';
+import { SortableListItem } from '../../components/SortableListItem';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Routine = {

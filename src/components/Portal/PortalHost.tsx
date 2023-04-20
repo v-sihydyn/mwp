@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import PortalManager from './PortalManager';
+import { PortalManager } from './PortalManager';
 
 type Props = {
   children: React.ReactNode;
@@ -19,7 +19,7 @@ export type PortalMethods = {
 
 export const PortalContext = React.createContext<PortalMethods>(null as any);
 
-export default class PortalHost extends React.Component<Props> {
+export class PortalHost extends React.Component<Props> {
   static displayName = 'Portal.Host';
 
   componentDidMount() {
@@ -66,7 +66,9 @@ export default class PortalHost extends React.Component<Props> {
       this._manager.update(key, children);
     } else {
       const op = { type: 'mount', key, children };
-      const index = this._queue.findIndex((o) => o.type === 'mount' || (o.type === 'update' && o.key === key));
+      const index = this._queue.findIndex(
+        (o) => o.type === 'mount' || (o.type === 'update' && o.key === key),
+      );
 
       if (index > -1) {
         // @ts-ignore

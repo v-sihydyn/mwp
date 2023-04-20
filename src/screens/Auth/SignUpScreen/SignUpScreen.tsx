@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
-import FormInput from '../components/FormInput';
-import SocialSignInButtons from '../components/SocialSignInButtons';
+import { FormInput } from '../components/FormInput';
+import { SocialSignInButtons } from '../components/SocialSignInButtons';
 import { useNavigation } from '@react-navigation/core';
 import { useForm } from 'react-hook-form';
 import { SignUpNavigationProp } from '../../../types/navigation';
@@ -19,7 +19,7 @@ type SignUpData = {
   passwordRepeat: string;
 };
 
-const SignUpScreen = () => {
+export const SignUpScreen = () => {
   const { control, handleSubmit, watch } = useForm<SignUpData>();
   const pwd = watch('password');
   const navigation = useNavigation<SignUpNavigationProp>();
@@ -181,5 +181,3 @@ const styles = StyleSheet.create({
     color: colors.green,
   },
 });
-
-export default SignUpScreen;

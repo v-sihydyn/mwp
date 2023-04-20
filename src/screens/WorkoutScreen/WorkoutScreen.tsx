@@ -14,20 +14,20 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { WorkoutExerciseSet } from './components/WorkoutExerciseSet/WorkoutExerciseSet';
-import { CustomButton } from '../../components/CustomButton/CustomButton';
+import { WorkoutExerciseSet } from './components/WorkoutExerciseSet';
+import { CustomButton } from '../../components/CustomButton';
 import { MaterialTabBar } from '../../components/MaterialTabBar/TabBar';
-import { TimerAnimation } from './components/TimerAnimation/TimerAnimation';
-import Portal from '../../components/Portal/Portal';
+import { TimerAnimation } from './components/TimerAnimation';
+import { Portal } from '../../components/Portal';
 import { BottomSheet } from '../../components/BottomSheet';
-import { WorkoutSummary } from './components/WorkoutSummary/WorkoutSummary';
+import { WorkoutSummary } from './components/WorkoutSummary';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Icon } from '../../components/Icon';
 import { DraftWorkoutExercise } from '../../types/draftWorkout';
 import { PagerViewProps } from 'react-native-pager-view';
 import { formatTime } from '../../utils/formatTime';
 import { MaterialTabItem } from '../../components/MaterialTabBar/TabItem';
-import { CurrentSetToolbar } from './components/CurrentSetToolbar/CurrentSetToolbar';
+import { CurrentSetToolbar } from './components/CurrentSetToolbar';
 import { useWorkoutPlayer } from './hooks/useWorkoutPlayer';
 import { Button, Toast } from 'native-base';
 import { useWorkout } from '../../hooks/useWorkout/useWorkout';
@@ -37,7 +37,7 @@ import { deleteDraftWorkoutData } from '../../utils/persistWorkout';
 import { openLeaveWorkoutModal } from '../../components/modals/LeaveWorkoutModal/LeaveWorkoutModal';
 import { clearStartTime } from './utils';
 import { WorkoutRouteProp } from '../../types/navigation';
-import { ArrowArcRight } from '../../components/icons/ArrowArcRight';
+import { ArrowArcRightIcon } from '../../components/icons/ArrowArcRightIcon';
 
 const ONE_HOUR = 3600;
 
@@ -436,7 +436,7 @@ export const WorkoutScreen = () => {
           <CustomButton
             style={{ backgroundColor: colors.black, height: '100%' }}
             onPress={() => skipRest()}
-            icon={<ArrowArcRight color={colors.lime} size={20} />}>
+            icon={<ArrowArcRightIcon color={colors.lime} size={20} />}>
             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Skip Rest</Text>
           </CustomButton>
         )}

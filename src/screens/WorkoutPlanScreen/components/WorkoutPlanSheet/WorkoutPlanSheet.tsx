@@ -6,8 +6,8 @@ import {
 import { WorkoutPlan } from '../../../../API';
 import { StyleSheet, View } from 'react-native';
 import { colors } from '../../../../styles/colors';
-import { WorkoutPlanListItem } from './WorkoutPlanListItem/WorkoutPlanListItem';
-import { AddWorkoutPlanButton } from '../AddWorkoutPlanButton/AddWorkoutPlanButton';
+import { WorkoutPlanListItem } from './WorkoutPlanListItem';
+import { AddWorkoutPlanButton } from '../AddWorkoutPlanButton';
 
 type Props = Omit<BottomSheetProps, 'children'> & {
   selectedPlanId: string | null;

@@ -4,7 +4,7 @@ import { Alert } from 'react-native';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth/src/types/Auth';
 import { Button } from 'native-base';
 
-const SocialSignInButtons = () => {
+export const SocialSignInButtons = () => {
   const onSignInGoogle = async () => {
     try {
       await Auth.federatedSignIn({
@@ -38,5 +38,3 @@ const SocialSignInButtons = () => {
     </>
   );
 };
-
-export default SocialSignInButtons;

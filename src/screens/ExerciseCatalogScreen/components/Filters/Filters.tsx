@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React from 'react';
 import { View, Text } from 'react-native';
 import { CheckIcon, ChevronDownIcon, Select } from 'native-base';
 import { colors } from '../../../../styles/colors';

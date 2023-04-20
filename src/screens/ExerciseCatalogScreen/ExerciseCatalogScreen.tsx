@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { colors } from '../../styles/colors';
 import { StyleSheet, View, FlatList } from 'react-native';
-import { ExerciseListItem } from '../../components/ExerciseListItem/ExerciseListItem';
+import { ExerciseListItem } from '../../components/ExerciseListItem';
 
-import { ListHeader } from './components/ListHeader/ListHeader';
+import { ListHeader } from './components/ListHeader';
 import { EXERCISES } from './exercises';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { ExerciseFilterInput } from './components/ExerciseFilterInput/ExerciseFilterInput';
+import { ExerciseFilterInput } from './components/ExerciseFilterInput';
 import { ExerciseCatalogRouteProp } from '../../types/navigation';
 import { Exercise } from '../../types/exercise';
 

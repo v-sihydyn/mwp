@@ -7,12 +7,12 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { colors } from '../../styles/colors';
-import { ReminderListItem } from './components/ReminderListItem/ReminderListItem';
+import { ReminderListItem } from './components/ReminderListItem';
 import { BottomSheet } from '../../components/BottomSheet';
 import DatePicker from 'react-native-date-picker';
 import Layout from '../../constants/Layout';
 import dayjs from 'dayjs';
-import Portal from '../../components/Portal/Portal';
+import { Portal } from '../../components/Portal';
 import color from 'color';
 import Ripple from 'react-native-material-ripple';
 

@@ -5,7 +5,7 @@ import { create, InstanceProps } from 'react-modal-promise';
 import { modalStyles } from '../modalStyles';
 import { colors } from '../../../styles/colors';
 import { useWorkoutPlanActions } from '../../../hooks/useWorkoutPlanActions/useWorkoutPlanActions';
-import { KeyboardAvoidingModal } from '../../KeyboardAvoidingModal/KeyboardAvoidingModal';
+import { KeyboardAvoidingModal } from '../../KeyboardAvoidingModal';
 import { usePrevious } from '../../../hooks/usePrevious';
 
 type Props = InstanceProps<string | null>;

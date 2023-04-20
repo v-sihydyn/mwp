@@ -1,6 +1,6 @@
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
-import FormInput from '../components/FormInput';
-import SocialSignInButtons from '../components/SocialSignInButtons';
+import { FormInput } from '../components/FormInput';
+import { SocialSignInButtons } from '../components/SocialSignInButtons';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import { SignInNavigationProp } from '../../../types/navigation';
@@ -18,7 +18,7 @@ type SignInData = {
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-const SignInScreen = () => {
+export const SignInScreen = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<SignInNavigationProp>();
   const [loading, setLoading] = useState(false);
@@ -127,5 +127,3 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 });
-
-export default SignInScreen;

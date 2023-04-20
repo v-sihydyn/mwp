@@ -4,7 +4,7 @@ import { colors } from '../../../styles/colors';
 import {
   TimeIntervalPicker,
   ValueMap,
-} from '../../../components/TimeIntervalPicker/TimeIntervalPicker';
+} from '../../../components/TimeIntervalPicker';
 
 type ListHeaderProps = {
   onRestTimeChange: (value: ValueMap) => void;
@@ -21,7 +21,8 @@ export const ListHeader = React.memo(
             justifyContent: 'space-between',
             alignItems: 'center',
             marginBottom: 0,
-          }}></View>
+          }}
+        />
         <TimeIntervalPicker onChange={onRestTimeChange} />
         <Text style={styles.title}>Reorder & Remove Exercises</Text>
       </View>

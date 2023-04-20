@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import { CustomButton } from '../../../../components/CustomButton/CustomButton';
+import { CustomButton } from '../../../../components/CustomButton';
 import { Icon } from '../../../../components/Icon';
 import { colors } from '../../../../styles/colors';
 import { Tabs } from 'react-native-collapsible-tab-view';

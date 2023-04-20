@@ -6,7 +6,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export default class PortalConsumer extends React.Component<Props> {
+export class PortalConsumer extends React.Component<Props> {
   async componentDidMount() {
     this._checkManager();
 
@@ -32,7 +32,9 @@ export default class PortalConsumer extends React.Component<Props> {
 
   _checkManager() {
     if (!this.props.manager) {
-      throw new Error('Looks like you forgot to wrap your root component with `PortalHost` component');
+      throw new Error(
+        'Looks like you forgot to wrap your root component with `PortalHost` component',
+      );
     }
   }
   render() {

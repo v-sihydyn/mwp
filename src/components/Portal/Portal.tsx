@@ -1,13 +1,12 @@
 import * as React from 'react';
-import PortalConsumer from './PortalConsumer';
-import PortalHost, { PortalContext, PortalMethods } from './PortalHost';
+import { PortalConsumer } from './PortalConsumer';
+import { PortalHost, PortalContext, PortalMethods } from './PortalHost';
 
 type Props = {
   children: React.ReactNode;
 };
 
-class Portal extends React.Component<Props> {
-  // @component ./PortalHost.tsx
+export class Portal extends React.Component<Props> {
   static Host = PortalHost;
 
   render() {
@@ -15,10 +14,12 @@ class Portal extends React.Component<Props> {
 
     return (
       <PortalContext.Consumer>
-        {(manager) => <PortalConsumer manager={manager as PortalMethods}>{children}</PortalConsumer>}
+        {(manager) => (
+          <PortalConsumer manager={manager as PortalMethods}>
+            {children}
+          </PortalConsumer>
+        )}
       </PortalContext.Consumer>
     );
   }
 }
-
-export default Portal;

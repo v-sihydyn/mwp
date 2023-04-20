@@ -12,17 +12,14 @@ import React, { useEffect, useState } from 'react';
 import { Icon } from '../Icon';
 import { ColorPicker } from '../ColorPicker';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { FormInput } from './FormInput/FormInput';
-import { FormSelect } from './FormSelect/FormSelect';
+import { FormInput } from './FormInput';
+import { FormSelect } from './FormSelect';
 import { getBlankSetItem } from './helpers';
-import { FormSetControl } from './FormSetControl/FormSetControl';
+import { FormSetControl } from './FormSetControl';
 import { MUSCLE_SELECT_OPTIONS } from '../../constants/muscleSelectOptions';
 import { MuscleGroup } from '../../API';
 import * as yup from 'yup';
-import {
-  TimeIntervalPicker,
-  ValueMap,
-} from '../TimeIntervalPicker/TimeIntervalPicker';
+import { TimeIntervalPicker, ValueMap } from '../TimeIntervalPicker';
 
 const isIos = Platform.OS === 'ios';
 const isAndroid = Platform.OS === 'android';

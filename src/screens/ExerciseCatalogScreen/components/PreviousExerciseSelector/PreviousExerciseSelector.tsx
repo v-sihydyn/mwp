@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, View, Text } from 'react-native';
 import { useDisclose } from 'native-base';
 import { colors } from '../../../../styles/colors';
-import { ExerciseListItem } from './ExerciseListItem/ExerciseListItem';
+import { ExerciseListItem } from './ExerciseListItem';
 import { Icon } from '../../../../components/Icon';
 
 type PreviousExerciseSelectorProps = {};

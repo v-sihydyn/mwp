@@ -4,11 +4,11 @@ import DraggableFlatList, {
   RenderItemParams,
 } from 'react-native-draggable-flatlist';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ExerciseListItem } from '../../components/ExerciseListItem/ExerciseListItem';
-import { SortableListItem } from '../../components/SortableList/SortableListItem';
+import { ExerciseListItem } from '../../components/ExerciseListItem';
+import { SortableListItem } from '../../components/SortableListItem';
 import { Icon } from '../../components/Icon';
-import { ListHeader } from './ListHeader/ListHeader';
-import { CustomButton } from '../../components/CustomButton/CustomButton';
+import { ListHeader } from './ListHeader';
+import { CustomButton } from '../../components/CustomButton';
 import {
   StackActions,
   useNavigation,

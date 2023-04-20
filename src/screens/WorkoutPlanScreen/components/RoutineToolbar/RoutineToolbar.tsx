@@ -9,8 +9,8 @@ import {
   Pressable,
 } from 'react-native';
 import { colors } from '../../../../styles/colors';
-import Portal from '../../../../components/Portal/Portal';
-import { ActionItem } from './ActionItem/ActionItem';
+import { Portal } from '../../../../components/Portal';
+import { ActionItem } from './ActionItem';
 import { Icon } from '../../../../components/Icon';
 import color from 'color';
 

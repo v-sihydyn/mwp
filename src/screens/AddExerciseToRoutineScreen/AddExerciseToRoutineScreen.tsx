@@ -8,7 +8,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import {
   blankInitialValues,
   ExerciseForm,
-  ExerciseFormData,
   validationSchema,
 } from '../../components/ExerciseForm/ExerciseForm';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -23,6 +22,7 @@ import { useMutation } from '@apollo/client';
 import { Toast } from 'native-base';
 import { routineFragment } from '../../fragments/routineFragment';
 import { AddExerciseToRoutineRouteProp } from '../../types/navigation';
+import { ExerciseFormData } from '../../components/ExerciseForm/types';
 
 export const AddExerciseToRoutineScreen = () => {
   const navigation = useNavigation();

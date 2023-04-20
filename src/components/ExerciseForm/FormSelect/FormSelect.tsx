@@ -1,17 +1,17 @@
-import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { colors } from '../../../styles/colors';
 import { CheckIcon, ChevronDownIcon, Select } from 'native-base';
 import React from 'react';
-import { Control, Controller, Path } from 'react-hook-form';
-import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
+import { Control, Controller, FieldValues, Path } from 'react-hook-form';
+import { ErrorMessage } from '../ErrorMessage';
 
-type FormSelectProps<ContentType> = {
+type FormSelectProps<ContentType extends FieldValues> = {
   name: Path<ContentType>;
   control: Control<ContentType, object>;
   children: React.ReactNode;
 };
 
-export const FormSelect = <ContentType,>({
+export const FormSelect = <ContentType extends FieldValues>({
   name,
   control,
   children,
@@ -25,11 +25,10 @@ export const FormSelect = <ContentType,>({
           <Select
             selectedValue={value}
             style={{
-              fontSize: 16,
               paddingLeft: 4,
             }}
             color={colors.text}
-            fontSize={13}
+            fontSize={16}
             variant="underlined"
             _selectedItem={{
               endIcon: <CheckIcon size="5" />,

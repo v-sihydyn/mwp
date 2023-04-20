@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
-import { Control, Controller, Path } from 'react-hook-form';
+import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 
-interface ICustomInput<ContentType> {
+interface ICustomInput<ContentType extends FieldValues> {
   control: Control<ContentType, object>;
   name: Path<ContentType>;
   rules?: {};
@@ -10,7 +10,7 @@ interface ICustomInput<ContentType> {
   secureTextEntry?: boolean;
 }
 
-function CustomInput<ContentType>({
+function CustomInput<ContentType extends FieldValues>({
   control,
   name,
   rules = {},

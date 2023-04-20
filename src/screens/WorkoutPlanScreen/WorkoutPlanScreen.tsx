@@ -122,7 +122,7 @@ export const WorkoutPlanScreen = ({ navigation }: Props) => {
     const newPlanId = await openCreatePlanModal().catch(() => {});
 
     if (newPlanId) {
-      setSelectedPlanId(newPlanId as string | null);
+      setSelectedPlanId(newPlanId);
       onCloseWorkoutPlanSheet();
     }
   };

@@ -14,8 +14,8 @@ import { WorkoutExerciseCard } from '../../../../components/WorkoutExerciseCard'
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
+  DisplayWorkoutExercise,
   DraftWorkout,
-  DraftWorkoutExercise,
 } from '../../../../types/draftWorkout';
 import { formatTime } from '../../../../utils/formatTime';
 import dayjs from 'dayjs';
@@ -26,7 +26,7 @@ import { MuscleGroup } from '../../../../API';
 type WorkoutSummaryProps = {
   title: string;
   workout: DraftWorkout;
-  exercises: DraftWorkoutExercise[];
+  exercises: DisplayWorkoutExercise[];
   listStyle?: StyleProp<ViewStyle>;
 };
 

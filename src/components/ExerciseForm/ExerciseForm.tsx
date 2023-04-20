@@ -17,16 +17,16 @@ import { FormSelect } from './FormSelect';
 import { getBlankSetItem } from './helpers';
 import { FormSetControl } from './FormSetControl';
 import { MUSCLE_SELECT_OPTIONS } from '../../constants/muscleSelectOptions';
-import { MuscleGroup } from '../../API';
 import * as yup from 'yup';
 import { TimeIntervalPicker, ValueMap } from '../TimeIntervalPicker';
+import { ExerciseFormData } from './types';
 
 const isIos = Platform.OS === 'ios';
 const isAndroid = Platform.OS === 'android';
 
 export const ExerciseForm = () => {
   const { control, watch, setValue, getFieldState, formState } =
-    useFormContext();
+    useFormContext<ExerciseFormData>();
   const {
     fields: sets,
     append,
@@ -41,7 +41,7 @@ export const ExerciseForm = () => {
   const setsValue = watch('sets');
   const restTimeMins = watch('restTimeMins');
   const restTimeSecs = watch('restTimeSecs');
-  const isRestTimeSet = restTimeMins > 0 || restTimeSecs > 0;
+  const isRestTimeSet = (restTimeMins || 0) > 0 || (restTimeSecs || 0) > 0;
 
   const allSetsCount = (setsValue as ExerciseFormData['sets']).reduce(
     (acc, cur) => {
@@ -227,22 +227,6 @@ export const ExerciseForm = () => {
       />
     </View>
   );
-};
-
-export type SetData = {
-  sets: string | null;
-  reps: string | null;
-  weight: string | null;
-};
-
-export type ExerciseFormData = {
-  name: string;
-  muscleGroup: MuscleGroup | null;
-  sets: SetData[];
-  restTimeMins?: number | null;
-  restTimeSecs?: number | null;
-  color?: string | null;
-  description?: string | null;
 };
 
 export const blankInitialValues: ExerciseFormData = {

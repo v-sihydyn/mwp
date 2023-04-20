@@ -1,24 +1,17 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  StyleProp,
-  TextInput,
-  ViewStyle,
-} from 'react-native';
-import { Control, Controller, Path } from 'react-hook-form';
+import { View, StyleProp, ViewStyle } from 'react-native';
+import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import React from 'react';
 import { Input, IInputProps } from 'native-base';
 import { colors } from '../../../styles/colors';
-import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
+import { ErrorMessage } from '../ErrorMessage';
 
-type FormInputProps<ContentType> = {
+type FormInputProps<ContentType extends FieldValues> = {
   control: Control<ContentType, object>;
   name: Path<ContentType>;
   inputStyle?: StyleProp<ViewStyle>;
 } & IInputProps;
 
-export const FormInput = <ContentType,>({
+export const FormInput = <ContentType extends FieldValues>({
   control,
   name,
   placeholder = '',
@@ -40,7 +33,7 @@ export const FormInput = <ContentType,>({
           <View style={style}>
             <Input
               {...props}
-              value={value as string}
+              value={value}
               onChangeText={onChange}
               onBlur={onBlur}
               placeholder={placeholder}

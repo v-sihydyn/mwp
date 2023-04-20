@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { colors } from '../../styles/colors';
-import { WorkoutSummary } from '../WorkoutScreen/components/WorkoutSummary/WorkoutSummary';
+import { WorkoutSummary } from '../WorkoutScreen/components/WorkoutSummary';
 import React, { useEffect } from 'react';
 import { CustomButton } from '../../components/CustomButton';
 import { Icon } from '../../components/Icon';
@@ -67,13 +67,13 @@ export const WorkoutDetailsScreen = () => {
                   sortDirection: ModelSortDirection.DESC,
                 },
               },
-              (data) => {
-                if (!data?.workoutsByUser?.items) return;
+              (updateData) => {
+                if (!updateData?.workoutsByUser?.items) return;
 
                 return {
                   workoutsByUser: {
-                    ...data.workoutsByUser,
-                    items: (data?.workoutsByUser?.items ?? []).filter(
+                    ...updateData.workoutsByUser,
+                    items: (updateData?.workoutsByUser?.items ?? []).filter(
                       (_workout: Workout | null) => {
                         return _workout?.id !== deletedWorkoutId;
                       },
@@ -108,7 +108,7 @@ export const WorkoutDetailsScreen = () => {
         </CustomButton>
       ),
     });
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <View style={styles.container}>

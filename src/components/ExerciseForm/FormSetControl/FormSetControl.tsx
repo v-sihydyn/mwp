@@ -2,27 +2,25 @@ import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { colors } from '../../../styles/colors';
 import React from 'react';
 import { Control, Controller } from 'react-hook-form';
+import { ExerciseFormData } from '../types';
 
-type FormSetControlProps<ContentType> = {
-  control: Control<ContentType, object>;
+type FormSetControlProps = {
+  control: Control<ExerciseFormData, object>;
   index: number;
 };
 
-export const FormSetControl = <ContentType,>({
-  index,
-  control,
-}: FormSetControlProps<ContentType>) => {
+export const FormSetControl = ({ index, control }: FormSetControlProps) => {
   return (
     <View style={styles.set}>
       <Controller
         control={control}
-        name={`sets.${index}.sets` as const}
+        name={`sets.${index}.sets`}
         render={({
           field: { onChange, value, onBlur },
           fieldState: { error },
         }) => (
           <TextInput
-            value={value}
+            value={value || ''}
             onChangeText={onChange}
             onBlur={onBlur}
             keyboardType="numeric"
@@ -40,13 +38,13 @@ export const FormSetControl = <ContentType,>({
       <Divider />
       <Controller
         control={control}
-        name={`sets.${index}.reps` as const}
+        name={`sets.${index}.reps`}
         render={({
           field: { onChange, value, onBlur },
           fieldState: { error },
         }) => (
           <TextInput
-            value={value}
+            value={value || ''}
             onChangeText={onChange}
             onBlur={onBlur}
             keyboardType="numeric"
@@ -64,13 +62,10 @@ export const FormSetControl = <ContentType,>({
       <Divider />
       <Controller
         control={control}
-        name={`sets.${index}.weight` as const}
-        render={({
-          field: { onChange, value, onBlur },
-          fieldState: { error },
-        }) => (
+        name={`sets.${index}.weight`}
+        render={({ field: { onChange, value, onBlur } }) => (
           <TextInput
-            value={value}
+            value={value || ''}
             onChangeText={onChange}
             onBlur={onBlur}
             keyboardType="numeric"

@@ -8,7 +8,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import {
   blankInitialValues,
   ExerciseForm,
-  ExerciseFormData,
   validationSchema,
 } from '../../components/ExerciseForm/ExerciseForm';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -28,6 +27,7 @@ import { openDeleteExerciseModal } from '../../components/modals/DeleteExerciseM
 import { deleteWorkoutRoutineExerciseMutation } from './mutations/deleteWorkoutRoutineExerciseMutation';
 import { routineFragment } from '../../fragments/routineFragment';
 import { EditRoutineExerciseRouteProp } from '../../types/navigation';
+import { ExerciseFormData } from '../../components/ExerciseForm/types';
 
 export const EditRoutineExerciseScreen = () => {
   const navigation = useNavigation();

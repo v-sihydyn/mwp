@@ -13,6 +13,7 @@ export const workoutFragment = gql`
         name
         muscleGroup
         color
+        restTimeInSeconds
         setsConfig
         sortOrder
         workoutID

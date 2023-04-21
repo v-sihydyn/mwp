@@ -141,6 +141,7 @@ export const WorkoutSummary = React.memo(
                 muscleGroup={exercise.muscleGroup}
                 sets={exercise.sets}
                 color={exercise.color}
+                restTimeInSeconds={exercise.restTimeInSeconds}
                 style={{ marginHorizontal: 20 }}
               />
             )}

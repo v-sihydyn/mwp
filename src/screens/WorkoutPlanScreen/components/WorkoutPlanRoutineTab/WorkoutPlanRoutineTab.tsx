@@ -26,6 +26,7 @@ export const WorkoutPlanRoutineTab = ({
             muscleGroup={item.muscleGroup}
             setsConfig={item.setsConfig}
             color={item.color}
+            restTimeInSeconds={item.restTimeInSeconds}
             onPress={() => onEditExercise(item.id)}
           />
         )

@@ -11,6 +11,7 @@ import { colors } from '../../styles/colors';
 import { MuscleGroup } from '../../API';
 import { MUSCLE_VALUES_MAP } from '../../constants/muscleSelectOptions';
 import { DraftSet } from '../../types/draftWorkout';
+import { formatTime } from '../../utils/formatTime';
 
 type WorkoutExerciseCardProps = {
   name: string;
@@ -18,6 +19,7 @@ type WorkoutExerciseCardProps = {
   sets?: DraftSet[];
   setsConfig?: string;
   color?: string | null;
+  restTimeInSeconds?: number | null;
   style?: StyleProp<ViewStyle>;
   onPress?: () => void;
 };
@@ -28,6 +30,7 @@ export const WorkoutExerciseCard = ({
   sets,
   setsConfig,
   color,
+  restTimeInSeconds,
   style,
   onPress,
 }: WorkoutExerciseCardProps) => {
@@ -35,6 +38,10 @@ export const WorkoutExerciseCard = ({
     height?: number;
     width?: number;
   }>({});
+
+  const formattedRestTime = restTimeInSeconds
+    ? formatTime(restTimeInSeconds)
+    : null;
 
   const displayMuscleGroup = muscleGroup
     ? MUSCLE_VALUES_MAP[muscleGroup]
@@ -89,6 +96,12 @@ export const WorkoutExerciseCard = ({
           <View style={{ flexDirection: 'column', margin: 16 }}>
             <Text style={styles.title}>{name}</Text>
             <Text style={styles.subtitle}>{displayMuscleGroup}</Text>
+            {formattedRestTime && (
+              <Text style={styles.restTime}>
+                Rest time -{' '}
+                <Text style={{ fontWeight: 'bold' }}>{formattedRestTime}</Text>
+              </Text>
+            )}
           </View>
         </View>
       </View>
@@ -142,8 +155,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   subtitle: {
-    color: '#d3d3d3',
+    color: '#b9baba',
     fontSize: 13,
+    marginTop: 6,
+  },
+  restTime: {
+    color: '#b9baba',
+    fontSize: 13,
+    marginTop: 12,
   },
   footer: {
     paddingHorizontal: 20,

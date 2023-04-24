@@ -192,6 +192,7 @@ export const WorkoutScreen = () => {
       });
 
       await deleteDraftWorkoutData(workoutRoutineId);
+      setIsWorkoutSummarySheetOpen(false);
 
       leaveListenerRef.current = null;
 

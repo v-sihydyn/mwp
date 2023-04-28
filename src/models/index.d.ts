@@ -99,6 +99,18 @@ export declare type RoutineExerciseToUpdateResponse = LazyLoading extends LazyLo
 
 export declare const RoutineExerciseToUpdateResponse: (new (init: ModelInit<RoutineExerciseToUpdateResponse>) => RoutineExerciseToUpdateResponse)
 
+type EagerCreateRoutineReminderResponse = {
+  readonly id: string;
+}
+
+type LazyCreateRoutineReminderResponse = {
+  readonly id: string;
+}
+
+export declare type CreateRoutineReminderResponse = LazyLoading extends LazyLoadingDisabled ? EagerCreateRoutineReminderResponse : LazyCreateRoutineReminderResponse
+
+export declare const CreateRoutineReminderResponse: (new (init: ModelInit<CreateRoutineReminderResponse>) => CreateRoutineReminderResponse)
+
 type EagerWorkoutExercise = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<WorkoutExercise, 'id'>;

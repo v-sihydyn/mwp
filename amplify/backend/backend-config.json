@@ -86,7 +86,17 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "NotificationSender": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "bulkCreateWorkoutExercises": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "createRoutineReminder": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -119,6 +129,22 @@
         }
       ]
     },
+    "AMPLIFY_function_NotificationSender_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "NotificationSender"
+        }
+      ]
+    },
+    "AMPLIFY_function_NotificationSender_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "NotificationSender"
+        }
+      ]
+    },
     "AMPLIFY_function_bulkCreateWorkoutExercises_deploymentBucketName": {
       "usedBy": [
         {
@@ -132,6 +158,22 @@
         {
           "category": "function",
           "resourceName": "bulkCreateWorkoutExercises"
+        }
+      ]
+    },
+    "AMPLIFY_function_createRoutineReminder_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createRoutineReminder"
+        }
+      ]
+    },
+    "AMPLIFY_function_createRoutineReminder_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createRoutineReminder"
         }
       ]
     },

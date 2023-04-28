@@ -950,8 +950,20 @@ export const schema = {
                     "attributes": []
                 }
             }
+        },
+        "CreateRoutineReminderResponse": {
+            "name": "CreateRoutineReminderResponse",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
         }
     },
     "codegenVersion": "3.3.6",
-    "version": "8979d753a069ba0048c3f02a98edeb04"
+    "version": "2040fd5127841f977a1625b9ffb4f998"
 };

@@ -49,6 +49,13 @@ export const bulkCreateWorkoutExercises = /* GraphQL */ `
     }
   }
 `;
+export const createRoutineReminder = /* GraphQL */ `
+  mutation CreateRoutineReminder($deviceId: String!) {
+    createRoutineReminder(deviceId: $deviceId) {
+      id
+    }
+  }
+`;
 export const createWorkoutExercise = /* GraphQL */ `
   mutation CreateWorkoutExercise(
     $input: CreateWorkoutExerciseInput!

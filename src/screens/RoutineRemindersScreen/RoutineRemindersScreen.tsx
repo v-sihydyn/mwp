@@ -5,6 +5,7 @@ import {
   FlatList,
   Text,
   TouchableWithoutFeedback,
+  Button,
 } from 'react-native';
 import { colors } from '../../styles/colors';
 import { ReminderListItem } from './components/ReminderListItem';
@@ -15,6 +16,12 @@ import dayjs from 'dayjs';
 import { Portal } from '../../components/Portal';
 import color from 'color';
 import Ripple from 'react-native-material-ripple';
+import { useMutation } from '@apollo/client';
+import { createRoutineReminderMutation } from './mutations/createRoutineReminderMutation';
+import {
+  CreateRoutineReminderMutation,
+  CreateRoutineReminderMutationVariables,
+} from '../../API';
 
 interface RoutineRemindersScreenProps {}
 
@@ -101,6 +108,11 @@ export const RoutineRemindersScreen: React.FC<
   );
   const [isSheetOpen, setSheetOpen] = useState(false);
 
+  const [createRoutineReminder] = useMutation<
+    CreateRoutineReminderMutation,
+    CreateRoutineReminderMutationVariables
+  >(createRoutineReminderMutation);
+
   const handleOpenSheet = ({
     time,
     repeatWeekdays,
@@ -163,9 +175,22 @@ export const RoutineRemindersScreen: React.FC<
 
   const weekdayActiveColor = color(colors.surface2).lighten(0.24).hex();
 
+  const testReminders = async () => {
+    createRoutineReminder({
+      variables: {
+        deviceId: '123',
+      },
+    });
+  };
+
   return (
     <View style={styles.container}>
       <FlatList
+        ListHeaderComponent={() => (
+          <View>
+            <Button onPress={testReminders} title="Test reminders" />
+          </View>
+        )}
         data={reminders}
         renderItem={({ item, index }) => (
           <ReminderListItem

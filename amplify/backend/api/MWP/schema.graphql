@@ -126,6 +126,7 @@ type Mutation {
     routineExercisesToUpdate: [RoutineExerciseToUpdateInput]
   ): BulkCreateWorkoutExercisesResponse
     @function(name: "bulkCreateWorkoutExercises-${env}")
+  createRoutineReminder(deviceId: String!): CreateRoutineReminderResponse @function(name: "createRoutineReminder-${env}")
 }
 
 type DeletePlanAndRoutinesResponse {
@@ -162,6 +163,10 @@ input CreateWorkoutExerciseInput {
   color: String
   restTimeInSeconds: Int
   _version: Int
+}
+
+type CreateRoutineReminderResponse {
+  id: ID!
 }
 
 enum ModelAttributeTypes {

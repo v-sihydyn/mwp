@@ -47,7 +47,7 @@ const ModelAttributeTypes = {
   "NULL": "_null"
 };
 
-const { WorkoutExercise, Workout, Exercise, WorkoutRoutineExercise, WorkoutPlanRoutine, User, WorkoutPlan, DeletePlanAndRoutinesResponse, DeleteWorkoutAndExercisesResponse, BulkCreateWorkoutExercisesResponse, RoutineExerciseToUpdateResponse } = initSchema(schema);
+const { WorkoutExercise, Workout, Exercise, WorkoutRoutineExercise, WorkoutPlanRoutine, User, WorkoutPlan, DeletePlanAndRoutinesResponse, DeleteWorkoutAndExercisesResponse, BulkCreateWorkoutExercisesResponse, RoutineExerciseToUpdateResponse, CreateRoutineReminderResponse } = initSchema(schema);
 
 export {
   WorkoutExercise,
@@ -64,5 +64,6 @@ export {
   DeletePlanAndRoutinesResponse,
   DeleteWorkoutAndExercisesResponse,
   BulkCreateWorkoutExercisesResponse,
-  RoutineExerciseToUpdateResponse
+  RoutineExerciseToUpdateResponse,
+  CreateRoutineReminderResponse
 };

@@ -77,6 +77,11 @@ export type RoutineExerciseToUpdateResponse = {
   setsConfig: string,
 };
 
+export type CreateRoutineReminderResponse = {
+  __typename: "CreateRoutineReminderResponse",
+  id: string,
+};
+
 export type ModelWorkoutExerciseConditionInput = {
   name?: ModelStringInput | null,
   description?: ModelStringInput | null,
@@ -855,6 +860,17 @@ export type BulkCreateWorkoutExercisesMutation = {
       id: string,
       setsConfig: string,
     } | null >,
+  } | null,
+};
+
+export type CreateRoutineReminderMutationVariables = {
+  deviceId: string,
+};
+
+export type CreateRoutineReminderMutation = {
+  createRoutineReminder?:  {
+    __typename: "CreateRoutineReminderResponse",
+    id: string,
   } | null,
 };
 

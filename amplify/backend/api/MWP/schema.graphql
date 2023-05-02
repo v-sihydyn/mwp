@@ -101,6 +101,7 @@ type User
   image: String
   username: String
     @index(name: "usersByUsername", queryField: "usersByUsername")
+  fcmToken: String
   WorkoutPlans: [WorkoutPlan] @hasMany(indexName: "byUser", fields: ["id"])
   Workouts: [Workout] @hasMany(indexName: "workoutsByUser", fields: ["id"])
 }
@@ -126,7 +127,7 @@ type Mutation {
     routineExercisesToUpdate: [RoutineExerciseToUpdateInput]
   ): BulkCreateWorkoutExercisesResponse
     @function(name: "bulkCreateWorkoutExercises-${env}")
-  createRoutineReminder(routineId: ID! deviceId: String!): CreateRoutineReminderResponse @function(name: "createRoutineReminder-${env}")
+  createRoutineReminder(routineId: ID! fcmToken: String!): CreateRoutineReminderResponse @function(name: "createRoutineReminder-${env}")
   deleteRoutineReminder(ruleName: String!): DeleteRoutineReminderResponse @function(name: "createRoutineReminder-${env}")
 }
 

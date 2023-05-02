@@ -466,6 +466,7 @@ export const onCreateUser = /* GraphQL */ `
       email
       image
       username
+      fcmToken
       WorkoutPlans {
         items {
           id
@@ -560,6 +561,7 @@ export const onUpdateUser = /* GraphQL */ `
       email
       image
       username
+      fcmToken
       WorkoutPlans {
         items {
           id
@@ -654,6 +656,7 @@ export const onDeleteUser = /* GraphQL */ `
       email
       image
       username
+      fcmToken
       WorkoutPlans {
         items {
           id

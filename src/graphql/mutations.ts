@@ -50,8 +50,8 @@ export const bulkCreateWorkoutExercises = /* GraphQL */ `
   }
 `;
 export const createRoutineReminder = /* GraphQL */ `
-  mutation CreateRoutineReminder($routineId: ID!, $deviceId: String!) {
-    createRoutineReminder(routineId: $routineId, deviceId: $deviceId) {
+  mutation CreateRoutineReminder($routineId: ID!, $fcmToken: String!) {
+    createRoutineReminder(routineId: $routineId, fcmToken: $fcmToken) {
       ruleName
     }
   }
@@ -527,6 +527,7 @@ export const createUser = /* GraphQL */ `
       email
       image
       username
+      fcmToken
       WorkoutPlans {
         items {
           id
@@ -621,6 +622,7 @@ export const updateUser = /* GraphQL */ `
       email
       image
       username
+      fcmToken
       WorkoutPlans {
         items {
           id
@@ -715,6 +717,7 @@ export const deleteUser = /* GraphQL */ `
       email
       image
       username
+      fcmToken
       WorkoutPlans {
         items {
           id

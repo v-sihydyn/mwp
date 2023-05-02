@@ -24,10 +24,12 @@ import { GetUserQuery, GetUserQueryVariables } from '../API';
 import { getUserQuery } from '../queries/getUserQuery';
 import { FullscreenLoader } from '../components/FullscreenLoader';
 import { RootStackParamList, RootTabParamList } from '../types/navigation';
+import { PushNotificationsContainer } from '../components/PushNotificationsContainer';
 
 export default function Navigation() {
   return (
     <NavigationContainer theme={DarkTheme}>
+      <PushNotificationsContainer />
       <RootNavigator />
     </NavigationContainer>
   );

@@ -785,6 +785,7 @@ export const getUser = /* GraphQL */ `
       email
       image
       username
+      fcmToken
       WorkoutPlans {
         items {
           id
@@ -881,6 +882,7 @@ export const listUsers = /* GraphQL */ `
         email
         image
         username
+        fcmToken
         WorkoutPlans {
           items {
             id
@@ -982,6 +984,7 @@ export const syncUsers = /* GraphQL */ `
         email
         image
         username
+        fcmToken
         WorkoutPlans {
           items {
             id
@@ -1085,6 +1088,7 @@ export const usersByUsername = /* GraphQL */ `
         email
         image
         username
+        fcmToken
         WorkoutPlans {
           items {
             id

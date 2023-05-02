@@ -16,15 +16,20 @@ import dayjs from 'dayjs';
 import { Portal } from '../../components/Portal';
 import color from 'color';
 import Ripple from 'react-native-material-ripple';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { createRoutineReminderMutation } from './mutations/createRoutineReminderMutation';
 import {
   CreateRoutineReminderMutation,
   CreateRoutineReminderMutationVariables,
   DeleteRoutineReminderMutation,
   DeleteRoutineReminderMutationVariables,
+  GetUserQuery,
+  GetUserQueryVariables,
 } from '../../API';
 import { deleteRoutineReminderMutation } from './mutations/deleteRoutineReminderMutation';
+import { useAuthContext } from '../../contexts/AuthContext';
+import { getUserQuery } from './queries/getUserQuery';
+import { FullscreenLoader } from '../../components/FullscreenLoader';
 
 interface RoutineRemindersScreenProps {}
 
@@ -103,6 +108,18 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 export const RoutineRemindersScreen: React.FC<
   RoutineRemindersScreenProps
 > = () => {
+  const { userId } = useAuthContext();
+  const { data: userData, loading } = useQuery<
+    GetUserQuery,
+    GetUserQueryVariables
+  >(getUserQuery, {
+    variables: {
+      id: userId,
+    },
+  });
+  const fcmToken = userData?.getUser?.fcmToken;
+  console.log({ fcmToken });
+
   const [reminders, setReminders] = useState<Reminder[]>(REMINDERS);
   const [draftTime, setDraftTime] = useState<Date>(new Date());
   const [draftRepeatWeekdays, setDraftRepeatWeekdays] = useState<string[]>([]);
@@ -185,10 +202,12 @@ export const RoutineRemindersScreen: React.FC<
   const weekdayActiveColor = color(colors.surface2).lighten(0.24).hex();
 
   const createReminder = async () => {
+    if (!fcmToken) return;
+
     const res = await createRoutineReminder({
       variables: {
         routineId: 'routineId',
-        deviceId: 'deviceId',
+        fcmToken: fcmToken,
       },
     });
     console.log('create reminder response:', res);
@@ -212,6 +231,10 @@ export const RoutineRemindersScreen: React.FC<
 
     setRuleName(null);
   };
+
+  if (loading) {
+    return <FullscreenLoader />;
+  }
 
   return (
     <View style={styles.container}>

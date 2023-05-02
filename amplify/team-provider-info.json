@@ -35,11 +35,11 @@
         },
         "NotificationSender": {
           "deploymentBucketName": "amplify-mwp-staging-91319-deployment",
-          "s3Key": "amplify-builds/NotificationSender-4b6a6b425853414b4438-build.zip"
+          "s3Key": "amplify-builds/NotificationSender-4a4f2b3959746d6f5761-build.zip"
         },
         "createRoutineReminder": {
           "deploymentBucketName": "amplify-mwp-staging-91319-deployment",
-          "s3Key": "amplify-builds/createRoutineReminder-6464587a796475694a52-build.zip"
+          "s3Key": "amplify-builds/createRoutineReminder-4d4b654f42456677776f-build.zip"
         }
       },
       "api": {

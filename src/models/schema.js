@@ -633,6 +633,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "fcmToken": {
+                    "name": "fcmToken",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "WorkoutPlans": {
                     "name": "WorkoutPlans",
                     "isArray": true,
@@ -977,5 +984,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.6",
-    "version": "a0df71551884d13471789bcdaa8e48dc"
+    "version": "619b8cdf44edb90ad1b5d0dbada1fae7"
 };

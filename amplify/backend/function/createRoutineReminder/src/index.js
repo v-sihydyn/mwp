@@ -1,4 +1,9 @@
-/**
+/* Amplify Params - DO NOT EDIT
+	API_MWP_GRAPHQLAPIENDPOINTOUTPUT
+	API_MWP_GRAPHQLAPIIDOUTPUT
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT */ /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 
@@ -34,10 +39,10 @@ exports.handler = async (event, context) => {
 async function createRoutineReminder(event) {
   try {
     console.log('ARGUMENTS: ', event.arguments);
-    const { deviceId, routineId, title, message } = event.arguments;
+    const { fcmToken, routineId, title, message } = event.arguments;
     const intervalInMinutes = event.arguments.intervalInMinutes || 1;
 
-    const ruleName = `${routineId}-${deviceId}-routine-reminder`;
+    const ruleName = `${routineId}-routine-reminder`;
 
     const putRuleParams = {
       Name: ruleName,
@@ -50,11 +55,11 @@ async function createRoutineReminder(event) {
       Targets: [
         {
           Arn: 'arn:aws:lambda:eu-central-1:893455214720:function:NotificationSender-staging', // @TODO: insert variables
-          Id: `${routineId}-${deviceId}-target`,
+          Id: `${routineId}-target`,
           Input: JSON.stringify({
-            deviceId: deviceId,
-            title: title || 'test title',
-            message: message || 'test message',
+            fcmToken: fcmToken,
+            title: title || 'Test title',
+            message: message || 'Test message',
           }),
         },
       ],
@@ -63,10 +68,13 @@ async function createRoutineReminder(event) {
     await eventBridge.putRule(putRuleParams).promise();
     await eventBridge.putTargets(putTargetsParams).promise();
 
+    console.log({ ruleName });
+
     return {
       ruleName,
     };
   } catch (err) {
+    console.log(err);
     return err;
   }
 }

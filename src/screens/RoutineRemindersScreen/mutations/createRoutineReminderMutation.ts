@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const createRoutineReminderMutation = gql`
-  mutation CreateRoutineReminder($routineId: ID!, $deviceId: String!) {
-    createRoutineReminder(routineId: $routineId, deviceId: $deviceId) {
+  mutation CreateRoutineReminder($routineId: ID!, $fcmToken: String!) {
+    createRoutineReminder(routineId: $routineId, fcmToken: $fcmToken) {
       ruleName
     }
   }

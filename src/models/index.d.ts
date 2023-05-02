@@ -323,6 +323,7 @@ type EagerUser = {
   readonly email?: string | null;
   readonly image?: string | null;
   readonly username?: string | null;
+  readonly fcmToken?: string | null;
   readonly WorkoutPlans?: (WorkoutPlan | null)[] | null;
   readonly Workouts?: (Workout | null)[] | null;
   readonly createdAt?: string | null;
@@ -339,6 +340,7 @@ type LazyUser = {
   readonly email?: string | null;
   readonly image?: string | null;
   readonly username?: string | null;
+  readonly fcmToken?: string | null;
   readonly WorkoutPlans: AsyncCollection<WorkoutPlan>;
   readonly Workouts: AsyncCollection<Workout>;
   readonly createdAt?: string | null;

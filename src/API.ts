@@ -451,6 +451,7 @@ export type CreateUserInput = {
   email?: string | null,
   image?: string | null,
   username?: string | null,
+  fcmToken?: string | null,
   _version?: number | null,
 };
 
@@ -459,6 +460,7 @@ export type ModelUserConditionInput = {
   email?: ModelStringInput | null,
   image?: ModelStringInput | null,
   username?: ModelStringInput | null,
+  fcmToken?: ModelStringInput | null,
   and?: Array< ModelUserConditionInput | null > | null,
   or?: Array< ModelUserConditionInput | null > | null,
   not?: ModelUserConditionInput | null,
@@ -471,6 +473,7 @@ export type User = {
   email?: string | null,
   image?: string | null,
   username?: string | null,
+  fcmToken?: string | null,
   WorkoutPlans?: ModelWorkoutPlanConnection | null,
   Workouts?: ModelWorkoutConnection | null,
   createdAt: string,
@@ -522,6 +525,7 @@ export type UpdateUserInput = {
   email?: string | null,
   image?: string | null,
   username?: string | null,
+  fcmToken?: string | null,
   _version?: number | null,
 };
 
@@ -671,6 +675,7 @@ export type ModelUserFilterInput = {
   email?: ModelStringInput | null,
   image?: ModelStringInput | null,
   username?: ModelStringInput | null,
+  fcmToken?: ModelStringInput | null,
   and?: Array< ModelUserFilterInput | null > | null,
   or?: Array< ModelUserFilterInput | null > | null,
   not?: ModelUserFilterInput | null,
@@ -799,6 +804,7 @@ export type ModelSubscriptionUserFilterInput = {
   email?: ModelSubscriptionStringInput | null,
   image?: ModelSubscriptionStringInput | null,
   username?: ModelSubscriptionStringInput | null,
+  fcmToken?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionUserFilterInput | null > | null,
   or?: Array< ModelSubscriptionUserFilterInput | null > | null,
 };
@@ -870,7 +876,7 @@ export type BulkCreateWorkoutExercisesMutation = {
 
 export type CreateRoutineReminderMutationVariables = {
   routineId: string,
-  deviceId: string,
+  fcmToken: string,
 };
 
 export type CreateRoutineReminderMutation = {
@@ -1399,6 +1405,7 @@ export type CreateUserMutation = {
     email?: string | null,
     image?: string | null,
     username?: string | null,
+    fcmToken?: string | null,
     WorkoutPlans?:  {
       __typename: "ModelWorkoutPlanConnection",
       items:  Array< {
@@ -1504,6 +1511,7 @@ export type UpdateUserMutation = {
     email?: string | null,
     image?: string | null,
     username?: string | null,
+    fcmToken?: string | null,
     WorkoutPlans?:  {
       __typename: "ModelWorkoutPlanConnection",
       items:  Array< {
@@ -1609,6 +1617,7 @@ export type DeleteUserMutation = {
     email?: string | null,
     image?: string | null,
     username?: string | null,
+    fcmToken?: string | null,
     WorkoutPlans?:  {
       __typename: "ModelWorkoutPlanConnection",
       items:  Array< {
@@ -2687,6 +2696,7 @@ export type GetUserQuery = {
     email?: string | null,
     image?: string | null,
     username?: string | null,
+    fcmToken?: string | null,
     WorkoutPlans?:  {
       __typename: "ModelWorkoutPlanConnection",
       items:  Array< {
@@ -2795,6 +2805,7 @@ export type ListUsersQuery = {
       email?: string | null,
       image?: string | null,
       username?: string | null,
+      fcmToken?: string | null,
       WorkoutPlans?:  {
         __typename: "ModelWorkoutPlanConnection",
         items:  Array< {
@@ -2902,6 +2913,7 @@ export type SyncUsersQuery = {
       email?: string | null,
       image?: string | null,
       username?: string | null,
+      fcmToken?: string | null,
       WorkoutPlans?:  {
         __typename: "ModelWorkoutPlanConnection",
         items:  Array< {
@@ -3010,6 +3022,7 @@ export type UsersByUsernameQuery = {
       email?: string | null,
       image?: string | null,
       username?: string | null,
+      fcmToken?: string | null,
       WorkoutPlans?:  {
         __typename: "ModelWorkoutPlanConnection",
         items:  Array< {
@@ -3877,6 +3890,7 @@ export type OnCreateUserSubscription = {
     email?: string | null,
     image?: string | null,
     username?: string | null,
+    fcmToken?: string | null,
     WorkoutPlans?:  {
       __typename: "ModelWorkoutPlanConnection",
       items:  Array< {
@@ -3982,6 +3996,7 @@ export type OnUpdateUserSubscription = {
     email?: string | null,
     image?: string | null,
     username?: string | null,
+    fcmToken?: string | null,
     WorkoutPlans?:  {
       __typename: "ModelWorkoutPlanConnection",
       items:  Array< {
@@ -4087,6 +4102,7 @@ export type OnDeleteUserSubscription = {
     email?: string | null,
     image?: string | null,
     username?: string | null,
+    fcmToken?: string | null,
     WorkoutPlans?:  {
       __typename: "ModelWorkoutPlanConnection",
       items:  Array< {

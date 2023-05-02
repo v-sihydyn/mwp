@@ -79,7 +79,12 @@ export type RoutineExerciseToUpdateResponse = {
 
 export type CreateRoutineReminderResponse = {
   __typename: "CreateRoutineReminderResponse",
-  id: string,
+  ruleName: string,
+};
+
+export type DeleteRoutineReminderResponse = {
+  __typename: "DeleteRoutineReminderResponse",
+  deleted: boolean,
 };
 
 export type ModelWorkoutExerciseConditionInput = {
@@ -864,13 +869,25 @@ export type BulkCreateWorkoutExercisesMutation = {
 };
 
 export type CreateRoutineReminderMutationVariables = {
+  routineId: string,
   deviceId: string,
 };
 
 export type CreateRoutineReminderMutation = {
   createRoutineReminder?:  {
     __typename: "CreateRoutineReminderResponse",
-    id: string,
+    ruleName: string,
+  } | null,
+};
+
+export type DeleteRoutineReminderMutationVariables = {
+  ruleName: string,
+};
+
+export type DeleteRoutineReminderMutation = {
+  deleteRoutineReminder?:  {
+    __typename: "DeleteRoutineReminderResponse",
+    deleted: boolean,
   } | null,
 };
 

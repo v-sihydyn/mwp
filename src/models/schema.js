@@ -954,10 +954,22 @@ export const schema = {
         "CreateRoutineReminderResponse": {
             "name": "CreateRoutineReminderResponse",
             "fields": {
-                "id": {
-                    "name": "id",
+                "ruleName": {
+                    "name": "ruleName",
                     "isArray": false,
-                    "type": "ID",
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
+        },
+        "DeleteRoutineReminderResponse": {
+            "name": "DeleteRoutineReminderResponse",
+            "fields": {
+                "deleted": {
+                    "name": "deleted",
+                    "isArray": false,
+                    "type": "Boolean",
                     "isRequired": true,
                     "attributes": []
                 }
@@ -965,5 +977,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.6",
-    "version": "2040fd5127841f977a1625b9ffb4f998"
+    "version": "a0df71551884d13471789bcdaa8e48dc"
 };

@@ -50,9 +50,16 @@ export const bulkCreateWorkoutExercises = /* GraphQL */ `
   }
 `;
 export const createRoutineReminder = /* GraphQL */ `
-  mutation CreateRoutineReminder($deviceId: String!) {
-    createRoutineReminder(deviceId: $deviceId) {
-      id
+  mutation CreateRoutineReminder($routineId: ID!, $deviceId: String!) {
+    createRoutineReminder(routineId: $routineId, deviceId: $deviceId) {
+      ruleName
+    }
+  }
+`;
+export const deleteRoutineReminder = /* GraphQL */ `
+  mutation DeleteRoutineReminder($ruleName: String!) {
+    deleteRoutineReminder(ruleName: $ruleName) {
+      deleted
     }
   }
 `;

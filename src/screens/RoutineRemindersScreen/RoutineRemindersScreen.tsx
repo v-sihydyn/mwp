@@ -21,7 +21,10 @@ import { createRoutineReminderMutation } from './mutations/createRoutineReminder
 import {
   CreateRoutineReminderMutation,
   CreateRoutineReminderMutationVariables,
+  DeleteRoutineReminderMutation,
+  DeleteRoutineReminderMutationVariables,
 } from '../../API';
+import { deleteRoutineReminderMutation } from './mutations/deleteRoutineReminderMutation';
 
 interface RoutineRemindersScreenProps {}
 
@@ -108,10 +111,16 @@ export const RoutineRemindersScreen: React.FC<
   );
   const [isSheetOpen, setSheetOpen] = useState(false);
 
+  const [ruleName, setRuleName] = useState<string | null>(null);
+
   const [createRoutineReminder] = useMutation<
     CreateRoutineReminderMutation,
     CreateRoutineReminderMutationVariables
   >(createRoutineReminderMutation);
+  const [deleteRoutineReminder] = useMutation<
+    DeleteRoutineReminderMutation,
+    DeleteRoutineReminderMutationVariables
+  >(deleteRoutineReminderMutation);
 
   const handleOpenSheet = ({
     time,
@@ -175,20 +184,48 @@ export const RoutineRemindersScreen: React.FC<
 
   const weekdayActiveColor = color(colors.surface2).lighten(0.24).hex();
 
-  const testReminders = async () => {
-    createRoutineReminder({
+  const createReminder = async () => {
+    const res = await createRoutineReminder({
       variables: {
-        deviceId: '123',
+        routineId: 'routineId',
+        deviceId: 'deviceId',
       },
     });
+    console.log('create reminder response:', res);
+    const _ruleName = res.data?.createRoutineReminder?.ruleName ?? '';
+
+    if (_ruleName) {
+      setRuleName(_ruleName);
+    }
+  };
+
+  const deleteReminder = async () => {
+    if (!ruleName) return;
+
+    const res = await deleteRoutineReminder({
+      variables: {
+        ruleName: ruleName,
+      },
+    });
+
+    console.log('delete reminder response:', res);
+
+    setRuleName(null);
   };
 
   return (
     <View style={styles.container}>
       <FlatList
         ListHeaderComponent={() => (
-          <View>
-            <Button onPress={testReminders} title="Test reminders" />
+          <View style={{ flexDirection: 'column' }}>
+            <Button onPress={createReminder} title="Create reminder" />
+            {ruleName && (
+              <Button
+                color={'red'}
+                onPress={deleteReminder}
+                title="Delete reminder"
+              />
+            )}
           </View>
         )}
         data={reminders}

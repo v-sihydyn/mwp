@@ -39,7 +39,7 @@
         },
         "createRoutineReminder": {
           "deploymentBucketName": "amplify-mwp-staging-91319-deployment",
-          "s3Key": "amplify-builds/createRoutineReminder-785a4d34393839714a36-build.zip"
+          "s3Key": "amplify-builds/createRoutineReminder-6464587a796475694a52-build.zip"
         }
       },
       "api": {

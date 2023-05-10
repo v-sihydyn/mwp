@@ -31,11 +31,9 @@ import { CurrentSetToolbar } from './components/CurrentSetToolbar';
 import { useWorkoutPlayer } from './hooks/useWorkoutPlayer';
 import { Button, Toast } from 'native-base';
 import { useWorkout } from '../../hooks/useWorkout/useWorkout';
-import groupBy from 'lodash.groupby';
-import sumBy from 'lodash.sumby';
 import { deleteDraftWorkoutData } from '../../utils/persistWorkout';
 import { openLeaveWorkoutModal } from '../../components/modals/LeaveWorkoutModal/LeaveWorkoutModal';
-import { clearStartTime } from './utils';
+import { clearStartTime, wrapSets } from './utils';
 import { WorkoutRouteProp } from '../../types/navigation';
 import { ArrowArcRightIcon } from '../../components/icons/ArrowArcRightIcon';
 
@@ -127,18 +125,7 @@ export const WorkoutScreen = () => {
       const completedSets = dwe.sets.filter(
         (set) => set.status === 'completed',
       );
-      const sets = Object.entries(
-        groupBy(completedSets, (item) => item.reps + ':' + item.weight),
-      )
-        .map(([_, value]) => {
-          return value;
-        })
-        .map((arr) => {
-          return {
-            ...arr[0],
-            sets: sumBy(arr, 'sets'),
-          };
-        });
+      const sets = wrapSets(completedSets);
 
       return {
         ...dwe,

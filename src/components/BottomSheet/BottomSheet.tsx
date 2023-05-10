@@ -75,7 +75,7 @@ export const BottomSheet: React.FC<Props> = ({
     onClose();
 
     return true;
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (isVisible) {
@@ -110,7 +110,7 @@ export const BottomSheet: React.FC<Props> = ({
         });
       }
     }
-  }, [isVisible, contentHeight, modalY.current, contentHeight]);
+  }, [isVisible, contentHeight, pan, backButtonHandler, rendered]);
 
   if (!rendered) return null;
 

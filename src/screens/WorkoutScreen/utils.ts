@@ -1,5 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import dayjs from 'dayjs';
+import groupBy from 'lodash.groupby';
+import sumBy from 'lodash.sumby';
+import { DraftSet } from '../../types/draftWorkout';
 
 const PLAYER_CURRENT_TIME_KEY = 'workoutPlayerCurrentTime';
 
@@ -29,3 +32,13 @@ export const clearStartTime = async () => {
     console.log(err);
   }
 };
+
+export const wrapSets = (sets: DraftSet[]) =>
+  Object.entries(groupBy(sets, (item) => item.reps + ':' + item.weight))
+    .map(([_, value]) => value)
+    .map((arr) => {
+      return {
+        ...arr[0],
+        sets: sumBy(arr, 'sets'),
+      };
+    });

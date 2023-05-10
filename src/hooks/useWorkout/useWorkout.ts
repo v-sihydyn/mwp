@@ -53,32 +53,8 @@ export const useWorkout = () => {
 
     const draftWorkoutExercises: DraftWorkoutExercise[] = exercises
       .map((e) => {
-        const sets: DraftSet[] = [];
         const setsConfig: Set[] = JSON.parse(e.setsConfig);
-
-        setsConfig.forEach((config) => {
-          const setsCount = Number(config.sets);
-
-          if (setsCount > 1) {
-            Array.from({ length: setsCount }).forEach(() => {
-              sets.push({
-                id: nanoid(),
-                sets: 1,
-                reps: config.reps,
-                weight: config.weight,
-                status: 'idle',
-              });
-            });
-          } else {
-            sets.push({
-              id: nanoid(),
-              sets: 1,
-              reps: config.reps,
-              weight: config.weight,
-              status: 'idle',
-            });
-          }
-        });
+        const sets: DraftSet[] = unwrapSets(setsConfig);
 
         return {
           name: e.name,
@@ -214,4 +190,34 @@ export const useWorkout = () => {
   };
 
   return { createDraftWorkoutAndExercises, saveWorkout };
+};
+
+const unwrapSets = (setsConfig: Set[]) => {
+  const sets: DraftSet[] = [];
+
+  setsConfig.forEach((config) => {
+    const setsCount = Number(config.sets);
+
+    if (setsCount > 1) {
+      Array.from({ length: setsCount }).forEach(() => {
+        sets.push({
+          id: nanoid(),
+          sets: 1,
+          reps: config.reps,
+          weight: config.weight,
+          status: 'idle',
+        });
+      });
+    } else {
+      sets.push({
+        id: nanoid(),
+        sets: 1,
+        reps: config.reps,
+        weight: config.weight,
+        status: 'idle',
+      });
+    }
+  });
+
+  return sets;
 };

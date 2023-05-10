@@ -17,7 +17,7 @@ import {
 import { useApolloClient } from '@apollo/client';
 import { routineFragment } from '../../fragments/routineFragment';
 import { WorkoutPlanRoutine, WorkoutRoutineExercise } from '../../API';
-import { ValueMap } from '../../components/TimeIntervalPicker/TimeIntervalPicker';
+import { ValueMap } from '../../components/TimeIntervalPicker';
 import { useWorkout } from '../../hooks/useWorkout/useWorkout';
 import { ConfigureWorkoutRouteProp } from '../../types/navigation';
 

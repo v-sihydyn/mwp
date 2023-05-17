@@ -56,7 +56,7 @@ export const BottomSheet: React.FC<Props> = ({
             useNativeDriver: true,
           }).start(({ finished }) => {
             if (finished) {
-              setRendered(false);
+              modalY.current.setValue(innerContentHeight.current);
               onClose();
             }
           });

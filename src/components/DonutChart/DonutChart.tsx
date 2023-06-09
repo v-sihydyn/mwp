@@ -60,7 +60,7 @@ const addColors = (_chartData: ChartDataItem[]) => {
   });
 };
 
-export const PieChart = ({
+export const DonutChart = ({
   initialValues,
   size = 160,
   strokeWidth = 30,
@@ -142,7 +142,7 @@ export const PieChart = ({
         <>
           {sortedValues.map((item, index) => (
             <G transform={`rotate(-90, ${center}, ${center})`} key={index}>
-              <PieChartSegment
+              <DonutChartSegment
                 center={center}
                 radius={radius}
                 circumference={circumference}
@@ -214,7 +214,7 @@ export const PieChart = ({
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
-type PieChartSegmentProps = {
+type DonutChartSegmentProps = {
   center: number;
   radius: number;
   strokeWidth: number;
@@ -226,7 +226,7 @@ type PieChartSegmentProps = {
   progress: SharedValue<number>;
 };
 
-export const PieChartSegment = ({
+export const DonutChartSegment = ({
   center,
   radius,
   strokeWidth,
@@ -236,7 +236,7 @@ export const PieChartSegment = ({
   progress,
   strokeDasharray,
   angle,
-}: PieChartSegmentProps) => {
+}: DonutChartSegmentProps) => {
   const animatedProps = useAnimatedProps(() => {
     const strokeDashoffset = interpolate(
       progress.value,

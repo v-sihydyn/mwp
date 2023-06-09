@@ -7,7 +7,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import { colors } from '../../../../styles/colors';
-import { ChartData, PieChart } from '../../../../components/PieChart';
+import { ChartData, DonutChart } from '../../../../components/DonutChart';
 import { Icon } from '../../../../components/Icon';
 import * as React from 'react';
 import { WorkoutExerciseCard } from '../../../../components/WorkoutExerciseCard';
@@ -68,36 +68,14 @@ export const WorkoutSummary = React.memo(
                     paddingBottom: 8,
                   }}>
                   <View style={{ marginBottom: 20 }}>
-                    <PieChart
+                    <DonutChart
                       initialValues={chartData}
                       size={300}
                       strokeWidth={90}
                       radius={90}
                       gapColor={colors.surface2}
                       centerLabel={
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            flexWrap: 'nowrap',
-                            width: 89,
-                            height: 89,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-
-                            borderWidth: 1,
-                            borderColor: 'transparent', // @TODO: investigate this hack for centering on android
-                          }}>
-                          <Text
-                            style={{
-                              color: colors.text,
-                              fontSize: 16,
-                              fontWeight: 'bold',
-                              marginRight: 8,
-                            }}>
-                            {exercises.length}
-                          </Text>
-                          <Icon name="dumbbell" color={colors.text} size={16} />
-                        </View>
+                        <CenterLabel label={String(exercises.length)} />
                       }
                     />
                   </View>
@@ -151,6 +129,32 @@ export const WorkoutSummary = React.memo(
       </View>
     );
   },
+);
+
+const CenterLabel = ({ label }: { label: string }) => (
+  <View
+    style={{
+      flexDirection: 'row',
+      flexWrap: 'nowrap',
+      width: 89,
+      height: 89,
+      justifyContent: 'center',
+      alignItems: 'center',
+
+      borderWidth: 1,
+      borderColor: 'transparent', // hack for centring on android
+    }}>
+    <Text
+      style={{
+        color: colors.text,
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginRight: 8,
+      }}>
+      {label}
+    </Text>
+    <Icon name="dumbbell" color={colors.text} size={16} />
+  </View>
 );
 
 const styles = StyleSheet.create({
